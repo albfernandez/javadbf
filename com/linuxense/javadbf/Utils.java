@@ -7,7 +7,7 @@
   author: anil@linuxense.com
   license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-  $Id: Utils.java,v 1.6 2004-03-31 10:57:55 anil Exp $
+  $Id: Utils.java,v 1.7 2004-03-31 16:00:34 anil Exp $
 */
 package com.linuxense.javadbf;
 
@@ -18,10 +18,12 @@ import java.text.*;
 /**
 	Miscelaneous functions required by the JavaDBF package.
 */
-public class Utils {
+public final class Utils {
 
 	public static final int ALIGN_LEFT = 10;
 	public static final int ALIGN_RIGHT = 12;
+
+	private Utils(){}
 
 	public static int readLittleEndianInt( DataInput in)
 	throws IOException {
