@@ -8,7 +8,7 @@
 	author: anil@linuxense
 	license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-	$Id: DBFWriter.java,v 1.4 2003-07-23 10:02:56 anil Exp $
+	$Id: DBFWriter.java,v 1.5 2003-08-17 13:43:47 anil Exp $
 */
 package com.linuxense.javadbf;
 import java.io.*;
@@ -175,6 +175,7 @@ public class DBFWriter {
 
 			for( int i=0; i<fieldArray.length; i++) {
 
+								//System.out.println( "Length: " + fieldArray[i].getFieldLength());
 				fieldArray[i].write( outStream);
 			}
 
@@ -299,7 +300,6 @@ public class DBFWriter {
 			recordLength += fieldArray[i].getFieldLength();
 		}
 
-		//System.out.println( "Record length: " + (recordLength+1));
 		return (short)(recordLength + 1);
 	}
 

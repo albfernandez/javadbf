@@ -7,7 +7,7 @@
   author: anil@linuxense
   license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-  $Id: DBFField.java,v 1.4 2003-07-23 10:02:56 anil Exp $
+  $Id: DBFField.java,v 1.5 2003-08-17 13:43:47 anil Exp $
 */
 
 package com.linuxense.javadbf;
@@ -33,7 +33,7 @@ public class DBFField {
 	byte[] fieldName = new byte[ 11]; /* 0-10*/
 	byte dataType;                    /* 11 */
 	int reserv1;                      /* 12-15 */
-	byte fieldLength;                 /* 16 */
+	int fieldLength;                 /* 16 */
 	byte decimalCount;                /* 17 */
 	short reserv2;                    /* 18-19 */
 	byte workAreaId;                  /* 20 */
@@ -82,7 +82,7 @@ public class DBFField {
 
 		field.dataType = in.readByte(); /* 11 */
 		field.reserv1 = Utils.readLittleEndianInt( in); /* 12-15 */
-		field.fieldLength = in.readByte();  /* 16 */
+		field.fieldLength = in.readUnsignedByte();  /* 16 */
 		field.decimalCount = in.readByte(); /* 17 */
 		field.reserv2 = Utils.readLittleEndianShort( in); /* 18-19 */
 		field.workAreaId = in.readByte(); /* 20 */
@@ -239,7 +239,7 @@ public class DBFField {
 			throw new IllegalArgumentException( "Field length should be a positive number");
 		}
 
-		fieldLength = (byte)value;
+		fieldLength = value;
 	}
 
 	/**
