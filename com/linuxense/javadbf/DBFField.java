@@ -7,7 +7,7 @@
   author: anil@linuxense
   license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-  $Id: DBFField.java,v 1.2 2003-06-04 10:53:47 anil Exp $
+  $Id: DBFField.java,v 1.3 2003-06-22 14:28:31 anil Exp $
 */
 
 package com.linuxense.javadbf;
@@ -64,7 +64,7 @@ public class DBFField {
 		byte t_byte = in.readByte(); /* 0 */
 		if( t_byte == (byte)0x0d) {
 
-			System.out.println( "End of header found");
+			//System.out.println( "End of header found");
 			return null;
 		}
 

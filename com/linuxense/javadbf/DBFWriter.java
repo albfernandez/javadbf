@@ -8,7 +8,7 @@
 	author: anil@linuxense
 	license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-	$Id: DBFWriter.java,v 1.2 2003-06-04 10:53:47 anil Exp $
+	$Id: DBFWriter.java,v 1.3 2003-06-22 14:28:31 anil Exp $
 */
 package com.linuxense.javadbf;
 import java.io.*;
@@ -85,9 +85,9 @@ public class DBFWriter {
 			throw new DBFException( "Null cannot be added as row");
 		}
 
-		if( values.length < fieldArray.length) {
+		if( values.length != fieldArray.length) {
 
-			throw new DBFException( "Invalid record. Less than required fields");
+			throw new DBFException( "Invalid record. Invalid number of fields in row");
 		}
 
 		for( int i=0; i<fieldArray.length; i++) {
@@ -152,6 +152,7 @@ public class DBFWriter {
 			outStream.writeByte( day);   /* 3 */
 	
 			numberOfRecords = v_records.size();
+			//System.out.println( "Number of records in O/S: " + numberOfRecords);
 			numberOfRecords = Utils.littleEndian( numberOfRecords);
 			outStream.writeInt( numberOfRecords); /* 4-7 */
 
@@ -226,7 +227,7 @@ public class DBFWriter {
 
 							if( t_values[j] != null) {
 
-								outStream.write( Utils.floatFormating( (Double)t_values[j], fieldArray[j].getFieldLength(), fieldArray[i].getDecimalCount()));
+								outStream.write( Utils.floatFormating( (Double)t_values[j], fieldArray[j].getFieldLength(), fieldArray[j].getDecimalCount()));
 							}
 							else {
 
@@ -239,7 +240,7 @@ public class DBFWriter {
 
 							if( t_values[j] != null) {
 
-								System.out.println( t_values[j].toString());
+								//System.out.println( t_values[j].toString());
 								outStream.write(
 									Utils.textPadding(
 										((Integer)t_values[j]).toString(),fieldArray[j].getFieldLength(), Utils.ALIGN_RIGHT));
@@ -278,6 +279,7 @@ public class DBFWriter {
 					}
 				}	// iterating through the fields
 			} // iterating throgh records
+			//System.out.println( "Written " + v_records.size() + "(" + Utils.littleEndian(this.numberOfRecords) + ") records");
 		}
 		catch( IOException e) {
 
@@ -293,7 +295,7 @@ public class DBFWriter {
 			recordLength += fieldArray[i].getFieldLength();
 		}
 
-		System.out.println( "Record length: " + (recordLength+1));
+		//System.out.println( "Record length: " + (recordLength+1));
 		return (short)(recordLength + 1);
 	}
 

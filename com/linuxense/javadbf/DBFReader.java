@@ -8,7 +8,7 @@
   Author: anil@linuxense
   License: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-  $Id: DBFReader.java,v 1.2 2003-06-04 10:53:47 anil Exp $
+  $Id: DBFReader.java,v 1.3 2003-06-22 14:28:31 anil Exp $
 */
 
 package com.linuxense.javadbf;
@@ -121,9 +121,9 @@ public class DBFReader {
 		year = dataInputStream.readByte();      /* 1 */
 		month = dataInputStream.readByte();     /* 2 */
 		day = dataInputStream.readByte();       /* 3 */
-		System.out.println( "date of change: " + (byte)year + "/" + (byte)month + "/" + (byte)day);
+		//System.out.println( "date of change: " + (byte)year + "/" + (byte)month + "/" + (byte)day);
 		numberOfRecords = Utils.readLittleEndianInt( dataInputStream); /* 4-7 */
-		 System.out.println( "Number of records: " + numberOfRecords);
+		 //System.out.println( "Number of records: " + numberOfRecords);
 
 		headerLength = Utils.readLittleEndianShort( dataInputStream); /* 8-9 */
 		recordLength = Utils.readLittleEndianShort( dataInputStream); /* 10-11 */
@@ -153,7 +153,7 @@ public class DBFReader {
 
 			fieldArray[ i] = (DBFField)v_fields.elementAt( i);
 		}	
-		System.out.println( "Number of fields: " + fieldArray.length);
+		//System.out.println( "Number of fields: " + fieldArray.length);
 
 		/* it might be required to leap to the start of records at times */
 		int t_dataStartIndex = this.headerLength - ( 32 + (32*fieldArray.length)) - 1;

@@ -7,7 +7,7 @@
   author: anil@linuxense
   license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-  $Id: Utils.java,v 1.2 2003-06-04 10:53:47 anil Exp $
+  $Id: Utils.java,v 1.3 2003-06-22 14:28:31 anil Exp $
 */
 package com.linuxense.javadbf;
 
@@ -148,7 +148,7 @@ public class Utils {
 			format.append( "0");
 		}
 
-		System.out.println( "Pattern: " + format.toString());
+		//System.out.println( "Pattern: " + format.toString());
 		DecimalFormat df = new DecimalFormat( format.toString());
 		return textPadding( df.format( doubleNum.doubleValue()).toString(), fieldLength, ALIGN_RIGHT);
 	}
