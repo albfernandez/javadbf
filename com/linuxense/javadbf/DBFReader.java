@@ -8,7 +8,7 @@
   Author: anil@linuxense
   License: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-  $Id: DBFReader.java,v 1.3 2003-06-22 14:28:31 anil Exp $
+  $Id: DBFReader.java,v 1.4 2003-06-26 17:34:35 anil Exp $
 */
 
 package com.linuxense.javadbf;
@@ -314,7 +314,7 @@ public class DBFReader {
 
 							if( t_numeric.length > 0 && !Utils.contains( t_numeric, (byte)'?')) {
 
-								recordObjects[i] = new Integer( new String( t_numeric));
+								recordObjects[i] = new Double( new String( t_numeric));
 							}
 							else {
 
