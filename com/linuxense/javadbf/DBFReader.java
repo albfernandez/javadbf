@@ -8,7 +8,7 @@
   Author: anil@linuxense
   License: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-  $Id: DBFReader.java,v 1.5 2003-10-16 07:50:15 anil Exp $
+  $Id: DBFReader.java,v 1.6 2004-01-08 17:50:16 anil Exp $
 */
 
 package com.linuxense.javadbf;
@@ -178,6 +178,14 @@ public class DBFReader {
 		}
 
 		return sb.toString();
+	}
+
+	/**
+		Returns the number of records in the DBF.
+	*/
+	public int getRecordCount() {
+
+		return this.numberOfRecords;
 	}
 
 	/**
