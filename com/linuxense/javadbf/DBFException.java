@@ -4,10 +4,10 @@
 
   This file is part of JavaDBF packege.
 
-  author: anil@linuxense
+  author: anil@linuxense.com
   license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-  $Id: DBFException.java,v 1.1 2003-06-04 09:32:33 anil Exp $
+  $Id: DBFException.java,v 1.2 2004-03-31 10:40:18 anil Exp $
 */
 package com.linuxense.javadbf;
 
