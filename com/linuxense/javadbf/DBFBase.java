@@ -1,7 +1,9 @@
 /*
-	$Id: DBFBase.java,v 1.1 2004-02-09 13:45:38 anil Exp $
+	$Id: DBFBase.java,v 1.2 2004-03-31 10:39:32 anil Exp $
 	Serves as the base class of DBFReader adn DBFWriter.
 	
+	@author: anil@linuxense.com
+
 	Support for choosing implemented character Sets as 
 	suggested by Nick Voznesensky <darkers@mail.ru>
 */
@@ -10,6 +12,7 @@ package com.linuxense.javadbf;
 public abstract class DBFBase {
 
 	protected String characterSetName = "8859_1";
+	protected final int END_OF_DATA = 0x1A;
 
 	/* 
 	 If the library is used in a non-latin environment use this method to set 
