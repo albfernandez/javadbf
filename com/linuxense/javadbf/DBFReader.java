@@ -8,7 +8,7 @@
   Author: anil@linuxense
   License: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-  $Id: DBFReader.java,v 1.6 2004-01-08 17:50:16 anil Exp $
+  $Id: DBFReader.java,v 1.7 2004-02-09 13:45:38 anil Exp $
 */
 
 package com.linuxense.javadbf;
@@ -57,7 +57,7 @@ import java.util.*;
 	</table>
 	
 */
-public class DBFReader {
+public class DBFReader extends DBFBase {
 
 	DataInputStream dataInputStream;
 
@@ -266,7 +266,7 @@ public class DBFReader {
 	
 						byte b_array[] = new byte[ fieldArray[i].getFieldLength()];
 						dataInputStream.read( b_array);
-						recordObjects[i] = new String( b_array);
+						recordObjects[i] = new String( b_array, characterSetName);
 						break;
 	
 					case 'D':

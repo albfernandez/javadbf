@@ -8,7 +8,7 @@
 	author: anil@linuxense
 	license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-	$Id: DBFWriter.java,v 1.7 2004-01-08 17:53:00 anil Exp $
+	$Id: DBFWriter.java,v 1.8 2004-02-09 13:45:38 anil Exp $
 */
 package com.linuxense.javadbf;
 import java.io.*;
@@ -23,7 +23,7 @@ import java.util.*;
 	add records using the addRecord() method and then<br>
 	call write() method.
 */
-public class DBFWriter {
+public class DBFWriter extends DBFBase {
 
 	
 	byte signature = (byte)0x03;/* 0 */
@@ -200,11 +200,11 @@ public class DBFWriter {
 							if( t_values[j] != null) {
 
 								String str_value = t_values[j].toString();	
-								outStream.write( Utils.textPadding( str_value, fieldArray[j].getFieldLength()));
+								outStream.write( Utils.textPadding( str_value, characterSetName, fieldArray[j].getFieldLength()));
 							}
 							else {
 
-								outStream.write( Utils.textPadding( "", fieldArray[j].getFieldLength()));
+								outStream.write( Utils.textPadding( "", this.characterSetName, fieldArray[j].getFieldLength()));
 							}
 
 							break;
@@ -217,9 +217,9 @@ public class DBFWriter {
 								StringBuffer t_sb = new StringBuffer();
 								outStream.write( String.valueOf( calendar.get( Calendar.YEAR)).getBytes());
 								//t_sb.append( "/");
-								outStream.write( Utils.textPadding( String.valueOf( calendar.get( Calendar.MONTH)+1), 2, Utils.ALIGN_RIGHT, (byte)'0'));
+								outStream.write( Utils.textPadding( String.valueOf( calendar.get( Calendar.MONTH)+1), this.characterSetName, 2, Utils.ALIGN_RIGHT, (byte)'0'));
 								//t_sb.append( "/");
-								outStream.write( Utils.textPadding( String.valueOf( calendar.get( Calendar.DAY_OF_MONTH)), 2, Utils.ALIGN_RIGHT, (byte)'0'));
+								outStream.write( Utils.textPadding( String.valueOf( calendar.get( Calendar.DAY_OF_MONTH)), this.characterSetName, 2, Utils.ALIGN_RIGHT, (byte)'0'));
 								//outStream.write( t_sb.toString().getBytes());
 							}
 							else {
@@ -233,11 +233,11 @@ public class DBFWriter {
 
 							if( t_values[j] != null) {
 
-								outStream.write( Utils.floatFormating( (Double)t_values[j], fieldArray[j].getFieldLength(), fieldArray[j].getDecimalCount()));
+								outStream.write( Utils.floatFormating( (Double)t_values[j], this.characterSetName, fieldArray[j].getFieldLength(), fieldArray[j].getDecimalCount()));
 							}
 							else {
 
-								outStream.write( Utils.textPadding( "?", fieldArray[j].getFieldLength(), Utils.ALIGN_RIGHT));
+								outStream.write( Utils.textPadding( "?", this.characterSetName, fieldArray[j].getFieldLength(), Utils.ALIGN_RIGHT));
 							}
 
 							break;
@@ -249,12 +249,12 @@ public class DBFWriter {
 								//System.out.println( t_values[j].toString());
 								outStream.write(
 									Utils.textPadding(
-										((Double)t_values[j]).toString(),fieldArray[j].getFieldLength(), Utils.ALIGN_RIGHT));
+										((Double)t_values[j]).toString(),this.characterSetName,fieldArray[j].getFieldLength(), Utils.ALIGN_RIGHT));
 							}
 							else {
 
 								outStream.write( 
-									Utils.textPadding( "?", fieldArray[j].getFieldLength(), Utils.ALIGN_RIGHT));
+									Utils.textPadding( "?", this.characterSetName, fieldArray[j].getFieldLength(), Utils.ALIGN_RIGHT));
 							}
 
 							break;
