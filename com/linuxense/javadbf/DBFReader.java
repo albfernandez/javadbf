@@ -8,7 +8,7 @@
   Author: anil@linuxense
   License: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-  $Id: DBFReader.java,v 1.4 2003-06-26 17:34:35 anil Exp $
+  $Id: DBFReader.java,v 1.5 2003-10-16 07:50:15 anil Exp $
 */
 
 package com.linuxense.javadbf;
@@ -272,13 +272,21 @@ public class DBFReader {
 						byte t_byte_day[] = new byte[ 2];
 						dataInputStream.read( t_byte_day);
 	
-						GregorianCalendar calendar = new GregorianCalendar( 
-							Integer.parseInt( new String( t_byte_year)),
-							Integer.parseInt( new String( t_byte_month)),
-							Integer.parseInt( new String( t_byte_day))
-						);
+						try {
+
+							GregorianCalendar calendar = new GregorianCalendar( 
+								Integer.parseInt( new String( t_byte_year)),
+								Integer.parseInt( new String( t_byte_month)) - 1,
+								Integer.parseInt( new String( t_byte_day))
+							);
 	
-						recordObjects[i] = calendar.getTime();
+							recordObjects[i] = calendar.getTime();
+						}
+						catch ( NumberFormatException e) {
+							/* this field may be empty or may have improper value set */
+							recordObjects[i] = null;
+						}
+
 						break;
 	
 					case 'F':
