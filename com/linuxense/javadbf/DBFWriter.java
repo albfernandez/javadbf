@@ -8,7 +8,7 @@
 	author: anil@linuxense
 	license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-	$Id: DBFWriter.java,v 1.6 2003-08-19 06:36:35 anil Exp $
+	$Id: DBFWriter.java,v 1.7 2004-01-08 17:53:00 anil Exp $
 */
 package com.linuxense.javadbf;
 import java.io.*;
@@ -91,6 +91,11 @@ public class DBFWriter {
 		}
 
 		for( int i=0; i<fieldArray.length; i++) {
+
+			if( values[i] == null) {
+
+				continue;
+			}
 
 			switch( fieldArray[i].getDataType()) {
 
@@ -210,16 +215,16 @@ public class DBFWriter {
 								calendar = new GregorianCalendar();
 								calendar.setTime( (Date)t_values[j]);
 								StringBuffer t_sb = new StringBuffer();
-								t_sb.append( calendar.get( Calendar.YEAR));
-								t_sb.append( "/");
-								t_sb.append( ( calendar.get( Calendar.MONTH)+1));
-								t_sb.append( "/");
-								t_sb.append( calendar.get( Calendar.DAY_OF_MONTH));
-								outStream.write( t_sb.toString().getBytes());
+								outStream.write( String.valueOf( calendar.get( Calendar.YEAR)).getBytes());
+								//t_sb.append( "/");
+								outStream.write( Utils.textPadding( String.valueOf( calendar.get( Calendar.MONTH)+1), 2, Utils.ALIGN_RIGHT, (byte)'0'));
+								//t_sb.append( "/");
+								outStream.write( Utils.textPadding( String.valueOf( calendar.get( Calendar.DAY_OF_MONTH)), 2, Utils.ALIGN_RIGHT, (byte)'0'));
+								//outStream.write( t_sb.toString().getBytes());
 							}
 							else {
 
-								outStream.write( "    /  /  ".getBytes());
+								outStream.write( "        ".getBytes());
 							}
 
 							break;
