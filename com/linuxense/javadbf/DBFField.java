@@ -4,10 +4,10 @@
 
   This file is part of JavaDBF packege.
 
-  author: anil@linuxense
+  author: anil@linuxense.com
   license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-  $Id: DBFField.java,v 1.6 2004-01-08 17:47:02 anil Exp $
+  $Id: DBFField.java,v 1.7 2004-03-31 10:50:11 anil Exp $
 */
 
 package com.linuxense.javadbf;
@@ -56,7 +56,7 @@ public class DBFField {
 	@return Returns the created DBFField object.
 	@throws IOException If any stream reading problems occures.
 	*/
-	protected static DBFField createField( DataInputStream in) 
+	protected static DBFField createField( DataInput in) 
 	throws IOException {
 
 		DBFField field = new DBFField();
@@ -68,7 +68,7 @@ public class DBFField {
 			return null;
 		}
 
-		in.read( field.fieldName, 1, 10);	/* 1-10 */
+		in.readFully( field.fieldName, 1, 10);	/* 1-10 */
 		field.fieldName[0] = t_byte;
 
 		for( int i=0; i<field.fieldName.length; i++) {
@@ -88,7 +88,7 @@ public class DBFField {
 		field.workAreaId = in.readByte(); /* 20 */
 		field.reserv2 = Utils.readLittleEndianShort( in); /* 21-22 */
 		field.setFieldsFlag = in.readByte(); /* 23 */
-		in.read( field.reserv4); /* 24-30 */
+		in.readFully( field.reserv4); /* 24-30 */
 		field.indexFieldFlag = in.readByte(); /* 31 */
 
 		return field;
@@ -101,10 +101,10 @@ public class DBFField {
 		@param os OutputStream
 		@throws IOException if any stream related issues occur.
 	*/
-	protected void write( OutputStream os)
+	protected void write( DataOutput out)
 	throws IOException {
 
-		DataOutputStream out = new DataOutputStream( os);
+		//DataOutputStream out = new DataOutputStream( os);
 
 		// Field Name
 		out.write( fieldName);        /* 0-10 */
@@ -130,7 +130,7 @@ public class DBFField {
 	*/
 	public String getName() {
 
-		return new String( fieldName, 0, nameNullIndex);
+		return new String( this.fieldName, 0, nameNullIndex);
 	}
 
 	/**
@@ -182,11 +182,20 @@ public class DBFField {
   // byte indexFieldFlag;              /* 31 */
 
 	/**
+	 * @deprecated This method is depricated as of version 0.3.3.1 and is replaced by {@link #setName( String)}.
+	 */
+	public void setFieldName( String value) {
+
+		setName( value);
+	}
+
+	/**
 		Sets the name of the field.
 
 		@param name of the field as String.
+		@since 0.3.3.1
 	*/
-	public void setFieldName( String value) {
+	public void setName( String value) {
 
 		if( value == null) {
 
@@ -199,6 +208,7 @@ public class DBFField {
 		}
 
 		this.fieldName = value.getBytes();
+		this.nameNullIndex = this.fieldName.length;
 	}
 
 	/**
