@@ -8,7 +8,7 @@
   Author: anil@linuxense.com
   License: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-  $Id: DBFReader.java,v 1.8 2004-03-31 10:54:03 anil Exp $
+  $Id: DBFReader.java,v 1.9 2004-07-19 08:56:23 anil Exp $
 */
 
 package com.linuxense.javadbf;
@@ -28,7 +28,7 @@ import java.util.*;
 
 	<p>
 	Fetching rocord is possible only in the forward direction and 
-	cannot re-wound. In such situation, a suggested approach is to reconstruct the object.
+	cannot be re-wound. In such situations, a suggested approach is to reconstruct the object.
 
 	<p>
 	The nextRecord() method returns an array of Objects and the types of these
