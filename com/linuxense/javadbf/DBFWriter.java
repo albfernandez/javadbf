@@ -8,7 +8,7 @@
 	author: anil@linuxense.com
 	license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-	$Id: DBFWriter.java,v 1.9 2004-03-31 10:57:16 anil Exp $
+	$Id: DBFWriter.java,v 1.10 2004-04-07 04:23:57 anil Exp $
 */
 package com.linuxense.javadbf;
 import java.io.*;
@@ -299,7 +299,7 @@ public class DBFWriter extends DBFBase {
 					}
 					else {
 
-						dataOutput.write( Utils.textPadding( "?", this.characterSetName, this.header.fieldArray[j].getFieldLength(), Utils.ALIGN_RIGHT));
+						dataOutput.write( Utils.textPadding( " ", this.characterSetName, this.header.fieldArray[j].getFieldLength(), Utils.ALIGN_RIGHT));
 					}
 
 					break;
@@ -314,7 +314,7 @@ public class DBFWriter extends DBFBase {
 					else {
 
 						dataOutput.write( 
-							Utils.textPadding( "?", this.characterSetName, this.header.fieldArray[j].getFieldLength(), Utils.ALIGN_RIGHT));
+							Utils.textPadding( " ", this.characterSetName, this.header.fieldArray[j].getFieldLength(), Utils.ALIGN_RIGHT));
 					}
 
 					break;
