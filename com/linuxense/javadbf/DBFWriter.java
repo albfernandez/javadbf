@@ -8,7 +8,7 @@
 	author: anil@linuxense.com
 	license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-	$Id: DBFWriter.java,v 1.10 2004-04-07 04:23:57 anil Exp $
+	$Id: DBFWriter.java,v 1.11 2004-07-19 08:57:31 anil Exp $
 */
 package com.linuxense.javadbf;
 import java.io.*;
@@ -279,7 +279,6 @@ public class DBFWriter extends DBFBase {
 
 						GregorianCalendar calendar = new GregorianCalendar();
 						calendar.setTime( (Date)objectArray[j]);
-						StringBuffer t_sb = new StringBuffer();
 						dataOutput.write( String.valueOf( calendar.get( Calendar.YEAR)).getBytes());
 						dataOutput.write( Utils.textPadding( String.valueOf( calendar.get( Calendar.MONTH)+1), this.characterSetName, 2, Utils.ALIGN_RIGHT, (byte)'0'));
 						dataOutput.write( Utils.textPadding( String.valueOf( calendar.get( Calendar.DAY_OF_MONTH)), this.characterSetName, 2, Utils.ALIGN_RIGHT, (byte)'0'));
