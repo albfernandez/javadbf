@@ -7,7 +7,7 @@
   author: anil@linuxense
   license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-  $Id: DBFField.java,v 1.5 2003-08-17 13:43:47 anil Exp $
+  $Id: DBFField.java,v 1.6 2004-01-08 17:47:02 anil Exp $
 */
 
 package com.linuxense.javadbf;
@@ -211,11 +211,12 @@ public class DBFField {
 
 		switch( value) {
 
+			case 'D':
+				this.fieldLength = 8; /* fall through */
 			case 'C':
 			case 'L':
 			case 'N':
 			case 'F':
-			case 'D':
 			case 'M':
 
 				this.dataType = value;
@@ -237,6 +238,11 @@ public class DBFField {
 		if( value <= 0) {
 
 			throw new IllegalArgumentException( "Field length should be a positive number");
+		}
+
+		if( this.dataType == FIELD_TYPE_D) {
+
+			throw new UnsupportedOperationException( "Cannot do this on a Date field");
 		}
 
 		fieldLength = value;
