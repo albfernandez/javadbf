@@ -7,7 +7,7 @@
   author: anil@linuxense.com
   license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-  $Id: Utils.java,v 1.7 2004-03-31 16:00:34 anil Exp $
+  $Id: Utils.java,v 1.8 2004-07-19 08:58:11 anil Exp $
 */
 package com.linuxense.javadbf;
 
@@ -22,8 +22,6 @@ public final class Utils {
 
 	public static final int ALIGN_LEFT = 10;
 	public static final int ALIGN_RIGHT = 12;
-
-	private Utils(){}
 
 	public static int readLittleEndianInt( DataInput in)
 	throws IOException {
