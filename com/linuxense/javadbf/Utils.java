@@ -7,7 +7,7 @@
   author: anil@linuxense
   license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-  $Id: Utils.java,v 1.3 2003-06-22 14:28:31 anil Exp $
+  $Id: Utils.java,v 1.4 2004-01-08 17:55:02 anil Exp $
 */
 package com.linuxense.javadbf;
 
@@ -98,13 +98,19 @@ public class Utils {
 
 	public static byte[] textPadding( String text, int length, int alignment) {
 
+		return textPadding( text, length, alignment, (byte)' ');
+	}
+
+	public static byte[] textPadding( String text, int length, int alignment,
+	byte paddingByte) {
+
 		if( text.length() >= length) {
 
 			return text.substring( 0, length).getBytes();
 		}
 
 		byte byte_array[] = new byte[ length];
-		Arrays.fill( byte_array, (byte)' ');
+		Arrays.fill( byte_array, paddingByte);
 
 		switch( alignment) {
 
