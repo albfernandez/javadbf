@@ -8,7 +8,7 @@
 	author: anil@linuxense
 	license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-	$Id: DBFWriter.java,v 1.3 2003-06-22 14:28:31 anil Exp $
+	$Id: DBFWriter.java,v 1.4 2003-07-23 10:02:56 anil Exp $
 */
 package com.linuxense.javadbf;
 import java.io.*;
@@ -107,7 +107,7 @@ public class DBFWriter {
 					break;
 
 				case 'N':
-					if( !( values[i] instanceof Integer)) {
+					if( !( values[i] instanceof Double)) {
 						throw new DBFException( "Invalid value for field " + i);
 					}
 					break;
@@ -243,7 +243,7 @@ public class DBFWriter {
 								//System.out.println( t_values[j].toString());
 								outStream.write(
 									Utils.textPadding(
-										((Integer)t_values[j]).toString(),fieldArray[j].getFieldLength(), Utils.ALIGN_RIGHT));
+										((Double)t_values[j]).toString(),fieldArray[j].getFieldLength(), Utils.ALIGN_RIGHT));
 							}
 							else {
 
@@ -275,10 +275,14 @@ public class DBFWriter {
 						case 'M':
 
 							break;
+
 						default:	
+							throw new DBFException( "Unknown field type " + fieldArray[j].getDataType());
 					}
 				}	// iterating through the fields
 			} // iterating throgh records
+
+			outStream.flush();
 			//System.out.println( "Written " + v_records.size() + "(" + Utils.littleEndian(this.numberOfRecords) + ") records");
 		}
 		catch( IOException e) {

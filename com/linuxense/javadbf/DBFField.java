@@ -7,7 +7,7 @@
   author: anil@linuxense
   license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-  $Id: DBFField.java,v 1.3 2003-06-22 14:28:31 anil Exp $
+  $Id: DBFField.java,v 1.4 2003-07-23 10:02:56 anil Exp $
 */
 
 package com.linuxense.javadbf;
@@ -256,7 +256,7 @@ public class DBFField {
 			throw new IllegalArgumentException( "Decimal length should be a positive number");
 		}
 
-		if( value <= fieldLength) {
+		if( value > fieldLength) {
 
 			throw new IllegalArgumentException( "Decimal length should be less than field length");
 		}
