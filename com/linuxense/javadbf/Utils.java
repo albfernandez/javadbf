@@ -4,10 +4,10 @@
 
   This file is part of JavaDBF packege.
 
-  author: anil@linuxense
+  author: anil@linuxense.com
   license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-  $Id: Utils.java,v 1.5 2004-02-09 13:45:38 anil Exp $
+  $Id: Utils.java,v 1.6 2004-03-31 10:57:55 anil Exp $
 */
 package com.linuxense.javadbf;
 
@@ -23,23 +23,23 @@ public class Utils {
 	public static final int ALIGN_LEFT = 10;
 	public static final int ALIGN_RIGHT = 12;
 
-	public static int readLittleEndianInt( DataInputStream in)
+	public static int readLittleEndianInt( DataInput in)
 	throws IOException {
 
 		int bigEndian = 0;
 		for( int shiftBy=0; shiftBy<32; shiftBy+=8) {
 
-			bigEndian |= (in.readByte()&0xff) << shiftBy;
+			bigEndian |= (in.readUnsignedByte()&0xff) << shiftBy;
 		}
 
 		return bigEndian;
 	}
 
-	public static short readLittleEndianShort( DataInputStream in)
+	public static short readLittleEndianShort( DataInput in)
 	throws IOException {
 
-		int low = in.readByte() & 0xff;
-		int high = in.readByte();
+		int low = in.readUnsignedByte() & 0xff;
+		int high = in.readUnsignedByte();
 
 		return (short )(high << 8 | low); 
 	}
@@ -127,19 +127,10 @@ public class Utils {
 		return byte_array;
 	}
 
-	public static byte[] floatFormating( Double doubleNum, String characterSetName, int fieldLength, int sizeDecimalPart) throws java.io.UnsupportedEncodingException{
+	public static byte[] doubleFormating( Double doubleNum, String characterSetName, int fieldLength, int sizeDecimalPart) throws java.io.UnsupportedEncodingException{
 
-		int sizeWholePart = fieldLength - ( sizeDecimalPart + 1);
-		/*
-		long t_long = doubleNum.longValue();
-		while( t_long > 0) {
+		int sizeWholePart = fieldLength - (sizeDecimalPart>0?( sizeDecimalPart + 1):0);
 
-			sizeWholePart++;
-			t_long/= 10;
-		}
-		*/
-
-		//int sizeDecimalPart = fieldLength - sizeWholePart - 1/* for the . */;
 		StringBuffer format = new StringBuffer( fieldLength);
 
 		for( int i=0; i<sizeWholePart; i++) {
@@ -147,15 +138,18 @@ public class Utils {
 			format.append( "#");
 		}
 
-		format.append( ".");
+		if( sizeDecimalPart > 0) {
 
-		for( int i=0; i<sizeDecimalPart; i++) {
+			format.append( ".");
 
-			format.append( "0");
-		}
+			for( int i=0; i<sizeDecimalPart; i++) {
 
-		//System.out.println( "Pattern: " + format.toString());
+				format.append( "0");
+			}
+		}	
+
 		DecimalFormat df = new DecimalFormat( format.toString());
+		
 		return textPadding( df.format( doubleNum.doubleValue()).toString(), characterSetName, fieldLength, ALIGN_RIGHT);
 	}
 
