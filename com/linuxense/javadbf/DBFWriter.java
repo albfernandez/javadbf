@@ -8,7 +8,7 @@
 	author: anil@linuxense
 	license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-	$Id: DBFWriter.java,v 1.5 2003-08-17 13:43:47 anil Exp $
+	$Id: DBFWriter.java,v 1.6 2003-08-19 06:36:35 anil Exp $
 */
 package com.linuxense.javadbf;
 import java.io.*;
@@ -101,7 +101,7 @@ public class DBFWriter {
 					break;
 
 				case 'L':
-					if( !( values[i] instanceof String)) {
+					if( !( values[i] instanceof Boolean)) {
 					  throw new DBFException( "Invalid value for field " + i);
 					}
 					break;
