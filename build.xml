@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 
 <!--
-$Id: build.xml,v 1.1 2003-06-04 09:32:33 anil Exp $
+$Id: build.xml,v 1.2 2003-06-04 10:53:47 anil Exp $
 -->
-<project name="javadbf" default="compile" basedir=".">
+<project name="javadbf" default="makejar" basedir=".">
 	
 	<property name="src" value="./"/>
 	<property name="bin" value="../bin"/>
@@ -17,8 +17,8 @@ $Id: build.xml,v 1.1 2003-06-04 09:32:33 anil Exp $
 		<javac srcdir="${src}" destdir="${bin}" debug="on"/>
 	</target>
 	
-	<target name="../makejar" depends="compile">
-		<jar jarfile="javadbf.jar" 
+	<target name="makejar" depends="compile">
+		<jar jarfile="../javadbf.jar" 
 		basedir="${bin}" manifest="META-INF/MANIFEST.MF"/>
 	</target>
 </project>

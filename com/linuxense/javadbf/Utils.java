@@ -7,7 +7,7 @@
   author: anil@linuxense
   license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-  $Id: Utils.java,v 1.1 2003-06-04 09:32:33 anil Exp $
+  $Id: Utils.java,v 1.2 2003-06-04 10:53:47 anil Exp $
 */
 package com.linuxense.javadbf;
 
@@ -15,6 +15,9 @@ import java.io.*;
 import java.util.*;
 import java.text.*;
 
+/**
+	Miscelaneous functions required by the JavaDBF package.
+*/
 public class Utils {
 
 	public static final int ALIGN_LEFT = 10;

@@ -8,12 +8,21 @@
 	author: anil@linuxense
 	license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-	$Id: DBFWriter.java,v 1.1 2003-06-04 09:32:33 anil Exp $
+	$Id: DBFWriter.java,v 1.2 2003-06-04 10:53:47 anil Exp $
 */
 package com.linuxense.javadbf;
 import java.io.*;
 import java.util.*;
 
+/**
+	An object of this class can create a DBF file.
+
+	Create an object, <br>
+	then define fields by creating DBFField objects and<br>
+	add them to the DBFWriter object<br>
+	add records using the addRecord() method and then<br>
+	call write() method.
+*/
 public class DBFWriter {
 
 	
@@ -40,9 +49,15 @@ public class DBFWriter {
 	/* other class variables */
 	Vector v_records = new Vector();
 
+	/**
+		Creates an empty Object.
+	*/
 	public DBFWriter() {
 	}
 
+	/**
+		Sets a field.
+	*/
 	public void setFields( DBFField[] fields)
 	throws DBFException {
 
@@ -54,6 +69,9 @@ public class DBFWriter {
 		fieldArray = fields;
 	}
 
+	/**
+		Add a record.
+	*/
 	public void addRecord( Object[] values)
 	throws DBFException {
 
@@ -112,6 +130,9 @@ public class DBFWriter {
 		v_records.addElement( values);
 	}
 
+	/**
+		Writes the set data to the OutputStream.
+	*/
 	public void write( OutputStream out)
 	throws DBFException {
 
@@ -131,11 +152,7 @@ public class DBFWriter {
 			outStream.writeByte( day);   /* 3 */
 	
 			numberOfRecords = v_records.size();
-			//System.out.println( "Number of records (original): " + numberOfRecords);
 			numberOfRecords = Utils.littleEndian( numberOfRecords);
-			//System.out.println( "Number of records (reversed): " + numberOfRecords);
-			//numberOfRecords = Utils.littleEndian( numberOfRecords);
-			//System.out.println( "Number of records (reversed): " + numberOfRecords);
 			outStream.writeInt( numberOfRecords); /* 4-7 */
 
 			headerLength = findHeaderLength();

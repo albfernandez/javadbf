@@ -7,12 +7,19 @@
   author: anil@linuxense
   license: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-  $Id: DBFField.java,v 1.1 2003-06-04 09:32:33 anil Exp $
+  $Id: DBFField.java,v 1.2 2003-06-04 10:53:47 anil Exp $
 */
 
 package com.linuxense.javadbf;
 import java.io.*;
 
+/**
+	DBFField represents a field specification in an dbf file.
+
+	DBFField objects are either created and added to a DBFWriter object or obtained
+	from DBFReader object through getField( int) query.
+
+*/
 public class DBFField {
 
 	public static final byte FIELD_TYPE_C = (byte)'C';
@@ -39,7 +46,17 @@ public class DBFField {
 	/* other class variables */
 	int nameNullIndex = 0;
 
-	public static DBFField createField( DataInputStream in) 
+	/**
+	Creates a DBFField object from the data read from the given DataInputStream.
+
+	The data in the DataInputStream object is supposed to be organised correctly
+	and the stream "pointer" is supposed to be positioned properly.
+
+	@param in DataInputStream
+	@return Returns the created DBFField object.
+	@throws IOException If any stream reading problems occures.
+	*/
+	protected static DBFField createField( DataInputStream in) 
 	throws IOException {
 
 		DBFField field = new DBFField();
@@ -77,7 +94,14 @@ public class DBFField {
 		return field;
 	}
 
-	public void write( OutputStream os)
+	/**
+		Writes the content of DBFField object into the stream as per
+		DBF format specifications.
+
+		@param os OutputStream
+		@throws IOException if any stream related issues occur.
+	*/
+	protected void write( OutputStream os)
 	throws IOException {
 
 		DataOutputStream out = new DataOutputStream( os);
@@ -85,14 +109,6 @@ public class DBFField {
 		// Field Name
 		out.write( fieldName);        /* 0-10 */
 		out.write( new byte[ 11 - fieldName.length]);
-
-		/*
-		// Then padd the rest of the bytes = terminator with null
-		for( int i=11 - fieldName.length; i>0; i--) {
-
-			out.write( (byte)0x00);
-		}
-		*/
 
 		// data type
 		out.writeByte( dataType); /* 11 */
@@ -107,21 +123,45 @@ public class DBFField {
 		out.writeByte( (byte)0x00); /* 31 */
 	}
 
+	/**
+		Returns the name of the field.
+
+		@return Name of the field as String.
+	*/
 	public String getName() {
 
 		return new String( fieldName, 0, nameNullIndex);
 	}
 
+	/**
+		Returns the data type of the field.
+
+		@return Data type as byte.
+	*/
 	public byte getDataType() {
 
 		return dataType;
 	}
 
+	/**
+		Returns field length.
+
+		@return field length as int.
+	*/
 	public int getFieldLength() {
 
 		return fieldLength;
 	}
 
+	/**
+		Returns the decimal part. This is applicable
+		only if the field type if of numeric in nature.
+
+		If the field is specified to hold integral values
+		the value returned by this method will be zero.
+
+		@return decimal field size as int.
+	*/
 	public int getDecimalCount() {
 
 		return decimalCount;
@@ -141,6 +181,11 @@ public class DBFField {
   // byte[] reserv4 = new byte[ 7];    /* 24-30 */
   // byte indexFieldFlag;              /* 31 */
 
+	/**
+		Sets the name of the field.
+
+		@param name of the field as String.
+	*/
 	public void setFieldName( String value) {
 
 		if( value == null) {
@@ -156,6 +201,12 @@ public class DBFField {
 		this.fieldName = value.getBytes();
 	}
 
+	/**
+		Sets the data type of the field.
+
+		@param type of the field. One of the following:<br>
+		C, L, N, F, D, M
+	*/
 	public void setDataType( byte value) {
 
 		switch( value) {
@@ -175,6 +226,12 @@ public class DBFField {
 		}
 	}
 
+	/**
+		Length of the field.
+		This method should be called before calling setDecimalCount().
+
+		@param Length of the field as int.
+	*/
 	public void setFieldLength( int value) {
 
 		if( value <= 0) {
@@ -185,11 +242,23 @@ public class DBFField {
 		fieldLength = (byte)value;
 	}
 
+	/**
+		Sets the decimal place size of the field.
+		Before calling this method the size of the field
+		should be set by calling setFieldLength().
+
+		@param Size of the decimal field.
+	*/
 	public void setDecimalCount( int value) {
 
 		if( value < 0) {
 
 			throw new IllegalArgumentException( "Decimal length should be a positive number");
+		}
+
+		if( value <= fieldLength) {
+
+			throw new IllegalArgumentException( "Decimal length should be less than field length");
 		}
 
 		decimalCount = (byte)value;

@@ -8,13 +8,55 @@
   Author: anil@linuxense
   License: LGPL (http://www.gnu.org/copyleft/lesser.html)
 
-  $Id: DBFReader.java,v 1.1 2003-06-04 09:32:33 anil Exp $
+  $Id: DBFReader.java,v 1.2 2003-06-04 10:53:47 anil Exp $
 */
+
 package com.linuxense.javadbf;
 
 import java.io.*;
 import java.util.*;
 
+/**
+	DBFReader class can creates objects to represent DBF data.
+
+	This Class is used to read data from a DBF file. Meta data and
+	records can be queried against this document.
+
+	<p>
+	DBFReader cannot write anythng to a DBF file. For creating DBF files 
+	use DBFWriter.
+
+	<p>
+	Fetching rocord is possible only in the forward direction and 
+	cannot re-wound. In such situation, a suggested approach is to reconstruct the object.
+
+	<p>
+	The nextRecord() method returns an array of Objects and the types of these
+	Object are as follows:
+
+	<table>
+	<tr>
+		<th>xBase Type</th><th>Java Type</th>
+	</tr>
+
+	<tr>
+		<td>C</td><td>String</td>
+	</tr>
+	<tr>
+		<td>N</td><td>Integer</td>
+	</tr>
+	<tr>
+		<td>F</td><td>Double</td>
+	</tr>
+	<tr>
+		<td>L</td><td>Boolean</td>
+	</tr>
+	<tr>
+		<td>D</td><td>java.util.Date</td>
+	</tr>
+	</table>
+	
+*/
 public class DBFReader {
 
 	DataInputStream dataInputStream;
@@ -45,6 +87,16 @@ public class DBFReader {
 	/* Class specific variables */
 	boolean isClosed = true;
 
+	/**
+		Initializes a DBFReader object.
+
+		When this constructor returns the object 
+		will have completed reading the hader (meta date) and 
+		header information can be quried there on. And it will 
+		be ready to return the first row.
+
+		@param InputStream where the data is read from.	
+	*/
 	public DBFReader( InputStream in) throws DBFException {
 
 		try {
@@ -59,6 +111,9 @@ public class DBFReader {
 		}
 	}
 
+	/**
+		Reads the header structure and build the meta data.
+	*/
 	private void readHeader()
 	throws IOException {
 
@@ -125,6 +180,12 @@ public class DBFReader {
 		return sb.toString();
 	}
 
+	/**
+		Returns the asked Field. In case of an invalid index,
+		it returns a ArrayIndexOutofboundsException.
+
+		@param index. Index of the field. Index of the first field is zero.
+	*/
 	public DBFField getField( int index) 
 	throws DBFException {
 
@@ -136,6 +197,9 @@ public class DBFReader {
 		return fieldArray[ index];
 	}
 
+	/**
+		Returns the number of field in the DBF.
+	*/
 	public int getFieldCount() 
 	throws DBFException {
 
@@ -152,6 +216,11 @@ public class DBFReader {
 		return -1;
 	}
 
+	/**
+		Reads the returns the next row in the DBF stream.
+		@returns The next row as an Object array. Types of the elements 
+		these arrays follow the convention mentioned in the class description.
+	*/
 	public Object[] nextRecord() 
 	throws DBFException {
 
