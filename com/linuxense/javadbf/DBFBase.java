@@ -1,11 +1,14 @@
 /*
-	$Id: DBFBase.java,v 1.2 2004-03-31 10:39:32 anil Exp $
+	$Id: DBFBase.java,v 1.3 2004-03-31 15:59:40 anil Exp $
 	Serves as the base class of DBFReader adn DBFWriter.
 	
 	@author: anil@linuxense.com
 
 	Support for choosing implemented character Sets as 
 	suggested by Nick Voznesensky <darkers@mail.ru>
+*/
+/**
+	Base class for DBFReader and DBFWriter.
 */
 package com.linuxense.javadbf;
 
