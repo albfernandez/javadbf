@@ -281,7 +281,7 @@ public class DBFReader extends DBFBase {
 					case 'L':
 	
 						byte t_logical = dataInputStream.readByte();
-						if( t_logical == 'Y' || t_logical == 't' || t_logical == 'T' || t_logical == 't') {
+						if( t_logical == 'Y' || t_logical == 'y' || t_logical == 'T' || t_logical == 't') {
 	
 							recordObjects[i] = Boolean.TRUE;
 						}
