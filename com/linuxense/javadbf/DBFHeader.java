@@ -70,12 +70,12 @@ class DBFHeader {
 		languageDriver = dataInput.readByte();                    /* 29 */
 		reserv4 = Utils.readLittleEndianShort( dataInput);        /* 30-31 */
 
-		Vector v_fields = new Vector();
+		List<DBFField> v_fields = new ArrayList<>();
 		
 		DBFField field = DBFField.createField( dataInput); /* 32 each */
 		while( field != null) {
 
-			v_fields.addElement( field);
+			v_fields.add(field);
 			field = DBFField.createField( dataInput);
 		}
 
@@ -83,7 +83,7 @@ class DBFHeader {
 		
 		for( int i=0; i<fieldArray.length; i++) {
 
-			fieldArray[ i] = (DBFField)v_fields.elementAt( i);
+			fieldArray[ i] = v_fields.get( i);
 		}	
 		//System.out.println( "Number of fields: " + fieldArray.length);
 
@@ -156,12 +156,12 @@ class DBFHeader {
 
 	private short findRecordLength() {
 
-		int t_recordLength = 0;
+		int recordLength = 0;
 		for( int i=0; i<fieldArray.length; i++) {
 
-			t_recordLength += fieldArray[i].getFieldLength();
+			recordLength += fieldArray[i].getFieldLength();
 		}
 
-		return (short)(t_recordLength + 1);
+		return (short)(recordLength + 1);
 	}
 }
