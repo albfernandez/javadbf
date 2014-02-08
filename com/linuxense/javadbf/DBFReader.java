@@ -73,7 +73,7 @@ public class DBFReader extends DBFBase {
 		header information can be queried there on. And it will 
 		be ready to return the first row.
 
-		@param InputStream where the data is read from.	
+		@param in the InputStream where the data is read from.	
 	*/
 	public DBFReader( InputStream in) throws DBFException {
 

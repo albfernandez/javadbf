@@ -43,7 +43,7 @@ public class DBFWriter extends DBFBase {
 	/**
 	 	Creates a DBFWriter which can append to records to an existing DBF file.
 		@param dbfFile. The file passed in shouls be a valid DBF file.
-		@exception Throws DBFException if the passed in file does exist but not a valid DBF file, or if an IO error occurs.
+		@exception DBFException if the passed in file does exist but not a valid DBF file, or if an IO error occurs.
 	 */
 	public DBFWriter( File dbfFile) 
 	throws DBFException {

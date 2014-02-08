@@ -98,7 +98,7 @@ public class DBFField {
 		Writes the content of DBFField object into the stream as per
 		DBF format specifications.
 
-		@param os OutputStream
+		@param out OutputStream
 		@throws IOException if any stream related issues occur.
 	*/
 	protected void write( DataOutput out)
@@ -195,19 +195,19 @@ public class DBFField {
 		@param name of the field as String.
 		@since 0.3.3.1
 	*/
-	public void setName( String value) {
+	public void setName( String name) {
 
-		if( value == null) {
+		if( name == null) {
 
 			throw new IllegalArgumentException( "Field name cannot be null");
 		}
 
-		if( value.length() == 0 || value.length() > 10) {
+		if( name.length() == 0 || name.length() > 10) {
 
 			throw new IllegalArgumentException( "Field name should be of length 0-10");
 		}
 
-		this.fieldName = value.getBytes();
+		this.fieldName = name.getBytes();
 		this.nameNullIndex = this.fieldName.length;
 	}
 
@@ -217,9 +217,9 @@ public class DBFField {
 		@param type of the field. One of the following:<br>
 		C, L, N, F, D, M
 	*/
-	public void setDataType( byte value) {
+	public void setDataType( byte type) {
 
-		switch( value) {
+		switch( type) {
 
 			case 'D':
 				this.fieldLength = 8; /* fall through */
@@ -229,7 +229,7 @@ public class DBFField {
 			case 'F':
 			case 'M':
 
-				this.dataType = value;
+				this.dataType = type;
 				break;
 
 			default:
@@ -241,11 +241,11 @@ public class DBFField {
 		Length of the field.
 		This method should be called before calling setDecimalCount().
 
-		@param Length of the field as int.
+		@param length of the field as int.
 	*/
-	public void setFieldLength( int value) {
+	public void setFieldLength( int length) {
 
-		if( value <= 0) {
+		if( length <= 0) {
 
 			throw new IllegalArgumentException( "Field length should be a positive number");
 		}
@@ -255,7 +255,7 @@ public class DBFField {
 			throw new UnsupportedOperationException( "Cannot do this on a Date field");
 		}
 
-		fieldLength = value;
+		fieldLength = length;
 	}
 
 	/**
@@ -263,21 +263,21 @@ public class DBFField {
 		Before calling this method the size of the field
 		should be set by calling setFieldLength().
 
-		@param Size of the decimal field.
+		@param size of the decimal field.
 	*/
-	public void setDecimalCount( int value) {
+	public void setDecimalCount( int size) {
 
-		if( value < 0) {
+		if( size < 0) {
 
 			throw new IllegalArgumentException( "Decimal length should be a positive number");
 		}
 
-		if( value > fieldLength) {
+		if( size > fieldLength) {
 
 			throw new IllegalArgumentException( "Decimal length should be less than field length");
 		}
 
-		decimalCount = (byte)value;
+		decimalCount = (byte)size;
 	}
 
 }
