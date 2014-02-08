@@ -86,17 +86,13 @@ public class DBFReader extends DBFBase {
 
 			/* it might be required to leap to the start of records at times */
 			int t_dataStartIndex = this.header.headerLength - ( 32 + (32*this.header.fieldArray.length)) - 1;
-			if( t_dataStartIndex > 0) {
-
-				dataInputStream.skip( t_dataStartIndex);
-			}
+      skip(t_dataStartIndex);
 		}
 		catch( IOException e) {
 
 			throw new DBFException( e.getMessage());	
 		}
 	}
-
 
 	@Override
 	public String toString() {
@@ -179,8 +175,7 @@ public class DBFReader extends DBFBase {
 			do {
 				
 				if( isDeleted) {
-	
-					dataInputStream.skip( this.header.recordLength-1);
+          skip(this.header.recordLength-1);
 				}
 	
 				int t_byte = dataInputStream.readByte();
@@ -292,11 +287,9 @@ public class DBFReader extends DBFBase {
 						break;
 	
 					case 'M':
-						// TODO Later
-						recordObjects[i] = new String( "null");
-						break;
-
+						// TODO Later for now we skipping this field, too
 					default:
+            skip(header.fieldArray[i].getFieldLength());
 						recordObjects[i] = "null";
 				}
 			}
@@ -312,4 +305,10 @@ public class DBFReader extends DBFBase {
 
 		return recordObjects;
 	}
+  
+  private void skip(long n) throws IOException {
+    for (; n > 0; n--)
+      dataInputStream.readByte();
+  }
+  
 }
