@@ -27,7 +27,7 @@ public class DBFWriter extends DBFBase {
 
 	/* other class variables */
 	DBFHeader header;
-	Vector v_records = new Vector();
+	List<Object []> v_records = new ArrayList<>();
 	int recordCount = 0;
 	RandomAccessFile raf = null; /* Open and append records to an existing DBF */
 	boolean appendMode = false;
@@ -186,7 +186,7 @@ public class DBFWriter extends DBFBase {
 
 		if( this.raf == null) {
 
-			v_records.addElement( values);
+			v_records.add( values);
 		}
 		else {
 
@@ -221,7 +221,7 @@ public class DBFWriter extends DBFBase {
 				int t_recCount = v_records.size();
 				for( int i=0; i<t_recCount; i++) { /* iterate through records */
 
-					Object[] t_values = (Object[])v_records.elementAt( i);
+					Object[] t_values = v_records.get( i);
 
 					writeRecord( outStream, t_values);
 				}
