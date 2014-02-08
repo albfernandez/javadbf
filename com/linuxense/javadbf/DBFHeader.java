@@ -109,7 +109,7 @@ class DBFHeader {
 		headerLength = findHeaderLength();
 		dataOutput.writeShort( Utils.littleEndian( headerLength)); /* 8-9 */
 
-		recordLength = findRecordLength(); 
+		recordLength = sumUpLenghtOfFields(); 
 		dataOutput.writeShort( Utils.littleEndian( recordLength)); /* 10-11 */
 
 		dataOutput.writeShort( Utils.littleEndian( reserv1)); /* 12-13 */
@@ -122,12 +122,9 @@ class DBFHeader {
 		dataOutput.writeByte( mdxFlag); /* 28 */
 		dataOutput.writeByte( languageDriver); /* 29 */
 		dataOutput.writeShort( Utils.littleEndian( reserv4)); /* 30-31 */
-
-		for( int i=0; i<fieldArray.length; i++) {
-
-							//System.out.println( "Length: " + fieldArray[i].getFieldLength());
-			fieldArray[i].write( dataOutput);
-		}
+    for (DBFField field : fieldArray) {
+      field.write(dataOutput);
+    }
 
 		dataOutput.writeByte( terminator1); /* n+1 */
 	}
@@ -154,14 +151,11 @@ class DBFHeader {
 		);
 	}
 
-	private short findRecordLength() {
+	private short sumUpLenghtOfFields() {
+		int sum = 0;
+    for (DBFField field : fieldArray)
+      sum += field.getFieldLength();
 
-		int recordLength = 0;
-		for( int i=0; i<fieldArray.length; i++) {
-
-			recordLength += fieldArray[i].getFieldLength();
-		}
-
-		return (short)(recordLength + 1);
+		return (short)(sum + 1);
 	}
 }
