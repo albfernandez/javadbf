@@ -46,7 +46,7 @@ public final class Utils {
 
 	public static byte[] trimLeftSpaces( byte [] arr) {
 
-		StringBuffer t_sb = new StringBuffer( arr.length);
+		StringBuilder t_sb = new StringBuilder( arr.length);
 
 		for( int i=0; i<arr.length; i++) {
 
@@ -131,7 +131,7 @@ public final class Utils {
 
 		int sizeWholePart = fieldLength - (sizeDecimalPart>0?( sizeDecimalPart + 1):0);
 
-		StringBuffer format = new StringBuffer( fieldLength);
+		StringBuilder format = new StringBuilder( fieldLength);
 
 		for( int i=0; i<sizeWholePart; i++) {
 
