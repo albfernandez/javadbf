@@ -106,9 +106,8 @@ public class DBFReader extends DBFBase {
 		"\nHeader length: " + this.header.headerLength +
 		"");
 
-		for( int i=0; i<this.header.fieldArray.length; i++) {
-
-			sb.append( this.header.fieldArray[i].getName());
+		for (DBFField fieldArray : this.header.fieldArray) {
+			sb.append(fieldArray.getName());
 			sb.append( "\n");
 		}
 
