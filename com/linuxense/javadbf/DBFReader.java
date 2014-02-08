@@ -1,9 +1,9 @@
 /*
   DBFReader
   Class for reading the records assuming that the given
-	InputStream comtains DBF data.
+	InputStream contains DBF data.
 
-  This file is part of JavaDBF packege.
+  This file is part of JavaDBF package.
 
   Author: anil@linuxense.com
   License: LGPL (http://www.gnu.org/copyleft/lesser.html)
@@ -23,11 +23,11 @@ import java.util.*;
 	records can be queried against this document.
 
 	<p>
-	DBFReader cannot write anythng to a DBF file. For creating DBF files 
+	DBFReader cannot write to a DBF file. For creating DBF files 
 	use DBFWriter.
 
 	<p>
-	Fetching rocord is possible only in the forward direction and 
+	Fetching records is possible only in the forward direction and 
 	cannot be re-wound. In such situations, a suggested approach is to reconstruct the object.
 
 	<p>
@@ -69,8 +69,8 @@ public class DBFReader extends DBFBase {
 		Initializes a DBFReader object.
 
 		When this constructor returns the object 
-		will have completed reading the hader (meta date) and 
-		header information can be quried there on. And it will 
+		will have completed reading the header (meta date) and 
+		header information can be queried there on. And it will 
 		be ready to return the first row.
 
 		@param InputStream where the data is read from.	
@@ -98,11 +98,12 @@ public class DBFReader extends DBFBase {
 	}
 
 
+	@Override
 	public String toString() {
 
 		StringBuffer sb = new StringBuffer(  this.header.year + "/" + this.header.month + "/" + this.header.day + "\n"
 		+ "Total records: " + this.header.numberOfRecords + 
-		"\nHEader length: " + this.header.headerLength +
+		"\nHeader length: " + this.header.headerLength +
 		"");
 
 		for( int i=0; i<this.header.fieldArray.length; i++) {
@@ -297,7 +298,7 @@ public class DBFReader extends DBFBase {
 						break;
 
 					default:
-						recordObjects[i] = new String( "null");
+						recordObjects[i] = "null";
 				}
 			}
 		}
