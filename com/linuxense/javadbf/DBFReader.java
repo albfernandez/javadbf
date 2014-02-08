@@ -101,7 +101,7 @@ public class DBFReader extends DBFBase {
 	@Override
 	public String toString() {
 
-		StringBuffer sb = new StringBuffer(  this.header.year + "/" + this.header.month + "/" + this.header.day + "\n"
+		StringBuilder sb = new StringBuilder(  this.header.year + "/" + this.header.month + "/" + this.header.day + "\n"
 		+ "Total records: " + this.header.numberOfRecords + 
 		"\nHeader length: " + this.header.headerLength +
 		"");
