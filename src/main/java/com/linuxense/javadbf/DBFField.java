@@ -62,6 +62,10 @@ public class DBFField {
 
 	/* other class variables */
 	int nameNullIndex = 0;
+	
+	public DBFField() {
+		super();
+	}
 
 	/**
 	Creates a DBFField object from the data read from the given DataInputStream.

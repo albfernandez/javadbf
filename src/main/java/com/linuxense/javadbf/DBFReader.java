@@ -94,9 +94,7 @@ public class DBFReader extends DBFBase {
 		@param in the InputStream where the data is read from.	
 	*/
 	public DBFReader(InputStream in) throws DBFException {
-
 		try {
-
 			this.dataInputStream = new DataInputStream(in);
 			this.isClosed = false;
 			this.header = new DBFHeader();
@@ -106,26 +104,22 @@ public class DBFReader extends DBFBase {
 			int t_dataStartIndex = this.header.headerLength - (32 + (32 * this.header.fieldArray.length)) - 1;
 			skip(t_dataStartIndex);
 		} catch (IOException e) {
-
 			throw new DBFException(e.getMessage());
 		}
 	}
 
 	@Override
 	public String toString() {
-
 		StringBuilder sb = new StringBuilder(128);
 		sb.append(this.header.year).append("/");
 		sb.append(this.header.month).append("/");
 		sb.append(this.header.day).append("\n");
 		sb.append("Total records: ").append(this.header.numberOfRecords).append("\n");
 		sb.append("Header length: ").append(this.header.headerLength).append("\n");
-
 		for (DBFField field : this.header.fieldArray) {
 			sb.append(field.getName());
 			sb.append("\n");
 		}
-
 		return sb.toString();
 	}
 
@@ -175,19 +169,15 @@ public class DBFReader extends DBFBase {
 		Object recordObjects[] = new Object[this.header.fieldArray.length];
 
 		try {
-
 			boolean isDeleted = false;
 			do {
 				if (isDeleted) {
 					skip(this.header.recordLength - 1);
 				}
-
 				int t_byte = dataInputStream.readByte();
 				if (t_byte == END_OF_DATA) {
-
 					return null;
 				}
-
 				isDeleted = (t_byte == '*');
 			} while (isDeleted);
 	
@@ -228,21 +218,16 @@ public class DBFReader extends DBFBase {
 					break;
 
 				case 'F':
-
 					try {
-
 						byte t_float[] = new byte[this.header.fieldArray[i].getFieldLength()];
 						dataInputStream.read(t_float);
 						t_float = Utils.trimLeftSpaces(t_float);
 						if (t_float.length > 0 && !Utils.contains(t_float, (byte) '?')) {
-
 							recordObjects[i] = new Float(new String(t_float));
 						} else {
-
 							recordObjects[i] = null;
 						}
 					} catch (NumberFormatException e) {
-
 						throw new DBFException("Failed to parse Float: " + e.getMessage());
 					}
 
@@ -254,15 +239,12 @@ public class DBFReader extends DBFBase {
 						byte t_numeric[] = new byte[this.header.fieldArray[i].getFieldLength()];
 						dataInputStream.read(t_numeric);
 						t_numeric = Utils.trimLeftSpaces(t_numeric);
-
 						if (t_numeric.length > 0 && !Utils.contains(t_numeric, (byte) '?')) {
 							recordObjects[i] = new Double(new String(t_numeric));
 						} else {
-
 							recordObjects[i] = null;
 						}
 					} catch (NumberFormatException e) {
-
 						throw new DBFException("Failed to parse Number: " + e.getMessage());
 					}
 
@@ -272,14 +254,11 @@ public class DBFReader extends DBFBase {
 
 					byte t_logical = dataInputStream.readByte();
 					if (t_logical == 'Y' || t_logical == 'y' || t_logical == 'T' || t_logical == 't') {
-
 						recordObjects[i] = Boolean.TRUE;
 					} else {
-
 						recordObjects[i] = Boolean.FALSE;
 					}
 					break;
-
 				case 'M':
 					// TODO Later for now we skipping this field, too
 				default:
@@ -288,10 +267,8 @@ public class DBFReader extends DBFBase {
 				}
 			}
 		} catch (EOFException e) {
-
 			return null;
 		} catch (IOException e) {
-
 			throw new DBFException(e.getMessage());
 		}
 

@@ -58,7 +58,7 @@ public class DBFWriter extends DBFBase {
 	boolean appendMode = false;
 
 	/**
-		Creates an empty Object.
+		Creates an empty DBFWriter.
 	*/
 	public DBFWriter() {
 		this.header = new DBFHeader();
@@ -72,7 +72,6 @@ public class DBFWriter extends DBFBase {
 	public DBFWriter(File dbfFile) throws DBFException {
 
 		try {
-
 			this.raf = new RandomAccessFile(dbfFile, "rw");
 
 			/*
@@ -109,19 +108,15 @@ public class DBFWriter extends DBFBase {
 		if (fields == null || fields.length == 0) {
 			throw new DBFException("Should have at least one field");
 		}
-
 		for (int i = 0; i < fields.length; i++) {
 			if (fields[i] == null) {
 				throw new DBFException("Field " + (i + 1) + " is null");
 			}
 		}
-
 		this.header.fieldArray = fields;
-
 		try {
 			if (this.raf != null && this.raf.length() == 0) {
-				// this is a new/non-existent file. So write header before
-				// proceeding
+				// this is a new/non-existent file. So write header before proceeding
 				this.header.write(this.raf);
 			}
 		} catch (IOException e) {
@@ -190,16 +185,12 @@ public class DBFWriter extends DBFBase {
 		}
 
 		if (this.raf == null) {
-
 			v_records.add(values);
 		} else {
-
 			try {
-
 				writeRecord(this.raf, values);
 				this.recordCount++;
 			} catch (IOException e) {
-
 				throw new DBFException("Error occured while writing record. " + e.getMessage());
 			}
 		}
@@ -208,32 +199,22 @@ public class DBFWriter extends DBFBase {
 	/**
 		Writes the set data to the OutputStream.
 	*/
-	public void write( OutputStream out)
-	throws DBFException {
-
+	public void write(OutputStream out) throws DBFException {
 		try {
-
 			if( this.raf == null) {
-
 				DataOutputStream outStream = new DataOutputStream( out);
-
 				this.header.numberOfRecords = v_records.size();
 				this.header.write( outStream);
 
 				/* Now write all the records */
-				int t_recCount = v_records.size();
-				for( int i=0; i<t_recCount; i++) { /* iterate through records */
-
-					Object[] t_values = v_records.get( i);
-
-					writeRecord( outStream, t_values);
+				for (Object[] record: v_records) {
+					writeRecord(outStream, record);
 				}
 
 				outStream.write( END_OF_DATA);
 				outStream.flush();
 			}
 			else {
-
 				/* everything is written already. just update the header for record count and the END_OF_DATA mark */
 				this.header.numberOfRecords = this.recordCount;
 				this.raf.seek( 0);
@@ -242,22 +223,17 @@ public class DBFWriter extends DBFBase {
 				this.raf.writeByte( END_OF_DATA);
 				this.raf.close();
 			}
-
 		}
 		catch( IOException e) {
-
 			throw new DBFException( e.getMessage());
 		}
 	}
 
-	public void write()
-	throws DBFException {
-
-		this.write( null);
+	public void write() throws DBFException {
+		this.write(null);
 	}
 
 	private void writeRecord(DataOutput dataOutput, Object[] objectArray) throws IOException {
-
 		dataOutput.write((byte) ' ');
 		for (int j = 0; j < this.header.fieldArray.length; j++) {
 			/* iterate throught fields */

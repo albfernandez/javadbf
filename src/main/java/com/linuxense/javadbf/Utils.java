@@ -159,7 +159,6 @@ public final class Utils {
 		}
 
 		DecimalFormat df = new DecimalFormat(format.toString());
-
 		return textPadding(df.format(doubleNum.doubleValue()).toString(), characterSetName, fieldLength, ALIGN_RIGHT);
 	}
 

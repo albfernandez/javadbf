@@ -51,5 +51,4 @@ public abstract class DBFBase {
 	public void setCharactersetName( String characterSetName) {
 		this.characterSetName = characterSetName;
 	}
-
 }
