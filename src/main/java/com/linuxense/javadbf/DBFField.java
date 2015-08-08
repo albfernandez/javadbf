@@ -277,7 +277,10 @@ public class DBFField {
 	public void setType(DBFDataType type) {
 		if (type == DBFDataType.DATE) {
 			this.fieldLength = 8;
-		}		
+		}
+		if (type == DBFDataType.UNKNOWN || type == DBFDataType.LONG) {
+			throw new IllegalArgumentException("No support for writting " + type);
+		}
 		this.type = type;		
 	}
 
