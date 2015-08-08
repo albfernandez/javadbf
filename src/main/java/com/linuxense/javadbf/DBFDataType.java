@@ -7,7 +7,8 @@ public enum DBFDataType {
 	FLOATING_POINT  ((byte) 'F'), 
 	LOGICAL         ((byte) 'L'), 
 	MEMO            ((byte) 'M'), 
-	NUMERIC         ((byte) 'N');
+	NUMERIC         ((byte) 'N'),
+	LONG            ((byte) 'I');
 
 	private byte code;
 
@@ -25,8 +26,6 @@ public enum DBFDataType {
 				return type;
 			}
 		}
-		System.out.println("Unknown data type:" + cod);
-		System.out.println("Unknown data type:" + (char) cod);
 		throw new IllegalArgumentException("Unknown data type:" + cod);
 	}
 	

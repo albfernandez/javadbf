@@ -259,6 +259,10 @@ public class DBFReader extends DBFBase {
 						recordObjects[i] = Boolean.FALSE;
 					}
 					break;
+				case LONG:
+					int data = Utils.readLittleEndianInt(dataInputStream);
+					recordObjects[i] = data;
+					break;
 				case MEMO:
 					// TODO Later for now we skipping this field, too
 				default:

@@ -101,8 +101,6 @@ class DBFHeader {
 		for (int i = 0; i < fieldArray.length; i++) {
 			fieldArray[i] = v_fields.get(i);
 		}
-		//System.out.println( "Number of fields: " + fieldArray.length);
-
 	}
 
 	void write(DataOutput dataOutput) throws IOException {
@@ -117,7 +115,6 @@ class DBFHeader {
 		dataOutput.writeByte(month); /* 2 */
 		dataOutput.writeByte(day); /* 3 */
 
-		// System.out.println( "Number of records in O/S: " + numberOfRecords);
 		numberOfRecords = Utils.littleEndian(numberOfRecords);
 		dataOutput.writeInt(numberOfRecords); /* 4-7 */
 

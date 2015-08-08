@@ -53,7 +53,7 @@ public class DBFField {
 	public static final byte FIELD_TYPE_M = (byte) 'M';
 
 	/* Field struct variables start here */
-	byte[] fieldName = new byte[ 11]; /* 0-10*/
+	//byte[] fieldName = new byte[ 11]; /* 0-10*/
 	DBFDataType type;                    /* 11 */
 	int reserv1;                      /* 12-15 */
 	int fieldLength;                 /* 16 */
@@ -90,20 +90,19 @@ public class DBFField {
 
 		byte t_byte = in.readByte(); /* 0 */
 		if (t_byte == (byte) 0x0d) {
-			// System.out.println( "End of header found");
 			return null;
 		}
-
-		in.readFully(field.fieldName, 1, 10); /* 1-10 */
-		field.fieldName[0] = t_byte;
+		byte[] fieldName = new byte[11];
+		in.readFully(fieldName, 1, 10); /* 1-10 */
+		fieldName[0] = t_byte;
 		int nameNullIndex = 0;
-		for (int i = 0; i < field.fieldName.length; i++) {
-			if (field.fieldName[i] == (byte) 0) {
+		for (int i = 0; i < fieldName.length; i++) {
+			if (fieldName[i] == (byte) 0) {
 				nameNullIndex = i;
 				break;
 			}
 		}
-		field.name = new String(field.fieldName, 0, nameNullIndex);
+		field.name = new String(fieldName, 0, nameNullIndex);
 		try {
 			field.type = DBFDataType.fromCode(in.readByte()); /* 11 */
 		}
@@ -235,8 +234,6 @@ public class DBFField {
 			throw new IllegalArgumentException("Field name must be ASCII");
 		}
 		this.name = name;
-		this.fieldName = name.getBytes();
-
 	}
 
 
