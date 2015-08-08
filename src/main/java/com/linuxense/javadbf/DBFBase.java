@@ -31,8 +31,12 @@ Base class for DBFReader and DBFWriter.
 */
 public abstract class DBFBase {
 
+	protected static final int END_OF_DATA = 0x1A;
 	protected String characterSetName = "8859_1";
-	protected final int END_OF_DATA = 0x1A;
+	
+	protected DBFBase() {
+		super();
+	}
 
 	/* 
 	 If the library is used in a non-latin environment use this method to set 
@@ -41,12 +45,10 @@ public abstract class DBFBase {
 	 Also see the documentation of the class java.nio.charset.Charset
 	*/
 	public String getCharactersetName() {
-
 		return this.characterSetName;
 	}
 
 	public void setCharactersetName( String characterSetName) {
-
 		this.characterSetName = characterSetName;
 	}
 

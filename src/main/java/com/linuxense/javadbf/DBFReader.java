@@ -22,8 +22,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.linuxense.javadbf;
 
-import java.io.*;
-import java.util.*;
+import java.io.DataInputStream;
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.GregorianCalendar;
 
 /*
 DBFReader
@@ -90,36 +93,37 @@ public class DBFReader extends DBFBase {
 
 		@param in the InputStream where the data is read from.	
 	*/
-	public DBFReader( InputStream in) throws DBFException {
+	public DBFReader(InputStream in) throws DBFException {
 
 		try {
 
-			this.dataInputStream = new DataInputStream( in);
+			this.dataInputStream = new DataInputStream(in);
 			this.isClosed = false;
 			this.header = new DBFHeader();
-			this.header.read( this.dataInputStream);
+			this.header.read(this.dataInputStream);
 
 			/* it might be required to leap to the start of records at times */
-			int t_dataStartIndex = this.header.headerLength - ( 32 + (32*this.header.fieldArray.length)) - 1;
-      skip(t_dataStartIndex);
-		}
-		catch( IOException e) {
+			int t_dataStartIndex = this.header.headerLength - (32 + (32 * this.header.fieldArray.length)) - 1;
+			skip(t_dataStartIndex);
+		} catch (IOException e) {
 
-			throw new DBFException( e.getMessage());	
+			throw new DBFException(e.getMessage());
 		}
 	}
 
 	@Override
 	public String toString() {
 
-		StringBuilder sb = new StringBuilder(  this.header.year + "/" + this.header.month + "/" + this.header.day + "\n"
-		+ "Total records: " + this.header.numberOfRecords + 
-		"\nHeader length: " + this.header.headerLength +
-		"");
+		StringBuilder sb = new StringBuilder(128);
+		sb.append(this.header.year).append("/");
+		sb.append(this.header.month).append("/");
+		sb.append(this.header.day).append("\n");
+		sb.append("Total records: ").append(this.header.numberOfRecords).append("\n");
+		sb.append("Header length: ").append(this.header.headerLength).append("\n");
 
-		for (DBFField fieldArray : this.header.fieldArray) {
-			sb.append(fieldArray.getName());
-			sb.append( "\n");
+		for (DBFField field : this.header.fieldArray) {
+			sb.append(field.getName());
+			sb.append("\n");
 		}
 
 		return sb.toString();
@@ -129,7 +133,6 @@ public class DBFReader extends DBFBase {
 		Returns the number of records in the DBF.
 	*/
 	public int getRecordCount() {
-
 		return this.header.numberOfRecords;
 	}
 
@@ -139,33 +142,23 @@ public class DBFReader extends DBFBase {
 
 		@param index. Index of the field. Index of the first field is zero.
 	*/
-	public DBFField getField( int index) 
-	throws DBFException {
-
-		if( isClosed) {
-
-			throw new DBFException( "Source is not open");
+	public DBFField getField(int index) throws DBFException {
+		if (isClosed) {
+			throw new DBFException("Source is not open");
 		}
-
-		return this.header.fieldArray[ index];
+		return this.header.fieldArray[index];
 	}
 
 	/**
 		Returns the number of field in the DBF.
 	*/
-	public int getFieldCount() 
-	throws DBFException {
-
-		if( isClosed) {
-
-			throw new DBFException( "Source is not open");
+	public int getFieldCount() throws DBFException {
+		if (isClosed) {
+			throw new DBFException("Source is not open");
 		}
-
-		if( this.header.fieldArray != null) {
-
+		if (this.header.fieldArray != null) {
 			return this.header.fieldArray.length;
 		}
-
 		return -1;
 	}
 
@@ -174,156 +167,141 @@ public class DBFReader extends DBFBase {
 		@returns The next row as an Object array. Types of the elements 
 		these arrays follow the convention mentioned in the class description.
 	*/
-	public Object[] nextRecord() 
-	throws DBFException {
-
-		if( isClosed) {
-
-			throw new DBFException( "Source is not open");
+	public Object[] nextRecord() throws DBFException {
+		if (isClosed) {
+			throw new DBFException("Source is not open");
 		}
 
-		Object recordObjects[] = new Object[ this.header.fieldArray.length];
+		Object recordObjects[] = new Object[this.header.fieldArray.length];
 
 		try {
 
 			boolean isDeleted = false;
 			do {
-				
-				if( isDeleted) {
-          skip(this.header.recordLength-1);
+				if (isDeleted) {
+					skip(this.header.recordLength - 1);
 				}
-	
+
 				int t_byte = dataInputStream.readByte();
-				if( t_byte == END_OF_DATA) {
+				if (t_byte == END_OF_DATA) {
 
 					return null;
 				}
 
-				isDeleted = (  t_byte == '*');
-			} while( isDeleted);
+				isDeleted = (t_byte == '*');
+			} while (isDeleted);
 	
-			for( int i=0; i<this.header.fieldArray.length; i++) {
+			for (int i = 0; i < this.header.fieldArray.length; i++) {
+				switch (this.header.fieldArray[i].getDataType()) {
+				case 'C':
+					byte b_array[] = new byte[this.header.fieldArray[i].getFieldLength()];
+					dataInputStream.read(b_array);
+					recordObjects[i] = new String(b_array, getCharactersetName());
+					break;
 	
-				switch( this.header.fieldArray[i].getDataType()) {
-	
-					case 'C':
-	
-						byte b_array[] = new byte[ this.header.fieldArray[i].getFieldLength()];
-						dataInputStream.read( b_array);
-						recordObjects[i] = new String( b_array, characterSetName);
-						break;
-	
-					case 'D':
-	
-						byte t_byte_year[] = new byte[ 4];
-						dataInputStream.read( t_byte_year);
-	
-						byte t_byte_month[] = new byte[ 2];
-						dataInputStream.read( t_byte_month);
-	
-						byte t_byte_day[] = new byte[ 2];
-						dataInputStream.read( t_byte_day);
-	
-						try {
+				case 'D':
 
-							GregorianCalendar calendar = new GregorianCalendar( 
-								Integer.parseInt( new String( t_byte_year)),
-								Integer.parseInt( new String( t_byte_month)) - 1,
-								Integer.parseInt( new String( t_byte_day))
-							);
-	
-							recordObjects[i] = calendar.getTime();
-						}
-						catch ( NumberFormatException e) {
-							/* this field may be empty or may have improper value set */
+					byte t_byte_year[] = new byte[4];
+					dataInputStream.read(t_byte_year);
+
+					byte t_byte_month[] = new byte[2];
+					dataInputStream.read(t_byte_month);
+
+					byte t_byte_day[] = new byte[2];
+					dataInputStream.read(t_byte_day);
+
+					try {
+						GregorianCalendar calendar = new GregorianCalendar( 
+							Integer.parseInt( new String( t_byte_year)),
+							Integer.parseInt( new String( t_byte_month)) - 1,
+							Integer.parseInt( new String( t_byte_day))
+						);	
+						recordObjects[i] = calendar.getTime();
+					} catch (NumberFormatException e) {
+						/*
+						 * this field may be empty or may have improper value
+						 * set
+						 */
+						recordObjects[i] = null;
+					}
+
+					break;
+
+				case 'F':
+
+					try {
+
+						byte t_float[] = new byte[this.header.fieldArray[i].getFieldLength()];
+						dataInputStream.read(t_float);
+						t_float = Utils.trimLeftSpaces(t_float);
+						if (t_float.length > 0 && !Utils.contains(t_float, (byte) '?')) {
+
+							recordObjects[i] = new Float(new String(t_float));
+						} else {
+
 							recordObjects[i] = null;
 						}
+					} catch (NumberFormatException e) {
 
-						break;
-	
-					case 'F':
-	
-						try {
+						throw new DBFException("Failed to parse Float: " + e.getMessage());
+					}
 
-							byte t_float[] = new byte[ this.header.fieldArray[i].getFieldLength()];
-							dataInputStream.read( t_float);
-							t_float = Utils.trimLeftSpaces( t_float);
-							if( t_float.length > 0 && !Utils.contains( t_float, (byte)'?')) {
+					break;
 
-								recordObjects[i] = new Float( new String( t_float));
-							}
-							else {
+				case 'N':
 
-								recordObjects[i] = null;
-							}
+					try {
+						byte t_numeric[] = new byte[this.header.fieldArray[i].getFieldLength()];
+						dataInputStream.read(t_numeric);
+						t_numeric = Utils.trimLeftSpaces(t_numeric);
+
+						if (t_numeric.length > 0 && !Utils.contains(t_numeric, (byte) '?')) {
+							recordObjects[i] = new Double(new String(t_numeric));
+						} else {
+
+							recordObjects[i] = null;
 						}
-						catch( NumberFormatException e) {
+					} catch (NumberFormatException e) {
 
-							throw new DBFException( "Failed to parse Float: " + e.getMessage());
-						}
+						throw new DBFException("Failed to parse Number: " + e.getMessage());
+					}
 
-						break;
-	
-					case 'N':
-	
-						try {
+					break;
 
-							byte t_numeric[] = new byte[ this.header.fieldArray[i].getFieldLength()];
-							dataInputStream.read( t_numeric);
-							t_numeric = Utils.trimLeftSpaces( t_numeric);
+				case 'L':
 
-							if( t_numeric.length > 0 && !Utils.contains( t_numeric, (byte)'?')) {
+					byte t_logical = dataInputStream.readByte();
+					if (t_logical == 'Y' || t_logical == 'y' || t_logical == 'T' || t_logical == 't') {
 
-								recordObjects[i] = new Double( new String( t_numeric));
-							}
-							else {
+						recordObjects[i] = Boolean.TRUE;
+					} else {
 
-								recordObjects[i] = null;
-							}
-						}
-						catch( NumberFormatException e) {
+						recordObjects[i] = Boolean.FALSE;
+					}
+					break;
 
-							throw new DBFException( "Failed to parse Number: " + e.getMessage());
-						}
-
-						break;
-	
-					case 'L':
-	
-						byte t_logical = dataInputStream.readByte();
-						if( t_logical == 'Y' || t_logical == 'y' || t_logical == 'T' || t_logical == 't') {
-	
-							recordObjects[i] = Boolean.TRUE;
-						}
-						else {
-	
-							recordObjects[i] = Boolean.FALSE;
-						}
-						break;
-	
-					case 'M':
-						// TODO Later for now we skipping this field, too
-					default:
-            skip(header.fieldArray[i].getFieldLength());
-						recordObjects[i] = "null";
+				case 'M':
+					// TODO Later for now we skipping this field, too
+				default:
+					skip(header.fieldArray[i].getFieldLength());
+					recordObjects[i] = "null";
 				}
 			}
-		}
-		catch( EOFException e) {
+		} catch (EOFException e) {
 
 			return null;
-		}
-		catch( IOException e) {
+		} catch (IOException e) {
 
-			throw new DBFException( e.getMessage());
+			throw new DBFException(e.getMessage());
 		}
 
 		return recordObjects;
 	}
-  
-  private void skip(long n) throws IOException {
-    for (; n > 0; n--)
-      dataInputStream.readByte();
-  }
-  
+
+	private void skip(long n) throws IOException {
+		for (int i = 0; i < n; i++) {
+			dataInputStream.readByte();
+		}
+	}
+
 }

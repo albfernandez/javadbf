@@ -20,7 +20,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package com.linuxense.javadbf;
-import java.io.*;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
 
 /*
 DBFField
@@ -37,12 +39,12 @@ DBFField
 */
 public class DBFField {
 
-	public static final byte FIELD_TYPE_C = (byte)'C';
-	public static final byte FIELD_TYPE_L = (byte)'L';
-	public static final byte FIELD_TYPE_N = (byte)'N';
-	public static final byte FIELD_TYPE_F = (byte)'F';
-	public static final byte FIELD_TYPE_D = (byte)'D';
-	public static final byte FIELD_TYPE_M = (byte)'M';
+	public static final byte FIELD_TYPE_C = (byte) 'C';
+	public static final byte FIELD_TYPE_L = (byte) 'L';
+	public static final byte FIELD_TYPE_N = (byte) 'N';
+	public static final byte FIELD_TYPE_F = (byte) 'F';
+	public static final byte FIELD_TYPE_D = (byte) 'D';
+	public static final byte FIELD_TYPE_M = (byte) 'M';
 
 	/* Field struct variables start here */
 	byte[] fieldName = new byte[ 11]; /* 0-10*/
@@ -71,39 +73,35 @@ public class DBFField {
 	@return Returns the created DBFField object.
 	@throws IOException If any stream reading problems occures.
 	*/
-	protected static DBFField createField( DataInput in) 
-	throws IOException {
+	protected static DBFField createField(DataInput in) throws IOException {
 
 		DBFField field = new DBFField();
 
 		byte t_byte = in.readByte(); /* 0 */
-		if( t_byte == (byte)0x0d) {
-
-			//System.out.println( "End of header found");
+		if (t_byte == (byte) 0x0d) {
+			// System.out.println( "End of header found");
 			return null;
 		}
 
-		in.readFully( field.fieldName, 1, 10);	/* 1-10 */
+		in.readFully(field.fieldName, 1, 10); /* 1-10 */
 		field.fieldName[0] = t_byte;
 
-		for( int i=0; i<field.fieldName.length; i++) {
-
-			if( field.fieldName[ i] == (byte)0) {
-
+		for (int i = 0; i < field.fieldName.length; i++) {
+			if (field.fieldName[i] == (byte) 0) {
 				field.nameNullIndex = i;
 				break;
 			}
 		}
 
 		field.dataType = in.readByte(); /* 11 */
-		field.reserv1 = Utils.readLittleEndianInt( in); /* 12-15 */
-		field.fieldLength = in.readUnsignedByte();  /* 16 */
+		field.reserv1 = Utils.readLittleEndianInt(in); /* 12-15 */
+		field.fieldLength = in.readUnsignedByte(); /* 16 */
 		field.decimalCount = in.readByte(); /* 17 */
-		field.reserv2 = Utils.readLittleEndianShort( in); /* 18-19 */
+		field.reserv2 = Utils.readLittleEndianShort(in); /* 18-19 */
 		field.workAreaId = in.readByte(); /* 20 */
-		field.reserv2 = Utils.readLittleEndianShort( in); /* 21-22 */
+		field.reserv2 = Utils.readLittleEndianShort(in); /* 21-22 */
 		field.setFieldsFlag = in.readByte(); /* 23 */
-		in.readFully( field.reserv4); /* 24-30 */
+		in.readFully(field.reserv4); /* 24-30 */
 		field.indexFieldFlag = in.readByte(); /* 31 */
 
 		return field;
@@ -116,26 +114,25 @@ public class DBFField {
 		@param out OutputStream
 		@throws IOException if any stream related issues occur.
 	*/
-	protected void write( DataOutput out)
-	throws IOException {
+	protected void write(DataOutput out) throws IOException {
 
-		//DataOutputStream out = new DataOutputStream( os);
+		// DataOutputStream out = new DataOutputStream( os);
 
 		// Field Name
-		out.write( fieldName);        /* 0-10 */
-		out.write( new byte[ 11 - fieldName.length]);
+		out.write(fieldName); /* 0-10 */
+		out.write(new byte[11 - fieldName.length]);
 
 		// data type
-		out.writeByte( dataType); /* 11 */
-		out.writeInt( 0x00);   /* 12-15 */
-		out.writeByte( fieldLength); /* 16 */
-		out.writeByte( decimalCount); /* 17 */
-		out.writeShort( (short)0x00); /* 18-19 */
-		out.writeByte( (byte)0x00); /* 20 */
-		out.writeShort( (short)0x00); /* 21-22 */
-		out.writeByte( (byte)0x00); /* 23 */
-		out.write( new byte[7]); /* 24-30*/
-		out.writeByte( (byte)0x00); /* 31 */
+		out.writeByte(dataType); /* 11 */
+		out.writeInt(0x00); /* 12-15 */
+		out.writeByte(fieldLength); /* 16 */
+		out.writeByte(decimalCount); /* 17 */
+		out.writeShort((short) 0x00); /* 18-19 */
+		out.writeByte((byte) 0x00); /* 20 */
+		out.writeShort((short) 0x00); /* 21-22 */
+		out.writeByte((byte) 0x00); /* 23 */
+		out.write(new byte[7]); /* 24-30 */
+		out.writeByte((byte) 0x00); /* 31 */
 	}
 
 	/**
@@ -144,8 +141,7 @@ public class DBFField {
 		@return Name of the field as String.
 	*/
 	public String getName() {
-
-		return new String( this.fieldName, 0, nameNullIndex);
+		return new String(this.fieldName, 0, nameNullIndex);
 	}
 
 	/**
@@ -154,7 +150,6 @@ public class DBFField {
 		@return Data type as byte.
 	*/
 	public byte getDataType() {
-
 		return dataType;
 	}
 
@@ -164,7 +159,6 @@ public class DBFField {
 		@return field length as int.
 	*/
 	public int getFieldLength() {
-
 		return fieldLength;
 	}
 
@@ -178,7 +172,6 @@ public class DBFField {
 		@return decimal field size as int.
 	*/
 	public int getDecimalCount() {
-
 		return decimalCount;
 	}
 
@@ -199,9 +192,9 @@ public class DBFField {
 	/**
 	 * @deprecated This method is depricated as of version 0.3.3.1 and is replaced by {@link #setName( String)}.
 	 */
-	public void setFieldName( String value) {
-
-		setName( value);
+	@Deprecated
+	public void setFieldName(String value) {
+		setName(value);
 	}
 
 	/**
@@ -210,16 +203,13 @@ public class DBFField {
 		@param name of the field as String.
 		@since 0.3.3.1
 	*/
-	public void setName( String name) {
-
-		if( name == null) {
-
-			throw new IllegalArgumentException( "Field name cannot be null");
+	public void setName(String name) {
+		if (name == null) {
+			throw new IllegalArgumentException("Field name cannot be null");
 		}
 
-		if( name.length() == 0 || name.length() > 10) {
-
-			throw new IllegalArgumentException( "Field name should be of length 0-10");
+		if (name.length() == 0 || name.length() > 10) {
+			throw new IllegalArgumentException("Field name should be of length 0-10");
 		}
 
 		this.fieldName = name.getBytes();
@@ -232,23 +222,23 @@ public class DBFField {
 		@param type of the field. One of the following:<br>
 		C, L, N, F, D, M
 	*/
-	public void setDataType( byte type) {
+	public void setDataType(byte type) {
 
-		switch( type) {
+		switch (type) {
 
-			case 'D':
-				this.fieldLength = 8; /* fall through */
-			case 'C':
-			case 'L':
-			case 'N':
-			case 'F':
-			case 'M':
+		case 'D':
+			this.fieldLength = 8; /* fall through */
+			//$FALL-THROUGH$
+		case 'C':
+		case 'L':
+		case 'N':
+		case 'F':
+		case 'M':
+			this.dataType = type;
+			break;
 
-				this.dataType = type;
-				break;
-
-			default:
-				throw new IllegalArgumentException( "Unknown data type");
+		default:
+			throw new IllegalArgumentException("Unknown data type");
 		}
 	}
 
@@ -258,18 +248,13 @@ public class DBFField {
 
 		@param length of the field as int.
 	*/
-	public void setFieldLength( int length) {
-
-		if( length <= 0) {
-
-			throw new IllegalArgumentException( "Field length should be a positive number");
+	public void setFieldLength(int length) {
+		if (length <= 0) {
+			throw new IllegalArgumentException("Field length should be a positive number");
 		}
-
-		if( this.dataType == FIELD_TYPE_D) {
-
-			throw new UnsupportedOperationException( "Cannot do this on a Date field");
+		if (this.dataType == FIELD_TYPE_D) {
+			throw new UnsupportedOperationException("Cannot do this on a Date field");
 		}
-
 		fieldLength = length;
 	}
 
@@ -280,19 +265,14 @@ public class DBFField {
 
 		@param size of the decimal field.
 	*/
-	public void setDecimalCount( int size) {
-
-		if( size < 0) {
-
-			throw new IllegalArgumentException( "Decimal length should be a positive number");
+	public void setDecimalCount(int size) {
+		if (size < 0) {
+			throw new IllegalArgumentException("Decimal length should be a positive number");
 		}
-
-		if( size > fieldLength) {
-
-			throw new IllegalArgumentException( "Decimal length should be less than field length");
+		if (size > fieldLength) {
+			throw new IllegalArgumentException("Decimal length should be less than field length");
 		}
-
-		decimalCount = (byte)size;
+		decimalCount = (byte) size;
 	}
 
 }

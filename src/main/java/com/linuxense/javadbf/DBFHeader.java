@@ -22,8 +22,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.linuxense.javadbf;
 
-import java.io.*;
-import java.util.*;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 /*	
 DBFHeader
@@ -58,8 +63,7 @@ class DBFHeader {
 	//byte[] databaseContainer; /* 263 bytes */
 	/* DBF structure ends here */
 
-	DBFHeader() {
-
+	protected DBFHeader() {
 		this.signature = SIG_DBASE_III;
 		this.terminator1 = 0x0D;
 	}
@@ -87,61 +91,56 @@ class DBFHeader {
 
 		List<DBFField> v_fields = new ArrayList<>();
 		
-		DBFField field = DBFField.createField( dataInput); /* 32 each */
-		while( field != null) {
-
+		DBFField field = DBFField.createField(dataInput); /* 32 each */
+		while (field != null) {
 			v_fields.add(field);
-			field = DBFField.createField( dataInput);
+			field = DBFField.createField(dataInput);
 		}
 
-		fieldArray = new DBFField[ v_fields.size()];
-		
-		for( int i=0; i<fieldArray.length; i++) {
-
-			fieldArray[ i] = v_fields.get( i);
-		}	
+		fieldArray = new DBFField[v_fields.size()];
+		for (int i = 0; i < fieldArray.length; i++) {
+			fieldArray[i] = v_fields.get(i);
+		}
 		//System.out.println( "Number of fields: " + fieldArray.length);
 
 	}
 
-	void write( DataOutput dataOutput) throws IOException {
-
-		dataOutput.writeByte( signature);                       /* 0 */
+	void write(DataOutput dataOutput) throws IOException {
+		dataOutput.writeByte(signature); /* 0 */
 
 		GregorianCalendar calendar = new GregorianCalendar();
-		year = (byte)( calendar.get( Calendar.YEAR) - 1900);
-		month = (byte)( calendar.get( Calendar.MONTH)+1);
-		day = (byte)( calendar.get( Calendar.DAY_OF_MONTH));
+		year = (byte) (calendar.get(Calendar.YEAR) - 1900);
+		month = (byte) (calendar.get(Calendar.MONTH) + 1);
+		day = (byte) (calendar.get(Calendar.DAY_OF_MONTH));
 
-		dataOutput.writeByte( year);  /* 1 */
-		dataOutput.writeByte( month); /* 2 */
-		dataOutput.writeByte( day);   /* 3 */
+		dataOutput.writeByte(year); /* 1 */
+		dataOutput.writeByte(month); /* 2 */
+		dataOutput.writeByte(day); /* 3 */
 
-		//System.out.println( "Number of records in O/S: " + numberOfRecords);
-		numberOfRecords = Utils.littleEndian( numberOfRecords);
-		dataOutput.writeInt( numberOfRecords); /* 4-7 */
+		// System.out.println( "Number of records in O/S: " + numberOfRecords);
+		numberOfRecords = Utils.littleEndian(numberOfRecords);
+		dataOutput.writeInt(numberOfRecords); /* 4-7 */
 
 		headerLength = findHeaderLength();
-		dataOutput.writeShort( Utils.littleEndian( headerLength)); /* 8-9 */
+		dataOutput.writeShort(Utils.littleEndian(headerLength)); /* 8-9 */
 
-		recordLength = sumUpLenghtOfFields(); 
-		dataOutput.writeShort( Utils.littleEndian( recordLength)); /* 10-11 */
+		recordLength = sumUpLenghtOfFields();
+		dataOutput.writeShort(Utils.littleEndian(recordLength)); /* 10-11 */
 
-		dataOutput.writeShort( Utils.littleEndian( reserv1)); /* 12-13 */
-		dataOutput.writeByte( incompleteTransaction); /* 14 */
-		dataOutput.writeByte( encryptionFlag); /* 15 */
-		dataOutput.writeInt( Utils.littleEndian( freeRecordThread));/* 16-19 */
-		dataOutput.writeInt( Utils.littleEndian( reserv2)); /* 20-23 */
-		dataOutput.writeInt( Utils.littleEndian( reserv3)); /* 24-27 */
+		dataOutput.writeShort(Utils.littleEndian(reserv1)); /* 12-13 */
+		dataOutput.writeByte(incompleteTransaction); /* 14 */
+		dataOutput.writeByte(encryptionFlag); /* 15 */
+		dataOutput.writeInt(Utils.littleEndian(freeRecordThread));/* 16-19 */
+		dataOutput.writeInt(Utils.littleEndian(reserv2)); /* 20-23 */
+		dataOutput.writeInt(Utils.littleEndian(reserv3)); /* 24-27 */
 
-		dataOutput.writeByte( mdxFlag); /* 28 */
-		dataOutput.writeByte( languageDriver); /* 29 */
-		dataOutput.writeShort( Utils.littleEndian( reserv4)); /* 30-31 */
-    for (DBFField field : fieldArray) {
-      field.write(dataOutput);
-    }
-
-		dataOutput.writeByte( terminator1); /* n+1 */
+		dataOutput.writeByte(mdxFlag); /* 28 */
+		dataOutput.writeByte(languageDriver); /* 29 */
+		dataOutput.writeShort(Utils.littleEndian(reserv4)); /* 30-31 */
+		for (DBFField field : fieldArray) {
+			field.write(dataOutput);
+		}
+		dataOutput.writeByte(terminator1); /* n+1 */
 	}
 
 	private short findHeaderLength() {
@@ -168,9 +167,9 @@ class DBFHeader {
 
 	private short sumUpLenghtOfFields() {
 		int sum = 0;
-    for (DBFField field : fieldArray)
-      sum += field.getFieldLength();
-
-		return (short)(sum + 1);
+		for (DBFField field : fieldArray) {
+			sum += field.getFieldLength();
+		}
+		return (short) (sum + 1);
 	}
 }
