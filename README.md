@@ -31,7 +31,7 @@ JavaDBF comes in the package com.linuxense.javadbf. Import that package in your 
 
 In version 0.3.2, JavaDBF supports almost all XBase data types except Memo field. While reading, those types are interpretted as appropriate Java types. Following table shows the mapping scheme.
 
-<<<<<<< HEAD
+
 |XBase Type | XBase Symbol | Java Type used in JavaDBF |
 |---------- | ------------ | ---------------------------
 |Character  | C            | java.lang.String          |
@@ -39,15 +39,7 @@ In version 0.3.2, JavaDBF supports almost all XBase data types except Memo field
 |Double     | F            | lava.lang.Double          |
 |Logical    | L            | java.lang.Boolean         |
 |Date       | D            | java.util.Date            |
-=======
-XBase Type | XBase Symbol | Java Type used in JavaDBF
------- | ----- | -----
-Character | C | java.lang.String
-Numeric | N | java.lang.Double
-Double | F | lava.lang.Double
-Logical | L | java.lang.Boolean
-Date | D | java.util.Date
->>>>>>> branch 'master' of https://github.com/albfernandez/javadbf.git
+
 
 #Reading a DBF File
 
