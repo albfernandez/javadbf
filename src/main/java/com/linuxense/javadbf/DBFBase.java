@@ -1,17 +1,34 @@
 /*
-	$Id: DBFBase.java,v 1.3 2004-03-31 15:59:40 anil Exp $
-	Serves as the base class of DBFReader adn DBFWriter.
-	
-	@author: anil@linuxense.com
 
-	Support for choosing implemented character Sets as 
-	suggested by Nick Voznesensky <darkers@mail.ru>
+(C) Copyright 2015 Alberto Fernández <infjaf@gmail.com>
+(C) Copyright 2004 Anil Kumar K <anil@linuxense.com>
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 3.0 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+
 */
-/**
-	Base class for DBFReader and DBFWriter.
-*/
+
 package com.linuxense.javadbf;
 
+/*
+Serves as the base class of DBFReader adn DBFWriter.
+
+Support for choosing implemented character Sets as 
+suggested by Nick Voznesensky <darkers@mail.ru>
+*/
+/**
+Base class for DBFReader and DBFWriter.
+*/
 public abstract class DBFBase {
 
 	protected String characterSetName = "8859_1";

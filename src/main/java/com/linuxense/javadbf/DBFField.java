@@ -1,17 +1,32 @@
 /*
-  DBFField
-	Class represents a "field" (or column) definition of a DBF data structure.
 
-  This file is part of JavaDBF packege.
+(C) Copyright 2015 Alberto Fernández <infjaf@gmail.com>
+(C) Copyright 2014 Jan Schlößin
+(C) Copyright 2003-2004 Anil Kumar K <anil@linuxense.com>
 
-  author: anil@linuxense.com
-  license: LGPL (http://www.gnu.org/copyleft/lesser.html)
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 3.0 of the License, or (at your option) any later version.
 
-  $Id: DBFField.java,v 1.7 2004-03-31 10:50:11 anil Exp $
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+
 */
 
 package com.linuxense.javadbf;
 import java.io.*;
+
+/*
+DBFField
+	Class represents a "field" (or column) definition of a DBF data structure.
+
+*/
 
 /**
 	DBFField represents a field specification in an dbf file.

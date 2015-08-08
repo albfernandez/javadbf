@@ -1,19 +1,34 @@
 /*
-	DBFWriter
-	Class for defining a DBF structure and addin data to that structure and 
-	finally writing it to an OutputStream.
 
-	This file is part of JavaDBF packege.
+(C) Copyright 2015 Alberto Fernández <infjaf@gmail.com>
+(C) Copyright 2014 Jan Schlößin
+(C) Copyright 2003-2004 Anil Kumar K <anil@linuxense.com>
 
-	author: anil@linuxense.com
-	license: LGPL (http://www.gnu.org/copyleft/lesser.html)
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 3.0 of the License, or (at your option) any later version.
 
-	$Id: DBFWriter.java,v 1.11 2004-07-19 08:57:31 anil Exp $
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+
 */
+
 package com.linuxense.javadbf;
 import java.io.*;
 import java.util.*;
 
+/*
+DBFWriter
+Class for defining a DBF structure and addin data to that structure and 
+finally writing it to an OutputStream.
+
+*/
 /**
 	An object of this class can create a DBF file.
 
