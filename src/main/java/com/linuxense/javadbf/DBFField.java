@@ -39,16 +39,22 @@ DBFField
 */
 public class DBFField {
 
+	@Deprecated
 	public static final byte FIELD_TYPE_C = (byte) 'C';
+	@Deprecated
 	public static final byte FIELD_TYPE_L = (byte) 'L';
+	@Deprecated
 	public static final byte FIELD_TYPE_N = (byte) 'N';
+	@Deprecated
 	public static final byte FIELD_TYPE_F = (byte) 'F';
+	@Deprecated
 	public static final byte FIELD_TYPE_D = (byte) 'D';
+	@Deprecated
 	public static final byte FIELD_TYPE_M = (byte) 'M';
 
 	/* Field struct variables start here */
 	byte[] fieldName = new byte[ 11]; /* 0-10*/
-	byte dataType;                    /* 11 */
+	DBFDataType type;                    /* 11 */
 	int reserv1;                      /* 12-15 */
 	int fieldLength;                 /* 16 */
 	byte decimalCount;                /* 17 */
@@ -60,8 +66,9 @@ public class DBFField {
 	byte indexFieldFlag;              /* 31 */
 	/* Field struct variables end here */
 
-	/* other class variables */
-	int nameNullIndex = 0;
+
+
+	private String name;
 	
 	public DBFField() {
 		super();
@@ -89,15 +96,20 @@ public class DBFField {
 
 		in.readFully(field.fieldName, 1, 10); /* 1-10 */
 		field.fieldName[0] = t_byte;
-
+		int nameNullIndex = 0;
 		for (int i = 0; i < field.fieldName.length; i++) {
 			if (field.fieldName[i] == (byte) 0) {
-				field.nameNullIndex = i;
+				nameNullIndex = i;
 				break;
 			}
 		}
-
-		field.dataType = in.readByte(); /* 11 */
+		field.name = new String(field.fieldName, 0, nameNullIndex);
+		try {
+			field.type = DBFDataType.fromCode(in.readByte()); /* 11 */
+		}
+		catch (Exception e) {
+			field.type = DBFDataType.UNKNOWN;
+		}
 		field.reserv1 = Utils.readLittleEndianInt(in); /* 12-15 */
 		field.fieldLength = in.readUnsignedByte(); /* 16 */
 		field.decimalCount = in.readByte(); /* 17 */
@@ -123,11 +135,11 @@ public class DBFField {
 		// DataOutputStream out = new DataOutputStream( os);
 
 		// Field Name
-		out.write(fieldName); /* 0-10 */
-		out.write(new byte[11 - fieldName.length]);
+		out.write(name.getBytes()); /* 0-10 */
+		out.write(new byte[11 - name.length()]);
 
 		// data type
-		out.writeByte(dataType); /* 11 */
+		out.writeByte(type.getCode()); /* 11 */
 		out.writeInt(0x00); /* 12-15 */
 		out.writeByte(fieldLength); /* 16 */
 		out.writeByte(decimalCount); /* 17 */
@@ -145,7 +157,7 @@ public class DBFField {
 		@return Name of the field as String.
 	*/
 	public String getName() {
-		return new String(this.fieldName, 0, nameNullIndex);
+		return this.name;
 	}
 
 	/**
@@ -153,8 +165,12 @@ public class DBFField {
 
 		@return Data type as byte.
 	*/
+	@Deprecated
 	public byte getDataType() {
-		return dataType;
+		if (this.type != null) {
+			return this.type.getCode();
+		}
+		return 0;
 	}
 
 	/**
@@ -215,35 +231,28 @@ public class DBFField {
 		if (name.length() == 0 || name.length() > 10) {
 			throw new IllegalArgumentException("Field name should be of length 0-10");
 		}
-
+		if (!Utils.isPureAscii(name)) {
+			throw new IllegalArgumentException("Field name must be ASCII");
+		}
+		this.name = name;
 		this.fieldName = name.getBytes();
-		this.nameNullIndex = this.fieldName.length;
+
 	}
 
+
+
+		
+
+	
 	/**
 		Sets the data type of the field.
 
 		@param type of the field. One of the following:<br>
 		C, L, N, F, D, M
 	*/
+	@Deprecated
 	public void setDataType(byte type) {
-
-		switch (type) {
-
-		case 'D':
-			this.fieldLength = 8; /* fall through */
-			//$FALL-THROUGH$
-		case 'C':
-		case 'L':
-		case 'N':
-		case 'F':
-		case 'M':
-			this.dataType = type;
-			break;
-
-		default:
-			throw new IllegalArgumentException("Unknown data type");
-		}
+		setType(DBFDataType.fromCode(type));
 	}
 
 	/**
@@ -253,13 +262,26 @@ public class DBFField {
 		@param length of the field as int.
 	*/
 	public void setFieldLength(int length) {
+		if (this.type == DBFDataType.DATE) {
+			throw new UnsupportedOperationException("Cannot do this on a Date field");
+		}
 		if (length <= 0) {
 			throw new IllegalArgumentException("Field length should be a positive number");
 		}
-		if (this.dataType == FIELD_TYPE_D) {
-			throw new UnsupportedOperationException("Cannot do this on a Date field");
-		}
-		fieldLength = length;
+		this.fieldLength = length;
+	}
+	
+	
+
+	public DBFDataType getType() {
+		return type;
+	}
+
+	public void setType(DBFDataType type) {
+		if (type == DBFDataType.DATE) {
+			this.fieldLength = 8;
+		}		
+		this.type = type;		
 	}
 
 	/**

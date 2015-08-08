@@ -142,44 +142,44 @@ public class DBFWriter extends DBFBase {
 		}
 
 		for (int i = 0; i < this.header.fieldArray.length; i++) {
+			Object value = values[i];
 			if (values[i] == null) {
 				continue;
 			}
 
-			switch (this.header.fieldArray[i].getDataType()) {
+			switch (this.header.fieldArray[i].getType()) {
 
-			case 'C':
-				if (!(values[i] instanceof String)) {
+			case CHARACTER:
+				if (!(value instanceof String)) {
 					throw new DBFException("Invalid value for field " + i);
 				}
 				break;
 
-			case 'L':
-				if (!(values[i] instanceof Boolean)) {
+			case LOGICAL:
+				if (!(value instanceof Boolean)) {
 					throw new DBFException("Invalid value for field " + i);
 				}
 				break;
 
-			case 'N':
-				if (!(values[i] instanceof Double)) {
+			case NUMERIC:
+				if (!(value instanceof Double)) {
 					throw new DBFException("Invalid value for field " + i);
 				}
 				break;
 
-			case 'D':
-				if (!(values[i] instanceof Date)) {
+			case DATE:
+				if (!(value instanceof Date)) {
 					throw new DBFException("Invalid value for field " + i);
 				}
 				break;
 
-			case 'F':
-				if (!(values[i] instanceof Double)) {
-
+			case FLOATING_POINT:
+				if (!(value instanceof Double)) {
 					throw new DBFException("Invalid value for field " + i);
 				}
 				break;
 			default:
-				throw new DBFException("Unknown field type " + i + " " + this.header.fieldArray[i].getDataType());
+				throw new DBFException("Unknown field type " + i + " " + this.header.fieldArray[i].getType());
 			}
 			
 		}
@@ -237,9 +237,9 @@ public class DBFWriter extends DBFBase {
 		dataOutput.write((byte) ' ');
 		for (int j = 0; j < this.header.fieldArray.length; j++) {
 			/* iterate throught fields */
-			switch (this.header.fieldArray[j].getDataType()) {
+			switch (this.header.fieldArray[j].getType()) {
 
-			case 'C':
+			case CHARACTER:
 				if (objectArray[j] != null) {
 					String str_value = objectArray[j].toString();
 					dataOutput.write(Utils.textPadding(str_value, characterSetName,
@@ -251,7 +251,7 @@ public class DBFWriter extends DBFBase {
 
 				break;
 
-			case 'D':
+			case DATE:
 				if (objectArray[j] != null) {
 					GregorianCalendar calendar = new GregorianCalendar();
 					calendar.setTime( (Date)objectArray[j]);
@@ -264,7 +264,7 @@ public class DBFWriter extends DBFBase {
 
 				break;
 
-			case 'F':
+			case FLOATING_POINT:
 
 				if (objectArray[j] != null) {
 					dataOutput.write(Utils.doubleFormating((Double) objectArray[j], this.characterSetName,
@@ -276,7 +276,7 @@ public class DBFWriter extends DBFBase {
 
 				break;
 
-			case 'N':
+			case NUMERIC:
 
 				if (objectArray[j] != null) {
 					dataOutput.write(Utils.doubleFormating((Double) objectArray[j], this.characterSetName,
@@ -287,7 +287,7 @@ public class DBFWriter extends DBFBase {
 				}
 
 				break;
-			case 'L':
+			case LOGICAL:
 
 				if (objectArray[j] != null) {
 					if ((Boolean) objectArray[j] == Boolean.TRUE) {
@@ -301,12 +301,11 @@ public class DBFWriter extends DBFBase {
 
 				break;
 
-			case 'M':
+			case MEMO:
 
 				break;
-
 			default:
-				throw new DBFException("Unknown field type " + this.header.fieldArray[j].getDataType());
+				throw new DBFException("Unknown field type " + this.header.fieldArray[j].getType());
 			}
 		}
 	}

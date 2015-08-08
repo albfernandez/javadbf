@@ -182,14 +182,14 @@ public class DBFReader extends DBFBase {
 			} while (isDeleted);
 	
 			for (int i = 0; i < this.header.fieldArray.length; i++) {
-				switch (this.header.fieldArray[i].getDataType()) {
-				case 'C':
+				switch (this.header.fieldArray[i].getType()) {
+				case CHARACTER:
 					byte b_array[] = new byte[this.header.fieldArray[i].getFieldLength()];
 					dataInputStream.read(b_array);
 					recordObjects[i] = new String(b_array, getCharactersetName());
 					break;
 	
-				case 'D':
+				case DATE:
 
 					byte t_byte_year[] = new byte[4];
 					dataInputStream.read(t_byte_year);
@@ -217,7 +217,7 @@ public class DBFReader extends DBFBase {
 
 					break;
 
-				case 'F':
+				case FLOATING_POINT:
 					try {
 						byte t_float[] = new byte[this.header.fieldArray[i].getFieldLength()];
 						dataInputStream.read(t_float);
@@ -233,7 +233,7 @@ public class DBFReader extends DBFBase {
 
 					break;
 
-				case 'N':
+				case NUMERIC:
 
 					try {
 						byte t_numeric[] = new byte[this.header.fieldArray[i].getFieldLength()];
@@ -250,7 +250,7 @@ public class DBFReader extends DBFBase {
 
 					break;
 
-				case 'L':
+				case LOGICAL:
 
 					byte t_logical = dataInputStream.readByte();
 					if (t_logical == 'Y' || t_logical == 'y' || t_logical == 'T' || t_logical == 't') {
@@ -259,7 +259,7 @@ public class DBFReader extends DBFBase {
 						recordObjects[i] = Boolean.FALSE;
 					}
 					break;
-				case 'M':
+				case MEMO:
 					// TODO Later for now we skipping this field, too
 				default:
 					skip(header.fieldArray[i].getFieldLength());

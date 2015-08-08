@@ -24,6 +24,8 @@ package com.linuxense.javadbf;
 import java.io.DataInput;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
@@ -46,7 +48,9 @@ public final class Utils {
 
 	public static final int ALIGN_LEFT = 10;
 	public static final int ALIGN_RIGHT = 12;
-	
+	private static CharsetEncoder asciiEncoder = Charset.forName("US-ASCII").newEncoder(); 
+
+
 	private Utils() {
 		throw new AssertionError("No instances allowed");
 	}
@@ -172,5 +176,9 @@ public final class Utils {
 			}
 		}
 		return false;		
+	}
+
+	public static boolean isPureAscii(String v) {
+		return asciiEncoder.canEncode(v);
 	}
 }

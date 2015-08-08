@@ -37,6 +37,11 @@ public class SimpleTest {
 	}
 	
 	@Test
+	public void testReadProvinciasES() throws DBFException, IOException {
+		testReadDBFFile("provincias_es", 5, 52);
+	}
+	
+	@Test
 	public void testWriteAndReadAgain() throws DBFException, IOException {
 		 // let us create field definitions first
 		// we will go for 3 fields
@@ -45,17 +50,17 @@ public class SimpleTest {
 
 		fields[0] = new DBFField();
 		fields[0].setName("emp_code");
-		fields[0].setDataType(DBFField.FIELD_TYPE_C);
+		fields[0].setType(DBFDataType.CHARACTER);
 		fields[0].setFieldLength(10);
 
 		fields[1] = new DBFField();
 		fields[1].setName("emp_name");
-		fields[1].setDataType(DBFField.FIELD_TYPE_C);
+		fields[1].setType(DBFDataType.CHARACTER);
 		fields[1].setFieldLength(20);
 
 		fields[2] = new DBFField();
 		fields[2].setName("salary");
-		fields[2].setDataType(DBFField.FIELD_TYPE_N);
+		fields[2].setType(DBFDataType.NUMERIC);
 		fields[2].setFieldLength(12);
 		fields[2].setDecimalCount(2);
 
