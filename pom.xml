@@ -3,10 +3,17 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>javadbf</groupId>
 	<artifactId>javadbf</artifactId>
-	<version>0.4.1</version>
+	<version>0.5.0</version>
 	<url>https://github.com/albfernandez/javadbf</url>
 
-
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
