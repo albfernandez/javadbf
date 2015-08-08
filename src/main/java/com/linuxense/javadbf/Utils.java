@@ -149,6 +149,11 @@ public final class Utils {
 		return byte_array;
 	}
 
+	public static byte[] doubleFormating(Number num, String characterSetName, int fieldLength, int sizeDecimalPart)
+			throws java.io.UnsupportedEncodingException {
+		return doubleFormating(num.doubleValue(), characterSetName, fieldLength, sizeDecimalPart);
+	}
+	
 	public static byte[] doubleFormating(Double doubleNum, String characterSetName, int fieldLength, int sizeDecimalPart)
 			throws java.io.UnsupportedEncodingException {
 		int sizeWholePart = fieldLength - (sizeDecimalPart > 0 ? (sizeDecimalPart + 1) : 0);

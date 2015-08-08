@@ -162,7 +162,7 @@ public class DBFWriter extends DBFBase {
 				break;
 
 			case NUMERIC:
-				if (!(value instanceof Double)) {
+				if (!(value instanceof Number)) {
 					throw new DBFException("Invalid value for field " + i);
 				}
 				break;
@@ -174,7 +174,7 @@ public class DBFWriter extends DBFBase {
 				break;
 
 			case FLOATING_POINT:
-				if (!(value instanceof Double)) {
+				if (!(value instanceof Number)) {
 					throw new DBFException("Invalid value for field " + i);
 				}
 				break;
@@ -267,7 +267,7 @@ public class DBFWriter extends DBFBase {
 			case FLOATING_POINT:
 
 				if (objectArray[j] != null) {
-					dataOutput.write(Utils.doubleFormating((Double) objectArray[j], this.characterSetName,
+					dataOutput.write(Utils.doubleFormating((Number) objectArray[j], this.characterSetName,
 							this.header.fieldArray[j].getFieldLength(), this.header.fieldArray[j].getDecimalCount()));
 				} else {
 					dataOutput.write(Utils.textPadding(" ", this.characterSetName,
@@ -279,7 +279,7 @@ public class DBFWriter extends DBFBase {
 			case NUMERIC:
 
 				if (objectArray[j] != null) {
-					dataOutput.write(Utils.doubleFormating((Double) objectArray[j], this.characterSetName,
+					dataOutput.write(Utils.doubleFormating((Number) objectArray[j], this.characterSetName,
 							this.header.fieldArray[j].getFieldLength(), this.header.fieldArray[j].getDecimalCount()));
 				} else {
 					dataOutput.write(Utils.textPadding(" ", this.characterSetName,
