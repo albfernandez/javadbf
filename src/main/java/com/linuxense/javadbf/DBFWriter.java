@@ -183,7 +183,10 @@ public class DBFWriter extends DBFBase {
 					throw new DBFException("Invalid value for field " + i);
 				}
 				break;
+			default:
+				throw new DBFException("Unknown field type " + i + " " + this.header.fieldArray[i].getDataType());
 			}
+			
 		}
 
 		if (this.raf == null) {

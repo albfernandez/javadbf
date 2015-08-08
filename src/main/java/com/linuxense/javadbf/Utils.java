@@ -129,15 +129,15 @@ public final class Utils {
 		Arrays.fill(byte_array, paddingByte);
 
 		switch (alignment) {
-
-		case ALIGN_LEFT:
-			System.arraycopy(text.getBytes(characterSetName), 0, byte_array, 0, text.length());
-			break;
-
 		case ALIGN_RIGHT:
 			int t_offset = length - text.length();
 			System.arraycopy(text.getBytes(characterSetName), 0, byte_array, t_offset, text.length());
 			break;
+		case ALIGN_LEFT:
+		default:
+			System.arraycopy(text.getBytes(characterSetName), 0, byte_array, 0, text.length());
+			break;
+			
 		}
 
 		return byte_array;
