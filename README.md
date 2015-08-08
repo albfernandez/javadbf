@@ -153,12 +153,12 @@ public class DBFWriterTest {
     fields[0].setFieldLength( 10);
 
     fields[1] = new DBFField();
-    fields[1].setField( "emp_name");
+    fields[1].setName( "emp_name");
     fields[1].setDataType( DBFField.FIELD_TYPE_C);
     fields[1].setFieldLength( 20);
 
     fields[2] = new DBFField();
-    fields[2].setField( "salary");
+    fields[2].setName( "salary");
     fields[2].setDataType( DBFField.FIELD_TYPE_N);
     fields[2].setFieldLength( 12);
     fields[2].setDecimalCount( 2);
