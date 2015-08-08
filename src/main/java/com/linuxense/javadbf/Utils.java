@@ -25,7 +25,9 @@ import java.io.DataInput;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Arrays;
+import java.util.Locale;
 /*
 	Utils
 Class for contining utility functions.
@@ -158,7 +160,8 @@ public final class Utils {
 			}
 		}
 
-		DecimalFormat df = new DecimalFormat(format.toString());
+		DecimalFormat df = (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
+		df.applyPattern(format.toString());
 		return textPadding(df.format(doubleNum.doubleValue()).toString(), characterSetName, fieldLength, ALIGN_RIGHT);
 	}
 
