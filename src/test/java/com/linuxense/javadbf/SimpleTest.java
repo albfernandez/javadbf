@@ -2,10 +2,7 @@ package com.linuxense.javadbf;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,17 +11,17 @@ public class SimpleTest {
 
 	@Test
 	public void testReadContinents() throws DBFException, IOException {
-		testReadDBFFile("continents", 1, 7);
+		ReadDBFAssert.testReadDBFFile("continents", 1, 7);
 	}
 	
 	@Test
 	public void testReadBooks() throws DBFException, IOException {
-		testReadDBFFile("books", 11, 10);
+		ReadDBFAssert.testReadDBFFile("books", 11, 10);
 	}
 	
 	@Test
 	public void testReadCountries() throws DBFException, IOException {
-		testReadDBFFile("countries", 29, 177);
+		ReadDBFAssert.testReadDBFFile("countries", 29, 177);
 	}
 	/**
 	 * Open a file generated with javadbf
@@ -33,12 +30,12 @@ public class SimpleTest {
 	 */
 	@Test
 	public void testReadJavaDbf() throws DBFException, IOException {
-		testReadDBFFile("javadbf", 3, 3);
+		ReadDBFAssert.testReadDBFFile("javadbf", 3, 3);
 	}
 	
 	@Test
 	public void testReadProvinciasES() throws DBFException, IOException {
-		testReadDBFFile("provincias_es", 5, 52);
+		ReadDBFAssert.testReadDBFFile("provincias_es", 5, 52);
 	}
 	
 	@Test
@@ -107,7 +104,7 @@ public class SimpleTest {
 		ByteArrayInputStream bis = null;
 		try {
 			bis = new ByteArrayInputStream(data);
-			testReadDBFFile(bis, 3, 3);
+			ReadDBFAssert.testReadDBFFile(bis, 3, 3);
 		}
 		finally {
 			if (bis != null) {
@@ -117,36 +114,5 @@ public class SimpleTest {
 		
 	}
 
-	private void testReadDBFFile(String fileName, int columns, int rows) throws DBFException, IOException {
-		testReadDBFFile(new File("src/test/resources/" + fileName + ".dbf"), columns, rows);
-	}
 
-	private void testReadDBFFile(File file, int columns, int rows) throws DBFException, IOException {
-		InputStream inputStream = null;
-		try {
-			inputStream = new FileInputStream(file);
-			testReadDBFFile(inputStream, columns, rows);
-		} finally {
-			inputStream.close();
-		}
-
-	}
-
-	private void testReadDBFFile(InputStream inputStream, int columns, int rows) throws DBFException {
-		DBFReader reader = new DBFReader(inputStream);
-
-		int numberOfFields = reader.getFieldCount();
-		Assert.assertEquals(columns, numberOfFields);
-		for (int i = 0; i < numberOfFields; i++) {
-			DBFField field = reader.getField(i);
-			Assert.assertNotNull(field.getName());
-		}
-		Object[] rowObject;
-		int countedRows = 0;
-		while ((rowObject = reader.nextRecord()) != null) {
-			Assert.assertEquals(numberOfFields, rowObject.length);
-			countedRows++;
-		}
-		Assert.assertEquals(rows, countedRows);
-	}
 }
