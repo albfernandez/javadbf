@@ -83,8 +83,8 @@ public class DBFWriter extends DBFBase {
 				return;
 			}
 
-			header = new DBFHeader();
-			this.header.read(raf);
+			this.header = new DBFHeader();
+			this.header.read(this.raf);
 
 			/* position file pointer at the end of the raf */
 			this.raf.seek(this.raf.length() - 1); //to ignore the END_OF_DATA byte at EoF												 
@@ -185,7 +185,7 @@ public class DBFWriter extends DBFBase {
 		}
 
 		if (this.raf == null) {
-			v_records.add(values);
+			this.v_records.add(values);
 		} else {
 			try {
 				writeRecord(this.raf, values);
@@ -203,11 +203,11 @@ public class DBFWriter extends DBFBase {
 		try {
 			if( this.raf == null) {
 				DataOutputStream outStream = new DataOutputStream( out);
-				this.header.numberOfRecords = v_records.size();
+				this.header.numberOfRecords = this.v_records.size();
 				this.header.write( outStream);
 
 				/* Now write all the records */
-				for (Object[] record: v_records) {
+				for (Object[] record: this.v_records) {
 					writeRecord(outStream, record);
 				}
 
@@ -219,7 +219,7 @@ public class DBFWriter extends DBFBase {
 				this.header.numberOfRecords = this.recordCount;
 				this.raf.seek( 0);
 				this.header.write( this.raf);
-				this.raf.seek( raf.length());
+				this.raf.seek( this.raf.length());
 				this.raf.writeByte( END_OF_DATA);
 				this.raf.close();
 			}
@@ -242,7 +242,7 @@ public class DBFWriter extends DBFBase {
 			case CHARACTER:
 				if (objectArray[j] != null) {
 					String str_value = objectArray[j].toString();
-					dataOutput.write(Utils.textPadding(str_value, characterSetName,
+					dataOutput.write(Utils.textPadding(str_value, this.characterSetName,
 							this.header.fieldArray[j].getFieldLength()));
 				} else {
 					dataOutput.write(Utils.textPadding("", this.characterSetName,

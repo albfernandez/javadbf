@@ -134,14 +134,14 @@ public class DBFField {
 		// DataOutputStream out = new DataOutputStream( os);
 
 		// Field Name
-		out.write(name.getBytes()); /* 0-10 */
-		out.write(new byte[11 - name.length()]);
+		out.write(this.name.getBytes()); /* 0-10 */
+		out.write(new byte[11 - this.name.length()]);
 
 		// data type
-		out.writeByte(type.getCode()); /* 11 */
+		out.writeByte(this.type.getCode()); /* 11 */
 		out.writeInt(0x00); /* 12-15 */
-		out.writeByte(fieldLength); /* 16 */
-		out.writeByte(decimalCount); /* 17 */
+		out.writeByte(this.fieldLength); /* 16 */
+		out.writeByte(this.decimalCount); /* 17 */
 		out.writeShort((short) 0x00); /* 18-19 */
 		out.writeByte((byte) 0x00); /* 20 */
 		out.writeShort((short) 0x00); /* 21-22 */
@@ -178,7 +178,7 @@ public class DBFField {
 		@return field length as int.
 	*/
 	public int getFieldLength() {
-		return fieldLength;
+		return this.fieldLength;
 	}
 
 	/**
@@ -191,7 +191,7 @@ public class DBFField {
 		@return decimal field size as int.
 	*/
 	public int getDecimalCount() {
-		return decimalCount;
+		return this.decimalCount;
 	}
 
 	// Setter methods
@@ -271,7 +271,7 @@ public class DBFField {
 	
 
 	public DBFDataType getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(DBFDataType type) {
@@ -295,10 +295,10 @@ public class DBFField {
 		if (size < 0) {
 			throw new IllegalArgumentException("Decimal length should be a positive number");
 		}
-		if (size > fieldLength) {
+		if (size > this.fieldLength) {
 			throw new IllegalArgumentException("Decimal length should be less than field length");
 		}
-		decimalCount = (byte) size;
+		this.decimalCount = (byte) size;
 	}
 
 }

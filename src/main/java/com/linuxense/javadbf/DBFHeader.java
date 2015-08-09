@@ -70,24 +70,24 @@ class DBFHeader {
 	
 	void read( DataInput dataInput) throws IOException {
 
-		signature = dataInput.readByte(); /* 0 */
-		year = dataInput.readByte();      /* 1 */
-		month = dataInput.readByte();     /* 2 */
-		day = dataInput.readByte();       /* 3 */
-		numberOfRecords = Utils.readLittleEndianInt( dataInput); /* 4-7 */
+		this.signature = dataInput.readByte(); /* 0 */
+		this.year = dataInput.readByte();      /* 1 */
+		this.month = dataInput.readByte();     /* 2 */
+		this.day = dataInput.readByte();       /* 3 */
+		this.numberOfRecords = Utils.readLittleEndianInt( dataInput); /* 4-7 */
 
-		headerLength = Utils.readLittleEndianShort( dataInput); /* 8-9 */
-		recordLength = Utils.readLittleEndianShort( dataInput); /* 10-11 */
+		this.headerLength = Utils.readLittleEndianShort( dataInput); /* 8-9 */
+		this.recordLength = Utils.readLittleEndianShort( dataInput); /* 10-11 */
 
-		reserv1 = Utils.readLittleEndianShort( dataInput);      /* 12-13 */
-		incompleteTransaction = dataInput.readByte();           /* 14 */
-		encryptionFlag = dataInput.readByte();                  /* 15 */
-		freeRecordThread = Utils.readLittleEndianInt( dataInput); /* 16-19 */
-		reserv2 = dataInput.readInt();                            /* 20-23 */
-		reserv3 = dataInput.readInt();                            /* 24-27 */
-		mdxFlag = dataInput.readByte();                           /* 28 */
-		languageDriver = dataInput.readByte();                    /* 29 */
-		reserv4 = Utils.readLittleEndianShort( dataInput);        /* 30-31 */
+		this.reserv1 = Utils.readLittleEndianShort( dataInput);      /* 12-13 */
+		this.incompleteTransaction = dataInput.readByte();           /* 14 */
+		this.encryptionFlag = dataInput.readByte();                  /* 15 */
+		this.freeRecordThread = Utils.readLittleEndianInt( dataInput); /* 16-19 */
+		this.reserv2 = dataInput.readInt();                            /* 20-23 */
+		this.reserv3 = dataInput.readInt();                            /* 24-27 */
+		this.mdxFlag = dataInput.readByte();                           /* 28 */
+		this.languageDriver = dataInput.readByte();                    /* 29 */
+		this.reserv4 = Utils.readLittleEndianShort( dataInput);        /* 30-31 */
 
 		List<DBFField> v_fields = new ArrayList<>();
 		
@@ -97,47 +97,47 @@ class DBFHeader {
 			field = DBFField.createField(dataInput);
 		}
 
-		fieldArray = new DBFField[v_fields.size()];
-		for (int i = 0; i < fieldArray.length; i++) {
-			fieldArray[i] = v_fields.get(i);
+		this.fieldArray = new DBFField[v_fields.size()];
+		for (int i = 0; i < this.fieldArray.length; i++) {
+			this.fieldArray[i] = v_fields.get(i);
 		}
 	}
 
 	void write(DataOutput dataOutput) throws IOException {
-		dataOutput.writeByte(signature); /* 0 */
+		dataOutput.writeByte(this.signature); /* 0 */
 
 		GregorianCalendar calendar = new GregorianCalendar();
-		year = (byte) (calendar.get(Calendar.YEAR) - 1900);
-		month = (byte) (calendar.get(Calendar.MONTH) + 1);
-		day = (byte) (calendar.get(Calendar.DAY_OF_MONTH));
+		this.year = (byte) (calendar.get(Calendar.YEAR) - 1900);
+		this.month = (byte) (calendar.get(Calendar.MONTH) + 1);
+		this.day = (byte) (calendar.get(Calendar.DAY_OF_MONTH));
 
-		dataOutput.writeByte(year); /* 1 */
-		dataOutput.writeByte(month); /* 2 */
-		dataOutput.writeByte(day); /* 3 */
+		dataOutput.writeByte(this.year); /* 1 */
+		dataOutput.writeByte(this.month); /* 2 */
+		dataOutput.writeByte(this.day); /* 3 */
 
-		numberOfRecords = Utils.littleEndian(numberOfRecords);
-		dataOutput.writeInt(numberOfRecords); /* 4-7 */
+		this.numberOfRecords = Utils.littleEndian(this.numberOfRecords);
+		dataOutput.writeInt(this.numberOfRecords); /* 4-7 */
 
-		headerLength = findHeaderLength();
-		dataOutput.writeShort(Utils.littleEndian(headerLength)); /* 8-9 */
+		this.headerLength = findHeaderLength();
+		dataOutput.writeShort(Utils.littleEndian(this.headerLength)); /* 8-9 */
 
-		recordLength = sumUpLenghtOfFields();
-		dataOutput.writeShort(Utils.littleEndian(recordLength)); /* 10-11 */
+		this.recordLength = sumUpLenghtOfFields();
+		dataOutput.writeShort(Utils.littleEndian(this.recordLength)); /* 10-11 */
 
-		dataOutput.writeShort(Utils.littleEndian(reserv1)); /* 12-13 */
-		dataOutput.writeByte(incompleteTransaction); /* 14 */
-		dataOutput.writeByte(encryptionFlag); /* 15 */
-		dataOutput.writeInt(Utils.littleEndian(freeRecordThread));/* 16-19 */
-		dataOutput.writeInt(Utils.littleEndian(reserv2)); /* 20-23 */
-		dataOutput.writeInt(Utils.littleEndian(reserv3)); /* 24-27 */
+		dataOutput.writeShort(Utils.littleEndian(this.reserv1)); /* 12-13 */
+		dataOutput.writeByte(this.incompleteTransaction); /* 14 */
+		dataOutput.writeByte(this.encryptionFlag); /* 15 */
+		dataOutput.writeInt(Utils.littleEndian(this.freeRecordThread));/* 16-19 */
+		dataOutput.writeInt(Utils.littleEndian(this.reserv2)); /* 20-23 */
+		dataOutput.writeInt(Utils.littleEndian(this.reserv3)); /* 24-27 */
 
-		dataOutput.writeByte(mdxFlag); /* 28 */
-		dataOutput.writeByte(languageDriver); /* 29 */
-		dataOutput.writeShort(Utils.littleEndian(reserv4)); /* 30-31 */
-		for (DBFField field : fieldArray) {
+		dataOutput.writeByte(this.mdxFlag); /* 28 */
+		dataOutput.writeByte(this.languageDriver); /* 29 */
+		dataOutput.writeShort(Utils.littleEndian(this.reserv4)); /* 30-31 */
+		for (DBFField field : this.fieldArray) {
 			field.write(dataOutput);
 		}
-		dataOutput.writeByte(terminator1); /* n+1 */
+		dataOutput.writeByte(this.terminator1); /* n+1 */
 	}
 
 	private short findHeaderLength() {
@@ -157,14 +157,14 @@ class DBFHeader {
 		1+
 		1+
 		2+
-		(32*fieldArray.length)+
+		(32*this.fieldArray.length)+
 		1
 		);
 	}
 
 	private short sumUpLenghtOfFields() {
 		int sum = 0;
-		for (DBFField field : fieldArray) {
+		for (DBFField field : this.fieldArray) {
 			sum += field.getFieldLength();
 		}
 		return (short) (sum + 1);

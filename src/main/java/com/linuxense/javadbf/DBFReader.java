@@ -137,7 +137,7 @@ public class DBFReader extends DBFBase {
 		@param index. Index of the field. Index of the first field is zero.
 	*/
 	public DBFField getField(int index) throws DBFException {
-		if (isClosed) {
+		if (this.isClosed) {
 			throw new DBFException("Source is not open");
 		}
 		return this.header.fieldArray[index];
@@ -147,7 +147,7 @@ public class DBFReader extends DBFBase {
 		Returns the number of field in the DBF.
 	*/
 	public int getFieldCount() throws DBFException {
-		if (isClosed) {
+		if (this.isClosed) {
 			throw new DBFException("Source is not open");
 		}
 		if (this.header.fieldArray != null) {
@@ -162,7 +162,7 @@ public class DBFReader extends DBFBase {
 		these arrays follow the convention mentioned in the class description.
 	*/
 	public Object[] nextRecord() throws DBFException {
-		if (isClosed) {
+		if (this.isClosed) {
 			throw new DBFException("Source is not open");
 		}
 
@@ -174,7 +174,7 @@ public class DBFReader extends DBFBase {
 				if (isDeleted) {
 					skip(this.header.recordLength - 1);
 				}
-				int t_byte = dataInputStream.readByte();
+				int t_byte = this.dataInputStream.readByte();
 				if (t_byte == END_OF_DATA) {
 					return null;
 				}
@@ -185,20 +185,20 @@ public class DBFReader extends DBFBase {
 				switch (this.header.fieldArray[i].getType()) {
 				case CHARACTER:
 					byte b_array[] = new byte[this.header.fieldArray[i].getFieldLength()];
-					dataInputStream.read(b_array);
+					this.dataInputStream.read(b_array);
 					recordObjects[i] = new String(b_array, getCharactersetName());
 					break;
 	
 				case DATE:
 
 					byte t_byte_year[] = new byte[4];
-					dataInputStream.read(t_byte_year);
+					this.dataInputStream.read(t_byte_year);
 
 					byte t_byte_month[] = new byte[2];
-					dataInputStream.read(t_byte_month);
+					this.dataInputStream.read(t_byte_month);
 
 					byte t_byte_day[] = new byte[2];
-					dataInputStream.read(t_byte_day);
+					this.dataInputStream.read(t_byte_day);
 
 					try {
 						GregorianCalendar calendar = new GregorianCalendar( 
@@ -220,7 +220,7 @@ public class DBFReader extends DBFBase {
 				case FLOATING_POINT:
 					try {
 						byte t_float[] = new byte[this.header.fieldArray[i].getFieldLength()];
-						dataInputStream.read(t_float);
+						this.dataInputStream.read(t_float);
 						t_float = Utils.trimLeftSpaces(t_float);
 						if (t_float.length > 0 && !Utils.contains(t_float, (byte) '?')) {
 							recordObjects[i] = new Float(new String(t_float));
@@ -237,7 +237,7 @@ public class DBFReader extends DBFBase {
 
 					try {
 						byte t_numeric[] = new byte[this.header.fieldArray[i].getFieldLength()];
-						dataInputStream.read(t_numeric);
+						this.dataInputStream.read(t_numeric);
 						t_numeric = Utils.trimLeftSpaces(t_numeric);
 						if (t_numeric.length > 0 && !Utils.contains(t_numeric, (byte) '?')) {
 							recordObjects[i] = new Double(new String(t_numeric));
@@ -252,7 +252,7 @@ public class DBFReader extends DBFBase {
 
 				case LOGICAL:
 
-					byte t_logical = dataInputStream.readByte();
+					byte t_logical = this.dataInputStream.readByte();
 					if (t_logical == 'Y' || t_logical == 'y' || t_logical == 'T' || t_logical == 't') {
 						recordObjects[i] = Boolean.TRUE;
 					} else {
@@ -260,13 +260,13 @@ public class DBFReader extends DBFBase {
 					}
 					break;
 				case LONG:
-					int data = Utils.readLittleEndianInt(dataInputStream);
+					int data = Utils.readLittleEndianInt(this.dataInputStream);
 					recordObjects[i] = data;
 					break;
 				case MEMO:
 					// TODO Later for now we skipping this field, too
 				default:
-					skip(header.fieldArray[i].getFieldLength());
+					skip(this.header.fieldArray[i].getFieldLength());
 					recordObjects[i] = "null";
 				}
 			}
@@ -280,9 +280,9 @@ public class DBFReader extends DBFBase {
 	}
 
 	private void skip(int n) throws IOException {
-		int skipped = (int) dataInputStream.skip(n);
+		int skipped = (int) this.dataInputStream.skip(n);
 		for (int i = skipped; i < n; i++) {
-			dataInputStream.readByte();
+			this.dataInputStream.readByte();
 		}
 	}
 
