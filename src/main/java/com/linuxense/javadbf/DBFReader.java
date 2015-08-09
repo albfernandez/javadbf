@@ -279,8 +279,9 @@ public class DBFReader extends DBFBase {
 		return recordObjects;
 	}
 
-	private void skip(long n) throws IOException {
-		for (int i = 0; i < n; i++) {
+	private void skip(int n) throws IOException {
+		int skipped = (int) dataInputStream.skip(n);
+		for (int i = skipped; i < n; i++) {
 			dataInputStream.readByte();
 		}
 	}
