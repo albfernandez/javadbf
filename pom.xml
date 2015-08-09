@@ -40,4 +40,17 @@
 			</plugin>
 		</plugins>
 	</build>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/albfernandez/javadbf/issues</url>
+	</issueManagement>
+	<scm>
+		<url>https://github.com/albfernandez/javadbf.git</url>
+	</scm>
+	<name>javadbf</name>
+	<description>JavaDBF is a Java library for reading and writing XBase files.</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
 </project>
