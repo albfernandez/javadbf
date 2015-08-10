@@ -237,3 +237,10 @@ Clone the repository or download de tar file from releases page on github, run t
 #Planned Features
 
 Support for memo fields. 
+
+
+#Links
+
+https://en.wikipedia.org/wiki/.dbf
+http://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm
+https://www.cs.cmu.edu/~varun/cs315p/xbase.txt
