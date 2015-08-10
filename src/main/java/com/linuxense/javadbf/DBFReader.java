@@ -26,6 +26,7 @@ import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.GregorianCalendar;
 
 /*
@@ -242,6 +243,15 @@ public class DBFReader extends DBFBase {
 				case LONG:
 					int data = Utils.readLittleEndianInt(this.dataInputStream);
 					recordObjects[i] = data;
+					break;
+				case CURRENCY:
+					int c_data = Utils.readLittleEndianInt(this.dataInputStream);
+					String s_data = String.format("%05d", c_data);
+					String x1 = s_data.substring(0, s_data.length() -4);
+					String x2 = s_data.substring(s_data.length() -4);
+					recordObjects[i] = new BigDecimal(x1+"."+x2);
+					System.out.println(this.header.fieldArray[i].getFieldLength());
+					skip(this.header.fieldArray[i].getFieldLength() - 4);					
 					break;
 				case MEMO:
 					// TODO Later for now we skipping this field, too

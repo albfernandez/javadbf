@@ -32,10 +32,14 @@ public enum DBFDataType {
 	 */
 	NUMERIC         ((byte) 'N'),
 	/**
-	 * Numeric long
+	 * Numeric long (FoxPro)
 	 */
-	LONG            ((byte) 'I');
-
+	LONG            ((byte) 'I'),
+	/**
+	 * Currency type (FoxPro)
+	 */
+	CURRENCY        ((byte)'Y');
+	
 	private byte code;
 
 	private DBFDataType(byte code) {

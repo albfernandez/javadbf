@@ -235,7 +235,7 @@ public class DBFField {
 		if (type == DBFDataType.DATE) {
 			this.fieldLength = 8;
 		}
-		if (type == DBFDataType.UNKNOWN || type == DBFDataType.LONG) {
+		if (type == DBFDataType.UNKNOWN || type == DBFDataType.LONG || type == DBFDataType.CURRENCY) {
 			throw new IllegalArgumentException("No support for writting " + type);
 		}
 		this.type = type;		
