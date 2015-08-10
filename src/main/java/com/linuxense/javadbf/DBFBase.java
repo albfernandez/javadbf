@@ -27,28 +27,36 @@ Support for choosing implemented character Sets as
 suggested by Nick Voznesensky <darkers@mail.ru>
 */
 /**
-Base class for DBFReader and DBFWriter.
+ * Base class for DBFReader and DBFWriter.
 */
 public abstract class DBFBase {
 
 	protected static final int END_OF_DATA = 0x1A;
-	protected String characterSetName = "8859_1";
-	
+	protected String characterSetName = "ISO_8859_1";
+
 	protected DBFBase() {
 		super();
 	}
 
-	/* 
-	 If the library is used in a non-latin environment use this method to set 
-	 corresponding character set. More information: 
-	 http://www.iana.org/assignments/character-sets
-	 Also see the documentation of the class java.nio.charset.Charset
-	*/
+	/**
+	 * Gets the charset used to read and write files.
+	 * @return
+	 */
 	public String getCharactersetName() {
 		return this.characterSetName;
 	}
 
-	public void setCharactersetName( String characterSetName) {
+	/**
+	 * Sets the charset to use to read and write files.
+	 * 
+	 * If the library is used in a non-latin environment use this method to set
+	 * corresponding character set. More information:
+	 * http://www.iana.org/assignments/character-sets Also see the documentation
+	 * of the class java.nio.charset.Charset
+	 * 
+	 * @param characterSetName
+	 */
+	public void setCharactersetName(String characterSetName) {
 		this.characterSetName = characterSetName;
 	}
 }

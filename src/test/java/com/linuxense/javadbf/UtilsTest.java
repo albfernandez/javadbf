@@ -1,6 +1,7 @@
 package com.linuxense.javadbf;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -19,33 +20,49 @@ public class UtilsTest {
 		assertTrue(Utils.isPureAscii(""));
 		assertTrue(Utils.isPureAscii(null));
 	}
+	@Test
+	public void testToBoolean() {
+		assertTrue(Utils.toBoolean((byte) 't'));
+		assertTrue(Utils.toBoolean((byte) 'T'));
+		assertTrue(Utils.toBoolean((byte) 'y'));
+		assertTrue(Utils.toBoolean((byte) 'Y'));
+		
+		assertFalse(Utils.toBoolean((byte) 'f'));
+		assertFalse(Utils.toBoolean((byte) 'F'));
+		assertFalse(Utils.toBoolean((byte) 'n'));
+		assertFalse(Utils.toBoolean((byte) 'N'));
+		
+		assertNull(Utils.toBoolean((byte) '?'));
+		
+	}
+	
 	@Test 
 	public void testContains () {
-		
+		//TODO
 	}
 	@Test
 	public void doubleFormating() {
-		
+		// TODO
 	}
 	@Test
 	public void testLittleEndian() {
-		
+		// TODO
 	}
 	@Test
 	public void testreadLittleEndianInt() {
-		
+		// TODO
 	}
 	@Test
 	public void testReadLittleEndianShort() {
-		
+		// TODO
 	}
 	@Test
 	public void testPadding() {
-		
+		// TODO
 	}
 	@Test
 	public void testTrimLeftSpaces() {
-		
+		// TODO
 	}
 
 }

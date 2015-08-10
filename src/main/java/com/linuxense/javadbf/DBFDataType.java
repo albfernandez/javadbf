@@ -1,13 +1,39 @@
 package com.linuxense.javadbf;
 
+
+/**
+ * The types supported by JavaDBF
+ *
+ */
 public enum DBFDataType {
 	UNKNOWN         ((byte) 0),
+	/**
+	 * Character data, padding with whitespaces.
+	 */
 	CHARACTER       ((byte) 'C'), 
+	/**
+	 * Date
+	 */
 	DATE            ((byte) 'D'), 
-	FLOATING_POINT  ((byte) 'F'), 
-	LOGICAL         ((byte) 'L'), 
-	MEMO            ((byte) 'M'), 
+	/**
+	 * Numeric data
+	 */
+	FLOATING_POINT  ((byte) 'F'),
+	/**
+	 * To store boolean values.
+	 */
+	LOGICAL         ((byte) 'L'),
+	/**
+	 * Memo
+	 */
+	MEMO            ((byte) 'M'),
+	/**
+	 * Numeric data
+	 */
 	NUMERIC         ((byte) 'N'),
+	/**
+	 * Numeric long
+	 */
 	LONG            ((byte) 'I');
 
 	private byte code;
@@ -15,11 +41,19 @@ public enum DBFDataType {
 	private DBFDataType(byte code) {
 		this.code = code;
 	}
-	
+	/**
+	 * Get the code as stored in the dbf file.
+	 * @return the code
+	 */	
 	public byte getCode() {
 		return this.code;
 	}
 	
+	/**
+	 * Gets the DBFDataType from the code used in the file
+	 * @param cod 
+	 * @return
+	 */
 	public static DBFDataType fromCode(byte cod) {
 		for (DBFDataType type: values()) {
 			if (cod == type.code){

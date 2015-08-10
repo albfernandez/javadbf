@@ -52,7 +52,7 @@ public class DBFField {
 	@Deprecated
 	public static final byte FIELD_TYPE_M = (byte) 'M';
 
-	/* Field struct variables start here */
+
 	//byte[] fieldName = new byte[ 11]; /* 0-10*/
 	DBFDataType type;                    /* 11 */
 	int reserv1;                      /* 12-15 */
@@ -64,7 +64,7 @@ public class DBFField {
 	byte setFieldsFlag;               /* 23 */
 	byte[] reserv4 = new byte[ 7];    /* 24-30 */
 	byte indexFieldFlag;              /* 31 */
-	/* Field struct variables end here */
+
 
 
 
@@ -130,9 +130,6 @@ public class DBFField {
 		@throws IOException if any stream related issues occur.
 	*/
 	protected void write(DataOutput out) throws IOException {
-
-		// DataOutputStream out = new DataOutputStream( os);
-
 		// Field Name
 		out.write(this.name.getBytes()); /* 0-10 */
 		out.write(new byte[11 - this.name.length()]);
@@ -159,18 +156,7 @@ public class DBFField {
 		return this.name;
 	}
 
-	/**
-		Returns the data type of the field.
 
-		@return Data type as byte.
-	*/
-	@Deprecated
-	public byte getDataType() {
-		if (this.type != null) {
-			return this.type.getCode();
-		}
-		return 0;
-	}
 
 	/**
 		Returns field length.
@@ -194,27 +180,8 @@ public class DBFField {
 		return this.decimalCount;
 	}
 
-	// Setter methods
 
-	// byte[] fieldName = new byte[ 11]; /* 0-10*/
-  // byte dataType;                    /* 11 */
-  // int reserv1;                      /* 12-15 */
-  // byte fieldLength;                 /* 16 */
-  // byte decimalCount;                /* 17 */
-  // short reserv2;                    /* 18-19 */
-  // byte workAreaId;                  /* 20 */
-  // short reserv3;                    /* 21-22 */
-  // byte setFieldsFlag;               /* 23 */
-  // byte[] reserv4 = new byte[ 7];    /* 24-30 */
-  // byte indexFieldFlag;              /* 31 */
 
-	/**
-	 * @deprecated This method is depricated as of version 0.3.3.1 and is replaced by {@link #setName( String)}.
-	 */
-	@Deprecated
-	public void setFieldName(String value) {
-		setName(value);
-	}
 
 	/**
 		Sets the name of the field.
@@ -241,16 +208,6 @@ public class DBFField {
 		
 
 	
-	/**
-		Sets the data type of the field.
-
-		@param type of the field. One of the following:<br>
-		C, L, N, F, D, M
-	*/
-	@Deprecated
-	public void setDataType(byte type) {
-		setType(DBFDataType.fromCode(type));
-	}
 
 	/**
 		Length of the field.
@@ -299,6 +256,41 @@ public class DBFField {
 			throw new IllegalArgumentException("Decimal length should be less than field length");
 		}
 		this.decimalCount = (byte) size;
+	}
+
+	/**
+	 * Sets the data type of the field.
+	 * 
+	 * @param type
+	 *            of the field. One of the following:<br>
+	 *            C, L, N, F, D, M
+	 * @deprecated is replaces by {@link #setType(DBFDataType)}
+	 */
+	@Deprecated
+	public void setDataType(byte type) {
+		setType(DBFDataType.fromCode(type));
+	}
+
+	/**
+	 * @deprecated This method is deprecated and is replaced by {@link #setName(String)}.
+	 */
+	@Deprecated
+	public void setFieldName(String value) {
+		setName(value);
+	}
+
+	/**
+	 * Returns the data type of the field.
+	 * 
+	 * @return Data type as byte.
+	 * @deprecated This method is deprecated and is replaced by {@link #getType()}
+	 */
+	@Deprecated
+	public byte getDataType() {
+		if (this.type != null) {
+			return this.type.getCode();
+		}
+		return 0;
 	}
 
 }

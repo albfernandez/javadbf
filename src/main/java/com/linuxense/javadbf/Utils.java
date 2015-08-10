@@ -189,4 +189,13 @@ public final class Utils {
 		}
 		return asciiEncoder.canEncode(v);
 	}
+
+	public static Boolean toBoolean(byte t_logical) {
+		if (t_logical == 'Y' || t_logical == 'y' || t_logical == 'T' || t_logical == 't') {
+			return Boolean.TRUE;
+		} else if (t_logical == 'N' || t_logical == 'n' || t_logical == 'F' || t_logical == 'f'){
+			return Boolean.FALSE;
+		}
+		return null;
+	}
 }
