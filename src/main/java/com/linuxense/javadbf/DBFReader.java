@@ -218,12 +218,13 @@ public class DBFReader extends DBFBase {
 					break;
 
 				case FLOATING_POINT:
+				case NUMERIC:
 					try {
 						byte t_float[] = new byte[this.header.fieldArray[i].getFieldLength()];
 						this.dataInputStream.read(t_float);
 						t_float = Utils.trimLeftSpaces(t_float);
 						if (t_float.length > 0 && !Utils.contains(t_float, (byte) '?')) {
-							recordObjects[i] = new Float(new String(t_float));
+							recordObjects[i] = new Double(new String(t_float));
 						} else {
 							recordObjects[i] = null;
 						}
@@ -233,31 +234,10 @@ public class DBFReader extends DBFBase {
 
 					break;
 
-				case NUMERIC:
-
-					try {
-						byte t_numeric[] = new byte[this.header.fieldArray[i].getFieldLength()];
-						this.dataInputStream.read(t_numeric);
-						t_numeric = Utils.trimLeftSpaces(t_numeric);
-						if (t_numeric.length > 0 && !Utils.contains(t_numeric, (byte) '?')) {
-							recordObjects[i] = new Double(new String(t_numeric));
-						} else {
-							recordObjects[i] = null;
-						}
-					} catch (NumberFormatException e) {
-						throw new DBFException("Failed to parse Number: " + e.getMessage());
-					}
-
-					break;
 
 				case LOGICAL:
-
 					byte t_logical = this.dataInputStream.readByte();
-					if (t_logical == 'Y' || t_logical == 'y' || t_logical == 'T' || t_logical == 't') {
-						recordObjects[i] = Boolean.TRUE;
-					} else {
-						recordObjects[i] = Boolean.FALSE;
-					}
+					recordObjects[i] = Utils.toBoolean(t_logical);
 					break;
 				case LONG:
 					int data = Utils.readLittleEndianInt(this.dataInputStream);

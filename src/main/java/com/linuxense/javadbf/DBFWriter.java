@@ -161,18 +161,12 @@ public class DBFWriter extends DBFBase {
 				}
 				break;
 
-			case NUMERIC:
-				if (!(value instanceof Number)) {
-					throw new DBFException("Invalid value for field " + i);
-				}
-				break;
-
 			case DATE:
 				if (!(value instanceof Date)) {
 					throw new DBFException("Invalid value for field " + i);
 				}
 				break;
-
+			case NUMERIC:
 			case FLOATING_POINT:
 				if (!(value instanceof Number)) {
 					throw new DBFException("Invalid value for field " + i);
@@ -263,7 +257,7 @@ public class DBFWriter extends DBFBase {
 				}
 
 				break;
-
+			case NUMERIC:
 			case FLOATING_POINT:
 
 				if (objectArray[j] != null) {
@@ -276,17 +270,6 @@ public class DBFWriter extends DBFBase {
 
 				break;
 
-			case NUMERIC:
-
-				if (objectArray[j] != null) {
-					dataOutput.write(Utils.doubleFormating((Number) objectArray[j], this.characterSetName,
-							this.header.fieldArray[j].getFieldLength(), this.header.fieldArray[j].getDecimalCount()));
-				} else {
-					dataOutput.write(Utils.textPadding(" ", this.characterSetName,
-							this.header.fieldArray[j].getFieldLength(), Utils.ALIGN_RIGHT));
-				}
-
-				break;
 			case LOGICAL:
 
 				if (objectArray[j] != null) {
