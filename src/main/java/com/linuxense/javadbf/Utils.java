@@ -184,6 +184,9 @@ public final class Utils {
 	}
 
 	public static boolean isPureAscii(String v) {
+		if (v == null) {
+			return true;
+		}
 		return asciiEncoder.canEncode(v);
 	}
 }
