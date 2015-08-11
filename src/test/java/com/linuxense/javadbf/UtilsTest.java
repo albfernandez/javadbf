@@ -5,11 +5,14 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.UnsupportedEncodingException;
+
 import org.junit.Test;
 
 
 public class UtilsTest {
 
+	private static final String CHARSET_ISO = "ISO_8859_1";
 	public UtilsTest () {
 		super();
 	}
@@ -61,8 +64,21 @@ public class UtilsTest {
 		// TODO
 	}
 	@Test
-	public void testPadding() {
-		// TODO
+	public void testTextPadding() throws UnsupportedEncodingException {
+		assertEquals(
+			"abc       ",
+			new String(Utils.textPadding("abc", CHARSET_ISO, 10))
+		);
+		
+		assertEquals(
+			"a",
+			new String(Utils.textPadding("abc", CHARSET_ISO, 1))
+		);
+		assertEquals(
+			"001",
+			new String(Utils.textPadding("1", CHARSET_ISO, 3, Utils.ALIGN_RIGHT, (byte) '0'))
+		);
+
 	}
 	@Test
 	public void testRemoveSpaces() {
