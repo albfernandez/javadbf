@@ -45,12 +45,10 @@ public final class Utils {
 	}
 
 	public static int readLittleEndianInt(DataInput in) throws IOException {
-
 		int bigEndian = 0;
 		for (int shiftBy = 0; shiftBy < 32; shiftBy += 8) {
 			bigEndian |= (in.readUnsignedByte() & 0xff) << shiftBy;
 		}
-
 		return bigEndian;
 	}
 
@@ -60,15 +58,21 @@ public final class Utils {
 		return (short) (high << 8 | low);
 	}
 
-	public static byte[] trimLeftSpaces(byte[] arr) {
-		StringBuilder t_sb = new StringBuilder(arr.length);
-		for (int i = 0; i < arr.length; i++) {
-			if (arr[i] != ' ') {
-				t_sb.append((char) arr[i]);
+	/**
+	 * Remove all spaces (32) found in the data.
+	 * @param array the data
+	 * @return the data cleared of whitespaces
+	 */
+	public static byte[] removeSpaces(byte[] array) {
+		StringBuilder t_sb = new StringBuilder(array.length);
+		for (byte b: array) {
+			if (b != ' '){
+				t_sb.append( (char) b);
 			}
 		}
 		return t_sb.toString().getBytes();
 	}
+	
 
 	public static short littleEndian(short value) {
 
@@ -93,7 +97,6 @@ public final class Utils {
 		num2 |= num1 & mask;
 
 		for (int i = 1; i < 4; i++) {
-
 			num2 <<= 8;
 			mask <<= 8;
 			num2 |= (num1 & mask) >> (8 * i);
@@ -114,7 +117,7 @@ public final class Utils {
 	}
 
 	public static byte[] textPadding(String text, String characterSetName, int length, int alignment, byte paddingByte)
-			throws java.io.UnsupportedEncodingException {
+			throws UnsupportedEncodingException {
 
 		if (text.length() >= length) {
 			return text.substring(0, length).getBytes(characterSetName);
@@ -205,4 +208,16 @@ public final class Utils {
 		}
 		return null;
 	}
+	
+	/**
+	 * 
+	 * @param arr
+	 * @return
+	 * @deprecated this functions really trim all spaces, instead only left spaces
+	 */
+	@Deprecated
+	public static byte[] trimLeftSpaces(byte[] arr) {
+		return removeSpaces(arr);
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.linuxense.javadbf;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -42,7 +43,6 @@ public class UtilsTest {
 		assertFalse(Utils.contains("testtest".getBytes(), (byte) '?'));
 		assertFalse(Utils.contains("".getBytes(), (byte) '?'));
 		assertFalse(Utils.contains(null, (byte)'?'));
-		//TODO
 	}
 	@Test
 	public void doubleFormating() {
@@ -65,8 +65,12 @@ public class UtilsTest {
 		// TODO
 	}
 	@Test
-	public void testTrimLeftSpaces() {
-		// TODO
+	public void testRemoveSpaces() {
+		assertEquals("123", new String(Utils.removeSpaces("   123".getBytes())));
+		assertEquals("123", new String(Utils.removeSpaces("   123   ".getBytes())));
+		assertEquals("123", new String(Utils.removeSpaces("123   ".getBytes())));
+		assertEquals("123", new String(Utils.removeSpaces("123".getBytes())));
+		assertEquals("", new String(Utils.removeSpaces("".getBytes())));
 	}
 
 }

@@ -223,7 +223,7 @@ public class DBFReader extends DBFBase {
 					try {
 						byte t_float[] = new byte[this.header.fieldArray[i].getFieldLength()];
 						this.dataInputStream.read(t_float);
-						t_float = Utils.trimLeftSpaces(t_float);
+						t_float = Utils.removeSpaces(t_float);
 						if (t_float.length > 0 && !Utils.contains(t_float, (byte) '?')) {
 							recordObjects[i] = new Double(new String(t_float));
 						} else {
