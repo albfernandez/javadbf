@@ -35,7 +35,9 @@ import java.util.Locale;
 */
 public final class Utils {
 
+	@Deprecated
 	public static final int ALIGN_LEFT = 10;
+	@Deprecated
 	public static final int ALIGN_RIGHT = 12;
 	private static CharsetEncoder asciiEncoder = Charset.forName("US-ASCII").newEncoder(); 
 
@@ -107,18 +109,17 @@ public final class Utils {
 
 	public static byte[] textPadding(String text, String characterSetName, int length)
 			throws UnsupportedEncodingException {
-		return textPadding(text, characterSetName, length, Utils.ALIGN_LEFT);
+		return textPadding(text, characterSetName, length, DBFAlignment.LEFT);
 	}
 
-	public static byte[] textPadding(String text, String characterSetName, int length, int alignment)
+	public static byte[] textPadding(String text, String characterSetName, int length, DBFAlignment alignment)
 			throws UnsupportedEncodingException {
 
 		return textPadding(text, characterSetName, length, alignment, (byte) ' ');
 	}
-
-	public static byte[] textPadding(String text, String characterSetName, int length, int alignment, byte paddingByte)
+	
+	public static byte[] textPadding(String text, String characterSetName, int length, DBFAlignment alignment, byte paddingByte)
 			throws UnsupportedEncodingException {
-
 		if (text.length() >= length) {
 			return text.substring(0, length).getBytes(characterSetName);
 		}
@@ -127,11 +128,11 @@ public final class Utils {
 		Arrays.fill(byte_array, paddingByte);
 
 		switch (alignment) {
-		case ALIGN_RIGHT:
+		case RIGHT:
 			int t_offset = length - text.length();
 			System.arraycopy(text.getBytes(characterSetName), 0, byte_array, t_offset, text.length());
 			break;
-		case ALIGN_LEFT:
+		case LEFT:
 		default:
 			System.arraycopy(text.getBytes(characterSetName), 0, byte_array, 0, text.length());
 			break;
@@ -163,7 +164,7 @@ public final class Utils {
 
 		DecimalFormat df = (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
 		df.applyPattern(format.toString());
-		return textPadding(df.format(doubleNum.doubleValue()).toString(), characterSetName, fieldLength, ALIGN_RIGHT);
+		return textPadding(df.format(doubleNum.doubleValue()).toString(), characterSetName, fieldLength, DBFAlignment.RIGHT);
 	}
 
 	/**
@@ -218,6 +219,23 @@ public final class Utils {
 	@Deprecated
 	public static byte[] trimLeftSpaces(byte[] arr) {
 		return removeSpaces(arr);
+	}
+	
+	@Deprecated
+	public static byte[] textPadding(String text, String characterSetName, int length, int alignment)
+			throws UnsupportedEncodingException {
+
+		return textPadding(text, characterSetName, length, alignment, (byte) ' ');
+	}
+	@Deprecated
+	public static byte[] textPadding(String text, String characterSetName, int length, int alignment, byte paddingByte)
+			throws UnsupportedEncodingException {
+		DBFAlignment align = DBFAlignment.RIGHT;
+		if (alignment == ALIGN_LEFT) {
+			align = DBFAlignment.LEFT;
+		}
+		return textPadding(text, characterSetName, length, align, paddingByte);
+
 	}
 
 }

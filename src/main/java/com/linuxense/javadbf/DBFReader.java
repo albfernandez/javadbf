@@ -250,11 +250,8 @@ public class DBFReader extends DBFBase {
 					String x1 = s_data.substring(0, s_data.length() -4);
 					String x2 = s_data.substring(s_data.length() -4);
 					recordObjects[i] = new BigDecimal(x1+"."+x2);
-					System.out.println(this.header.fieldArray[i].getFieldLength());
 					skip(this.header.fieldArray[i].getFieldLength() - 4);					
 					break;
-				case MEMO:
-					// TODO Later for now we skipping this field, too
 				default:
 					skip(this.header.fieldArray[i].getFieldLength());
 					recordObjects[i] = "null";

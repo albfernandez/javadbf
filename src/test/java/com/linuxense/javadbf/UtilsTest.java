@@ -76,8 +76,10 @@ public class UtilsTest {
 		);
 		assertEquals(
 			"001",
-			new String(Utils.textPadding("1", CHARSET_ISO, 3, Utils.ALIGN_RIGHT, (byte) '0'))
+			new String(Utils.textPadding("1", CHARSET_ISO, 3, DBFAlignment.RIGHT, (byte) '0'))
 		);
+		
+		//TODO Test extreme cases (null, negative, etc)
 
 	}
 	@Test

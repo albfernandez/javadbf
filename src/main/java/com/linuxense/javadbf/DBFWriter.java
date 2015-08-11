@@ -73,17 +73,16 @@ public class DBFWriter extends DBFBase {
 
 		try {
 			this.raf = new RandomAccessFile(dbfFile, "rw");
+			this.header = new DBFHeader();
 
 			/*
 			 * before proceeding check whether the passed in File object is an
 			 * empty/non-existent file or not.
 			 */
 			if (!dbfFile.exists() || dbfFile.length() == 0) {
-				this.header = new DBFHeader();
 				return;
 			}
 
-			this.header = new DBFHeader();
 			this.header.read(this.raf);
 
 			/* position file pointer at the end of the raf */
@@ -173,7 +172,7 @@ public class DBFWriter extends DBFBase {
 				}
 				break;
 			default:
-				throw new DBFException("Unknown field type " + i + " " + this.header.fieldArray[i].getType());
+				throw new DBFException("Unsupported writting of field type " + i + " " + this.header.fieldArray[i].getType());
 			}
 			
 		}
@@ -250,8 +249,8 @@ public class DBFWriter extends DBFBase {
 					GregorianCalendar calendar = new GregorianCalendar();
 					calendar.setTime( (Date)objectArray[j]);
 					dataOutput.write( String.valueOf( calendar.get( Calendar.YEAR)).getBytes());
-					dataOutput.write( Utils.textPadding( String.valueOf( calendar.get( Calendar.MONTH)+1), this.characterSetName, 2, Utils.ALIGN_RIGHT, (byte)'0'));
-					dataOutput.write( Utils.textPadding( String.valueOf( calendar.get( Calendar.DAY_OF_MONTH)), this.characterSetName, 2, Utils.ALIGN_RIGHT, (byte)'0'));
+					dataOutput.write( Utils.textPadding( String.valueOf( calendar.get( Calendar.MONTH)+1), this.characterSetName, 2, DBFAlignment.RIGHT, (byte)'0'));
+					dataOutput.write( Utils.textPadding( String.valueOf( calendar.get( Calendar.DAY_OF_MONTH)), this.characterSetName, 2, DBFAlignment.RIGHT, (byte)'0'));
 				} else {
 					dataOutput.write("        ".getBytes());
 				}
@@ -265,7 +264,7 @@ public class DBFWriter extends DBFBase {
 							this.header.fieldArray[j].getFieldLength(), this.header.fieldArray[j].getDecimalCount()));
 				} else {
 					dataOutput.write(Utils.textPadding(" ", this.characterSetName,
-							this.header.fieldArray[j].getFieldLength(), Utils.ALIGN_RIGHT));
+							this.header.fieldArray[j].getFieldLength(), DBFAlignment.RIGHT));
 				}
 
 				break;
@@ -284,9 +283,6 @@ public class DBFWriter extends DBFBase {
 
 				break;
 
-			case MEMO:
-
-				break;
 			default:
 				throw new DBFException("Unknown field type " + this.header.fieldArray[j].getType());
 			}
