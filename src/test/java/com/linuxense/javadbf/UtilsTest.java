@@ -38,6 +38,10 @@ public class UtilsTest {
 	
 	@Test 
 	public void testContains () {
+		assertTrue(Utils.contains("test?test".getBytes(), (byte) '?'));
+		assertFalse(Utils.contains("testtest".getBytes(), (byte) '?'));
+		assertFalse(Utils.contains("".getBytes(), (byte) '?'));
+		assertFalse(Utils.contains(null, (byte)'?'));
 		//TODO
 	}
 	@Test

@@ -30,17 +30,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Locale;
-/*
-	Utils
-Class for contining utility functions.
-
-This file is part of JavaDBF packege.
-
-author: anil@linuxense.com
-license: LGPL (http://www.gnu.org/copyleft/lesser.html)
-
-$Id: Utils.java,v 1.8 2004-07-19 08:58:11 anil Exp $
-*/
 /**
 	Miscelaneous functions required by the JavaDBF package.
 */
@@ -174,22 +163,40 @@ public final class Utils {
 		return textPadding(df.format(doubleNum.doubleValue()).toString(), characterSetName, fieldLength, ALIGN_RIGHT);
 	}
 
-	public static boolean contains(byte[] arr, byte value) {
-		for (byte data: arr) {
-			if (data == value) {
-				return true;
+	/**
+	 * Checcks that a byte array contains some byte
+	 * @param array The array to search in
+	 * @param value The byte to search for
+	 * @return
+	 */
+	public static boolean contains(byte[] array, byte value) {
+		if (array != null) {
+			for (byte data: array) {
+				if (data == value) {
+					return true;
+				}
 			}
 		}
 		return false;		
 	}
 
-	public static boolean isPureAscii(String v) {
-		if (v == null) {
+	/**
+	 * Checks if a string is pure Ascii
+	 * @param stringToCheck the string
+	 * @return true if is ascci
+	 */
+	public static boolean isPureAscii(String stringToCheck) {
+		if (stringToCheck == null) {
 			return true;
 		}
-		return asciiEncoder.canEncode(v);
+		return asciiEncoder.canEncode(stringToCheck);
 	}
 
+	/**
+	 * Convert LOGICAL (L) byte to boolean value
+	 * @param t_logical The byte value as stored in the file
+	 * @return The boolean value
+	 */
 	public static Boolean toBoolean(byte t_logical) {
 		if (t_logical == 'Y' || t_logical == 'y' || t_logical == 'T' || t_logical == 't') {
 			return Boolean.TRUE;
