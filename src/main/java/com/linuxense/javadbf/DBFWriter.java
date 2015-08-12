@@ -88,9 +88,9 @@ public class DBFWriter extends DBFBase {
 			/* position file pointer at the end of the raf */
 			this.raf.seek(this.raf.length() - 1); //to ignore the END_OF_DATA byte at EoF												 
 		} catch (FileNotFoundException e) {
-			throw new DBFException("Specified file is not found. " + e.getMessage());
+			throw new DBFException("Specified file is not found. " + e.getMessage(), e);
 		} catch (IOException e) {
-			throw new DBFException(e.getMessage() + " while reading header");
+			throw new DBFException(e.getMessage() + " while reading header", e);
 		}
 
 		this.recordCount = this.header.numberOfRecords;
@@ -184,7 +184,7 @@ public class DBFWriter extends DBFBase {
 				writeRecord(this.raf, values);
 				this.recordCount++;
 			} catch (IOException e) {
-				throw new DBFException("Error occured while writing record. " + e.getMessage());
+				throw new DBFException("Error occured while writing record. " + e.getMessage(), e);
 			}
 		}
 	}
@@ -194,31 +194,30 @@ public class DBFWriter extends DBFBase {
 	*/
 	public void write(OutputStream out) throws DBFException {
 		try {
-			if( this.raf == null) {
-				DataOutputStream outStream = new DataOutputStream( out);
+			if (this.raf == null) {
+				DataOutputStream outStream = new DataOutputStream(out);
 				this.header.numberOfRecords = this.v_records.size();
-				this.header.write( outStream);
+				this.header.write(outStream);
 
 				/* Now write all the records */
-				for (Object[] record: this.v_records) {
+				for (Object[] record : this.v_records) {
 					writeRecord(outStream, record);
 				}
 
-				outStream.write( END_OF_DATA);
+				outStream.write(END_OF_DATA);
 				outStream.flush();
 			}
 			else {
 				/* everything is written already. just update the header for record count and the END_OF_DATA mark */
 				this.header.numberOfRecords = this.recordCount;
-				this.raf.seek( 0);
-				this.header.write( this.raf);
-				this.raf.seek( this.raf.length());
-				this.raf.writeByte( END_OF_DATA);
+				this.raf.seek(0);
+				this.header.write(this.raf);
+				this.raf.seek(this.raf.length());
+				this.raf.writeByte(END_OF_DATA);
 				this.raf.close();
 			}
-		}
-		catch( IOException e) {
-			throw new DBFException( e.getMessage());
+		} catch (IOException e) {
+			throw new DBFException(e.getMessage(), e);
 		}
 	}
 

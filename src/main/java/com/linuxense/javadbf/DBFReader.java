@@ -105,7 +105,7 @@ public class DBFReader extends DBFBase {
 			int t_dataStartIndex = this.header.headerLength - (32 + (32 * this.header.fieldArray.length)) - 1;
 			skip(t_dataStartIndex);
 		} catch (IOException e) {
-			throw new DBFException(e.getMessage());
+			throw new DBFException(e.getMessage(), e);
 		}
 	}
 
@@ -230,7 +230,7 @@ public class DBFReader extends DBFBase {
 							recordObjects[i] = null;
 						}
 					} catch (NumberFormatException e) {
-						throw new DBFException("Failed to parse Float: " + e.getMessage());
+						throw new DBFException("Failed to parse Float: " + e.getMessage(), e);
 					}
 
 					break;
@@ -260,7 +260,7 @@ public class DBFReader extends DBFBase {
 		} catch (EOFException e) {
 			return null;
 		} catch (IOException e) {
-			throw new DBFException(e.getMessage());
+			throw new DBFException(e.getMessage(), e);
 		}
 
 		return recordObjects;
