@@ -71,7 +71,7 @@ public class JavaDBFReaderTest {
     try {
 
       // create a DBFReader object
-      InputStream inputStream  = new FileInputStream(args[ 0]);
+      InputStream inputStream  = new FileInputStream(args[0]);
       DBFReader reader = new DBFReader(inputStream); 
 
       // get the field count if you want for some reasons like the following
@@ -213,7 +213,7 @@ public class DBFWriterTest {
 }
 ```
 
-Keep in mind that till the write method is called, all the added data will be kept in memory. So, if you are planning to write huge amount of data make sure that it will be safely held in memory till it is written to disk and the DBFWriter object is garbage-collected. Read the ``Sync Mode'' section to know how JavaDBF to use a special feature of JavaDBF to overcome this.
+Keep in mind that till the write method is called, all the added data will be kept in memory. So, if you are planning to write huge amount of data make sure that it will be safely held in memory till it is written to disk and the DBFWriter object is garbage-collected. Read the Sync Mode section to know how JavaDBF to use a special feature of JavaDBF to overcome this.
 
 ## Sync Mode: Writing Records to File as They are Added
 
