@@ -16,19 +16,14 @@ Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
-*/
+ */
 
 package com.linuxense.javadbf;
 
-/*
-Serves as the base class of DBFReader adn DBFWriter.
-
-Support for choosing implemented character Sets as 
-suggested by Nick Voznesensky <darkers@mail.ru>
-*/
 /**
- * Base class for DBFReader and DBFWriter.
-*/
+ * Base class for DBFReader and DBFWriter. Support for choosing implemented
+ * character Sets as suggested by Nick Voznesensky <darkers@mail.ru>
+ */
 public abstract class DBFBase {
 
 	protected static final int END_OF_DATA = 0x1A;
@@ -40,6 +35,7 @@ public abstract class DBFBase {
 
 	/**
 	 * Gets the charset used to read and write files.
+	 * 
 	 * @return
 	 */
 	public String getCharactersetName() {

@@ -24,19 +24,12 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-/*
-DBFField
-	Class represents a "field" (or column) definition of a DBF data structure.
-
-*/
-
 /**
-	DBFField represents a field specification in an dbf file.
-
-	DBFField objects are either created and added to a DBFWriter object or obtained
-	from DBFReader object through getField( int) query.
-
-*/
+ * DBFField represents a field specification in an dbf file.
+ * 
+ * DBFField objects are either created and added to a DBFWriter object or
+ * obtained from DBFReader object through getField( int) query.
+ */
 public class DBFField {
 
 	@Deprecated
@@ -54,33 +47,36 @@ public class DBFField {
 
 
 	//byte[] fieldName = new byte[ 11]; /* 0-10*/
-	private DBFDataType type;                    /* 11 */
-	private int reserv1;                      /* 12-15 */
-	private int fieldLength;                 /* 16 */
-	private byte decimalCount;                /* 17 */
-	private short reserv2;                    /* 18-19 */
-	private byte workAreaId;                  /* 20 */
-	private short reserv3;                    /* 21-22 */
-	private byte setFieldsFlag;               /* 23 */
-	private byte[] reserv4 = new byte[7];    /* 24-30 */
-	private byte indexFieldFlag;              /* 31 */
+	private DBFDataType type; /* 11 */
+	private int reserv1; /* 12-15 */
+	private int fieldLength; /* 16 */
+	private byte decimalCount; /* 17 */
+	private short reserv2; /* 18-19 */
+	private byte workAreaId; /* 20 */
+	private short reserv3; /* 21-22 */
+	private byte setFieldsFlag; /* 23 */
+	private byte[] reserv4 = new byte[7]; /* 24-30 */
+	private byte indexFieldFlag; /* 31 */
 
 	private String name;
-	
+
 	public DBFField() {
 		super();
 	}
 
 	/**
-	Creates a DBFField object from the data read from the given DataInputStream.
-
-	The data in the DataInputStream object is supposed to be organised correctly
-	and the stream "pointer" is supposed to be positioned properly.
-
-	@param in DataInputStream
-	@return Returns the created DBFField object.
-	@throws IOException If any stream reading problems occures.
-	*/
+	 * Creates a DBFField object from the data read from the given
+	 * DataInputStream.
+	 * 
+	 * The data in the DataInputStream object is supposed to be organised
+	 * correctly and the stream "pointer" is supposed to be positioned properly.
+	 * 
+	 * @param in
+	 *            DataInputStream
+	 * @return Returns the created DBFField object.
+	 * @throws IOException
+	 *             If any stream reading problems occures.
+	 */
 	protected static DBFField createField(DataInput in) throws IOException {
 
 		DBFField field = new DBFField();
@@ -102,8 +98,7 @@ public class DBFField {
 		field.name = new String(fieldName, 0, nameNullIndex);
 		try {
 			field.type = DBFDataType.fromCode(in.readByte()); /* 11 */
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			field.type = DBFDataType.UNKNOWN;
 		}
 		field.reserv1 = Utils.readLittleEndianInt(in); /* 12-15 */
@@ -120,12 +115,14 @@ public class DBFField {
 	}
 
 	/**
-		Writes the content of DBFField object into the stream as per
-		DBF format specifications.
-
-		@param out OutputStream
-		@throws IOException if any stream related issues occur.
-	*/
+	 * Writes the content of DBFField object into the stream as per DBF format
+	 * specifications.
+	 * 
+	 * @param out
+	 *            OutputStream
+	 * @throws IOException
+	 *             if any stream related issues occur.
+	 */
 	protected void write(DataOutput out) throws IOException {
 		// Field Name
 		out.write(this.name.getBytes()); /* 0-10 */
@@ -145,21 +142,20 @@ public class DBFField {
 	}
 
 	/**
-		Returns the name of the field.
-
-		@return Name of the field as String.
-	*/
+	 * Returns the name of the field.
+	 * 
+	 * @return Name of the field as String.
+	 */
 	public String getName() {
 		return this.name;
 	}
 
 
-
 	/**
-		Returns field length.
-
-		@return field length as int.
-	*/
+	 * Returns field length.
+	 * 
+	 * @return field length as int.
+	 */
 	public int getFieldLength() {
 		return this.fieldLength;
 	}

@@ -30,15 +30,13 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-/*	
-DBFHeader
-Class for reading the metadata assuming that the given
-InputStream carries DBF data.
-
-*/	
+/**
+ * Class for reading the metadata assuming that the given InputStream carries
+ * DBF data.
+ */
 class DBFHeader {
 
-	public static final byte SIG_DBASE_III = (byte)0x03;
+	public static final byte SIG_DBASE_III = (byte) 0x03;
 	/* DBF structure start here */
 	
 	private byte signature;              /* 0 */
@@ -67,7 +65,7 @@ class DBFHeader {
 		this.signature = SIG_DBASE_III;
 		this.terminator1 = 0x0D;
 	}
-	
+
 	void read( DataInput dataInput) throws IOException {
 
 		this.signature = dataInput.readByte(); /* 0 */
