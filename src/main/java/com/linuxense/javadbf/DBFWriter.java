@@ -55,7 +55,7 @@ public class DBFWriter extends DBFBase {
 	List<Object[]> v_records = new ArrayList<>();
 	int recordCount = 0;
 	RandomAccessFile raf = null; /* Open and append records to an existing DBF */
-	
+	boolean appendMode = false;
 
 	/**
 		Creates an empty DBFWriter.
@@ -109,7 +109,7 @@ public class DBFWriter extends DBFBase {
 		}
 		for (int i = 0; i < fields.length; i++) {
 			if (fields[i] == null) {
-				throw new DBFException("Field " + (i + 1) + " is null");
+				throw new DBFException("Field " + i + " is null");
 			}
 		}
 		this.header.fieldArray = fields;
@@ -126,23 +126,23 @@ public class DBFWriter extends DBFBase {
 	/**
 		Add a record.
 	*/
-	public void addRecord(Object[] values) throws DBFException {
+	public void addRecord( Object[] values)	throws DBFException {
 
-		if (this.header.fieldArray == null) {
-			throw new DBFException("Fields should be set before adding records");
+		if( this.header.fieldArray == null) {
+			throw new DBFException( "Fields should be set before adding records");
 		}
 
-		if (values == null) {
-			throw new DBFException("Null cannot be added as row");
+		if( values == null) {
+			throw new DBFException( "Null cannot be added as row");
 		}
 
-		if (values.length != this.header.fieldArray.length) {
-			throw new DBFException("Invalid record. Invalid number of fields in row");
+		if( values.length != this.header.fieldArray.length) {
+			throw new DBFException( "Invalid record. Invalid number of fields in row");
 		}
 
 		for (int i = 0; i < this.header.fieldArray.length; i++) {
 			Object value = values[i];
-			if (value == null) {
+			if (values[i] == null) {
 				continue;
 			}
 
@@ -168,7 +168,7 @@ public class DBFWriter extends DBFBase {
 			case NUMERIC:
 			case FLOATING_POINT:
 				if (!(value instanceof Number)) {
-					throw new DBFException("Invalid value for field " + i + ":" + value);
+					throw new DBFException("Invalid value for field " + i+ ":" + value);
 				}
 				break;
 			default:
@@ -194,32 +194,31 @@ public class DBFWriter extends DBFBase {
 	*/
 	public void write(OutputStream out) throws DBFException {
 		try {
-			if (this.raf == null) {
-				DataOutputStream outStream = new DataOutputStream(out);
+			if( this.raf == null) {
+				DataOutputStream outStream = new DataOutputStream( out);
 				this.header.numberOfRecords = this.v_records.size();
-				this.header.write(outStream);
+				this.header.write( outStream);
 
 				/* Now write all the records */
-				for (Object[] record : this.v_records) {
+				for (Object[] record: this.v_records) {
 					writeRecord(outStream, record);
 				}
 
-				outStream.write(END_OF_DATA);
+				outStream.write( END_OF_DATA);
 				outStream.flush();
-			} else {
-				/*
-				 * everything is written already. just update the header for
-				 * record count and the END_OF_DATA mark
-				 */
+			}
+			else {
+				/* everything is written already. just update the header for record count and the END_OF_DATA mark */
 				this.header.numberOfRecords = this.recordCount;
-				this.raf.seek(0);
-				this.header.write(this.raf);
-				this.raf.seek(this.raf.length());
-				this.raf.writeByte(END_OF_DATA);
+				this.raf.seek( 0);
+				this.header.write( this.raf);
+				this.raf.seek( this.raf.length());
+				this.raf.writeByte( END_OF_DATA);
 				this.raf.close();
 			}
-		} catch (IOException e) {
-			throw new DBFException(e.getMessage(), e);
+		}
+		catch( IOException e) {
+			throw new DBFException( e.getMessage(), e);
 		}
 	}
 
