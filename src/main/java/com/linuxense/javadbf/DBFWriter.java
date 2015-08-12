@@ -17,9 +17,10 @@ Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
-*/
+ */
 
 package com.linuxense.javadbf;
+
 import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -34,41 +35,47 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 /*
-DBFWriter
-Class for defining a DBF structure and addin data to that structure and 
-finally writing it to an OutputStream.
+ DBFWriter
+ Class for defining a DBF structure and addin data to that structure and 
+ finally writing it to an OutputStream.
 
-*/
+ */
 /**
-	An object of this class can create a DBF file.
-
-	Create an object, <br>
-	then define fields by creating DBFField objects and<br>
-	add them to the DBFWriter object<br>
-	add records using the addRecord() method and then<br>
-	call write() method.
-*/
+ * An object of this class can create a DBF file.
+ * 
+ * Create an object, <br>
+ * then define fields by creating DBFField objects and<br>
+ * add them to the DBFWriter object<br>
+ * add records using the addRecord() method and then<br>
+ * call write() method.
+ */
 public class DBFWriter extends DBFBase {
 
 	/* other class variables */
 	private DBFHeader header;
 	private List<Object[]> v_records = new ArrayList<>();
 	private int recordCount = 0;
-	private RandomAccessFile raf = null; /* Open and append records to an existing DBF */
-
+	private RandomAccessFile raf = null; /*
+										 * Open and append records to an
+										 * existing DBF
+										 */
 
 	/**
-		Creates an empty DBFWriter.
-	*/
+	 * Creates an empty DBFWriter.
+	 */
 	public DBFWriter() {
 		super();
 		this.header = new DBFHeader();
 	}
 
 	/**
-	 	Creates a DBFWriter which can append to records to an existing DBF file.
-		@param dbfFile. The file passed in shouls be a valid DBF file.
-		@exception DBFException if the passed in file does exist but not a valid DBF file, or if an IO error occurs.
+	 * Creates a DBFWriter which can append to records to an existing DBF file.
+	 * 
+	 * @param dbfFile
+	 *            . The file passed in shouls be a valid DBF file.
+	 * @exception DBFException
+	 *                if the passed in file does exist but not a valid DBF file,
+	 *                or if an IO error occurs.
 	 */
 	public DBFWriter(File dbfFile) throws DBFException {
 		super();
@@ -87,7 +94,8 @@ public class DBFWriter extends DBFBase {
 			this.header.read(this.raf);
 
 			/* position file pointer at the end of the raf */
-			this.raf.seek(this.raf.length() - 1); //to ignore the END_OF_DATA byte at EoF												 
+			this.raf.seek(this.raf.length() - 1); // to ignore the END_OF_DATA
+													// byte at EoF
 		} catch (FileNotFoundException e) {
 			throw new DBFException("Specified file is not found. " + e.getMessage(), e);
 		} catch (IOException e) {
@@ -98,8 +106,8 @@ public class DBFWriter extends DBFBase {
 	}
 
 	/**
-		Sets fields.
-	*/
+	 * Sets fields.
+	 */
 	public void setFields(DBFField[] fields) throws DBFException {
 
 		if (this.header.fieldArray != null) {
@@ -116,7 +124,8 @@ public class DBFWriter extends DBFBase {
 		this.header.fieldArray = fields;
 		try {
 			if (this.raf != null && this.raf.length() == 0) {
-				// this is a new/non-existent file. So write header before proceeding
+				// this is a new/non-existent file. So write header before
+				// proceeding
 				this.header.write(this.raf);
 			}
 		} catch (IOException e) {
@@ -125,20 +134,20 @@ public class DBFWriter extends DBFBase {
 	}
 
 	/**
-		Add a record.
-	*/
-	public void addRecord( Object[] values)	throws DBFException {
+	 * Add a record.
+	 */
+	public void addRecord(Object[] values) throws DBFException {
 
-		if( this.header.fieldArray == null) {
-			throw new DBFException( "Fields should be set before adding records");
+		if (this.header.fieldArray == null) {
+			throw new DBFException("Fields should be set before adding records");
 		}
 
-		if( values == null) {
-			throw new DBFException( "Null cannot be added as row");
+		if (values == null) {
+			throw new DBFException("Null cannot be added as row");
 		}
 
-		if( values.length != this.header.fieldArray.length) {
-			throw new DBFException( "Invalid record. Invalid number of fields in row");
+		if (values.length != this.header.fieldArray.length) {
+			throw new DBFException("Invalid record. Invalid number of fields in row");
 		}
 
 		for (int i = 0; i < this.header.fieldArray.length; i++) {
@@ -169,13 +178,14 @@ public class DBFWriter extends DBFBase {
 			case NUMERIC:
 			case FLOATING_POINT:
 				if (!(value instanceof Number)) {
-					throw new DBFException("Invalid value for field " + i+ ":" + value);
+					throw new DBFException("Invalid value for field " + i + ":" + value);
 				}
 				break;
 			default:
-				throw new DBFException("Unsupported writting of field type " + i + " " + this.header.fieldArray[i].getType());
+				throw new DBFException("Unsupported writting of field type " + i + " "
+						+ this.header.fieldArray[i].getType());
 			}
-			
+
 		}
 
 		if (this.raf == null) {
@@ -191,35 +201,36 @@ public class DBFWriter extends DBFBase {
 	}
 
 	/**
-		Writes the set data to the OutputStream.
-	*/
+	 * Writes the set data to the OutputStream.
+	 */
 	public void write(OutputStream out) throws DBFException {
 		try {
-			if( this.raf == null) {
-				DataOutputStream outStream = new DataOutputStream( out);
+			if (this.raf == null) {
+				DataOutputStream outStream = new DataOutputStream(out);
 				this.header.numberOfRecords = this.v_records.size();
-				this.header.write( outStream);
+				this.header.write(outStream);
 
 				/* Now write all the records */
-				for (Object[] record: this.v_records) {
+				for (Object[] record : this.v_records) {
 					writeRecord(outStream, record);
 				}
 
-				outStream.write( END_OF_DATA);
+				outStream.write(END_OF_DATA);
 				outStream.flush();
-			}
-			else {
-				/* everything is written already. just update the header for record count and the END_OF_DATA mark */
+			} else {
+				/*
+				 * everything is written already. just update the header for
+				 * record count and the END_OF_DATA mark
+				 */
 				this.header.numberOfRecords = this.recordCount;
-				this.raf.seek( 0);
-				this.header.write( this.raf);
-				this.raf.seek( this.raf.length());
-				this.raf.writeByte( END_OF_DATA);
+				this.raf.seek(0);
+				this.header.write(this.raf);
+				this.raf.seek(this.raf.length());
+				this.raf.writeByte(END_OF_DATA);
 				this.raf.close();
 			}
-		}
-		catch( IOException e) {
-			throw new DBFException( e.getMessage(), e);
+		} catch (IOException e) {
+			throw new DBFException(e.getMessage(), e);
 		}
 	}
 
@@ -237,20 +248,21 @@ public class DBFWriter extends DBFBase {
 				String strValue = "";
 				if (objectArray[j] != null) {
 					strValue = objectArray[j].toString();
-				} 
+				}
 				dataOutput.write(Utils.textPadding(strValue, this.characterSetName,
-							this.header.fieldArray[j].getFieldLength()));
-				
+						this.header.fieldArray[j].getFieldLength()));
 
 				break;
 
 			case DATE:
 				if (objectArray[j] != null) {
 					GregorianCalendar calendar = new GregorianCalendar();
-					calendar.setTime( (Date)objectArray[j]);
-					dataOutput.write( String.valueOf( calendar.get( Calendar.YEAR)).getBytes());
-					dataOutput.write( Utils.textPadding( String.valueOf( calendar.get( Calendar.MONTH)+1), this.characterSetName, 2, DBFAlignment.RIGHT, (byte)'0'));
-					dataOutput.write( Utils.textPadding( String.valueOf( calendar.get( Calendar.DAY_OF_MONTH)), this.characterSetName, 2, DBFAlignment.RIGHT, (byte)'0'));
+					calendar.setTime((Date) objectArray[j]);
+					dataOutput.write(String.valueOf(calendar.get(Calendar.YEAR)).getBytes());
+					dataOutput.write(Utils.textPadding(String.valueOf(calendar.get(Calendar.MONTH) + 1),
+							this.characterSetName, 2, DBFAlignment.RIGHT, (byte) '0'));
+					dataOutput.write(Utils.textPadding(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)),
+							this.characterSetName, 2, DBFAlignment.RIGHT, (byte) '0'));
 				} else {
 					dataOutput.write("        ".getBytes());
 				}
