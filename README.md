@@ -228,15 +228,16 @@ public class DBFWriterTest {
 
 It is illegal to call setFields in DBFWriter object created for appending. Here also it is required to call the write() method after adding all the records.
 
-#Compiling from sources
+#Building from sources
 
 Clone the repository or download de tar file from releases page on github, run the Maven command:
 
+    git clone https://github.com/albfernandez/javadbf.git
+    cd javadbf
     mvn package
 
-#Planned Features
+The result file is target/javadbf-x.x.x.jar
 
-Support for memo fields. 
 
 
 #Links
