@@ -51,16 +51,17 @@ finally writing it to an OutputStream.
 public class DBFWriter extends DBFBase {
 
 	/* other class variables */
-	DBFHeader header;
-	List<Object[]> v_records = new ArrayList<>();
-	int recordCount = 0;
-	RandomAccessFile raf = null; /* Open and append records to an existing DBF */
-	boolean appendMode = false;
+	private DBFHeader header;
+	private List<Object[]> v_records = new ArrayList<>();
+	private int recordCount = 0;
+	private RandomAccessFile raf = null; /* Open and append records to an existing DBF */
+
 
 	/**
 		Creates an empty DBFWriter.
 	*/
 	public DBFWriter() {
+		super();
 		this.header = new DBFHeader();
 	}
 
@@ -70,7 +71,7 @@ public class DBFWriter extends DBFBase {
 		@exception DBFException if the passed in file does exist but not a valid DBF file, or if an IO error occurs.
 	 */
 	public DBFWriter(File dbfFile) throws DBFException {
-
+		super();
 		try {
 			this.raf = new RandomAccessFile(dbfFile, "rw");
 			this.header = new DBFHeader();
