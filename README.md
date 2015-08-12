@@ -29,17 +29,33 @@ JavaDBF comes in the package com.linuxense.javadbf. Import that package in your 
 
 #Data Type Mapping
 
-In version 0.3.2, JavaDBF supports almost all XBase data types except Memo field. While reading, those types are interpretted as appropriate Java types. Following table shows the mapping scheme.
+JavaDBF supports almost all XBase data types except Memo field. While reading, those types are interpretted as appropriate Java types. Following table shows the mapping scheme.
 
 
-|XBase Type | XBase Symbol | Java Type used in JavaDBF |
-|---------- | ------------ | ---------------------------
-|Character  | C            | java.lang.String          |
-|Numeric    | N            | java.lang.Double          |
-|Double     | F            | lava.lang.Double          |
-|Logical    | L            | java.lang.Boolean         |
-|Date       | D            | java.util.Date            |
+|XBase Type   | XBase Symbol | Java Type used in JavaDBF |
+|----------   | ------------ | ---------------------------
+|Character    | C            | java.lang.String          |
+|Numeric      | N            | java.lang.Double          |
+|Double       | F            | lava.lang.Double          |
+|Logical      | L            | java.lang.Boolean         |
+|Date         | D            | java.util.Date            |
 
+FoxPro types (Read Only)
+
+|FoxPro Type | Symbol      | Java Type used in JavaDBF |
+| ---------- | ----------- | ------------------------- |  
+|Currency    | Y           | java.math.BigDecimal      |
+|Long        | I           | java.lang.Integer         |
+
+Unsupported types
+
+|Type                   | Symbol |
+| --------------------- | ------ |
+| Memo                  | M      |
+| Binary                | B      |
+| General (OLE Objects) | G      |
+| Picture (FoxPro)      | P      |
+| Date Type (FoxPro)    | T      |
 
 #Reading a DBF File
 
@@ -55,36 +71,34 @@ public class JavaDBFReaderTest {
     try {
 
       // create a DBFReader object
-      //
-      InputStream inputStream  = new FileInputStream( args[ 0]); // take dbf file as program argument
-      DBFReader reader = new DBFReader( inputStream); 
+      InputStream inputStream  = new FileInputStream(args[ 0]);
+      DBFReader reader = new DBFReader(inputStream); 
 
       // get the field count if you want for some reasons like the following
-      //
+
       int numberOfFields = reader.getFieldCount();
 
       // use this count to fetch all field information
       // if required
-      //
-      for( int i=0; i<numberOfFields; i++) {
 
-        DBFField field = reader.getField( i);
+      for(int i = 0; i < numberOfFields; i++) {
+
+        DBFField field = reader.getField(i);
 
         // do something with it if you want
         // refer the JavaDoc API reference for more details
         //
-        System.out.println( field.getName());
+        System.out.println(field.getName());
       }
 
       // Now, lets us start reading the rows
-      //
-      Object []rowObjects;
 
-      while( (rowObjects = reader.nextRecord()) != null) {
+      Object[] rowObjects;
 
-        for( int i=0; i<rowObjects.length; i++) {
+      while((rowObjects = reader.nextRecord()) != null) {
 
-          System.out.println( rowObjects[i]);
+        for(int i = 0; i < rowObjects.length; i++) {
+          System.out.println(rowObjects[i]);
         }
       }
 
@@ -92,13 +106,11 @@ public class JavaDBFReaderTest {
       
       inputStream.close();
     }
-    catch( DBFException e) {
-
-      System.out.println( e.getMessage());
+    catch(DBFException e) {
+      e.printStrackTrace();
     }
-    catch( IOException e) {
-
-      System.out.println( e.getMessage());
+    catch(IOException e) {
+      e.printStrackTrace();
     }
   }  
 }  
@@ -113,10 +125,10 @@ The class complementary to DBFReader is the DBFWriter.While creating a .dbf data
 Create an object of DBFField class:
 
 ```java
-DBFField field = new DBFField();
-  field.setField( "emp_name"); // give a name to the field
-  field.setDataType( DBFField.FIELD_TYPE_C); // and set its type
-  field.setFieldLength( 25); // and length of the field
+	DBFField field = new DBFField();
+	field.setField("emp_name"); // give a name to the field
+	field.setDataType(DBFField.FIELD_TYPE_C); // and set its type
+	field.setFieldLength(25); // and length of the field
 ```
 
 This is, now, a complete DBFField Object ready to use. We have to create as many DBFField Objects as we want to be in the .dbf file. The DBFWriter class accept DBFField in an array. Now, let's move on to the next step of populating data.
@@ -144,8 +156,8 @@ public class DBFWriterTest {
 
     // let us create field definitions first
     // we will go for 3 fields
-    //
-    DBFField fields[] = new DBFField[ 3];
+
+    DBFField[] fields = new DBFField[3];
 
     fields[0] = new DBFField();
     fields[0].setName("emp_code");
@@ -164,34 +176,34 @@ public class DBFWriterTest {
     fields[2].setDecimalCount(2);
 
     DBFWriter writer = new DBFWriter();
-    writer.setFields( fields);
+    writer.setFields(fields);
 
     // now populate DBFWriter
-    //
 
     Object rowData[] = new Object[3];
     rowData[0] = "1000";
     rowData[1] = "John";
-    rowData[2] = new Double( 5000.00);
+    rowData[2] = new Double(5000.00);
 
-    writer.addRecord( rowData);
+    writer.addRecord(rowData);
 
     rowData = new Object[3];
     rowData[0] = "1001";
     rowData[1] = "Lalit";
-    rowData[2] = new Double( 3400.00);
+    rowData[2] = new Double(3400.00);
 
-    writer.addRecord( rowData);
+    writer.addRecord(rowData);
 
     rowData = new Object[3];
     rowData[0] = "1002";
     rowData[1] = "Rohit";
-    rowData[2] = new Double( 7350.00);
+    rowData[2] = new Double(7350.00);
 
-    writer.addRecord( rowData);
+    writer.addRecord(rowData);
 
-    FileOutputStream fos = new FileOutputStream( args[0]);
-    writer.write( fos);
+	// write to file
+    FileOutputStream fos = new FileOutputStream(args[0]);
+    writer.write(fos);
     fos.close();
   }
 }
@@ -211,12 +223,12 @@ import java.io.*;
 
 public class DBFWriterTest {
 
-  public static void main( String args[])
+  public static void main(String args[])
   throws DBFException, IOException {
 
     // ...
 
-    DBFWriter writer = new DBFWriter( new File( "/path/to/a/new/file")); /* this DBFWriter object is now in Syc Mode */
+    DBFWriter writer = new DBFWriter(new File("/path/to/a/new/file")); /* this DBFWriter object is now in Syc Mode */
     // ...
   }
 }       
