@@ -234,14 +234,13 @@ public class DBFWriter extends DBFBase {
 			switch (this.header.fieldArray[j].getType()) {
 
 			case CHARACTER:
+				String strValue = "";
 				if (objectArray[j] != null) {
-					String str_value = objectArray[j].toString();
-					dataOutput.write(Utils.textPadding(str_value, this.characterSetName,
+					strValue = objectArray[j].toString();
+				} 
+				dataOutput.write(Utils.textPadding(strValue, this.characterSetName,
 							this.header.fieldArray[j].getFieldLength()));
-				} else {
-					dataOutput.write(Utils.textPadding("", this.characterSetName,
-							this.header.fieldArray[j].getFieldLength()));
-				}
+				
 
 				break;
 
