@@ -10,7 +10,7 @@ More over, XBase format is like an Open-standard; it is understood by almost all
 
 #Introduction
 
-Till late 90s dBase and its cousins were the most preferred database platform for small and even medium enterprise applications. They demanded only low hardware configurations and were cheaper to develop. I myself have developed and maintained many such applications. I liked the the dBase file structure called .dbf which is simple and good enough for the purpose. But eventually, more capable desktop databases like M$ Access came into picture. But still DBF file format remains one of the simplest way to store and transfer data.
+Till late 90s dBase and its cousins were the most preferred database platform for small and even medium enterprise applications. They demanded only low hardware configurations and were cheaper to develop. I myself have developed and maintained many such applications. I liked the the dBase file structure called .dbf which is simple and good enough for the purpose. But eventually, more capable desktop databases like Microsoft Access came into picture. But still DBF file format remains one of the simplest way to store and transfer data.
 
 DBF format has some advantages over csv or XML: it can contain the structure definition including data type information. DBF is more like an open standard so it can be used as a data exchange format. If you have a database application with an RDBMS at the back-end and still you need to import a report to your spread sheet program, DBF format is the most elegant and sure-shot approach.
 
@@ -66,7 +66,7 @@ import com.linuxense.javadbf.*;
 
 public class JavaDBFReaderTest {
 
-  public static void main( String args[]) {
+  public static void main(String args[]) {
 
     try {
 
@@ -118,7 +118,10 @@ public class JavaDBFReaderTest {
 
 #Writing a DBF File
 
-The class complementary to DBFReader is the DBFWriter.While creating a .dbf data file you will have to deal with two aspects: 1. define the fields and 2. populate data. As mentioned above a dbf field is represented by the class DBFField. First, let us familiarise this class.
+The class complementary to DBFReader is the DBFWriter.While creating a .dbf data file you will have to deal with two aspects: 
+1. define the fields and 
+2. populate data. 
+As mentioned above a dbf field is represented by the class DBFField. First, let us familiarise this class.
 
 ##Defining Fields
 
@@ -138,8 +141,9 @@ This is, now, a complete DBFField Object ready to use. We have to create as many
 A DBFWriter is used for creating a .dbf file. First lets create a DBFWriter object by calling its constructor and then set the fields created (as explained above) by calling the setFields method.
 
 ```java
-DBFWriter writer = new DBFWriter();
-writer.setFields( fields); // fields is a non-empty array of DBFField objects
+	DBFWriter writer = new DBFWriter();
+	// fields is a non-empty array of DBFField objects
+	writer.setFields(fields); 
 ```
 Now, the DBFWriter Object is ready to be populated. The method for adding data to the DBFWriter is addRecord and it takes an Object array as its argument. This Object array is supposed contain values for the fields added with one-to-one correspondence with the fields set. 
 
@@ -151,7 +155,7 @@ import java.io.*;
 
 public class DBFWriterTest {
 
-  public static void main( String args[])
+  public static void main(String args[])
   throws DBFException, IOException {
 
     // let us create field definitions first
@@ -228,7 +232,8 @@ public class DBFWriterTest {
 
     // ...
 
-    DBFWriter writer = new DBFWriter(new File("/path/to/a/new/file")); /* this DBFWriter object is now in Syc Mode */
+    DBFWriter writer = new DBFWriter(new File("/path/to/a/new/file")); 
+    // this DBFWriter object is now in Syc Mode 
     // ...
   }
 }       
@@ -236,7 +241,7 @@ public class DBFWriterTest {
 
 #Appending Records
 
-    From version 0.4.0 onwards JavaDBF supports appending of records to an existing DBF file. Use the same constructor used in Sync Mode to achieve this. But here the File object passed to the construction should represent the DBF file to which records are to be appended. 
+From version 0.4.0 onwards JavaDBF supports appending of records to an existing DBF file. Use the same constructor used in Sync Mode to achieve this. But here the File object passed to the construction should represent the DBF file to which records are to be appended. 
 
 It is illegal to call setFields in DBFWriter object created for appending. Here also it is required to call the write() method after adding all the records.
 
