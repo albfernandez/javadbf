@@ -38,27 +38,27 @@ InputStream carries DBF data.
 */	
 class DBFHeader {
 
-	static final byte SIG_DBASE_III = (byte)0x03;
+	public static final byte SIG_DBASE_III = (byte)0x03;
 	/* DBF structure start here */
 	
-	byte signature;              /* 0 */
+	private byte signature;              /* 0 */
 	byte year;                   /* 1 */
 	byte month;                  /* 2 */
 	byte day;                    /* 3 */
 	int numberOfRecords;         /* 4-7 */
 	short headerLength;          /* 8-9 */
 	short recordLength;          /* 10-11 */
-	short reserv1;               /* 12-13 */
-	byte incompleteTransaction;  /* 14 */
-	byte encryptionFlag;         /* 15 */
-	int freeRecordThread;        /* 16-19 */
-	int reserv2;                 /* 20-23 */
-	int reserv3;                 /* 24-27 */
-	byte mdxFlag;                /* 28 */
-	byte languageDriver;         /* 29 */
-	short reserv4;               /* 30-31 */
+	private short reserv1;               /* 12-13 */
+	private byte incompleteTransaction;  /* 14 */
+	private byte encryptionFlag;         /* 15 */
+	private int freeRecordThread;        /* 16-19 */
+	private int reserv2;                 /* 20-23 */
+	private int reserv3;                 /* 24-27 */
+	private byte mdxFlag;                /* 28 */
+	private byte languageDriver;         /* 29 */
+	private short reserv4;               /* 30-31 */
 	DBFField []fieldArray;       /* each 32 bytes */	
-	byte terminator1;            /* n+1 */
+	private byte terminator1;            /* n+1 */
 
 	//byte[] databaseContainer; /* 263 bytes */
 	/* DBF structure ends here */

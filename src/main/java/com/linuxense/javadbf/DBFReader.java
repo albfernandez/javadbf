@@ -78,11 +78,10 @@ Class for reading the records assuming that the given
 */
 public class DBFReader extends DBFBase {
 
-	DataInputStream dataInputStream;
-	DBFHeader header;
+	private DataInputStream dataInputStream;
+	private DBFHeader header;
 
-	/* Class specific variables */
-	boolean isClosed = true;
+	private boolean isClosed = true;
 
 	/**
 		Initializes a DBFReader object.

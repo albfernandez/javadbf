@@ -54,19 +54,16 @@ public class DBFField {
 
 
 	//byte[] fieldName = new byte[ 11]; /* 0-10*/
-	DBFDataType type;                    /* 11 */
-	int reserv1;                      /* 12-15 */
-	int fieldLength;                 /* 16 */
-	byte decimalCount;                /* 17 */
-	short reserv2;                    /* 18-19 */
-	byte workAreaId;                  /* 20 */
-	short reserv3;                    /* 21-22 */
-	byte setFieldsFlag;               /* 23 */
-	byte[] reserv4 = new byte[ 7];    /* 24-30 */
-	byte indexFieldFlag;              /* 31 */
-
-
-
+	private DBFDataType type;                    /* 11 */
+	private int reserv1;                      /* 12-15 */
+	private int fieldLength;                 /* 16 */
+	private byte decimalCount;                /* 17 */
+	private short reserv2;                    /* 18-19 */
+	private byte workAreaId;                  /* 20 */
+	private short reserv3;                    /* 21-22 */
+	private byte setFieldsFlag;               /* 23 */
+	private byte[] reserv4 = new byte[7];    /* 24-30 */
+	private byte indexFieldFlag;              /* 31 */
 
 	private String name;
 	
