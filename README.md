@@ -10,9 +10,11 @@ More over, XBase format is like an Open-standard; it is understood by almost all
 
 #Introduction
 
-Till late 90s dBase and its cousins were the most preferred database platform for small and even medium enterprise applications. They demanded only low hardware configurations and were cheaper to develop. I myself have developed and maintained many such applications. I liked the the dBase file structure called .dbf which is simple and good enough for the purpose. But eventually, more capable desktop databases like Microsoft Access came into picture. But still DBF file format remains one of the simplest way to store and transfer data.
+Till late 90s dBase and its cousins were the most preferred database platform for small and even medium enterprise applications.
+They demanded only low hardware configurations and were cheaper to develop. 
+Eventually more capable desktop databases like Microsoft Access came into picture, DBF file format still remains one of the simplest way to store and transfer data.
 
-DBF format has some advantages over csv or XML: it can contain the structure definition including data type information. DBF is more like an open standard so it can be used as a data exchange format. If you have a database application with an RDBMS at the back-end and still you need to import a report to your spread sheet program, DBF format is the most elegant and sure-shot approach.
+DBF format has some advantages over CSV or XML: it can contain the structure definition including data type information. DBF is more like an open standard so it can be used as a data exchange format. If you have a database application with an RDBMS at the back-end and still you need to import a report to your spread sheet program, DBF format is the most elegant and sure-shot approach.
 
 JavaDBF also comes handy when it is required to transfer data between applications which do not have a common data format. Java developers often come across such situations when they are asked to share data with spreadsheet application. 
 
@@ -119,8 +121,10 @@ public class JavaDBFReaderTest {
 #Writing a DBF File
 
 The class complementary to DBFReader is the DBFWriter.While creating a .dbf data file you will have to deal with two aspects: 
+
 1. define the fields and 
 2. populate data. 
+
 As mentioned above a dbf field is represented by the class DBFField. First, let us familiarise this class.
 
 ##Defining Fields
@@ -236,7 +240,7 @@ public class DBFWriterTest {
     // this DBFWriter object is now in Syc Mode 
     // ...
   }
-}       
+}
 ```
 
 #Appending Records
