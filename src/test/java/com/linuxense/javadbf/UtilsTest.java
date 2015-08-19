@@ -6,13 +6,15 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
 
 
 public class UtilsTest {
 
-	private static final String CHARSET_ISO = "ISO_8859_1";
+	private static final Charset CHARSET_ISO = StandardCharsets.ISO_8859_1;
 	public UtilsTest () {
 		super();
 	}
@@ -26,15 +28,15 @@ public class UtilsTest {
 	}
 	@Test
 	public void testToBoolean() {
-		assertTrue(Utils.toBoolean((byte) 't'));
-		assertTrue(Utils.toBoolean((byte) 'T'));
-		assertTrue(Utils.toBoolean((byte) 'y'));
-		assertTrue(Utils.toBoolean((byte) 'Y'));
+		assertEquals(Boolean.TRUE, Utils.toBoolean((byte) 't'));
+		assertEquals(Boolean.TRUE, Utils.toBoolean((byte) 'T'));
+		assertEquals(Boolean.TRUE, Utils.toBoolean((byte) 'y'));
+		assertEquals(Boolean.TRUE, Utils.toBoolean((byte) 'Y'));
 		
-		assertFalse(Utils.toBoolean((byte) 'f'));
-		assertFalse(Utils.toBoolean((byte) 'F'));
-		assertFalse(Utils.toBoolean((byte) 'n'));
-		assertFalse(Utils.toBoolean((byte) 'N'));
+		assertEquals(Boolean.FALSE, Utils.toBoolean((byte) 'f'));
+		assertEquals(Boolean.FALSE, Utils.toBoolean((byte) 'F'));
+		assertEquals(Boolean.FALSE, Utils.toBoolean((byte) 'n'));
+		assertEquals(Boolean.FALSE, Utils.toBoolean((byte) 'N'));
 		
 		assertNull(Utils.toBoolean((byte) '?'));
 		

@@ -21,6 +21,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.linuxense.javadbf;
 
+import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -66,13 +67,13 @@ public final class Utils {
 	 * @return the data cleared of whitespaces
 	 */
 	public static byte[] removeSpaces(byte[] array) {
-		StringBuilder t_sb = new StringBuilder(array.length);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream(array.length);
 		for (byte b: array) {
 			if (b != ' '){
-				t_sb.append( (char) b);
+				baos.write(b);
 			}
 		}
-		return t_sb.toString().getBytes();
+		return baos.toByteArray();
 	}
 	
 
@@ -107,21 +108,21 @@ public final class Utils {
 		return num2;
 	}
 
-	public static byte[] textPadding(String text, String characterSetName, int length)
-			throws UnsupportedEncodingException {
-		return textPadding(text, characterSetName, length, DBFAlignment.LEFT);
-	}
 
-	public static byte[] textPadding(String text, String characterSetName, int length, DBFAlignment alignment)
-			throws UnsupportedEncodingException {
-
-		return textPadding(text, characterSetName, length, alignment, (byte) ' ');
+	public static byte[] textPadding(String text, Charset charset, int length) {
+		return textPadding(text, charset, length, DBFAlignment.LEFT, (byte) ' ');
 	}
 	
-	public static byte[] textPadding(String text, String characterSetName, int length, DBFAlignment alignment, byte paddingByte)
-			throws UnsupportedEncodingException {
+
+	public static byte[] textPadding(String text, Charset charset, int length, DBFAlignment alignment) {
+		return textPadding(text, charset, length, alignment, (byte) ' ');
+	}
+
+
+
+	public static byte[] textPadding(String text, Charset charset, int length, DBFAlignment alignment, byte paddingByte) {
 		if (text.length() >= length) {
-			return text.substring(0, length).getBytes(characterSetName);
+			return text.substring(0, length).getBytes(charset);
 		}
 
 		byte byte_array[] = new byte[length];
@@ -130,25 +131,24 @@ public final class Utils {
 		switch (alignment) {
 		case RIGHT:
 			int t_offset = length - text.length();
-			System.arraycopy(text.getBytes(characterSetName), 0, byte_array, t_offset, text.length());
+			System.arraycopy(text.getBytes(charset), 0, byte_array, t_offset, text.length());
 			break;
 		case LEFT:
 		default:
-			System.arraycopy(text.getBytes(characterSetName), 0, byte_array, 0, text.length());
+			System.arraycopy(text.getBytes(charset), 0, byte_array, 0, text.length());
 			break;
-			
+
 		}
 
 		return byte_array;
 	}
-
-	public static byte[] doubleFormating(Number num, String characterSetName, int fieldLength, int sizeDecimalPart)
-			throws java.io.UnsupportedEncodingException {
-		return doubleFormating(num.doubleValue(), characterSetName, fieldLength, sizeDecimalPart);
-	}
 	
-	public static byte[] doubleFormating(Double doubleNum, String characterSetName, int fieldLength, int sizeDecimalPart)
-			throws java.io.UnsupportedEncodingException {
+
+	public static byte[] doubleFormating(Number num, Charset charset, int fieldLength, int sizeDecimalPart) {
+		return doubleFormating(num.doubleValue(), charset, fieldLength, sizeDecimalPart);
+	}
+
+	public static byte[] doubleFormating(Double doubleNum, Charset charset, int fieldLength, int sizeDecimalPart) {
 		int sizeWholePart = fieldLength - (sizeDecimalPart > 0 ? (sizeDecimalPart + 1) : 0);
 
 		StringBuilder format = new StringBuilder(fieldLength);
@@ -164,8 +164,9 @@ public final class Utils {
 
 		DecimalFormat df = (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
 		df.applyPattern(format.toString());
-		return textPadding(df.format(doubleNum.doubleValue()).toString(), characterSetName, fieldLength, DBFAlignment.RIGHT);
+		return textPadding(df.format(doubleNum.doubleValue()).toString(), charset, fieldLength, DBFAlignment.RIGHT);
 	}
+
 
 	/**
 	 * Checcks that a byte array contains some byte
@@ -201,7 +202,7 @@ public final class Utils {
 	 * @param t_logical The byte value as stored in the file
 	 * @return The boolean value
 	 */
-	public static Boolean toBoolean(byte t_logical) {
+	public static Object toBoolean(byte t_logical) {
 		if (t_logical == 'Y' || t_logical == 'y' || t_logical == 'T' || t_logical == 't') {
 			return Boolean.TRUE;
 		} else if (t_logical == 'N' || t_logical == 'n' || t_logical == 'F' || t_logical == 'f'){
@@ -237,5 +238,36 @@ public final class Utils {
 		return textPadding(text, characterSetName, length, align, paddingByte);
 
 	}
+	
+	
+	@Deprecated
+	public static byte[] textPadding(String text, String characterSetName, int length)
+			throws UnsupportedEncodingException {
+		return textPadding(text, characterSetName, length, DBFAlignment.LEFT);
+	}
+
+	@Deprecated
+	public static byte[] textPadding(String text, String characterSetName, int length, DBFAlignment alignment)
+			throws UnsupportedEncodingException {
+
+		return textPadding(text, characterSetName, length, alignment, (byte) ' ');
+	}
+
+	@Deprecated
+	public static byte[] textPadding(String text, String characterSetName, int length, DBFAlignment alignment, byte paddingByte)
+			throws UnsupportedEncodingException {
+		return textPadding(text, Charset.forName(characterSetName), length, alignment, paddingByte);		
+	}
+	@Deprecated
+	public static byte[] doubleFormating(Number num, String characterSetName, int fieldLength, int sizeDecimalPart)
+			throws UnsupportedEncodingException {
+		return doubleFormating(num.doubleValue(), characterSetName, fieldLength, sizeDecimalPart);
+	}
+	@Deprecated
+	public static byte[] doubleFormating(Double doubleNum, String characterSetName, int fieldLength, int sizeDecimalPart)
+			throws UnsupportedEncodingException {
+		return doubleFormating(doubleNum, Charset.forName(characterSetName), fieldLength, sizeDecimalPart);
+	}
+	
 
 }

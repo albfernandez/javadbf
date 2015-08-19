@@ -28,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -249,7 +250,7 @@ public class DBFWriter extends DBFBase {
 				if (objectArray[j] != null) {
 					strValue = objectArray[j].toString();
 				}
-				dataOutput.write(Utils.textPadding(strValue, this.characterSetName,
+				dataOutput.write(Utils.textPadding(strValue, getCharset(),
 						this.header.fieldArray[j].getFieldLength()));
 
 				break;
@@ -258,13 +259,13 @@ public class DBFWriter extends DBFBase {
 				if (objectArray[j] != null) {
 					GregorianCalendar calendar = new GregorianCalendar();
 					calendar.setTime((Date) objectArray[j]);
-					dataOutput.write(String.valueOf(calendar.get(Calendar.YEAR)).getBytes());
+					dataOutput.write(String.valueOf(calendar.get(Calendar.YEAR)).getBytes(StandardCharsets.US_ASCII));
 					dataOutput.write(Utils.textPadding(String.valueOf(calendar.get(Calendar.MONTH) + 1),
-							this.characterSetName, 2, DBFAlignment.RIGHT, (byte) '0'));
+							StandardCharsets.US_ASCII, 2, DBFAlignment.RIGHT, (byte) '0'));
 					dataOutput.write(Utils.textPadding(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)),
-							this.characterSetName, 2, DBFAlignment.RIGHT, (byte) '0'));
+							StandardCharsets.US_ASCII, 2, DBFAlignment.RIGHT, (byte) '0'));
 				} else {
-					dataOutput.write("        ".getBytes());
+					dataOutput.write("        ".getBytes(StandardCharsets.US_ASCII));
 				}
 
 				break;
@@ -272,10 +273,10 @@ public class DBFWriter extends DBFBase {
 			case FLOATING_POINT:
 
 				if (objectArray[j] != null) {
-					dataOutput.write(Utils.doubleFormating((Number) objectArray[j], this.characterSetName,
+					dataOutput.write(Utils.doubleFormating((Number) objectArray[j], getCharset(),
 							this.header.fieldArray[j].getFieldLength(), this.header.fieldArray[j].getDecimalCount()));
 				} else {
-					dataOutput.write(Utils.textPadding(" ", this.characterSetName,
+					dataOutput.write(Utils.textPadding(" ", getCharset(),
 							this.header.fieldArray[j].getFieldLength(), DBFAlignment.RIGHT));
 				}
 
@@ -283,8 +284,8 @@ public class DBFWriter extends DBFBase {
 
 			case LOGICAL:
 
-				if (objectArray[j] != null) {
-					if ((Boolean) objectArray[j] == Boolean.TRUE) {
+				if (objectArray[j] instanceof Boolean) {
+					if ((Boolean) objectArray[j]) {
 						dataOutput.write((byte) 'T');
 					} else {
 						dataOutput.write((byte) 'F');

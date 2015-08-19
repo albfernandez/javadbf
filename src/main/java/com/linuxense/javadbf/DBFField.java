@@ -23,6 +23,8 @@ package com.linuxense.javadbf;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 /**
  * DBFField represents a field specification in an dbf file.
@@ -95,7 +97,7 @@ public class DBFField {
 				break;
 			}
 		}
-		field.name = new String(fieldName, 0, nameNullIndex);
+		field.name = new String(fieldName, 0, nameNullIndex, StandardCharsets.US_ASCII);
 		try {
 			field.type = DBFDataType.fromCode(in.readByte()); /* 11 */
 		} catch (Exception e) {
@@ -125,7 +127,7 @@ public class DBFField {
 	 */
 	protected void write(DataOutput out) throws IOException {
 		// Field Name
-		out.write(this.name.getBytes()); /* 0-10 */
+		out.write(this.name.getBytes(StandardCharsets.US_ASCII)); /* 0-10 */
 		out.write(new byte[11 - this.name.length()]);
 
 		// data type
@@ -202,6 +204,34 @@ public class DBFField {
 
 	
 
+	public int getReserv1() {
+		return this.reserv1;
+	}
+
+	public short getReserv2() {
+		return this.reserv2;
+	}
+
+	public byte getWorkAreaId() {
+		return this.workAreaId;
+	}
+
+	public short getReserv3() {
+		return this.reserv3;
+	}
+
+	public byte getSetFieldsFlag() {
+		return this.setFieldsFlag;
+	}
+
+	public byte[] getReserv4() {
+		return Arrays.copyOf(this.reserv4, this.reserv4.length);
+	}
+
+	public byte getIndexFieldFlag() {
+		return this.indexFieldFlag;
+	}
+
 	/**
 		Length of the field.
 		This method should be called before calling setDecimalCount().
@@ -209,15 +239,12 @@ public class DBFField {
 		@param length of the field as int.
 	*/
 	public void setFieldLength(int length) {
-		if (this.type == DBFDataType.DATE) {
-			throw new UnsupportedOperationException("Cannot do this on a Date field");
-		}
-		if (length <= 0) {
-			throw new IllegalArgumentException("Field length should be a positive number");
+		if (length > this.type.getMaxSize() || length < this.type.getMinSize()) {
+			throw new UnsupportedOperationException("Length for " + this.type + " must be between "
+					+ this.type.getMinSize() + " and " + this.type.getMaxSize());
 		}
 		this.fieldLength = length;
 	}
-	
 	
 
 	public DBFDataType getType() {
@@ -225,13 +252,14 @@ public class DBFField {
 	}
 
 	public void setType(DBFDataType type) {
-		if (type == DBFDataType.DATE) {
-			this.fieldLength = 8;
-		}
-		if (type == DBFDataType.UNKNOWN || type == DBFDataType.LONG || type == DBFDataType.CURRENCY) {
+		if (!type.isWriteSupported()) {
 			throw new IllegalArgumentException("No support for writting " + type);
 		}
 		this.type = type;
+		if (type.getDefaultSize() > 0) {
+			this.fieldLength = type.getDefaultSize();
+		}
+		
 	}
 
 	/**
@@ -247,6 +275,9 @@ public class DBFField {
 		}
 		if (size > this.fieldLength) {
 			throw new IllegalArgumentException("Decimal length should be less than field length");
+		}
+		if (this.type != DBFDataType.NUMERIC && this.type != DBFDataType.FLOATING_POINT) {
+			throw new UnsupportedOperationException("Cannot set decimal count on this field:" + this.type);
 		}
 		this.decimalCount = (byte) size;
 	}

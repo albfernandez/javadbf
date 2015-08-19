@@ -27,6 +27,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.GregorianCalendar;
 
 /**
@@ -179,7 +180,7 @@ public class DBFReader extends DBFBase {
 				if (t_byte == END_OF_DATA) {
 					return null;
 				}
-				isDeleted = (t_byte == '*');
+				isDeleted = t_byte == '*';
 			} while (isDeleted);
 
 			for (int i = 0; i < this.header.fieldArray.length; i++) {
@@ -187,7 +188,7 @@ public class DBFReader extends DBFBase {
 				case CHARACTER:
 					byte b_array[] = new byte[this.header.fieldArray[i].getFieldLength()];
 					this.dataInputStream.read(b_array);
-					recordObjects[i] = new String(b_array, getCharactersetName());
+					recordObjects[i] = new String(b_array, getCharset());
 					break;
 
 				case DATE:
@@ -202,9 +203,9 @@ public class DBFReader extends DBFBase {
 					this.dataInputStream.read(t_byte_day);
 
 					try {
-						GregorianCalendar calendar = new GregorianCalendar(Integer.parseInt(new String(t_byte_year)),
-								Integer.parseInt(new String(t_byte_month)) - 1,
-								Integer.parseInt(new String(t_byte_day)));
+						GregorianCalendar calendar = new GregorianCalendar(Integer.parseInt(new String(t_byte_year, StandardCharsets.US_ASCII)),
+								Integer.parseInt(new String(t_byte_month, StandardCharsets.US_ASCII)) - 1,
+								Integer.parseInt(new String(t_byte_day, StandardCharsets.US_ASCII)));
 						recordObjects[i] = calendar.getTime();
 					} catch (NumberFormatException e) {
 						/*
@@ -223,7 +224,7 @@ public class DBFReader extends DBFBase {
 						this.dataInputStream.read(t_float);
 						t_float = Utils.removeSpaces(t_float);
 						if (t_float.length > 0 && !Utils.contains(t_float, (byte) '?')) {
-							recordObjects[i] = new Double(new String(t_float));
+							recordObjects[i] = new Double(new String(t_float, StandardCharsets.US_ASCII));
 						} else {
 							recordObjects[i] = null;
 						}

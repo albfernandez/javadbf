@@ -44,7 +44,7 @@ public class DBFieldTest {
 		field.setFieldLength(5);
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected=UnsupportedOperationException.class)
 	public void testInvalidZeroFieldLength() {
 		DBFField field = new DBFField();
 		field.setType(DBFDataType.NUMERIC);
@@ -55,6 +55,6 @@ public class DBFieldTest {
 	public void testValidFieldLength() {
 		DBFField field = new DBFField();
 		field.setType(DBFDataType.NUMERIC);
-		field.setFieldLength(0);
+		field.setFieldLength(10);
 	}
 }
