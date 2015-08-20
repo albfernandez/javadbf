@@ -1,5 +1,5 @@
 package com.linuxense.javadbf;
 
 public enum DBFAlignment {
-	LEFT, RIGHT
+	LEFT, RIGHT;
 }

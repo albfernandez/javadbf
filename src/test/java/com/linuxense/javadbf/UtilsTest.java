@@ -5,7 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -14,7 +13,8 @@ import org.junit.Test;
 
 public class UtilsTest {
 
-	private static final Charset CHARSET_ISO = StandardCharsets.ISO_8859_1;
+	private static final Charset ISO_8859_1 = StandardCharsets.ISO_8859_1;
+	private static final Charset UTF8 = StandardCharsets.UTF_8;
 	public UtilsTest () {
 		super();
 	}
@@ -66,23 +66,32 @@ public class UtilsTest {
 		// TODO
 	}
 	@Test
-	public void testTextPadding() throws UnsupportedEncodingException {
+	public void testTextPadding()  {
 		assertEquals(
 			"abc       ",
-			new String(Utils.textPadding("abc", CHARSET_ISO, 10))
+			new String(Utils.textPadding("abc", ISO_8859_1, 10), ISO_8859_1)
 		);
 		
 		assertEquals(
 			"a",
-			new String(Utils.textPadding("abc", CHARSET_ISO, 1))
+			new String(Utils.textPadding("abc", ISO_8859_1, 1), ISO_8859_1)
 		);
 		assertEquals(
 			"001",
-			new String(Utils.textPadding("1", CHARSET_ISO, 3, DBFAlignment.RIGHT, (byte) '0'))
+			new String(Utils.textPadding("1", ISO_8859_1, 3, DBFAlignment.RIGHT, (byte) '0'), ISO_8859_1)
 		);
 		
 		//TODO Test extreme cases (null, negative, etc)
 
+	}
+	
+	@Test
+	public void testTextPaddingUTF8() {
+		assertEquals(
+				"Simón    ",
+				new String(Utils.textPadding("Simón", UTF8, 10), UTF8)
+		);
+		
 	}
 	@Test
 	public void testRemoveSpaces() {

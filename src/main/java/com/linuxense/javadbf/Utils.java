@@ -121,26 +121,36 @@ public final class Utils {
 
 
 	public static byte[] textPadding(String text, Charset charset, int length, DBFAlignment alignment, byte paddingByte) {
-		if (text.length() >= length) {
-			return text.substring(0, length).getBytes(charset);
+		byte response[] = new byte[length];
+		Arrays.fill(response, paddingByte);		
+		byte[] stringBytes = text.getBytes(charset);
+		
+		if (stringBytes.length > length){
+			System.arraycopy(stringBytes, 0, response, 0, length);
+			try {
+				@SuppressWarnings("unused")
+				String s = new String(response, charset);
+				return response;
+			}
+			catch (Exception e) {
+				throw new IllegalArgumentException("the text " + text + " cannot be converted back", e);
+			}
 		}
 
-		byte byte_array[] = new byte[length];
-		Arrays.fill(byte_array, paddingByte);
-
+		int t_offset = 0;
 		switch (alignment) {
 		case RIGHT:
-			int t_offset = length - text.length();
-			System.arraycopy(text.getBytes(charset), 0, byte_array, t_offset, text.length());
+			t_offset = length - stringBytes.length;
 			break;
 		case LEFT:
 		default:
-			System.arraycopy(text.getBytes(charset), 0, byte_array, 0, text.length());
+			t_offset = 0;
 			break;
 
-		}
+		}		
+		System.arraycopy(stringBytes, 0, response, t_offset, stringBytes.length);
 
-		return byte_array;
+		return response;
 	}
 	
 

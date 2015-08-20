@@ -1,5 +1,7 @@
 package com.linuxense.javadbf;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 public class DBFieldTest {
@@ -32,9 +34,13 @@ public class DBFieldTest {
 	public void testValidNames() {
 		DBFField field = new DBFField();
 		field.setName("valid");
+		assertEquals("valid", field.getName());
 		field.setName("demo");
+		assertEquals("demo", field.getName());
 		field.setName("    ");
+		assertEquals("    ", field.getName());
 		field.setName(" 1 ");
+		assertEquals(" 1 ", field.getName());
 	}
 	
 	@Test(expected=UnsupportedOperationException.class)
@@ -56,5 +62,12 @@ public class DBFieldTest {
 		DBFField field = new DBFField();
 		field.setType(DBFDataType.NUMERIC);
 		field.setFieldLength(10);
+		assertEquals(DBFDataType.NUMERIC, field.getType());
+		assertEquals(10, field.getFieldLength());
+	}
+	@Test(expected=IllegalArgumentException.class)
+	public void testTypeNotWriteSupport() {
+		DBFField field = new DBFField();
+		field.setType(DBFDataType.MEMO);
 	}
 }

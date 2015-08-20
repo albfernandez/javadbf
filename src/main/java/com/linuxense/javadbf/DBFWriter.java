@@ -95,8 +95,8 @@ public class DBFWriter extends DBFBase {
 			this.header.read(this.raf);
 
 			/* position file pointer at the end of the raf */
-			this.raf.seek(this.raf.length() - 1); // to ignore the END_OF_DATA
-													// byte at EoF
+			// to ignore the END_OF_DATA byte at EoF
+			this.raf.seek(this.raf.length() - 1); 
 		} catch (FileNotFoundException e) {
 			throw new DBFException("Specified file is not found. " + e.getMessage(), e);
 		} catch (IOException e) {

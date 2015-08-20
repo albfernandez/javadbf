@@ -30,19 +30,14 @@ public class DBFException extends IOException {
 
 	private static final long serialVersionUID = 1906727217048909819L;
 
-	public DBFException() {
-		super();
-	}
-
-	public DBFException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public DBFException(Throwable cause) {
-		super(cause);
-	}
 
 	public DBFException(String msg) {
 		super(msg);
 	}
+	public DBFException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+
+
 }
