@@ -90,8 +90,13 @@ public class UtilsTest {
 		assertEquals(
 				"Simón    ",
 				new String(Utils.textPadding("Simón", UTF8, 10), UTF8)
-		);
-		
+		);		
+	}
+
+	public void testInvalidUT8Padding() {
+		assertEquals(
+				"est ",
+				new String(Utils.textPadding("está", UTF8, 4), UTF8));
 	}
 	@Test
 	public void testRemoveSpaces() {

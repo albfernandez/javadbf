@@ -126,15 +126,7 @@ public final class Utils {
 		byte[] stringBytes = text.getBytes(charset);
 		
 		if (stringBytes.length > length){
-			System.arraycopy(stringBytes, 0, response, 0, length);
-			try {
-				@SuppressWarnings("unused")
-				String s = new String(response, charset);
-				return response;
-			}
-			catch (Exception e) {
-				throw new IllegalArgumentException("the text " + text + " cannot be converted back", e);
-			}
+			return textPadding(text.substring(0, text.length() -1), charset, length, alignment, paddingByte);
 		}
 
 		int t_offset = 0;
