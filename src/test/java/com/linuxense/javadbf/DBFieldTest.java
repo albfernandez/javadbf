@@ -70,4 +70,27 @@ public class DBFieldTest {
 		DBFField field = new DBFField();
 		field.setType(DBFDataType.MEMO);
 	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testNegativeDecimalCount() {
+		DBFField field = new DBFField();
+		field.setType(DBFDataType.NUMERIC);
+		field.setFieldLength(15);
+		field.setDecimalCount(-1);
+	}
+	@Test(expected=IllegalArgumentException.class)
+	public void testExcecsiveDecimalCount() {
+		DBFField field = new DBFField();
+		field.setType(DBFDataType.NUMERIC);
+		field.setFieldLength(15);
+		field.setDecimalCount(16);
+	}
+	
+	@Test(expected=UnsupportedOperationException.class)
+	public void testInvalidDecimalCountForNoNumeric() {
+		DBFField field = new DBFField();
+		field.setType(DBFDataType.CHARACTER);
+		field.setFieldLength(15);
+		field.setDecimalCount(5);
+	}
 }
