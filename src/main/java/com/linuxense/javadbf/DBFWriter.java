@@ -52,14 +52,11 @@ import java.util.List;
  */
 public class DBFWriter extends DBFBase {
 
-	/* other class variables */
 	private DBFHeader header;
 	private List<Object[]> v_records = new ArrayList<>();
 	private int recordCount = 0;
-	private RandomAccessFile raf = null; /*
-										 * Open and append records to an
-										 * existing DBF
-										 */
+	//Open and append records to an existing DBF
+	private RandomAccessFile raf = null;
 
 	/**
 	 * Creates an empty DBFWriter.
