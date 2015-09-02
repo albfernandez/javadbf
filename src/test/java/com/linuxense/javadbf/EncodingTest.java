@@ -139,4 +139,16 @@ public class EncodingTest {
 		assertEquals("Julián", names.get(1).trim());
 		
 	}
+	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testSetEncoding() {
+		DBFWriter writer = new DBFWriter();
+		writer.setCharset(StandardCharsets.ISO_8859_1);
+		Assert.assertEquals(StandardCharsets.ISO_8859_1, writer.getCharset());
+		Assert.assertEquals(StandardCharsets.ISO_8859_1.displayName(), writer.getCharactersetName());
+		writer.setCharactersetName(StandardCharsets.ISO_8859_1.displayName());
+		Assert.assertEquals(StandardCharsets.ISO_8859_1.displayName(), writer.getCharactersetName());
+		Assert.assertEquals(StandardCharsets.ISO_8859_1, writer.getCharset());
+	}
 }

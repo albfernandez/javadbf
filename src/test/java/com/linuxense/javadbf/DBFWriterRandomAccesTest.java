@@ -78,6 +78,7 @@ public class DBFWriterRandomAccesTest {
 
 
 	
+	@SuppressWarnings("unused")
 	@Test(expected=DBFException.class)
 	public void testFailOpenFile() throws DBFException {
 		new DBFWriter(new File("/this/file/doesnont/exists"));
