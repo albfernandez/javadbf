@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class DBFieldTest {
+public class DBFFieldTest {
 
-	public DBFieldTest() {
+	public DBFFieldTest() {
 		super();
 	}
 	

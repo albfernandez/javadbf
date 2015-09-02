@@ -85,7 +85,7 @@ public class DBFWriter extends DBFBase {
 			 * before proceeding check whether the passed in File object is an
 			 * empty/non-existent file or not.
 			 */
-			if (!dbfFile.exists() || dbfFile.length() == 0) {
+			if (dbfFile.length() == 0) {
 				return;
 			}
 
