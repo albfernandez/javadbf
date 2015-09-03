@@ -7,36 +7,9 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class SimpleTest {
+public class ReadAndWriteTest {
 
-	@Test
-	public void testReadContinents() throws DBFException, IOException {
-		ReadDBFAssert.testReadDBFFile("continents", 1, 7);
-	}
-	
-	@Test
-	public void testReadBooks() throws DBFException, IOException {
-		ReadDBFAssert.testReadDBFFile("books", 11, 10);
-	}
-	
-	@Test
-	public void testReadCountries() throws DBFException, IOException {
-		ReadDBFAssert.testReadDBFFile("countries", 29, 177);
-	}
-	/**
-	 * Open a file generated with javadbf
-	 * @throws DBFException
-	 * @throws IOException
-	 */
-	@Test
-	public void testReadJavaDbf() throws DBFException, IOException {
-		ReadDBFAssert.testReadDBFFile("javadbf", 3, 3);
-	}
-	
-	@Test
-	public void testReadProvinciasES() throws DBFException, IOException {
-		ReadDBFAssert.testReadDBFFile("provincias_es", 5, 52);
-	}
+
 	
 	@Test
 	public void testWriteAndReadAgain() throws DBFException, IOException {

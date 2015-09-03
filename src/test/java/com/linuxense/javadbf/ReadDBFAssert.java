@@ -44,5 +44,6 @@ public class ReadDBFAssert {
 			countedRows++;
 		}
 		Assert.assertEquals(expectedRows, countedRows);
+		Assert.assertEquals(expectedRows, reader.getRecordCount());
 	}
 }
