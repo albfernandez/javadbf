@@ -40,9 +40,9 @@ class DBFHeader {
 	/* DBF structure start here */
 	
 	private byte signature;              /* 0 */
-	byte year;                   /* 1 */
-	byte month;                  /* 2 */
-	byte day;                    /* 3 */
+	private byte year;                   /* 1 */
+	private byte month;                  /* 2 */
+	private byte day;                    /* 3 */
 	int numberOfRecords;         /* 4-7 */
 	short headerLength;          /* 8-9 */
 	short recordLength;          /* 10-11 */
@@ -167,4 +167,15 @@ class DBFHeader {
 		}
 		return (short) (sum + 1);
 	}
+	
+	public int getYear() {
+		return 1900 + this.year;
+	}
+	public int getMonth() {
+		return this.month;
+	}
+	public int getDay() {
+		return this.day;
+	}
+	
 }

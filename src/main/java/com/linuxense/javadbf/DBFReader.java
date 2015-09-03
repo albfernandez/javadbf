@@ -81,7 +81,7 @@ public class DBFReader extends DBFBase {
 	private DataInputStream dataInputStream;
 	private DBFHeader header;
 
-	private boolean isClosed = true;
+
 
 	/**
 	 * Initializes a DBFReader object.
@@ -96,7 +96,6 @@ public class DBFReader extends DBFBase {
 	public DBFReader(InputStream in) throws DBFException {
 		try {
 			this.dataInputStream = new DataInputStream(in);
-			this.isClosed = false;
 			this.header = new DBFHeader();
 			this.header.read(this.dataInputStream);
 
@@ -111,11 +110,12 @@ public class DBFReader extends DBFBase {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(128);
-		sb.append(this.header.year).append("/");
-		sb.append(this.header.month).append("/");
-		sb.append(this.header.day).append("\n");
+		sb.append(this.header.getYear()).append("/");
+		sb.append(this.header.getMonth()).append("/");
+		sb.append(this.header.getDay()).append("\n");
 		sb.append("Total records: ").append(this.header.numberOfRecords).append("\n");
 		sb.append("Header length: ").append(this.header.headerLength).append("\n");
+		sb.append("Columns:\n");
 		for (DBFField field : this.header.fieldArray) {
 			sb.append(field.getName());
 			sb.append("\n");
@@ -138,9 +138,6 @@ public class DBFReader extends DBFBase {
 	 *            . Index of the field. Index of the first field is zero.
 	 */
 	public DBFField getField(int index) throws DBFException {
-		if (this.isClosed) {
-			throw new DBFException("Source is not open");
-		}
 		return this.header.fieldArray[index];
 	}
 
@@ -148,9 +145,6 @@ public class DBFReader extends DBFBase {
 	 * Returns the number of field in the DBF.
 	 */
 	public int getFieldCount() throws DBFException {
-		if (this.isClosed) {
-			throw new DBFException("Source is not open");
-		}
 		if (this.header.fieldArray != null) {
 			return this.header.fieldArray.length;
 		}
@@ -164,9 +158,6 @@ public class DBFReader extends DBFBase {
 	 *          arrays follow the convention mentioned in the class description.
 	 */
 	public Object[] nextRecord() throws DBFException {
-		if (this.isClosed) {
-			throw new DBFException("Source is not open");
-		}
 
 		Object recordObjects[] = new Object[this.header.fieldArray.length];
 
@@ -269,6 +260,10 @@ public class DBFReader extends DBFBase {
 		for (int i = skipped; i < n; i++) {
 			this.dataInputStream.readByte();
 		}
+	}
+	
+	protected DBFHeader getHeader() {
+		return this.header;
 	}
 
 }

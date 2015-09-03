@@ -1,5 +1,6 @@
 package com.linuxense.javadbf;
 
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -7,10 +8,9 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ReadAndWriteTest {
-
-
+public class DeprecatedMethodsTest {
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testWriteAndReadAgain() throws DBFException, IOException {
 		 // let us create field definitions first
@@ -19,18 +19,23 @@ public class ReadAndWriteTest {
 		DBFField fields[] = new DBFField[3];
 
 		fields[0] = new DBFField();
-		fields[0].setName("emp_code");
-		fields[0].setType(DBFDataType.CHARACTER);
+		
+		Assert.assertEquals((byte) 0,  fields[0].getDataType());
+		
+		fields[0].setFieldName("emp_code");
+		fields[0].setDataType(DBFField.FIELD_TYPE_C);
 		fields[0].setFieldLength(10);
+		
+		Assert.assertEquals(DBFField.FIELD_TYPE_C,fields[0].getDataType());
 
 		fields[1] = new DBFField();
-		fields[1].setName("emp_name");
-		fields[1].setType(DBFDataType.CHARACTER);
+		fields[1].setFieldName("emp_name");
+		fields[1].setDataType(DBFField.FIELD_TYPE_C);
 		fields[1].setFieldLength(20);
 
 		fields[2] = new DBFField();
-		fields[2].setName("salary");
-		fields[2].setType(DBFDataType.NUMERIC);
+		fields[2].setFieldName("salary");
+		fields[2].setDataType(DBFField.FIELD_TYPE_N);
 		fields[2].setFieldLength(12);
 		fields[2].setDecimalCount(2);
 
@@ -84,9 +89,8 @@ public class ReadAndWriteTest {
 				bis.close();
 			}
 		}
-
 		
 	}
-
+	
 
 }

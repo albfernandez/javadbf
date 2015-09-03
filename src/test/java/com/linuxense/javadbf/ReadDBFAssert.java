@@ -1,5 +1,6 @@
 package com.linuxense.javadbf;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class ReadDBFAssert {
 	public static void testReadDBFFile(File file, int expectedColumns, int expectedRows) throws DBFException, IOException {
 		InputStream inputStream = null;
 		try {
-			inputStream = new FileInputStream(file);
+			inputStream = new BufferedInputStream(new FileInputStream(file));
 			testReadDBFFile(inputStream, expectedColumns, expectedRows);
 		} finally {
 			inputStream.close();

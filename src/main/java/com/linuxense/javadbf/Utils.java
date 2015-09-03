@@ -43,9 +43,6 @@ public final class Utils {
 	private static CharsetEncoder asciiEncoder = Charset.forName("US-ASCII").newEncoder(); 
 
 
-	private Utils() {
-		throw new AssertionError("No instances allowed");
-	}
 
 	public static int readLittleEndianInt(DataInput in) throws IOException {
 		int bigEndian = 0;
