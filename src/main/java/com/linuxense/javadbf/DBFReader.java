@@ -145,10 +145,7 @@ public class DBFReader extends DBFBase {
 	 * Returns the number of field in the DBF.
 	 */
 	public int getFieldCount() throws DBFException {
-		if (this.header.fieldArray != null) {
-			return this.header.fieldArray.length;
-		}
-		return -1;
+		return this.header.fieldArray.length;
 	}
 
 	/**

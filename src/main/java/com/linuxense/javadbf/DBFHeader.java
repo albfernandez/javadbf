@@ -89,16 +89,11 @@ class DBFHeader {
 
 		List<DBFField> v_fields = new ArrayList<>();
 		
-		DBFField field = DBFField.createField(dataInput); /* 32 each */
-		while (field != null) {
+		DBFField field = null; /* 32 each */
+		while ((field = DBFField.createField(dataInput))!= null) {
 			v_fields.add(field);
-			field = DBFField.createField(dataInput);
-		}
-
-		this.fieldArray = new DBFField[v_fields.size()];
-		for (int i = 0; i < this.fieldArray.length; i++) {
-			this.fieldArray[i] = v_fields.get(i);
-		}
+		}		
+		this.fieldArray = v_fields.toArray(new DBFField[v_fields.size()]);		
 	}
 
 	void write(DataOutput dataOutput) throws IOException {
