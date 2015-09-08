@@ -3,20 +3,21 @@ JavaDBF is a Java library for reading and writing XBase files.
 There are plenty of legacy applications around with .dbf as their primary storage format.
 JavaDBF was initially written for data transfer with such applications.
 
-Other than that, there are requirements to export data from a Java application to a spreadshet program 
-like GNumeric, Excel or Lotus 123. A DBF file would be more appropriate in such situations 
-rather than a CSV or an HTML file because a DBF file can carry field type information. 
-More over, XBase format is like an Open-standard; it is understood by almost all spreadsheet programms. 
 
 #Introduction
 
 Till late 90s dBase and its cousins were the most preferred database platform for small and even medium enterprise applications.
-They demanded low hardware configurations and were cheaper to develop. 
-Eventually more capable desktop databases like Microsoft Access came into picture, DBF file format still remains one of the simplest way to store and transfer data.
+They required low hardware configurations and were cheaper to develop. 
+Eventually more capable desktop databases like Microsoft Access came into picture,
+DBF file format still remains one of the simplest way to store and transfer data.
 
-DBF format has some advantages over CSV or XML: it can contain the structure definition including data type information. DBF is more like an open standard so it can be used as a data exchange format. If you have a database application with an RDBMS at the back-end and still you need to import a report to your spread sheet program, DBF format is the most elegant and sure-shot approach.
+DBF format has some advantages over CSV or XML: it can contain the structure definition including data type information. 
+DBF is more like an open standard so it can be used as a data exchange format.
+If you have a database application with an RDBMS at the back-end and 
+you need to import a report to your spread sheet program, DBF format is the most elegant and sure-shot approach.
 
-JavaDBF also comes handy when it is required to transfer data between applications which do not have a common data format. Java developers often come across such situations when they are asked to share data with spreadsheet application. 
+JavaDBF also comes handy when it is required to transfer data between applications which do not have a common data format.
+Java developers often come across such situations when they are asked to share data with spreadsheet application. 
 
 #Getting and Installing
 
@@ -25,13 +26,19 @@ Download the jar file and put it in your $CLASSPATH variable. You are ready to g
 
 #Overview of the Library
 
-JavaDBF has a simple API of its own and it does not implement the JDBC API. It is designed this way because JavaDBF is not indedned to support full-blown RDBMS-style database interaction. And you are not supposed to use it like a back-end; it just doesn't work that way. Also, JavaDBF is not designed to be thread-safe; keep that in mind when you design threaded applications.
+JavaDBF has a simple API of its own and it does not implement the JDBC API. 
+It is designed this way because JavaDBF is not indedned to support full-blown RDBMS-style database interaction.
+And you are not supposed to use it like a back-end; it just doesn't work that way. 
+Also, JavaDBF is not designed to be thread-safe; keep that in mind when you design threaded applications.
 
-JavaDBF comes in the package com.linuxense.javadbf. Import that package in your Java code. Following examples will familiarise you with its APIs. 
+JavaDBF comes in the package com.linuxense.javadbf. 
+Import that package in your Java code. Following examples will familiarise you with its APIs. 
 
 #Data Type Mapping
 
-JavaDBF supports almost all XBase data types except Memo field. While reading, those types are interpretted as appropriate Java types. Following table shows the mapping scheme.
+JavaDBF supports almost all XBase data types except Memo field. 
+While reading, those types are interpretted as appropriate Java types.
+Following table shows the mapping scheme.
 
 
 |XBase Type   | XBase Symbol | Java Type used in JavaDBF |
@@ -67,6 +74,7 @@ Unsupported types
 #Reading a DBF File
 
 To read a DBF file, JavaDBF provides a DBFReader class. Following is a ready-to-compile, self-explanatory program describing almost all feature of the DBFReader class. Copy/paste this listing and compile it. Keep a .dbf file handy to pass to this program as its argument.
+
 ```java
 import java.io.*;
 import com.linuxense.javadbf.*;
@@ -242,7 +250,17 @@ public class DBFWriterTest {
     // ...
 
     DBFWriter writer = new DBFWriter(new File("/path/to/a/new/file")); 
-    // this DBFWriter object is now in Syc Mode 
+    // this DBFWriter object is now in Syc Mode
+    
+    // set fields 
+    // writer.setFields(fields);
+    
+    // add the data
+    // writer.addRecord(rowData);
+    
+    // close
+    // writer.write();
+
     // ...
   }
 }
@@ -253,6 +271,31 @@ public class DBFWriterTest {
 From version 0.4.0 onwards JavaDBF supports appending of records to an existing DBF file. Use the same constructor used in Sync Mode to achieve this. But here the File object passed to the construction should represent the DBF file to which records are to be appended. 
 
 It is illegal to call setFields in DBFWriter object created for appending. Here also it is required to call the write() method after adding all the records.
+
+```java
+import com.linuxense.javadbf.*;
+import java.io.*;
+
+public class DBFWriterTest {
+
+  public static void main(String args[])
+  throws DBFException, IOException {
+
+    // ...
+
+    DBFWriter writer = new DBFWriter(new File("/path/to/an/existing/dbfile")); 
+    // this DBFWriter object is now in Syc Mode   
+    
+    // add the data (no setFields, because it's an existing file)
+    // writer.addRecord(rowData);
+    
+    // close
+    // writer.write();
+
+    // ...
+  }
+}
+```
 
 #Building from sources
 
