@@ -73,7 +73,9 @@ Unsupported types
 
 #Reading a DBF File
 
-To read a DBF file, JavaDBF provides a DBFReader class. Following is a ready-to-compile, self-explanatory program describing almost all feature of the DBFReader class. Copy/paste this listing and compile it. Keep a .dbf file handy to pass to this program as its argument.
+To read a DBF file, JavaDBF provides a DBFReader class. 
+Following is a ready-to-compile, self-explanatory program describing almost all feature of the DBFReader class. 
+Copy/paste this listing and compile it. Keep a .dbf file handy to pass to this program as its argument.
 
 ```java
 import java.io.*;
@@ -151,18 +153,24 @@ Create an object of DBFField class:
 	field.setFieldLength(25); // and length of the field
 ```
 
-This is, now, a complete DBFField Object ready to use. We have to create as many DBFField Objects as we want to be in the .dbf file. The DBFWriter class accept DBFField in an array. Now, let's move on to the next step of populating data.
+This is, now, a complete DBFField Object ready to use. 
+We have to create as many DBFField Objects as we want to be in the .dbf file. 
+The DBFWriter class accept DBFField in an array. 
+Now, let's move on to the next step of populating data.
 
 ##Preparing DBFWriter Object
 
-A DBFWriter is used for creating a .dbf file. First lets create a DBFWriter object by calling its constructor and then set the fields created (as explained above) by calling the setFields method.
+A DBFWriter is used for creating a .dbf file. First lets create a DBFWriter object by calling its constructor 
+and then set the fields created (as explained above) by calling the setFields method.
 
 ```java
 	DBFWriter writer = new DBFWriter();
 	// fields is a non-empty array of DBFField objects
 	writer.setFields(fields); 
 ```
-Now, the DBFWriter Object is ready to be populated. The method for adding data to the DBFWriter is addRecord and it takes an Object array as its argument. This Object array is supposed contain values for the fields added with one-to-one correspondence with the fields set. 
+Now, the DBFWriter Object is ready to be populated. 
+The method for adding data to the DBFWriter is addRecord and it takes an Object array as its argument. 
+This Object array is supposed contain values for the fields added with one-to-one correspondence with the fields set. 
 
 Following is a complete program explaining all the steps described above:
 
@@ -230,13 +238,20 @@ public class DBFWriterTest {
 }
 ```
 
-Keep in mind that till the write method is called, all the added data will be kept in memory. So, if you are planning to write huge amount of data make sure that it will be safely held in memory till it is written to disk and the DBFWriter object is garbage-collected. Read the Sync Mode section to know how JavaDBF to use a special feature of JavaDBF to overcome this.
+Keep in mind that till the write method is called, all the added data will be kept in memory. 
+So, if you are planning to write huge amount of data make sure that it will be safely held in memory 
+till it is written to disk and the DBFWriter object is garbage-collected.
+ Read the Sync Mode section to know how JavaDBF to use a special feature of JavaDBF to overcome this.
 
 ## Sync Mode: Writing Records to File as They are Added
 
-This is useful when JavaDBF is used to create a DBF with very large number of records. In this mode, instead of keeping records in memory for writing them once for all, records are written to file as addRecord() is called. Here is how to write in Sync Mode: 
+This is useful when JavaDBF is used to create a DBF with very large number of records. 
+In this mode, instead of keeping records in memory for writing them once for all,
+records are written to file as addRecord() is called. Here is how to write in Sync Mode.
 
-Create DBFWriter instance by passing a File object which represents a new/non-existent or empty file. And you are done! But, as in the normal mode, remember to call write() when have added all the records. This will help JavaDBF to write the meta data with correct values. Here is a sample code:
+Create DBFWriter instance by passing a File object which represents a new/non-existent or empty file.
+And you are done! But, as in the normal mode, remember to call write() when have added all the records.
+This will help JavaDBF to write the meta data with correct values. Here is a sample code:
 
 ```java
 import com.linuxense.javadbf.*;
@@ -268,9 +283,12 @@ public class DBFWriterTest {
 
 #Appending Records
 
-From version 0.4.0 onwards JavaDBF supports appending of records to an existing DBF file. Use the same constructor used in Sync Mode to achieve this. But here the File object passed to the construction should represent the DBF file to which records are to be appended. 
+From version 0.4.0 onwards JavaDBF supports appending of records to an existing DBF file. 
+Use the same constructor used in Sync Mode to achieve this. 
+But here the File object passed to the construction should represent the DBF file to which records are to be appended. 
 
-It is illegal to call setFields in DBFWriter object created for appending. Here also it is required to call the write() method after adding all the records.
+It is illegal to call setFields in DBFWriter object created for appending. 
+Here also it is required to call the write() method after adding all the records.
 
 ```java
 import com.linuxense.javadbf.*;
