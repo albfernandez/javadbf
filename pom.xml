@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>javadbf</groupId>
 	<artifactId>javadbf</artifactId>
-	<version>0.5.0</version>
+	<version>0.6.0</version>
 	<url>https://github.com/albfernandez/javadbf</url>
 
 	<dependencies>
@@ -110,7 +110,6 @@
 				</reportSets>
 			</plugin>
 		</plugins>
-
 	</reporting>
 
 	<issueManagement>
