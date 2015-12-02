@@ -91,8 +91,8 @@ public class DBFReader extends DBFBase {
 	 * header (meta date) and header information can be queried there on. And it
 	 * will be ready to return the first row.
 	 * 
-	 * @param in
-	 *            the InputStream where the data is read from.
+	 * @param in the InputStream where the data is read from.
+	 * @pparam charset charset used to decode field names and field contents
 	 */
 	public DBFReader(InputStream in,Charset charset) throws DBFException {
 		try {
@@ -109,6 +109,17 @@ public class DBFReader extends DBFBase {
 		}
 	}
 
+	/**
+	 * Intializes a DBFReader object.
+	 * 
+	 * Uses default charset ISO-8859-1
+	 * When this constructor returns the object will have completed reading the
+	 * header (meta date) and header information can be queried there on. And it
+	 * will be ready to return the first row.
+	 * 
+	 * @param in  the InputStream where the data is read from.
+	 * @throws DBFException
+	 */
 	public DBFReader(InputStream in) throws DBFException {
 		this(in,DEFAULT_CHARSET);
 	}

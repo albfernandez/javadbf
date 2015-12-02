@@ -62,21 +62,37 @@ public class DBFWriter extends DBFBase {
 	/**
 	 * Creates an empty DBFWriter.
 	 */
+	public DBFWriter() {
+		this(DEFAULT_CHARSET);
+	}
+	/**
+	 * Creates an empty DBFWriter.
+	 * @param charset Charset used to encode field names and field contents
+	 */
 	public DBFWriter(Charset charset) {
 		super();
 		setCharset(charset);
 		this.header = new DBFHeader();
 	}
-
-	public DBFWriter() {
-		this(DEFAULT_CHARSET);
+	
+	/**
+	 * Creates a DBFWriter which can append to records to an existing DBF file.
+	 *
+	 * @param dbfFile The file passed in shouls be a valid DBF file.
+	 * @exception DBFException
+	 *                if the passed in file does exist but not a valid DBF file,
+	 *                or if an IO error occurs.
+	 */
+	public DBFWriter(File dbfFile) throws DBFException {
+		this(dbfFile, DEFAULT_CHARSET);
 	}
+
 
 	/**
 	 * Creates a DBFWriter which can append to records to an existing DBF file.
 	 *
-	 * @param dbfFile
-	 *            . The file passed in shouls be a valid DBF file.
+	 * @param dbfFile The file passed in shouls be a valid DBF file.
+	 * @param charset The charset used to encode field name and field contents
 	 * @exception DBFException
 	 *                if the passed in file does exist but not a valid DBF file,
 	 *                or if an IO error occurs.
@@ -110,9 +126,6 @@ public class DBFWriter extends DBFBase {
 		this.recordCount = this.header.numberOfRecords;
 	}
 
-	public DBFWriter(File dbfFile) throws DBFException {
-		this(dbfFile, DEFAULT_CHARSET);
-	}
 
 	/**
 	 * Sets fields.

@@ -23,7 +23,6 @@ package com.linuxense.javadbf;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.nio.charset.Charset;
 

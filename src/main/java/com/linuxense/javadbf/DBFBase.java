@@ -31,7 +31,7 @@ public abstract class DBFBase {
 
 	protected static final int END_OF_DATA = 0x1A;
 	protected static final Charset DEFAULT_CHARSET= StandardCharsets.ISO_8859_1;
-	private Charset charset = StandardCharsets.ISO_8859_1;
+	private Charset charset = DEFAULT_CHARSET;
 
 	protected DBFBase() {
 		super();
