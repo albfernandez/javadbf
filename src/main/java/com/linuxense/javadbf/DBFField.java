@@ -25,6 +25,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.nio.charset.Charset;
 
 /**
  * DBFField represents a field specification in an dbf file.
@@ -75,11 +76,12 @@ public class DBFField {
 	 * 
 	 * @param in
 	 *            DataInputStream
+	 *
 	 * @return Returns the created DBFField object.
 	 * @throws IOException
 	 *             If any stream reading problems occures.
 	 */
-	protected static DBFField createField(DataInput in) throws IOException {
+	protected static DBFField createField(DataInput in, Charset charset) throws IOException {
 
 		DBFField field = new DBFField();
 
@@ -97,7 +99,7 @@ public class DBFField {
 				break;
 			}
 		}
-		field.name = new String(fieldName, 0, nameNullIndex, StandardCharsets.US_ASCII);
+		field.name = new String(fieldName, 0, nameNullIndex,charset);
 		try {
 			field.type = DBFDataType.fromCode(in.readByte()); /* 11 */
 		} catch (Exception e) {
@@ -119,15 +121,16 @@ public class DBFField {
 	/**
 	 * Writes the content of DBFField object into the stream as per DBF format
 	 * specifications.
-	 * 
+	 *
 	 * @param out
 	 *            OutputStream
+	 * @param charset dbf file's charset
 	 * @throws IOException
 	 *             if any stream related issues occur.
 	 */
-	protected void write(DataOutput out) throws IOException {
+	protected void write(DataOutput out, Charset charset) throws IOException {
 		// Field Name
-		out.write(this.name.getBytes(StandardCharsets.US_ASCII)); /* 0-10 */
+		out.write(this.name.getBytes(charset)); /* 0-10 */
 		out.write(new byte[11 - this.name.length()]);
 
 		// data type

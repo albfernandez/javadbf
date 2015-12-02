@@ -25,11 +25,12 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * Base class for DBFReader and DBFWriter. Support for choosing implemented
- * character Sets as suggested by Nick Voznesensky <darkers@mail.ru>
+ * character Sets as suggested by Nick Voznesensky darkers@mail.ru
  */
 public abstract class DBFBase {
 
 	protected static final int END_OF_DATA = 0x1A;
+	protected static final Charset DEFAULT_CHARSET= StandardCharsets.ISO_8859_1;
 	private Charset charset = StandardCharsets.ISO_8859_1;
 
 	protected DBFBase() {
@@ -58,7 +59,7 @@ public abstract class DBFBase {
 	/**
 	 * Gets the charset used to read and write files.
 	 * 
-	 * @return
+	 * @return name of the charset
 	 * @deprecated replaced by {@link DBFBase#getCharset()}
 	 */
 	@Deprecated
@@ -74,7 +75,7 @@ public abstract class DBFBase {
 	 * http://www.iana.org/assignments/character-sets Also see the documentation
 	 * of the class java.nio.charset.Charset
 	 * 
-	 * @param characterSetName
+	 * @param characterSetName name of the charset
 	 * @deprecated replaced by {@link DBFBase#setCharset(Charset)}
 	 */
 	@Deprecated

@@ -34,6 +34,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.nio.charset.Charset;
 
 /*
  DBFWriter
@@ -61,22 +62,28 @@ public class DBFWriter extends DBFBase {
 	/**
 	 * Creates an empty DBFWriter.
 	 */
-	public DBFWriter() {
+	public DBFWriter(Charset charset) {
 		super();
+		setCharset(charset);
 		this.header = new DBFHeader();
+	}
+
+	public DBFWriter() {
+		this(DEFAULT_CHARSET);
 	}
 
 	/**
 	 * Creates a DBFWriter which can append to records to an existing DBF file.
-	 * 
+	 *
 	 * @param dbfFile
 	 *            . The file passed in shouls be a valid DBF file.
 	 * @exception DBFException
 	 *                if the passed in file does exist but not a valid DBF file,
 	 *                or if an IO error occurs.
 	 */
-	public DBFWriter(File dbfFile) throws DBFException {
+	public DBFWriter(File dbfFile,Charset charset) throws DBFException {
 		super();
+		setCharset(charset);
 		try {
 			this.raf = new RandomAccessFile(dbfFile, "rw");
 			this.header = new DBFHeader();
@@ -89,7 +96,7 @@ public class DBFWriter extends DBFBase {
 				return;
 			}
 
-			this.header.read(this.raf);
+			this.header.read(this.raf, charset);
 
 			/* position file pointer at the end of the raf */
 			// to ignore the END_OF_DATA byte at EoF
@@ -101,6 +108,10 @@ public class DBFWriter extends DBFBase {
 		}
 
 		this.recordCount = this.header.numberOfRecords;
+	}
+
+	public DBFWriter(File dbfFile) throws DBFException {
+		this(dbfFile, DEFAULT_CHARSET);
 	}
 
 	/**
@@ -124,7 +135,7 @@ public class DBFWriter extends DBFBase {
 			if (this.raf != null && this.raf.length() == 0) {
 				// this is a new/non-existent file. So write header before
 				// proceeding
-				this.header.write(this.raf);
+				this.header.write(this.raf, getCharset());
 			}
 		} catch (IOException e) {
 			throw new DBFException("Error accesing file:" + e.getMessage(), e);
@@ -206,7 +217,7 @@ public class DBFWriter extends DBFBase {
 			if (this.raf == null) {
 				DataOutputStream outStream = new DataOutputStream(out);
 				this.header.numberOfRecords = this.v_records.size();
-				this.header.write(outStream);
+				this.header.write(outStream,getCharset());
 
 				/* Now write all the records */
 				for (Object[] record : this.v_records) {
@@ -222,7 +233,7 @@ public class DBFWriter extends DBFBase {
 				 */
 				this.header.numberOfRecords = this.recordCount;
 				this.raf.seek(0);
-				this.header.write(this.raf);
+				this.header.write(this.raf,getCharset());
 				this.raf.seek(this.raf.length());
 				this.raf.writeByte(END_OF_DATA);
 				this.raf.close();

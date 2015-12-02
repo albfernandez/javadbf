@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.GregorianCalendar;
+import java.nio.charset.Charset;
 
 /**
  * DBFReader class can creates objects to represent DBF data.
@@ -93,11 +94,12 @@ public class DBFReader extends DBFBase {
 	 * @param in
 	 *            the InputStream where the data is read from.
 	 */
-	public DBFReader(InputStream in) throws DBFException {
+	public DBFReader(InputStream in,Charset charset) throws DBFException {
 		try {
+			setCharset(charset);
 			this.dataInputStream = new DataInputStream(in);
 			this.header = new DBFHeader();
-			this.header.read(this.dataInputStream);
+			this.header.read(this.dataInputStream, charset);
 
 			/* it might be required to leap to the start of records at times */
 			int t_dataStartIndex = this.header.headerLength - (32 + (32 * this.header.fieldArray.length)) - 1;
@@ -105,6 +107,10 @@ public class DBFReader extends DBFBase {
 		} catch (IOException e) {
 			throw new DBFException(e.getMessage(), e);
 		}
+	}
+
+	public DBFReader(InputStream in) throws DBFException {
+		this(in,DEFAULT_CHARSET);
 	}
 
 	@Override
@@ -151,7 +157,7 @@ public class DBFReader extends DBFBase {
 	/**
 	 * Reads the returns the next row in the DBF stream.
 	 * 
-	 * @returns The next row as an Object array. Types of the elements these
+	 * @return The next row as an Object array. Types of the elements these
 	 *          arrays follow the convention mentioned in the class description.
 	 */
 	public Object[] nextRecord() throws DBFException {

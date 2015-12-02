@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.nio.charset.Charset;
 
 /**
  * Class for reading the metadata assuming that the given InputStream carries
@@ -66,7 +67,7 @@ class DBFHeader {
 		this.terminator1 = 0x0D;
 	}
 
-	void read( DataInput dataInput) throws IOException {
+	void read( DataInput dataInput, Charset charset) throws IOException {
 
 		this.signature = dataInput.readByte(); /* 0 */
 		this.year = dataInput.readByte();      /* 1 */
@@ -90,13 +91,13 @@ class DBFHeader {
 		List<DBFField> v_fields = new ArrayList<>();
 		
 		DBFField field = null; /* 32 each */
-		while ((field = DBFField.createField(dataInput))!= null) {
+		while ((field = DBFField.createField(dataInput,charset))!= null) {
 			v_fields.add(field);
 		}		
 		this.fieldArray = v_fields.toArray(new DBFField[v_fields.size()]);		
 	}
 
-	void write(DataOutput dataOutput) throws IOException {
+	void write(DataOutput dataOutput, Charset charset) throws IOException {
 		dataOutput.writeByte(this.signature); /* 0 */
 
 		GregorianCalendar calendar = new GregorianCalendar();
@@ -128,7 +129,7 @@ class DBFHeader {
 		dataOutput.writeByte(this.languageDriver); /* 29 */
 		dataOutput.writeShort(Utils.littleEndian(this.reserv4)); /* 30-31 */
 		for (DBFField field : this.fieldArray) {
-			field.write(dataOutput);
+			field.write(dataOutput,charset);
 		}
 		dataOutput.writeByte(this.terminator1); /* n+1 */
 	}
