@@ -1,10 +1,40 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>javadbf</groupId>
+	<groupId>com.github.albfernandez</groupId>
 	<artifactId>javadbf</artifactId>
-	<version>0.6.0</version>
+	<version>0.6.2</version>
 	<url>https://github.com/albfernandez/javadbf</url>
+	<packaging>jar</packaging>
+	<name>javadbf</name>
+	<description>JavaDBF is a Java library for reading and writing XBase files.</description>
+	<licenses>
+		<license>
+			<name>GNU LESSER GENERAL PUBLIC LICENSE, version 3 (GPL-3.0)</name>
+			<url>http://www.gnu.org/licenses/lgpl.txt</url>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<name>Alberto Fernández</name>
+			<email>infjaf@gmail.com</email>
+			<organization>Alberto Fernández</organization>
+			<organizationUrl>https://github.com/albfernandez/</organizationUrl>
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:git:git@github.com:albfernandez/javadbf.git</connection>
+		<developerConnection>scm:git:git@github.com:albfernandez/javadbf.git</developerConnection>
+		<url>git@github.com:albfernandez/javadbf.git</url>
+	</scm>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/albfernandez/javadbf/issues</url>
+	</issueManagement>
+
+
+
+
 
 	<dependencies>
 		<dependency>
@@ -73,13 +103,57 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.10.3</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <configuration>
+              		<keyname>${gpg.keyname}</keyname>
+              		<passphraseServerId>${gpg.keyname}</passphraseServerId>
+              	</configuration>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.3</version>
+				<extensions>true</extensions>
 				<configuration>
-					<show>private</show>
-					<nohelp>true</nohelp>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
 				</configuration>
 			</plugin>
+			
 		</plugins>
 	</build>
 
@@ -110,17 +184,9 @@
 				</reportSets>
 			</plugin>
 		</plugins>
+
 	</reporting>
 
-	<issueManagement>
-		<system>GitHub</system>
-		<url>https://github.com/albfernandez/javadbf/issues</url>
-	</issueManagement>
-	<scm>
-		<url>https://github.com/albfernandez/javadbf.git</url>
-	</scm>
-	<name>javadbf</name>
-	<description>JavaDBF is a Java library for reading and writing XBase files.</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
