@@ -25,7 +25,7 @@ Obtain the latest version of JavaDBF from release page at github.
 Download the jar file and put it in your $CLASSPATH variable. You are ready to go. 
 
 ## Getting with Maven
-If you are using Maven, you can import the project using this dependency in your pom.xml
+If you are using Maven, you can add JavaDBF to your project using this dependency in your pom.xml
 
 ```
 	<dependency>
