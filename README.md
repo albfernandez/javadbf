@@ -24,6 +24,18 @@ Java developers often come across such situations when they are asked to share d
 Obtain the latest version of JavaDBF from release page at github.
 Download the jar file and put it in your $CLASSPATH variable. You are ready to go. 
 
+## Getting with Maven
+If you are using Maven, you can import the project using this dependency in your pom.xml
+
+```
+	<dependency>
+		<groupId>com.github.albfernandez</groupId>
+		<artifactId>javadbf</artifactId>
+		<version>0.6.2</version>
+	</dependency>
+```
+
+
 #Overview of the Library
 
 JavaDBF has a simple API of its own and it does not implement the JDBC API. 
