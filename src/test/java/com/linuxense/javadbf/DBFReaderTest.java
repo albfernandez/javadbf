@@ -50,7 +50,6 @@ public class DBFReaderTest {
 		try {
 			is = new FileInputStream(file);
 			DBFReader reader = new DBFReader(is);
-			System.out.println(reader.toString());
 			DBFHeader header = reader.getHeader();
 			Assert.assertEquals("TITLE", header.fieldArray[1].getName());
 			Assert.assertEquals(DBFDataType.CHARACTER, header.fieldArray[1].getType());
