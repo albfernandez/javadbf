@@ -38,9 +38,11 @@ public final class Utils {
 
 	@Deprecated
 	public static final int ALIGN_LEFT = 10;
+	
 	@Deprecated
 	public static final int ALIGN_RIGHT = 12;
-	private static CharsetEncoder asciiEncoder = Charset.forName("US-ASCII").newEncoder(); 
+	
+	private static final CharsetEncoder ASCII_ENCODER = Charset.forName("US-ASCII").newEncoder(); 
 
 
 
@@ -168,10 +170,10 @@ public final class Utils {
 
 
 	/**
-	 * Checcks that a byte array contains some byte
+	 * Checks that a byte array contains some specific byte
 	 * @param array The array to search in
 	 * @param value The byte to search for
-	 * @return
+	 * @return true if the array contains spcified value
 	 */
 	public static boolean contains(byte[] array, byte value) {
 		if (array != null) {
@@ -193,7 +195,7 @@ public final class Utils {
 		if (stringToCheck == null) {
 			return true;
 		}
-		return asciiEncoder.canEncode(stringToCheck);
+		return ASCII_ENCODER.canEncode(stringToCheck);
 	}
 
 	/**
@@ -211,10 +213,11 @@ public final class Utils {
 	}
 	
 	/**
-	 * 
+	 * Trim spaces from both sides of the array.
 	 * @param arr
-	 * @return
-	 * @deprecated this functions really trim all spaces, instead only left spaces
+	 * @return String trimmed both sides
+	 * @deprecated this functions really trim all spaces, instead only left spaces, so for clarity is deprecated and 
+	 * mantained for backwards compatibility
 	 */
 	@Deprecated
 	public static byte[] trimLeftSpaces(byte[] arr) {

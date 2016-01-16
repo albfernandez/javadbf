@@ -92,7 +92,7 @@ public class DBFReader extends DBFBase {
 	 * will be ready to return the first row.
 	 * 
 	 * @param in the InputStream where the data is read from.
-	 * @pparam charset charset used to decode field names and field contents
+	 * @param charset charset used to decode field names and field contents
 	 */
 	public DBFReader(InputStream in,Charset charset) throws DBFException {
 		try {

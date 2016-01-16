@@ -83,7 +83,7 @@ public enum DBFDataType {
 	/**
 	 * Gets the DBFDataType from the code used in the file
 	 * @param cod 
-	 * @return
+	 * @return The DBFDataType from the code used in the file
 	 */
 	public static DBFDataType fromCode(byte cod) {
 		for (DBFDataType type: values()) {
