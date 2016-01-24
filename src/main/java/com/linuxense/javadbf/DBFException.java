@@ -1,6 +1,6 @@
 /*
 
-(C) Copyright 2015 Alberto Fernández <infjaf@gmail.com>
+(C) Copyright 2015-2016 Alberto Fernández <infjaf@gmail.com>
 (C) Copyright 2003-2004 Anil Kumar K <anil@linuxense.com>
 
 This library is free software; you can redistribute it and/or
@@ -31,9 +31,18 @@ public class DBFException extends IOException {
 	private static final long serialVersionUID = 1906727217048909819L;
 
 
-	public DBFException(String msg) {
-		super(msg);
+	/**
+	 * Constructs an DBFException with the specified detail message.
+	 * @param message The detail message (which is saved for later retrieval by the Throwable.getMessage() method)
+	 */
+	public DBFException(String message) {
+		super(message);
 	}
+	/**
+	 * Constructs an DBFException with the specified detail message and cause.
+	 * @param message The detail message (which is saved for later retrieval by the Throwable.getMessage() method)
+	 * @param cause The cause (which is saved for later retrieval by the Throwable.getCause() method).
+	 */
 	public DBFException(String message, Throwable cause) {
 		super(message, cause);
 	}

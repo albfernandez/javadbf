@@ -1,6 +1,6 @@
 /*
 
-(C) Copyright 2015 Alberto Fernández <infjaf@gmail.com>
+(C) Copyright 2015-2016 Alberto Fernández <infjaf@gmail.com>
 (C) Copyright 2014 Jan Schlößin
 (C) Copyright 2003-2004 Anil Kumar K <anil@linuxense.com>
 
@@ -45,7 +45,16 @@ public final class Utils {
 	private static final CharsetEncoder ASCII_ENCODER = Charset.forName("US-ASCII").newEncoder(); 
 
 
+	private Utils() {
+		throw new AssertionError("No instances of this class are allowed");
+	}
 
+	/**
+	 * Read a littleEndian integer(32b its) from DataInput
+	 * @param in DataInput to read from
+	 * @return int value of next 32 bits as littleEndian
+	 * @throws IOException
+	 */
 	public static int readLittleEndianInt(DataInput in) throws IOException {
 		int bigEndian = 0;
 		for (int shiftBy = 0; shiftBy < 32; shiftBy += 8) {
@@ -54,6 +63,12 @@ public final class Utils {
 		return bigEndian;
 	}
 
+	/**
+	 * Read a littleEndian short(16 bits) from DataInput
+	 * @param in DataInput to read from
+	 * @return short value of next 16 bits as littleEndian
+	 * @throws IOException
+	 */
 	public static short readLittleEndianShort(DataInput in) throws IOException {
 		int low = in.readUnsignedByte() & 0xff;
 		int high = in.readUnsignedByte();

@@ -1,6 +1,6 @@
 /*
 
-(C) Copyright 2015 Alberto Fernández <infjaf@gmail.com>
+(C) Copyright 2015-2016 Alberto Fernández <infjaf@gmail.com>
 (C) Copyright 2004,2014 Jan Schlößin
 (C) Copyright 2003-2004 Anil Kumar K <anil@linuxense.com>
 
@@ -151,8 +151,7 @@ public class DBFReader extends DBFBase {
 	 * Returns the asked Field. In case of an invalid index, it returns a
 	 * ArrayIndexOutofboundsException.
 	 * 
-	 * @param index
-	 *            . Index of the field. Index of the first field is zero.
+	 * @param index Index of the field. Index of the first field is zero.
 	 */
 	public DBFField getField(int index) throws DBFException {
 		return this.header.fieldArray[index];

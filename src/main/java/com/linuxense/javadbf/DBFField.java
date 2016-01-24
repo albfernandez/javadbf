@@ -1,6 +1,6 @@
 /*
 
-(C) Copyright 2015 Alberto Fernández <infjaf@gmail.com>
+(C) Copyright 2015-2016 Alberto Fernández <infjaf@gmail.com>
 (C) Copyright 2014 Jan Schlößin
 (C) Copyright 2003-2004 Anil Kumar K <anil@linuxense.com>
 
@@ -34,16 +34,39 @@ import java.nio.charset.Charset;
  */
 public class DBFField {
 
+	/**
+	 * @deprecated You must use DBFDataType instead
+	 */
 	@Deprecated
 	public static final byte FIELD_TYPE_C = (byte) 'C';
+	
+	/**
+	 * @deprecated You must use DBFDataType instead
+	 */
 	@Deprecated
 	public static final byte FIELD_TYPE_L = (byte) 'L';
+	
+	/**
+	 * @deprecated You must use DBFDataType instead
+	 */
 	@Deprecated
 	public static final byte FIELD_TYPE_N = (byte) 'N';
+	
+	/**
+	 * @deprecated You must use DBFDataType instead
+	 */
 	@Deprecated
 	public static final byte FIELD_TYPE_F = (byte) 'F';
+	
+	/**
+	 * @deprecated You must use DBFDataType instead
+	 */
 	@Deprecated
 	public static final byte FIELD_TYPE_D = (byte) 'D';
+	
+	/**
+	 * @deprecated You must use DBFDataType instead
+	 */
 	@Deprecated
 	public static final byte FIELD_TYPE_M = (byte) 'M';
 
@@ -290,7 +313,7 @@ public class DBFField {
 	 * @param type
 	 *            of the field. One of the following:<br>
 	 *            C, L, N, F, D, M
-	 * @deprecated is replaces by {@link #setType(DBFDataType)}
+	 * @deprecated This method is deprecated and is replaced by {@link #setType(DBFDataType)}
 	 */
 	@Deprecated
 	public void setDataType(byte type) {
