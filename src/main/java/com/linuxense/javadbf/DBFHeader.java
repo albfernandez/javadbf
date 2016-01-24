@@ -1,6 +1,6 @@
 /*
 
-(C) Copyright 2015 Alberto Fernández <infjaf@gmail.com>
+(C) Copyright 2015-2016 Alberto Fernández <infjaf@gmail.com>
 (C) Copyright 2014 Jan Schlößin
 (C) Copyright 2004 Anil Kumar K <anil@linuxense.com>
 
@@ -25,11 +25,12 @@ package com.linuxense.javadbf;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.nio.charset.Charset;
 
 /**
  * Class for reading the metadata assuming that the given InputStream carries
@@ -164,14 +165,45 @@ class DBFHeader {
 		return (short) (sum + 1);
 	}
 	
+	/**
+	 * 
+	 * @return The year the file was created
+	 */
 	public int getYear() {
 		return 1900 + this.year;
 	}
+	/**
+	 * 
+	 * @return The month the file was created
+	 */
 	public int getMonth() {
 		return this.month;
 	}
+	/**
+	 * 
+	 * @return The day of month the file was created
+	 */
 	public int getDay() {
 		return this.day;
+	}
+	
+	/**
+	 * Gets the date the file was created
+	 * @return The date de file was created
+	 */
+	public Date getCreationDate() {
+		if (this.year == 0 || this.month == 0 || this.day == 0){
+			return null;
+		}
+		try {
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(this.year, this.month, this.day, 0, 0, 0);
+			calendar.set(Calendar.MILLISECOND, 0);
+			return calendar.getTime();
+		}
+		catch (Exception e) {
+			return null;
+		}
 	}
 	
 }
