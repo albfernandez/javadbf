@@ -1,6 +1,6 @@
 /*
 
-(C) Copyright 2015 Alberto Fernández <infjaf@gmail.com>
+(C) Copyright 2015-2016 Alberto Fernández <infjaf@gmail.com>
 (C) Copyright 2014 Jan Schlößin
 (C) Copyright 2003-2004 Anil Kumar K <anil@linuxense.com>
 
@@ -51,7 +51,7 @@ import java.nio.charset.Charset;
  * add records using the addRecord() method and then<br>
  * call write() method.
  */
-public class DBFWriter extends DBFBase {
+public class DBFWriter extends DBFBase implements java.io.Closeable {
 
 	private DBFHeader header;
 	private List<Object[]> v_records = new ArrayList<>();
@@ -146,8 +146,7 @@ public class DBFWriter extends DBFBase {
 		this.header.fieldArray = fields;
 		try {
 			if (this.raf != null && this.raf.length() == 0) {
-				// this is a new/non-existent file. So write header before
-				// proceeding
+				// this is a new/non-existent file. So write header before proceeding
 				this.header.write(this.raf, getCharset());
 			}
 		} catch (IOException e) {
@@ -239,11 +238,22 @@ public class DBFWriter extends DBFBase {
 
 				outStream.write(END_OF_DATA);
 				outStream.flush();
-			} else {
-				/*
-				 * everything is written already. just update the header for
-				 * record count and the END_OF_DATA mark
-				 */
+			}
+		} catch (IOException e) {
+			throw new DBFException(e.getMessage(), e);
+		}
+	}
+	/**
+	 * In sync mode, write the header and close the file
+	 */
+	@Override
+	public void close() throws DBFException {
+		if (this.raf != null) {
+			/*
+			 * everything is written already. just update the header for
+			 * record count and the END_OF_DATA mark
+			 */
+			try {
 				this.header.numberOfRecords = this.recordCount;
 				this.raf.seek(0);
 				this.header.write(this.raf,getCharset());
@@ -251,13 +261,25 @@ public class DBFWriter extends DBFBase {
 				this.raf.writeByte(END_OF_DATA);
 				this.raf.close();
 			}
-		} catch (IOException e) {
-			throw new DBFException(e.getMessage(), e);
+			catch (IOException e) {
+				throw new DBFException(e.getMessage(), e);
+			}
 		}
 	}
-
+	
+	/**
+	 * In sync mode, write the header and close the file
+	 * @throws DBFException
+	 * @deprecated use {@link #close()}
+	 */
+	@Deprecated
 	public void write() throws DBFException {
-		this.write(null);
+		try {
+			this.close();
+		}
+		catch (IOException e) {
+			throw new DBFException (e.getMessage(), e);
+		}
 	}
 
 	private void writeRecord(DataOutput dataOutput, Object[] objectArray) throws IOException {

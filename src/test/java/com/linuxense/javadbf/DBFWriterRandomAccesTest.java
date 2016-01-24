@@ -32,7 +32,7 @@ public class DBFWriterRandomAccesTest {
         	rowData[2] = 1000 * (i+1) + 0.25;
         	writerRandomAcces.addRecord(rowData);
         }
-        writerRandomAcces.write();
+        writerRandomAcces.close();
         Assert.assertEquals(259L, outputFile.length());
 	}
 	
@@ -51,7 +51,7 @@ public class DBFWriterRandomAccesTest {
         	rowData[2] = 1000 * (i+1) + 0.25;
         	writer.addRecord(rowData);
         }
-        writer.write();
+        writer.close();
         Assert.assertEquals(259L, outputFile.length());
 	}
 	
