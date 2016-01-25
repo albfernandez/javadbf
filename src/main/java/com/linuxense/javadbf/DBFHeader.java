@@ -29,14 +29,13 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
  * Class for reading the metadata assuming that the given InputStream carries
  * DBF data.
  */
-class DBFHeader {
+public class DBFHeader {
 
 	public static final byte SIG_DBASE_III = (byte) 0x03;
 	/* DBF structure start here */
@@ -101,7 +100,7 @@ class DBFHeader {
 	void write(DataOutput dataOutput, Charset charset) throws IOException {
 		dataOutput.writeByte(this.signature); /* 0 */
 
-		GregorianCalendar calendar = new GregorianCalendar();
+		Calendar calendar = Calendar.getInstance();
 		this.year = (byte) (calendar.get(Calendar.YEAR) - 1900);
 		this.month = (byte) (calendar.get(Calendar.MONTH) + 1);
 		this.day = (byte) (calendar.get(Calendar.DAY_OF_MONTH));
@@ -188,10 +187,10 @@ class DBFHeader {
 	}
 	
 	/**
-	 * Gets the date the file was created
+	 * Gets the date the file was modified
 	 * @return The date de file was created
 	 */
-	public Date getCreationDate() {
+	public Date getLastModificationDate() {
 		if (this.year == 0 || this.month == 0 || this.day == 0){
 			return null;
 		}
