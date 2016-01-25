@@ -34,9 +34,14 @@ import java.nio.charset.Charset;
 @Deprecated
 public final class Utils {
 
+	/**
+	 * @deprecated Use {@link DBFAlignment#LEFT}
+	 */
 	@Deprecated
 	public static final int ALIGN_LEFT = 10;
-	
+	/**
+	 * @deprecated Use {@link DBFAlignment#RIGHT}
+	 */	
 	@Deprecated
 	public static final int ALIGN_RIGHT = 12;
 	

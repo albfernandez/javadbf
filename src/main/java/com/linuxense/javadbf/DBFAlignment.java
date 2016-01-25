@@ -21,8 +21,14 @@ package com.linuxense.javadbf;
 
 /**
  * indicates aligment of data. 
- *
  */
 public enum DBFAlignment {
-	LEFT, RIGHT;
+	/**
+	 * Data is aligned to the left (so padding data is appended to the string)
+	 */
+	LEFT,
+	/**
+	 * Datga is aligned to the right(so padding data is preppended to the string)
+	 */
+	RIGHT;
 }
