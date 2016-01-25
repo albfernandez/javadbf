@@ -20,34 +20,34 @@ public class UtilsTest {
 	}
 	@Test
 	public void testIsPureAscii() {
-		assertTrue(Utils.isPureAscii("abcd"));
-		assertFalse(Utils.isPureAscii("á"));
-		assertFalse(Utils.isPureAscii("ñ"));
-		assertTrue(Utils.isPureAscii(""));
-		assertTrue(Utils.isPureAscii(null));
+		assertTrue(DBFUtils.isPureAscii("abcd"));
+		assertFalse(DBFUtils.isPureAscii("á"));
+		assertFalse(DBFUtils.isPureAscii("ñ"));
+		assertTrue(DBFUtils.isPureAscii(""));
+		assertTrue(DBFUtils.isPureAscii(null));
 	}
 	@Test
 	public void testToBoolean() {
-		assertEquals(Boolean.TRUE, Utils.toBoolean((byte) 't'));
-		assertEquals(Boolean.TRUE, Utils.toBoolean((byte) 'T'));
-		assertEquals(Boolean.TRUE, Utils.toBoolean((byte) 'y'));
-		assertEquals(Boolean.TRUE, Utils.toBoolean((byte) 'Y'));
+		assertEquals(Boolean.TRUE, DBFUtils.toBoolean((byte) 't'));
+		assertEquals(Boolean.TRUE, DBFUtils.toBoolean((byte) 'T'));
+		assertEquals(Boolean.TRUE, DBFUtils.toBoolean((byte) 'y'));
+		assertEquals(Boolean.TRUE, DBFUtils.toBoolean((byte) 'Y'));
 		
-		assertEquals(Boolean.FALSE, Utils.toBoolean((byte) 'f'));
-		assertEquals(Boolean.FALSE, Utils.toBoolean((byte) 'F'));
-		assertEquals(Boolean.FALSE, Utils.toBoolean((byte) 'n'));
-		assertEquals(Boolean.FALSE, Utils.toBoolean((byte) 'N'));
+		assertEquals(Boolean.FALSE, DBFUtils.toBoolean((byte) 'f'));
+		assertEquals(Boolean.FALSE, DBFUtils.toBoolean((byte) 'F'));
+		assertEquals(Boolean.FALSE, DBFUtils.toBoolean((byte) 'n'));
+		assertEquals(Boolean.FALSE, DBFUtils.toBoolean((byte) 'N'));
 		
-		assertNull(Utils.toBoolean((byte) '?'));
+		assertNull(DBFUtils.toBoolean((byte) '?'));
 		
 	}
 	
 	@Test 
 	public void testContains () {
-		assertTrue(Utils.contains("test?test".getBytes(), (byte) '?'));
-		assertFalse(Utils.contains("testtest".getBytes(), (byte) '?'));
-		assertFalse(Utils.contains("".getBytes(), (byte) '?'));
-		assertFalse(Utils.contains(null, (byte)'?'));
+		assertTrue(DBFUtils.contains("test?test".getBytes(), (byte) '?'));
+		assertFalse(DBFUtils.contains("testtest".getBytes(), (byte) '?'));
+		assertFalse(DBFUtils.contains("".getBytes(), (byte) '?'));
+		assertFalse(DBFUtils.contains(null, (byte)'?'));
 	}
 	@Test
 	public void doubleFormating() {
@@ -69,16 +69,16 @@ public class UtilsTest {
 	public void testTextPadding()  {
 		assertEquals(
 			"abc       ",
-			new String(Utils.textPadding("abc", ISO_8859_1, 10), ISO_8859_1)
+			new String(DBFUtils.textPadding("abc", ISO_8859_1, 10), ISO_8859_1)
 		);
 		
 		assertEquals(
 			"a",
-			new String(Utils.textPadding("abc", ISO_8859_1, 1), ISO_8859_1)
+			new String(DBFUtils.textPadding("abc", ISO_8859_1, 1), ISO_8859_1)
 		);
 		assertEquals(
 			"001",
-			new String(Utils.textPadding("1", ISO_8859_1, 3, DBFAlignment.RIGHT, (byte) '0'), ISO_8859_1)
+			new String(DBFUtils.textPadding("1", ISO_8859_1, 3, DBFAlignment.RIGHT, (byte) '0'), ISO_8859_1)
 		);
 		
 		//TODO Test extreme cases (null, negative, etc)
@@ -89,22 +89,22 @@ public class UtilsTest {
 	public void testTextPaddingUTF8() {
 		assertEquals(
 				"Simón    ",
-				new String(Utils.textPadding("Simón", UTF8, 10), UTF8)
+				new String(DBFUtils.textPadding("Simón", UTF8, 10), UTF8)
 		);		
 	}
 
 	public void testInvalidUT8Padding() {
 		assertEquals(
 				"est ",
-				new String(Utils.textPadding("está", UTF8, 4), UTF8));
+				new String(DBFUtils.textPadding("está", UTF8, 4), UTF8));
 	}
 	@Test
 	public void testRemoveSpaces() {
-		assertEquals("123", new String(Utils.removeSpaces("   123".getBytes())));
-		assertEquals("123", new String(Utils.removeSpaces("   123   ".getBytes())));
-		assertEquals("123", new String(Utils.removeSpaces("123   ".getBytes())));
-		assertEquals("123", new String(Utils.removeSpaces("123".getBytes())));
-		assertEquals("", new String(Utils.removeSpaces("".getBytes())));
+		assertEquals("123", new String(DBFUtils.removeSpaces("   123".getBytes())));
+		assertEquals("123", new String(DBFUtils.removeSpaces("   123   ".getBytes())));
+		assertEquals("123", new String(DBFUtils.removeSpaces("123   ".getBytes())));
+		assertEquals("123", new String(DBFUtils.removeSpaces("123".getBytes())));
+		assertEquals("", new String(DBFUtils.removeSpaces("".getBytes())));
 	}
 
 }

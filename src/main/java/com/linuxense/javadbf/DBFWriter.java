@@ -293,8 +293,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 				if (objectArray[j] != null) {
 					strValue = objectArray[j].toString();
 				}
-				dataOutput.write(Utils.textPadding(strValue, getCharset(),
-						this.header.fieldArray[j].getFieldLength()));
+				dataOutput.write(DBFUtils.textPadding(strValue, getCharset(), this.header.fieldArray[j].getFieldLength(), DBFAlignment.LEFT, (byte) ' '));
 
 				break;
 
@@ -303,9 +302,9 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 					GregorianCalendar calendar = new GregorianCalendar();
 					calendar.setTime((Date) objectArray[j]);
 					dataOutput.write(String.valueOf(calendar.get(Calendar.YEAR)).getBytes(StandardCharsets.US_ASCII));
-					dataOutput.write(Utils.textPadding(String.valueOf(calendar.get(Calendar.MONTH) + 1),
+					dataOutput.write(DBFUtils.textPadding(String.valueOf(calendar.get(Calendar.MONTH) + 1),
 							StandardCharsets.US_ASCII, 2, DBFAlignment.RIGHT, (byte) '0'));
-					dataOutput.write(Utils.textPadding(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)),
+					dataOutput.write(DBFUtils.textPadding(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)),
 							StandardCharsets.US_ASCII, 2, DBFAlignment.RIGHT, (byte) '0'));
 				} else {
 					dataOutput.write("        ".getBytes(StandardCharsets.US_ASCII));
@@ -316,11 +315,10 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 			case FLOATING_POINT:
 
 				if (objectArray[j] != null) {
-					dataOutput.write(Utils.doubleFormating((Number) objectArray[j], getCharset(),
+					dataOutput.write(DBFUtils.doubleFormating((Number) objectArray[j], getCharset(),
 							this.header.fieldArray[j].getFieldLength(), this.header.fieldArray[j].getDecimalCount()));
 				} else {
-					dataOutput.write(Utils.textPadding(" ", getCharset(),
-							this.header.fieldArray[j].getFieldLength(), DBFAlignment.RIGHT));
+					dataOutput.write(DBFUtils.textPadding(" ", getCharset(), this.header.fieldArray[j].getFieldLength(), DBFAlignment.RIGHT, (byte) ' '));
 				}
 
 				break;

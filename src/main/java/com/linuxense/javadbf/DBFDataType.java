@@ -22,12 +22,14 @@ package com.linuxense.javadbf;
 
 /**
  * The types supported by JavaDBF
- *
  */
 public enum DBFDataType {
+	/**
+	 * Default unknown type
+	 */
 	UNKNOWN         ((byte) 0),
 	/**
-	 * Character data, padding with whitespaces.
+	 * Character data, padded with whitespaces.
 	 */
 	CHARACTER       ((byte) 'C', 1, 254, 0, true), 
 	/**
@@ -78,7 +80,7 @@ public enum DBFDataType {
 		this.writeSupported = writeSupported;
 	}
 	/**
-	 * Get the code as stored in the dbf file.
+	 * Gets the code as stored in the dbf file.
 	 * @return the code
 	 */	
 	public byte getCode() {
@@ -86,36 +88,36 @@ public enum DBFDataType {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Gets the minimum size for this type
+	 * @return minimum size for this type
 	 */
 	public int getMinSize() {
 		return this.minSize;
 	}
 	/**
-	 * 
-	 * @return
+	 * Gets the maximum size for this type
+	 * @return Maximum size for this type
 	 */
 	public int getMaxSize() {
 		return this.maxSize;
 	}
 	/**
-	 * 
-	 * @return
+	 * Gets the default size for this type
+	 * @return default size for this type
 	 */
 	public int getDefaultSize() {
 		return this.defaultSize;
 	}
 	/**
-	 * Indicate JavaDBF can write this datatype
-	 * @return
+	 * Gets if JavaDBF can write this type
+	 * @return true if JavaDBF can write this type
 	 */
 	public boolean isWriteSupported() {
 		return this.writeSupported;
 	}
 	/**
 	 * Gets the DBFDataType from the code used in the file
-	 * @param cod 
+	 * @param cod the code used by dbase
 	 * @return The DBFDataType from the code used in the file
 	 */
 	public static DBFDataType fromCode(byte cod) {

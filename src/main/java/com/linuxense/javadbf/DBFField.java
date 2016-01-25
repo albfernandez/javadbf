@@ -35,37 +35,43 @@ import java.nio.charset.Charset;
 public class DBFField {
 
 	/**
-	 * @deprecated You must use DBFDataType instead
+	 * Code for character data
+	 * @deprecated You must use {@link DBFDataType#CHARACTER} instead
 	 */
 	@Deprecated
 	public static final byte FIELD_TYPE_C = (byte) 'C';
 	
 	/**
-	 * @deprecated You must use DBFDataType instead
+	 * Code for logical data
+	 * @deprecated You must use {@link DBFDataType#LOGICAL} instead
 	 */
 	@Deprecated
 	public static final byte FIELD_TYPE_L = (byte) 'L';
 	
 	/**
-	 * @deprecated You must use DBFDataType instead
+	 * Code for numeric data
+	 * @deprecated You must use {@link DBFDataType#NUMERIC} instead
 	 */
 	@Deprecated
 	public static final byte FIELD_TYPE_N = (byte) 'N';
 	
 	/**
-	 * @deprecated You must use DBFDataType instead
+	 * Code for floating poing data
+	 * @deprecated You must use {@link DBFDataType#FLOATING_POINT} instead
 	 */
 	@Deprecated
 	public static final byte FIELD_TYPE_F = (byte) 'F';
 	
 	/**
-	 * @deprecated You must use DBFDataType instead
+	 * Code for dates
+	 * @deprecated You must use {@link DBFDataType#DATE} instead
 	 */
 	@Deprecated
 	public static final byte FIELD_TYPE_D = (byte) 'D';
 	
 	/**
-	 * @deprecated You must use DBFDataType instead
+	 * Code for memo data (not supported by JavaDBF)
+	 * @deprecated You must use {@link DBFDataType#MEMO} instead
 	 */
 	@Deprecated
 	public static final byte FIELD_TYPE_M = (byte) 'M';
@@ -127,12 +133,12 @@ public class DBFField {
 		} catch (Exception e) {
 			field.type = DBFDataType.UNKNOWN;
 		}
-		field.reserv1 = Utils.readLittleEndianInt(in); /* 12-15 */
+		field.reserv1 = DBFUtils.readLittleEndianInt(in); /* 12-15 */
 		field.fieldLength = in.readUnsignedByte(); /* 16 */
 		field.decimalCount = in.readByte(); /* 17 */
-		field.reserv2 = Utils.readLittleEndianShort(in); /* 18-19 */
+		field.reserv2 = DBFUtils.readLittleEndianShort(in); /* 18-19 */
 		field.workAreaId = in.readByte(); /* 20 */
-		field.reserv2 = Utils.readLittleEndianShort(in); /* 21-22 */
+		field.reserv2 = DBFUtils.readLittleEndianShort(in); /* 21-22 */
 		field.setFieldsFlag = in.readByte(); /* 23 */
 		in.readFully(field.reserv4); /* 24-30 */
 		field.indexFieldFlag = in.readByte(); /* 31 */
@@ -217,7 +223,7 @@ public class DBFField {
 		if (name.length() == 0 || name.length() > 10) {
 			throw new IllegalArgumentException("Field name should be of length 0-10");
 		}
-		if (!Utils.isPureAscii(name)) {
+		if (!DBFUtils.isPureAscii(name)) {
 			throw new IllegalArgumentException("Field name must be ASCII");
 		}
 		this.name = name;

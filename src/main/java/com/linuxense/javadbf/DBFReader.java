@@ -27,9 +27,10 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
-import java.util.GregorianCalendar;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * DBFReader class can creates objects to represent DBF data.
@@ -146,6 +147,17 @@ public class DBFReader extends DBFBase {
 	public int getRecordCount() {
 		return this.header.numberOfRecords;
 	}
+	/**
+	 * Returns the last time the file was modified
+	 * @return the las time the file was modified
+	 */
+	public Date getLastModificationDate() {
+		if (this.header != null) {
+			return this.header.getLastModificationDate();
+		}
+		return null;
+	}
+
 
 	/**
 	 * Returns the asked Field. In case of an invalid index, it returns a
@@ -226,8 +238,8 @@ public class DBFReader extends DBFBase {
 					try {
 						byte t_float[] = new byte[this.header.fieldArray[i].getFieldLength()];
 						this.dataInputStream.read(t_float);
-						t_float = Utils.removeSpaces(t_float);
-						if (t_float.length > 0 && !Utils.contains(t_float, (byte) '?')) {
+						t_float = DBFUtils.removeSpaces(t_float);
+						if (t_float.length > 0 && !DBFUtils.contains(t_float, (byte) '?')) {
 							recordObjects[i] = new Double(new String(t_float, StandardCharsets.US_ASCII));
 						} else {
 							recordObjects[i] = null;
@@ -240,14 +252,14 @@ public class DBFReader extends DBFBase {
 
 				case LOGICAL:
 					byte t_logical = this.dataInputStream.readByte();
-					recordObjects[i] = Utils.toBoolean(t_logical);
+					recordObjects[i] = DBFUtils.toBoolean(t_logical);
 					break;
 				case LONG:
-					int data = Utils.readLittleEndianInt(this.dataInputStream);
+					int data = DBFUtils.readLittleEndianInt(this.dataInputStream);
 					recordObjects[i] = data;
 					break;
 				case CURRENCY:
-					int c_data = Utils.readLittleEndianInt(this.dataInputStream);
+					int c_data = DBFUtils.readLittleEndianInt(this.dataInputStream);
 					String s_data = String.format("%05d", c_data);
 					String x1 = s_data.substring(0, s_data.length() - 4);
 					String x2 = s_data.substring(s_data.length() - 4);
@@ -268,6 +280,11 @@ public class DBFReader extends DBFBase {
 		return recordObjects;
 	}
 
+	/**
+	 * function to safely skip n bytes (in some bufferd scenarios skip doesn't really skip all bytes)
+	 * @param n
+	 * @throws IOException
+	 */
 	private void skip(int n) throws IOException {
 		int skipped = (int) this.dataInputStream.skip(n);
 		for (int i = skipped; i < n; i++) {
@@ -278,5 +295,5 @@ public class DBFReader extends DBFBase {
 	protected DBFHeader getHeader() {
 		return this.header;
 	}
-
+	
 }
