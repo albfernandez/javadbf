@@ -81,7 +81,7 @@ public enum DBFDataType {
 	}
 	/**
 	 * Gets the code as stored in the dbf file.
-	 * @return the code
+	 * @return the code for this type
 	 */	
 	public byte getCode() {
 		return this.code;

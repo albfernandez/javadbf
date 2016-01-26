@@ -85,6 +85,11 @@ public final class DBFUtils {
 		return baos.toByteArray();
 	}
 	
+	/**
+	 * Convert a short value to littleEndian
+	 * @param value value to be converted
+	 * @return littleEndian short
+	 */
 	public static short littleEndian(short value) {
 
 		short num1 = value;
@@ -99,6 +104,11 @@ public final class DBFUtils {
 		return num2;
 	}
 
+	/**
+	 * Convert an int value to littleEndian
+	 * @param value value to be converted
+	 * @return littleEndian int
+	 */
 	public static int littleEndian(int value) {
 
 		int num1 = value;
@@ -116,10 +126,26 @@ public final class DBFUtils {
 		return num2;
 	}
 	
+	/**
+	 * pad a string and convert it to byte[] to write to a dbf file (by default, add whitespaces to the end of the string)
+	 * @param text The text to be padded
+	 * @param charset Charset to use to encode the string
+	 * @param length Size of the padded string
+	 * @return bytes to write to the dbf file
+	 */
 	public static byte[] textPadding(String text, Charset charset, int length) {
 		return textPadding(text, charset, length, DBFAlignment.LEFT, (byte) ' ');
 	}
 	
+	/**
+	 * pad a string and convert it to byte[] to write to a dbf file
+	 * @param text The text to be padded
+	 * @param charset Charset to use to encode the string
+	 * @param length Size of the padded string
+	 * @param alignment alignment to use to padd
+	 * @param paddingByte the byte used to pad the string
+	 * @return bytes to write to the dbf file
+	 */
 	public static byte[] textPadding(String text, Charset charset, int length, DBFAlignment alignment, byte paddingByte) {
 		byte response[] = new byte[length];
 		Arrays.fill(response, paddingByte);		
@@ -145,9 +171,27 @@ public final class DBFUtils {
 		return response;
 	}
 	
+	/**
+	 * Format a number to write to a dbf file
+	 * @param num number to write
+	 * @param charset charset to use
+	 * @param fieldLength 
+	 * @param sizeDecimalPart
+	 * @return bytes to write to the dbf file
+	 */
+	
 	public static byte[] doubleFormating(Number num, Charset charset, int fieldLength, int sizeDecimalPart) {
 		return doubleFormating(num.doubleValue(), charset, fieldLength, sizeDecimalPart);
 	}
+	
+	/**
+	 * Format a double number to write to a dbf file
+	 * @param doubleNum 
+	 * @param charset
+	 * @param fieldLength
+	 * @param sizeDecimalPart
+	 * @return bytes to write to the dbf file
+	 */
 
 	public static byte[] doubleFormating(Double doubleNum, Charset charset, int fieldLength, int sizeDecimalPart) {
 		int sizeWholePart = fieldLength - (sizeDecimalPart > 0 ? (sizeDecimalPart + 1) : 0);

@@ -277,10 +277,19 @@ public class DBFField {
 		this.fieldLength = length;
 	}
 	
+	/**
+	 * Gets the type for this field
+	 * @return The type for this field
+	 */
 
 	public DBFDataType getType() {
 		return this.type;
 	}
+	/**
+	 * Set the type for this field
+	 * @param type The type for this field
+	 * @throws IllegalArgumentException if type is not write supported
+	 */
 
 	public void setType(DBFDataType type) {
 		if (!type.isWriteSupported()) {
@@ -299,6 +308,7 @@ public class DBFField {
 		should be set by calling setFieldLength().
 
 		@param size of the decimal field.
+		
 	*/
 	public void setDecimalCount(int size) {
 		if (size < 0) {
