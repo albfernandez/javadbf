@@ -333,9 +333,9 @@ Clone the repository or download de tar file from releases page on github, run t
 
     git clone https://github.com/albfernandez/javadbf.git
     cd javadbf
-    mvn package
+    mvn clean package
 
-The result file is target/javadbf-0.7.0.jar
+The result file is ``target/javadbf-0.7.1.jar``
 
 
 
