@@ -83,8 +83,8 @@ public class DBFReader extends DBFBase {
 	private DataInputStream dataInputStream;
 	private DBFHeader header;
 
-	private final long MILLISECS_PER_DAY = 24*60*60*1000;
-	private final long MILLIS_SINCE_4713 = -210866803200000L;
+	private static final long MILLISECS_PER_DAY = 24*60*60*1000;
+	private static final long MILLIS_SINCE_4713 = -210866803200000L;
 
 	/**
 	 * Initializes a DBFReader object.
