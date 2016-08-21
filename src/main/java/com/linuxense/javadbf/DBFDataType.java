@@ -19,9 +19,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.linuxense.javadbf;
 
-
-import java.security.Timestamp;
-
 /**
  * The types supported by JavaDBF
  */
