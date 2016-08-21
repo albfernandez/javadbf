@@ -20,6 +20,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 package com.linuxense.javadbf;
 
 
+import java.security.Timestamp;
+
 /**
  * The types supported by JavaDBF
  */
@@ -59,7 +61,12 @@ public enum DBFDataType {
 	/**
 	 * Currency type (FoxPro)
 	 */
-	CURRENCY        ((byte)'Y', 8, 8, 8, false);
+	CURRENCY        ((byte)'Y', 8, 8, 8, false),
+	/**
+	 * Timestamp type (FoxPro)
+	 */
+	TIMESTAMP 		((byte)'T', 8, 8, 8, false);
+
 	
 	private byte code;
 	private int minSize;
