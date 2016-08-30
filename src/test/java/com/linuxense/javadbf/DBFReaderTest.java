@@ -28,6 +28,12 @@ public class DBFReaderTest {
 	public void testReadCountries() throws  IOException {
 		ReadDBFAssert.testReadDBFFile("countries", 29, 177);
 	}
+
+	@Test
+	public void testReadBirthDays() throws IOException {
+		ReadDBFAssert.testReadDBFFile("bdays", 3, 1);
+	}
+
 	/**
 	 * Open a file generated with javadbf
 	 * @throws DBFException

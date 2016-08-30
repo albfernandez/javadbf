@@ -8,7 +8,7 @@ import org.junit.Test;
 public class DBFDataTypeTest {
 	@Test
 	public void testValues() {
-		Assert.assertEquals(9,DBFDataType.values().length);
+		Assert.assertEquals(10,DBFDataType.values().length);
 	}
 	
 	@Test

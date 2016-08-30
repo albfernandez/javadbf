@@ -27,10 +27,10 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.*;
 
 /**
  * DBFReader class can creates objects to represent DBF data.
@@ -83,7 +83,8 @@ public class DBFReader extends DBFBase {
 	private DataInputStream dataInputStream;
 	private DBFHeader header;
 
-
+	private static final long MILLISECS_PER_DAY = 24*60*60*1000;
+	private static final long MILLIS_SINCE_4713 = -210866803200000L;
 
 	/**
 	 * Initializes a DBFReader object.
@@ -185,7 +186,6 @@ public class DBFReader extends DBFBase {
 	public Object[] nextRecord() throws DBFException {
 
 		Object recordObjects[] = new Object[this.header.fieldArray.length];
-
 		try {
 			boolean isDeleted = false;
 			do {
@@ -265,6 +265,29 @@ public class DBFReader extends DBFBase {
 					String x2 = s_data.substring(s_data.length() - 4);
 					recordObjects[i] = new BigDecimal(x1 + "." + x2);
 					skip(this.header.fieldArray[i].getFieldLength() - 4);
+					break;
+				case TIMESTAMP:
+
+					byte t_byte_date[] = new byte[4];
+					this.dataInputStream.read(t_byte_date);
+					byte t_byte_date_reversed[] = {t_byte_date[3],t_byte_date[2],t_byte_date[1],t_byte_date[0]};
+
+					int days = ByteBuffer.wrap(t_byte_date_reversed).getInt();
+
+					byte t_byte_time[] = new byte[4];
+					this.dataInputStream.read(t_byte_time);
+					byte t_byte_time_reversed[] = {t_byte_time[3],t_byte_time[2],t_byte_time[1],t_byte_time[0]};
+
+					int time = ByteBuffer.wrap(t_byte_time_reversed).getInt();
+
+					Calendar calendar = new GregorianCalendar();
+					calendar.setTimeInMillis(days * MILLISECS_PER_DAY + MILLIS_SINCE_4713 + time);
+					calendar.add(Calendar.MILLISECOND, -TimeZone.getDefault().getOffset(calendar.getTimeInMillis()));
+
+					if(days == 0 && time == 0)
+						recordObjects[i] = null;
+					else
+						recordObjects[i] = calendar.getTime();
 					break;
 				default:
 					skip(this.header.fieldArray[i].getFieldLength());
