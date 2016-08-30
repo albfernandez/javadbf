@@ -53,7 +53,7 @@ While reading, those types are interpretted as appropriate Java types.
 Following table shows the mapping scheme.
 
 
-|XBase Type   | XBase Symbol | Java Type used in JavaDBF |
+| XBase Type  | XBase Symbol | Java Type used in JavaDBF |
 |----------   | ------------ | ---------------------------
 |Character    | C            | java.lang.String          |
 |Numeric      | N            | java.lang.Double          |
@@ -63,20 +63,20 @@ Following table shows the mapping scheme.
 
 FoxPro types (Read Only)
 
-|FoxPro Type | Symbol      | Java Type used in JavaDBF |
-| ---------- | ----------- | ------------------------- |  
-|Currency    | Y           | java.math.BigDecimal      |
-|Long        | I           | java.lang.Integer         |
+| FoxPro Type        | Symbol  | Java Type used in JavaDBF |
+| -------------------| ------- | ------------------------- |  
+| Currency           | Y       | java.math.BigDecimal      |
+| Long               | I       | java.lang.Integer         |
+| Date Type (FoxPro) | T       | java.util.Date            |
 
 Unsupported types
 
-|Type                   | Symbol |
+| Type                  | Symbol |
 | --------------------- | ------ |
 | Memo                  | M      |
 | Binary                | B      |
 | General (OLE Objects) | G      |
 | Picture (FoxPro)      | P      |
-| Date Type (FoxPro)    | T      |
 | AutoIncrement(dbase7) | +      | 
 | Timestamp (dbase7)    | @      |
 | Double (dbase7)       | O      |
