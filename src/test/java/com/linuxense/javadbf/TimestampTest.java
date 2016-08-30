@@ -49,6 +49,7 @@ public class TimestampTest {
 
                 countedRows++;
             }
+            Assert.assertEquals(1, countedRows);
         }
         finally {
             if (inputStream != null) {
