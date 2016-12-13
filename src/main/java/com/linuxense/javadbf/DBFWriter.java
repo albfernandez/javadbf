@@ -173,7 +173,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 
 		for (int i = 0; i < this.header.fieldArray.length; i++) {
 			Object value = values[i];
-			if (values[i] == null) {
+			if (value == null) {
 				continue;
 			}
 
