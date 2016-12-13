@@ -161,7 +161,7 @@ Create an object of DBFField class:
 ```java
 	DBFField field = new DBFField();
 	field.setField("emp_name"); // give a name to the field
-	field.setDataType(DBFField.FIELD_TYPE_C); // and set its type
+	field.setType(DBFDataType.CHARACTER); // and set its type
 	field.setFieldLength(25); // and length of the field
 ```
 
