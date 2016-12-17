@@ -94,15 +94,16 @@ public class DBFReader extends DBFBase {
 	 * will be ready to return the first row.
 	 * 
 	 * @param in the InputStream where the data is read from.
-	 * @param charset charset used to decode field names and field contents
+	 * @param charset charset used to decode field names and field contents. If null, then is autedetected from dbf file
 	 */
 	public DBFReader(InputStream in,Charset charset) throws DBFException {
 		try {
-			setCharset(charset);
+			
 			this.dataInputStream = new DataInputStream(in);
 			this.header = new DBFHeader();
 			this.header.read(this.dataInputStream, charset);
-
+			setCharset(this.header.getUsedCharset());
+			
 			/* it might be required to leap to the start of records at times */
 			int t_dataStartIndex = this.header.headerLength - (32 + (32 * this.header.fieldArray.length)) - 1;
 			skip(t_dataStartIndex);
@@ -123,7 +124,7 @@ public class DBFReader extends DBFBase {
 	 * @throws DBFException
 	 */
 	public DBFReader(InputStream in) throws DBFException {
-		this(in,DEFAULT_CHARSET);
+		this(in,null);
 	}
 
 	@Override

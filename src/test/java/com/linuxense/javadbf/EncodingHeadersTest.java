@@ -11,10 +11,20 @@ import org.junit.Test;
 public class EncodingHeadersTest {
 	
 	
-
 	@Test
-	public void test1() throws IOException {
+	public void testAutodetectCharset() throws IOException {
+		test(null);
+	}
+	
+	@Test
+	public void testForceCharset() throws IOException {
 		Charset GBK = Charset.forName("GBK");
+		test(GBK);
+	}
+	
+	
+	public void test(Charset charset) throws IOException {
+		
 		String fieldNames[] = new String[] {"设计编号", "审核信息", "是否打印"};
 		String firstColumn[] = new String[] {				
 				"201500256-059K-001-001牡丹江林口朝阳         ",
@@ -81,7 +91,7 @@ public class EncodingHeadersTest {
 		InputStream inputStream = null;
 		try {
 			inputStream = new FileInputStream("src/test/resources/gbk.dbf");
-			DBFReader reader = new DBFReader(inputStream, GBK);
+			DBFReader reader = new DBFReader(inputStream, charset);
 
 			int numberOfFields = reader.getFieldCount();
 			Assert.assertEquals(3, numberOfFields);

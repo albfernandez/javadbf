@@ -26,6 +26,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -58,6 +59,9 @@ public class DBFHeader {
 	private short reserv4;               /* 30-31 */
 	DBFField []fieldArray;       /* each 32 bytes */	
 	private byte terminator1;            /* n+1 */
+	
+	private Charset detectedCharset;
+	private Charset usedCharset;
 
 	//byte[] databaseContainer; /* 263 bytes */
 	/* DBF structure ends here */
@@ -87,17 +91,29 @@ public class DBFHeader {
 		this.mdxFlag = dataInput.readByte();                           /* 28 */
 		this.languageDriver = dataInput.readByte();                    /* 29 */
 		this.reserv4 = DBFUtils.readLittleEndianShort( dataInput);        /* 30-31 */
-
+		
+		
+		this.detectedCharset = DBFCharsetHelper.getCharsetByByte(this.languageDriver);
+		
+		
 		List<DBFField> v_fields = new ArrayList<>();
 		
+		this.usedCharset = this.detectedCharset;
+		if (charset != null) {
+			this.usedCharset = charset;
+		}
+		if (this.usedCharset == null) {
+			this.usedCharset = StandardCharsets.ISO_8859_1;
+		}
+		
 		DBFField field = null; /* 32 each */
-		while ((field = DBFField.createField(dataInput,charset))!= null) {
+		while ((field = DBFField.createField(dataInput,this.usedCharset))!= null) {
 			v_fields.add(field);
 		}		
 		this.fieldArray = v_fields.toArray(new DBFField[v_fields.size()]);		
 	}
 
-	void write(DataOutput dataOutput, Charset charset) throws IOException {
+	void write(DataOutput dataOutput) throws IOException {
 		dataOutput.writeByte(this.signature); /* 0 */
 
 		Calendar calendar = Calendar.getInstance();
@@ -125,11 +141,11 @@ public class DBFHeader {
 		dataOutput.writeInt(DBFUtils.littleEndian(this.reserv2)); /* 20-23 */
 		dataOutput.writeInt(DBFUtils.littleEndian(this.reserv3)); /* 24-27 */
 
-		dataOutput.writeByte(this.mdxFlag); /* 28 */
+		dataOutput.writeByte(this.mdxFlag); /* 28 */		
 		dataOutput.writeByte(this.languageDriver); /* 29 */
 		dataOutput.writeShort(DBFUtils.littleEndian(this.reserv4)); /* 30-31 */
 		for (DBFField field : this.fieldArray) {
-			field.write(dataOutput,charset);
+			field.write(dataOutput,getUsedCharset());
 		}
 		dataOutput.writeByte(this.terminator1); /* n+1 */
 	}
@@ -203,6 +219,19 @@ public class DBFHeader {
 		catch (Exception e) {
 			return null;
 		}
+	}
+	
+	
+	protected Charset getDetectedCharset() {
+		return this.detectedCharset;
+	}
+
+	
+	protected Charset getUsedCharset() {
+		return this.usedCharset;
+	}
+	protected void setUsedCharset(Charset charset) {
+		this.usedCharset = charset;
 	}
 	
 }

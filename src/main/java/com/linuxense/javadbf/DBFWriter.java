@@ -73,6 +73,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 		super();
 		setCharset(charset);
 		this.header = new DBFHeader();
+		this.header.setUsedCharset(charset);
 	}
 	
 	/**
@@ -84,7 +85,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	 *                or if an IO error occurs.
 	 */
 	public DBFWriter(File dbfFile) throws DBFException {
-		this(dbfFile, DEFAULT_CHARSET);
+		this(dbfFile, null);
 	}
 
 
@@ -97,9 +98,8 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	 *                if the passed in file does exist but not a valid DBF file,
 	 *                or if an IO error occurs.
 	 */
-	public DBFWriter(File dbfFile,Charset charset) throws DBFException {
-		super();
-		setCharset(charset);
+	public DBFWriter(File dbfFile, Charset charset) throws DBFException {
+		super();		
 		try {
 			this.raf = new RandomAccessFile(dbfFile, "rw");
 			this.header = new DBFHeader();
@@ -109,10 +109,19 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 			 * empty/non-existent file or not.
 			 */
 			if (dbfFile.length() == 0) {
+				if (charset != null) {
+					setCharset(charset);
+					this.header.setUsedCharset(charset);
+				}
+				else {
+					setCharset(StandardCharsets.ISO_8859_1);
+					this.header.setUsedCharset(StandardCharsets.ISO_8859_1);
+				}
 				return;
 			}
 
 			this.header.read(this.raf, charset);
+			setCharset(this.header.getUsedCharset());
 
 			/* position file pointer at the end of the raf */
 			// to ignore the END_OF_DATA byte at EoF
@@ -147,7 +156,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 		try {
 			if (this.raf != null && this.raf.length() == 0) {
 				// this is a new/non-existent file. So write header before proceeding
-				this.header.write(this.raf, getCharset());
+				this.header.write(this.raf);
 			}
 		} catch (IOException e) {
 			throw new DBFException("Error accesing file:" + e.getMessage(), e);
@@ -229,7 +238,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 			if (this.raf == null) {
 				DataOutputStream outStream = new DataOutputStream(out);
 				this.header.numberOfRecords = this.v_records.size();
-				this.header.write(outStream,getCharset());
+				this.header.write(outStream);
 
 				/* Now write all the records */
 				for (Object[] record : this.v_records) {
@@ -256,7 +265,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 			try {
 				this.header.numberOfRecords = this.recordCount;
 				this.raf.seek(0);
-				this.header.write(this.raf,getCharset());
+				this.header.write(this.raf);
 				this.raf.seek(this.raf.length());
 				this.raf.writeByte(END_OF_DATA);
 				this.raf.close();
