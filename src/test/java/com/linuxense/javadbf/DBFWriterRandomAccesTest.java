@@ -3,6 +3,7 @@ package com.linuxense.javadbf;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -18,11 +19,23 @@ public class DBFWriterRandomAccesTest {
 		DBFField[] fields = createFields();
 		
 		File outputFile = File.createTempFile("example", ".dbf");
-		DBFWriter writer = new DBFWriter();
-        writer.setFields(fields);
-        FileOutputStream fos = new FileOutputStream(outputFile);
-        writer.write(fos);
-        fos.close();
+		DBFWriter writer = null;
+		OutputStream fos = null;
+		try {
+			writer = new DBFWriter();
+	        writer.setFields(fields);
+	        fos = new FileOutputStream(outputFile);
+	        writer.write(fos);
+		}
+		finally {
+			if (writer != null) {
+				writer.close();
+			}
+			if (fos != null) {
+				fos.close();
+			}
+			
+		}
         
         DBFWriter writerRandomAcces = new DBFWriter(outputFile);
         for (int i = 0; i < 3; i++) {
@@ -78,9 +91,17 @@ public class DBFWriterRandomAccesTest {
 
 
 	
-	@SuppressWarnings("unused")
+
 	@Test(expected=DBFException.class)
 	public void testFailOpenFile() throws DBFException {
-		new DBFWriter(new File("/this/file/doesnont/exists"));
+		DBFWriter writer = null;
+		try {
+			writer = new DBFWriter(new File("/this/file/doesnont/exists"));
+		}
+		finally {
+			if (writer != null) {
+				writer.close();
+			}
+		}
 	}
 }

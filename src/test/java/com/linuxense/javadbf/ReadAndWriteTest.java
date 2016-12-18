@@ -33,55 +33,59 @@ public class ReadAndWriteTest {
 		fields[2].setType(DBFDataType.NUMERIC);
 		fields[2].setFieldLength(12);
 		fields[2].setDecimalCount(2);
-
-		DBFWriter writer = new DBFWriter();
-		writer.setFields(fields);
-
-		// now populate DBFWriter
-		//
-
-		Object rowData[] = new Object[3];
-		rowData[0] = "1000";
-		rowData[1] = "John";
-		rowData[2] = new Double(5000.00);
-
-		writer.addRecord(rowData);
-
-		rowData = new Object[3];
-		rowData[0] = "1001";
-		rowData[1] = "Lalit";
-		rowData[2] = new Double(3400.00);
-
-		writer.addRecord(rowData);
-
-		rowData = new Object[3];
-		rowData[0] = "1002";
-		rowData[1] = "Rohit";
-		rowData[2] = new Double(7350.00);
-
-		writer.addRecord(rowData);
-
-		ByteArrayOutputStream out = null;
-		try {
-			out = new ByteArrayOutputStream();
-			writer.write(out);
-		} finally {
-			if (out != null) {
-				out.close();
-			}
-		}
-		
-		byte[] data = out.toByteArray();
-		Assert.assertEquals(259, data.length);
-		
+		DBFWriter writer = null;
 		ByteArrayInputStream bis = null;
 		try {
+			writer = new DBFWriter();
+			writer.setFields(fields);
+	
+			// now populate DBFWriter
+			//
+	
+			Object rowData[] = new Object[3];
+			rowData[0] = "1000";
+			rowData[1] = "John";
+			rowData[2] = new Double(5000.00);
+	
+			writer.addRecord(rowData);
+	
+			rowData = new Object[3];
+			rowData[0] = "1001";
+			rowData[1] = "Lalit";
+			rowData[2] = new Double(3400.00);
+	
+			writer.addRecord(rowData);
+	
+			rowData = new Object[3];
+			rowData[0] = "1002";
+			rowData[1] = "Rohit";
+			rowData[2] = new Double(7350.00);
+	
+			writer.addRecord(rowData);
+	
+			ByteArrayOutputStream out = null;
+			try {
+				out = new ByteArrayOutputStream();
+				writer.write(out);
+			} finally {
+				if (out != null) {
+					out.close();
+				}
+			}
+			
+			byte[] data = out.toByteArray();
+			Assert.assertEquals(259, data.length);
+		
+
 			bis = new ByteArrayInputStream(data);
 			ReadDBFAssert.testReadDBFFile(bis, 3, 3);
 		}
 		finally {
 			if (bis != null) {
 				bis.close();
+			}
+			if (writer != null) {
+				writer.close();
 			}
 		}
 

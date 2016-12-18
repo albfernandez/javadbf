@@ -13,100 +13,116 @@ public class DBFWriterStreamTest {
 	@Test
 	public void testAllDataTypes() throws IOException {
 
-		try (NullOutputStream output = new NullOutputStream()) {
-			DBFWriter writer = new DBFWriter();
+		try (NullOutputStream output = new NullOutputStream(); DBFWriter writer = new DBFWriter()) {
 			writer.setFields(generateFields());
 			writer.addRecord(new Object[] { 1, "Neo", 10001.10, new Date(), true });
 			writer.addRecord(new Object[] { 2, "Morfeo", 1000.0, new Date(), true });
 			writer.addRecord(new Object[] { 2, "Smith", null, new Date(), false });
-			writer.addRecord(new Object[] { null, null, null, null, null});
+			writer.addRecord(new Object[] { null, null, null, null, null });
 			writer.write(output);
 			Assert.assertEquals(562L, output.getCount());
-			
 		}
 	}
-	@Test(expected=DBFException.class)
+
+	@Test(expected = DBFException.class)
 	public void testFieldsCannotSetTwice() throws DBFException {
-		DBFWriter writer = new DBFWriter();
-		writer.setFields(generateFields());
-		writer.setFields(generateFields());
-	}
-	
-	@Test(expected=DBFException.class)
-	public void testFieldsCannotBeNull() throws DBFException {
-		DBFWriter writer = new DBFWriter();
-		writer.setFields(null);
-	}
-	@Test(expected=DBFException.class)
-	public void testFieldsCannotBeEmpty() throws DBFException {
-		DBFWriter writer = new DBFWriter();
-		writer.setFields(new DBFField[0]);
-	}
-	@Test(expected=DBFException.class)
-	public void testFieldsCannotContainNull() throws DBFException {
-		DBFWriter writer = new DBFWriter();
-		writer.setFields(new DBFField[]{null});
+		try (DBFWriter writer = new DBFWriter()) {
+			writer.setFields(generateFields());
+			writer.setFields(generateFields());
+		}
 	}
 
-	
-	
+	@Test(expected = DBFException.class)
+	public void testFieldsCannotBeNull() throws DBFException {
+		try (DBFWriter writer = new DBFWriter()) {
+			writer.setFields(null);
+		}
+	}
+
+	@Test(expected = DBFException.class)
+	public void testFieldsCannotBeEmpty() throws DBFException {
+		try (DBFWriter writer = new DBFWriter()) {
+			writer.setFields(new DBFField[0]);
+		}
+	}
+
+	@Test(expected = DBFException.class)
+	public void testFieldsCannotContainNull() throws DBFException {
+		try (DBFWriter writer = new DBFWriter()) {
+			writer.setFields(new DBFField[] { null });
+		}
+	}
+
 	@Test(expected = DBFException.class)
 	public void testFieldsSetBeforeRecordData() throws DBFException {
-		DBFWriter writer = new DBFWriter();
-		writer.addRecord(new Object[] { 1, "John Smith", 1000.10, new Date(), false });
+		try (DBFWriter writer = new DBFWriter()) {
+			writer.addRecord(new Object[] { 1, "John Smith", 1000.10, new Date(), false });
+		}
 	}
 
-	@Test(expected=DBFException.class)
+	@Test(expected = DBFException.class)
 	public void testFieldsValuesNotNull() throws DBFException {
-		DBFWriter writer = new DBFWriter();
-		writer.setFields(generateFields());
-		writer.addRecord(null);
-	}
-	@Test(expected=DBFException.class)
-	public void testRecordLengthMustMastFieldLength() throws DBFException {
-		DBFWriter writer = new DBFWriter();
-		writer.setFields(generateFields());
-		writer.addRecord(new Object[0]);
-	}
-	@Test(expected=DBFException.class)
-	public void testCheckCharacterType() throws DBFException {
-		DBFWriter writer = new DBFWriter();
-		writer.setFields(generateFields());
-		writer.addRecord(new Object[] { 1, 5, 10001.10, new Date(), true });
-	}
-	@Test(expected=DBFException.class)
-	public void testCheckNumericType() throws DBFException {
-		DBFWriter writer = new DBFWriter();
-		writer.setFields(generateFields());
-		writer.addRecord(new Object[] { "1", "Neo", 10001.10, new Date(), true });
-	}
-	@Test(expected=DBFException.class)
-	public void testCheckFloatingPointType() throws DBFException {
-		DBFWriter writer = new DBFWriter();
-		writer.setFields(generateFields());
-		writer.addRecord(new Object[] { 1, "Neo", "10001.10", new Date(), true });
-	}
-	
-	@Test(expected=DBFException.class)
-	public void testCheckDateType() throws DBFException {
-		DBFWriter writer = new DBFWriter();
-		writer.setFields(generateFields());
-		writer.addRecord(new Object[] { 1, "Neo", 10001.10, "new Date()", true });
-	}
-	@Test(expected=DBFException.class)
-	public void testCheckBooleanType() throws DBFException {
-		DBFWriter writer = new DBFWriter();
-		writer.setFields(generateFields());
-		writer.addRecord(new Object[] { 1, "Neo", 10001.10, new Date(), "true" });
+		try (DBFWriter writer = new DBFWriter()) {
+			writer.setFields(generateFields());
+			writer.addRecord(null);
+		}
 	}
 
-	
+	@Test(expected = DBFException.class)
+	public void testRecordLengthMustMastFieldLength() throws DBFException {
+		try (DBFWriter writer = new DBFWriter()) {
+			writer.setFields(generateFields());
+			writer.addRecord(new Object[0]);
+		}
+	}
+
+	@Test(expected = DBFException.class)
+	public void testCheckCharacterType() throws DBFException {
+		try (DBFWriter writer = new DBFWriter()) {
+			writer.setFields(generateFields());
+			writer.addRecord(new Object[] { 1, 5, 10001.10, new Date(), true });
+		}
+	}
+
+	@Test(expected = DBFException.class)
+	public void testCheckNumericType() throws DBFException {
+		try (DBFWriter writer = new DBFWriter()) {
+			writer.setFields(generateFields());
+			writer.addRecord(new Object[] { "1", "Neo", 10001.10, new Date(), true });
+		}
+	}
+
+	@Test(expected = DBFException.class)
+	public void testCheckFloatingPointType() throws DBFException {
+		try (DBFWriter writer = new DBFWriter()) {
+			writer.setFields(generateFields());
+			writer.addRecord(new Object[] { 1, "Neo", "10001.10", new Date(), true });
+		}
+	}
+
+	@Test(expected = DBFException.class)
+	public void testCheckDateType() throws DBFException {
+		try (DBFWriter writer = new DBFWriter()) {
+			writer.setFields(generateFields());
+			writer.addRecord(new Object[] { 1, "Neo", 10001.10, "new Date()", true });
+		}
+	}
+
+	@Test(expected = DBFException.class)
+	public void testCheckBooleanType() throws DBFException {
+		try (DBFWriter writer = new DBFWriter()) {
+			writer.setFields(generateFields());
+			writer.addRecord(new Object[] { 1, "Neo", 10001.10, new Date(), "true" });
+		}
+	}
+
 	@Test(expected = DBFException.class)
 	public void testFieldsLengthSameAsHeaders() throws DBFException {
-		DBFWriter writer = new DBFWriter();
-		writer.addRecord(new Object[] { 1, "John Smith", 1000.10, new Date()});
+		try (DBFWriter writer = new DBFWriter()){
+			writer.addRecord(new Object[] { 1, "John Smith", 1000.10, new Date() });
+		}
 	}
-	
+
 	private DBFField[] generateFields() {
 		DBFField[] fields = new DBFField[5];
 

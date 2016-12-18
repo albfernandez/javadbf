@@ -32,38 +32,42 @@ public class AnyNumericTypeTest {
 		fields[2].setFieldLength(12);
 		fields[2].setDecimalCount(2);
 
-		DBFWriter writer = new DBFWriter();
-		writer.setFields(fields);
-
-		// now populate DBFWriter
-		//
-
-		Object rowData[] = new Object[3];
-		rowData[0] = "1000";
-		rowData[1] = "John";
-		rowData[2] = new Integer(5000);
-
-		writer.addRecord(rowData);
-
-		rowData = new Object[3];
-		rowData[0] = "1001";
-		rowData[1] = "Lalit";
-		rowData[2] = new Long(3400);
-
-		writer.addRecord(rowData);
-
-		rowData = new Object[3];
-		rowData[0] = "1002";
-		rowData[1] = "Rohit";
-		rowData[2] = 7350;
-
-		writer.addRecord(rowData);
+		DBFWriter writer = null; 
 
 		ByteArrayOutputStream out = null;
 		try {
+			writer = new DBFWriter();
+			writer.setFields(fields);
+
+			// now populate DBFWriter
+			//
+
+			Object rowData[] = new Object[3];
+			rowData[0] = "1000";
+			rowData[1] = "John";
+			rowData[2] = new Integer(5000);
+
+			writer.addRecord(rowData);
+
+			rowData = new Object[3];
+			rowData[0] = "1001";
+			rowData[1] = "Lalit";
+			rowData[2] = new Long(3400);
+
+			writer.addRecord(rowData);
+
+			rowData = new Object[3];
+			rowData[0] = "1002";
+			rowData[1] = "Rohit";
+			rowData[2] = 7350;
+
+			writer.addRecord(rowData);
 			out = new ByteArrayOutputStream();
 			writer.write(out);
 		} finally {
+			if (writer != null) {
+				writer.close();
+			}
 			if (out != null) {
 				out.close();
 			}
@@ -96,38 +100,42 @@ public class AnyNumericTypeTest {
 		fields[2].setFieldLength(12);
 		fields[2].setDecimalCount(2);
 
-		DBFWriter writer = new DBFWriter();
-		writer.setFields(fields);
-
-		// now populate DBFWriter
-		//
-
-		Object rowData[] = new Object[3];
-		rowData[0] = "1000";
-		rowData[1] = "John";
-		rowData[2] = new BigDecimal("5000.00");
-
-		writer.addRecord(rowData);
-
-		rowData = new Object[3];
-		rowData[0] = "1001";
-		rowData[1] = "Lalit";
-		rowData[2] = new Float(3400);
-
-		writer.addRecord(rowData);
-
-		rowData = new Object[3];
-		rowData[0] = "1002";
-		rowData[1] = "Rohit";
-		rowData[2] = new BigInteger("7350");
-
-		writer.addRecord(rowData);
+		DBFWriter writer = null;
 
 		ByteArrayOutputStream out = null;
 		try {
+			writer =  new DBFWriter();
+			writer.setFields(fields);
+
+			// now populate DBFWriter
+			//
+
+			Object rowData[] = new Object[3];
+			rowData[0] = "1000";
+			rowData[1] = "John";
+			rowData[2] = new BigDecimal("5000.00");
+
+			writer.addRecord(rowData);
+
+			rowData = new Object[3];
+			rowData[0] = "1001";
+			rowData[1] = "Lalit";
+			rowData[2] = new Float(3400);
+
+			writer.addRecord(rowData);
+
+			rowData = new Object[3];
+			rowData[0] = "1002";
+			rowData[1] = "Rohit";
+			rowData[2] = new BigInteger("7350");
+
+			writer.addRecord(rowData);
 			out = new ByteArrayOutputStream();
 			writer.write(out);
 		} finally {
+			if (writer != null) {
+				writer.close();
+			}
 			if (out != null) {
 				out.close();
 			}
