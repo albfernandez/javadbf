@@ -31,7 +31,7 @@ If you are using Maven, you can add JavaDBF to your project using this dependenc
 	<dependency>
 		<groupId>com.github.albfernandez</groupId>
 		<artifactId>javadbf</artifactId>
-		<version>0.8.0</version>
+		<version>0.9.0</version>
 	</dependency>
 ```
 
@@ -335,7 +335,7 @@ Clone the repository or download de tar file from releases page on github, run t
     cd javadbf
     mvn clean package
 
-The result file is ``target/javadbf-0.8.0.jar``
+The result file is ``target/javadbf-0.9.0.jar``
 
 
 
