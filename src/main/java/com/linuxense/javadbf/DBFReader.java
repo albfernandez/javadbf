@@ -86,6 +86,23 @@ public class DBFReader extends DBFBase {
 	private static final long MILLISECS_PER_DAY = 24*60*60*1000;
 	private static final long MILLIS_SINCE_4713 = -210866803200000L;
 
+	
+	
+	/**
+	 * Intializes a DBFReader object.
+	 * 
+	 * Tries to detect charset from file, if failed uses default charset ISO-8859-1
+	 * When this constructor returns the object will have completed reading the
+	 * header (meta date) and header information can be queried there on. And it
+	 * will be ready to return the first row.
+	 * 
+	 * @param in  the InputStream where the data is read from.
+	 * @throws DBFException
+	 */
+	public DBFReader(InputStream in) throws DBFException {
+		this(in,null);
+	}
+	
 	/**
 	 * Initializes a DBFReader object.
 	 * 
@@ -112,20 +129,6 @@ public class DBFReader extends DBFBase {
 		}
 	}
 
-	/**
-	 * Intializes a DBFReader object.
-	 * 
-	 * Uses default charset ISO-8859-1
-	 * When this constructor returns the object will have completed reading the
-	 * header (meta date) and header information can be queried there on. And it
-	 * will be ready to return the first row.
-	 * 
-	 * @param in  the InputStream where the data is read from.
-	 * @throws DBFException
-	 */
-	public DBFReader(InputStream in) throws DBFException {
-		this(in,null);
-	}
 
 	@Override
 	public String toString() {
@@ -225,10 +228,7 @@ public class DBFReader extends DBFBase {
 								Integer.parseInt(new String(t_byte_day, StandardCharsets.US_ASCII)));
 						recordObjects[i] = calendar.getTime();
 					} catch (NumberFormatException e) {
-						/*
-						 * this field may be empty or may have improper value
-						 * set
-						 */
+						// this field may be empty or may have improper value set
 						recordObjects[i] = null;
 					}
 
@@ -241,6 +241,7 @@ public class DBFReader extends DBFBase {
 						this.dataInputStream.read(t_float);
 						t_float = DBFUtils.removeSpaces(t_float);
 						if (t_float.length > 0 && !DBFUtils.contains(t_float, (byte) '?') && !DBFUtils.contains(t_float, (byte) '*')) {
+							// TODO Use bigDecimal instead
 							recordObjects[i] = new Double(new String(t_float, StandardCharsets.US_ASCII));
 						} else {
 							recordObjects[i] = null;
@@ -285,10 +286,12 @@ public class DBFReader extends DBFBase {
 					calendar.setTimeInMillis(days * MILLISECS_PER_DAY + MILLIS_SINCE_4713 + time);
 					calendar.add(Calendar.MILLISECOND, -TimeZone.getDefault().getOffset(calendar.getTimeInMillis()));
 
-					if(days == 0 && time == 0)
+					if(days == 0 && time == 0) {
 						recordObjects[i] = null;
-					else
+					}
+					else {
 						recordObjects[i] = calendar.getTime();
+					}
 					break;
 				default:
 					skip(this.header.fieldArray[i].getFieldLength());
