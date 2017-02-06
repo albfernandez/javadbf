@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.SortedMap;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class DBFCharsetHelperTest {
@@ -75,6 +76,7 @@ public class DBFCharsetHelperTest {
 	
 	
 	@Test
+	@Ignore
 	public void listEncodings() {
 		SortedMap<String, Charset> charsets = Charset.availableCharsets();
 		
