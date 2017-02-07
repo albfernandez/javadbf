@@ -242,7 +242,7 @@ public class DBFReader extends DBFBase {
 						t_float = DBFUtils.removeSpaces(t_float);
 						if (t_float.length > 0 && !DBFUtils.contains(t_float, (byte) '?') && !DBFUtils.contains(t_float, (byte) '*')) {
 							// TODO Use bigDecimal instead
-							recordObjects[i] = new Double(new String(t_float, StandardCharsets.US_ASCII));
+							recordObjects[i] = new BigDecimal(new String(t_float, StandardCharsets.US_ASCII));
 						} else {
 							recordObjects[i] = null;
 						}

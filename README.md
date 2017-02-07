@@ -56,8 +56,8 @@ Following table shows the mapping scheme.
 | XBase Type  | XBase Symbol | Java Type used in JavaDBF |
 |----------   | ------------ | ---------------------------
 |Character    | C            | java.lang.String          |
-|Numeric      | N            | java.lang.Double          |
-|Double       | F            | lava.lang.Double          |
+|Numeric      | N            | java.math.BigDecimal      |
+|Double       | F            | java.math.BigDecimal      |
 |Logical      | L            | java.lang.Boolean         |
 |Date         | D            | java.util.Date            |
 
