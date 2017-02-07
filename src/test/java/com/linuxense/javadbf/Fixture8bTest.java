@@ -1,14 +1,16 @@
 package com.linuxense.javadbf;
 
 import java.io.BufferedInputStream;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import static com.linuxense.javadbf.testutils.DateUtils.createDate;
 
 public class Fixture8bTest {
 
@@ -175,17 +177,7 @@ public class Fixture8bTest {
 
 	}
 	
-	private Date createDate(int year, int month, int day) {
-		Calendar c = Calendar.getInstance();
-		c.set(Calendar.YEAR, year);
-		c.set(Calendar.MONTH, month  - 1);
-		c.set(Calendar.DAY_OF_MONTH, day);
-		c.set(Calendar.HOUR_OF_DAY, 0);
-		c.set(Calendar.MINUTE, 0);
-		c.set(Calendar.SECOND, 0);
-		c.set(Calendar.MILLISECOND, 0);
-		return c.getTime();
-	}
+	
 }
 
 
