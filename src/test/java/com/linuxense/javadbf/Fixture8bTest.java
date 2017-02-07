@@ -20,6 +20,9 @@ public class Fixture8bTest {
 			DBFReader reader = new DBFReader(inputStream);
 			
 			DBFHeader header = reader.getHeader();
+			Assert.assertNotNull(header);
+			Assert.assertEquals(6, header.fieldArray.length);
+			
 			Assert.assertEquals("CHARACTER", header.fieldArray[0].getName());
 			Assert.assertEquals(DBFDataType.CHARACTER, header.fieldArray[0].getType());
 			Assert.assertEquals(0, header.fieldArray[0].getDecimalCount());
