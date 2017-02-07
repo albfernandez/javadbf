@@ -139,6 +139,9 @@ public class Fixture8bTest {
 			Assert.assertTrue(row[4] instanceof Number);			
 			Assert.assertEquals(0.1, ((Number)row[4]).doubleValue(), 0.0001);
 			
+			row = reader.nextRecord();
+			
+			Assert.assertNull(row);
 			
 
 
