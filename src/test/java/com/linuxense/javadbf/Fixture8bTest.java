@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.Assert;
@@ -64,6 +65,9 @@ public class Fixture8bTest {
 			Assert.assertTrue(row[1] instanceof Number);
 			Assert.assertEquals(1, ((Number)row[1]).intValue());
 			Assert.assertTrue(row[2] instanceof Date);
+			Assert.assertEquals(createDate(1970,1,1), row[2]);
+			Assert.assertTrue(row[3] instanceof Boolean);
+			Assert.assertTrue((Boolean) row[3]);
 			Assert.assertTrue(row[4] instanceof Number);			
 			Assert.assertEquals(1.23456789012346, ((Number)row[4]).doubleValue(), 0.0001);
 			
@@ -72,6 +76,9 @@ public class Fixture8bTest {
 			Assert.assertTrue(row[1] instanceof Number);
 			Assert.assertEquals(2, ((Number)row[1]).intValue());
 			Assert.assertTrue(row[2] instanceof Date);
+			Assert.assertEquals(createDate(1970,12,31), row[2]);
+			Assert.assertTrue(row[3] instanceof Boolean);
+			Assert.assertTrue((Boolean) row[3]);
 			Assert.assertTrue(row[4] instanceof Number);			
 			Assert.assertEquals(2.0, ((Number)row[4]).doubleValue(), 0.0001);
 			
@@ -80,6 +87,8 @@ public class Fixture8bTest {
 			Assert.assertTrue(row[1] instanceof Number);
 			Assert.assertEquals(3, ((Number)row[1]).intValue());
 			Assert.assertTrue(row[2] instanceof Date);
+			Assert.assertEquals(createDate(1980,1,1), row[2]);
+			Assert.assertNull(row[3]);
 			Assert.assertTrue(row[4] instanceof Number);			
 			Assert.assertEquals(3.0, ((Number)row[4]).doubleValue(), 0.0001);
 			
@@ -88,6 +97,8 @@ public class Fixture8bTest {
 			Assert.assertTrue(row[1] instanceof Number);
 			Assert.assertEquals(4, ((Number)row[1]).intValue());
 			Assert.assertTrue(row[2] instanceof Date);
+			Assert.assertEquals(createDate(1900,1,1), row[2]);
+			Assert.assertNull(row[3]);
 			Assert.assertTrue(row[4] instanceof Number);			
 			Assert.assertEquals(4.0, ((Number)row[4]).doubleValue(), 0.0001);
 			
@@ -96,6 +107,8 @@ public class Fixture8bTest {
 			Assert.assertTrue(row[1] instanceof Number);
 			Assert.assertEquals(5, ((Number)row[1]).intValue());
 			Assert.assertTrue(row[2] instanceof Date);
+			Assert.assertEquals(createDate(1900,12,31), row[2]);
+			Assert.assertNull(row[3]);
 			Assert.assertTrue(row[4] instanceof Number);			
 			Assert.assertEquals(5.0, ((Number)row[4]).doubleValue(), 0.0001);
 			
@@ -104,6 +117,8 @@ public class Fixture8bTest {
 			Assert.assertTrue(row[1] instanceof Number);
 			Assert.assertEquals(6, ((Number)row[1]).intValue());
 			Assert.assertTrue(row[2] instanceof Date);
+			Assert.assertEquals(createDate(1901,1,1), row[2]);
+			Assert.assertNull(row[3]);
 			Assert.assertTrue(row[4] instanceof Number);			
 			Assert.assertEquals(6.0, ((Number)row[4]).doubleValue(), 0.0001);
 			
@@ -112,6 +127,8 @@ public class Fixture8bTest {
 			Assert.assertTrue(row[1] instanceof Number);
 			Assert.assertEquals(7, ((Number)row[1]).intValue());
 			Assert.assertTrue(row[2] instanceof Date);
+			Assert.assertEquals(createDate(1999,12,31), row[2]);
+			Assert.assertNull(row[3]);
 			Assert.assertTrue(row[4] instanceof Number);			
 			Assert.assertEquals(7.0, ((Number)row[4]).doubleValue(), 0.0001);
 			
@@ -120,6 +137,8 @@ public class Fixture8bTest {
 			Assert.assertTrue(row[1] instanceof Number);
 			Assert.assertEquals(8, ((Number)row[1]).intValue());
 			Assert.assertTrue(row[2] instanceof Date);
+			Assert.assertEquals(createDate(1919,12,31), row[2]);
+			Assert.assertNull(row[3]);
 			Assert.assertTrue(row[4] instanceof Number);			
 			Assert.assertEquals(8.0, ((Number)row[4]).doubleValue(), 0.0001);
 			
@@ -128,6 +147,7 @@ public class Fixture8bTest {
 			Assert.assertTrue(row[1] instanceof Number);
 			Assert.assertEquals(9, ((Number)row[1]).intValue());
 			Assert.assertNull(row[2]);
+			Assert.assertNull(row[3]);
 			Assert.assertNull(row[4]);			
 
 			
@@ -136,6 +156,7 @@ public class Fixture8bTest {
 			Assert.assertTrue(row[1] instanceof Number);
 			Assert.assertEquals(10, ((Number)row[1]).intValue());
 			Assert.assertNull(row[2]);
+			Assert.assertNull(row[3]);
 			Assert.assertTrue(row[4] instanceof Number);			
 			Assert.assertEquals(0.1, ((Number)row[4]).doubleValue(), 0.0001);
 			
@@ -152,6 +173,18 @@ public class Fixture8bTest {
 			}
 		}
 
+	}
+	
+	private Date createDate(int year, int month, int day) {
+		Calendar c = Calendar.getInstance();
+		c.set(Calendar.YEAR, year);
+		c.set(Calendar.MONTH, month  - 1);
+		c.set(Calendar.DAY_OF_MONTH, day);
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+		return c.getTime();
 	}
 }
 
