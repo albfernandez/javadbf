@@ -277,7 +277,7 @@ public class DBFWriterTest {
     // ...
 
     DBFWriter writer = new DBFWriter(new File("/path/to/a/new/file")); 
-    // this DBFWriter object is now in Syc Mode
+    // this DBFWriter object is now in Sync Mode
     
     // set fields 
     writer.setFields(fields);
