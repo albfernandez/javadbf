@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import static com.linuxense.javadbf.testutils.DateUtils.createDate;
 
-public class Fixture8bTest {
+public class FixtureDBase8bTest {
 
 	@Test
 	public void test8b() throws Exception {
