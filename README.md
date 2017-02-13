@@ -73,6 +73,7 @@ Unsupported types
 
 | Type                  | Symbol |
 | --------------------- | ------ |
+| Flags                 | 0      |
 | Memo                  | M      |
 | Binary                | B      |
 | General (OLE Objects) | G      |
