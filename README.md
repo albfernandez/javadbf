@@ -68,6 +68,7 @@ FoxPro types (Read Only)
 | Currency           | Y       | java.math.BigDecimal      |
 | Long               | I       | java.lang.Integer         |
 | Date Type (FoxPro) | T       | java.util.Date            |
+| AutoIncrement(dbase7) | +    | java.lang.Integer         |
 
 Unsupported types
 
@@ -78,7 +79,7 @@ Unsupported types
 | Binary                | B      |
 | General (OLE Objects) | G      |
 | Picture (FoxPro)      | P      |
-| AutoIncrement(dbase7) | +      | 
+
 | Timestamp (dbase7)    | @      |
 | Double (dbase7)       | O      |
 
