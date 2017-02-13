@@ -134,7 +134,9 @@ public class DBFReader extends DBFBase {
 			setCharset(this.header.getUsedCharset());
 			
 			/* it might be required to leap to the start of records at times */
-			int t_dataStartIndex = this.header.headerLength - (32 + (32 * this.header.fieldArray.length)) - 1;
+			int fieldSize = this.header.getFieldDescriptorSize();
+			int tableSize = this.header.getTableHeaderSize();
+			int t_dataStartIndex = this.header.headerLength - (tableSize + (fieldSize * this.header.fieldArray.length)) - 1;
 			skip(t_dataStartIndex);
 		} catch (IOException e) {
 			throw new DBFException(e.getMessage(), e);

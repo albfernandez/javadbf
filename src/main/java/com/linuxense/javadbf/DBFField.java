@@ -145,6 +145,42 @@ public class DBFField {
 
 		return field;
 	}
+	
+	protected static DBFField createFieldDB7(DataInput in, Charset charset) throws IOException {
+
+		DBFField field = new DBFField();
+
+		byte t_byte = in.readByte(); /* 0 */
+		if (t_byte == (byte) 0x0d) {
+			return null;
+		}
+		byte[] fieldName = new byte[32];
+		in.readFully(fieldName, 1, 31); /* 1-10 */
+		fieldName[0] = t_byte;
+		int nameNullIndex = fieldName.length -1;
+		for (int i = 0; i < fieldName.length; i++) {
+			if (fieldName[i] == (byte) 0) {
+				nameNullIndex = i;
+				break;
+			}
+		}
+		field.name = new String(fieldName, 0, nameNullIndex,charset);
+		try {
+			field.type = DBFDataType.fromCode(in.readByte()); /* 32 */
+		} catch (Exception e) {
+			field.type = DBFDataType.UNKNOWN;
+		}
+		field.fieldLength = in.readUnsignedByte(); /* 33 */
+		field.decimalCount = in.readByte(); /* 34 */
+		field.reserv2 = DBFUtils.readLittleEndianShort(in); /* 35-36 */
+		field.workAreaId = in.readByte(); /* 37 */
+		field.reserv2 = DBFUtils.readLittleEndianShort(in); /* 38-39 */
+		int nextAuto = in.readInt(); /* 40-43 */
+		int reserv = in.readInt(); /* 44 -47 */
+		
+		return field;
+	}
+	
 
 	/**
 	 * Writes the content of DBFField object into the stream as per DBF format

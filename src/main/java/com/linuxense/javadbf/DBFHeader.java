@@ -57,15 +57,21 @@ public class DBFHeader {
 	private byte mdxFlag;                /* 28 */
 	private byte languageDriver;         /* 29 */
 	private short reserv4;               /* 30-31 */
+	private int reserv5;
 	DBFField []fieldArray;       /* each 32 bytes */	
 	private byte terminator1;            /* n+1 */
+	private String languageDriverName;
 	
 	private Charset detectedCharset;
 	private Charset usedCharset;
+	
 
 	//byte[] databaseContainer; /* 263 bytes */
 	/* DBF structure ends here */
 
+	private static final int DBASE_LEVEL_7 = 4;
+	private static final int DBASE_LEVEL_5 = 3;
+	
 	protected DBFHeader() {
 		this.signature = SIG_DBASE_III;
 		this.terminator1 = 0x0D;
@@ -74,6 +80,9 @@ public class DBFHeader {
 	void read( DataInput dataInput, Charset charset) throws IOException {
 
 		this.signature = dataInput.readByte(); /* 0 */
+		
+				
+
 		this.year = dataInput.readByte();      /* 1 */
 		this.month = dataInput.readByte();     /* 2 */
 		this.day = dataInput.readByte();       /* 3 */
@@ -95,6 +104,12 @@ public class DBFHeader {
 		
 		this.detectedCharset = DBFCharsetHelper.getCharsetByByte(this.languageDriver);
 		
+		if (isDB7()) {
+			byte[] languageName = new byte[32];
+			dataInput.readFully(languageName);
+			this.languageDriverName =  new String (languageName);
+			this.reserv5 =  dataInput.readInt(); 
+		}
 		
 		List<DBFField> v_fields = new ArrayList<>();
 		
@@ -106,13 +121,37 @@ public class DBFHeader {
 			this.usedCharset = StandardCharsets.ISO_8859_1;
 		}
 		
-		DBFField field = null; /* 32 each */
-		while ((field = DBFField.createField(dataInput,this.usedCharset))!= null) {
-			v_fields.add(field);
-		}		
+		DBFField field = null; /* 32 each */ 
+		if (!isDB7()) {
+			while ((field = DBFField.createField(dataInput,this.usedCharset))!= null) {
+				v_fields.add(field);
+			}		
+		}
+		else {
+			/* 48 each */
+			while ((field = DBFField.createFieldDB7(dataInput,this.usedCharset))!= null) {
+				v_fields.add(field);
+			}
+		}
 		this.fieldArray = v_fields.toArray(new DBFField[v_fields.size()]);		
 	}
+	int getTableHeaderSize() {
+		if (isDB7()) {
+			return 68;
+		}
+		return 32;
+	}
 
+	int getFieldDescriptorSize() {
+		if (isDB7()) {
+			return 48;
+		}
+		return 32;
+	}
+	private boolean isDB7() {
+		return (this.signature & 0x7) == DBASE_LEVEL_7;
+	}
+	
 	void write(DataOutput dataOutput) throws IOException {
 		dataOutput.writeByte(this.signature); /* 0 */
 
