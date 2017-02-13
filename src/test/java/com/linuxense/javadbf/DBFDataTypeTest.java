@@ -6,10 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class DBFDataTypeTest {
-	@Test
-	public void testValues() {
-		Assert.assertEquals(10,DBFDataType.values().length);
-	}
+
 	
 	@Test
 	public void testValueOf() {

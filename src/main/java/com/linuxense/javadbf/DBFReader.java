@@ -276,6 +276,7 @@ public class DBFReader extends DBFBase {
 					recordObjects[i] = DBFUtils.toBoolean(t_logical);
 					break;
 				case LONG:
+				case AUTOINCREMENT:
 					int data = DBFUtils.readLittleEndianInt(this.dataInputStream);
 					recordObjects[i] = data;
 					break;

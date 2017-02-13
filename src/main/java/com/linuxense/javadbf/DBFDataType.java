@@ -56,6 +56,10 @@ public enum DBFDataType {
 	 */
 	LONG            ((byte) 'I', 4, 4, 4, false),
 	/**
+	 * Autoincrement (same as long, dbase 7)
+	 */
+	AUTOINCREMENT ((byte) '+', 4, 4, 4, false),
+	/**
 	 * Currency type (FoxPro)
 	 */
 	CURRENCY        ((byte)'Y', 8, 8, 8, false),
