@@ -62,11 +62,11 @@ import java.util.*;
  * </tr>
  * <tr>
  * <td>N</td>
- * <td>Integer</td>
+ * <td>java.math.BigDecimal</td>
  * </tr>
  * <tr>
  * <td>F</td>
- * <td>Double</td>
+ * <td>java.math.BigDecimal</td>
  * </tr>
  * <tr>
  * <td>L</td>
@@ -74,6 +74,18 @@ import java.util.*;
  * </tr>
  * <tr>
  * <td>D</td>
+ * <td>java.util.Date</td>
+ * </tr>
+ * <tr>
+ * <td>Y</td>
+ * <td>java.math.BigDecimal</td>
+ * </tr>
+ * <tr>
+ * <td>I</td>
+ * <td>Integer</td>
+ * </tr>
+ * <tr>
+ * <td>T</td>
  * <td>java.util.Date</td>
  * </tr>
  * </table>
