@@ -92,12 +92,12 @@ import java.util.*;
  */
 public class DBFReader extends DBFBase {
 
-	private DataInputStream dataInputStream;
-	private DBFHeader header;
-
 	private static final long MILLISECS_PER_DAY = 24*60*60*1000;
 	private static final long MILLIS_SINCE_4713 = -210866803200000L;
 
+	private DataInputStream dataInputStream;
+	private DBFHeader header;
+	private boolean trimRightSpaces = true;
 	
 	
 	/**
@@ -220,7 +220,12 @@ public class DBFReader extends DBFBase {
 				case CHARACTER:
 					byte b_array[] = new byte[this.header.fieldArray[i].getFieldLength()];
 					this.dataInputStream.read(b_array);
-					recordObjects[i] = new String(b_array, getCharset());
+					if (this.trimRightSpaces) {
+						recordObjects[i] = new String(DBFUtils.trimRightSpaces(b_array), getCharset());
+					}
+					else {
+						recordObjects[i] = new String(b_array, getCharset());
+					}
 					break;
 
 				case DATE:
@@ -334,5 +339,15 @@ public class DBFReader extends DBFBase {
 	protected DBFHeader getHeader() {
 		return this.header;
 	}
+
+	public boolean isTrimRightSpaces() {
+		return this.trimRightSpaces;
+	}
+
+	public void setTrimRightSpaces(boolean trimRightSpaces) {
+		this.trimRightSpaces = trimRightSpaces;
+	}
+	
+	
 	
 }

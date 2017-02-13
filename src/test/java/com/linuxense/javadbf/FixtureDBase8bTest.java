@@ -63,7 +63,7 @@ public class FixtureDBase8bTest {
 			
 			
 			row = reader.nextRecord();
-			Assert.assertTrue(row[0].toString().startsWith("One"));
+			Assert.assertEquals("One", row[0]);
 			Assert.assertTrue(row[1] instanceof Number);
 			Assert.assertEquals(1, ((Number)row[1]).intValue());
 			Assert.assertTrue(row[2] instanceof Date);
@@ -74,7 +74,7 @@ public class FixtureDBase8bTest {
 			Assert.assertEquals(1.23456789012346, ((Number)row[4]).doubleValue(), 0.0001);
 			
 			row = reader.nextRecord();
-			Assert.assertTrue(row[0].toString().startsWith("Two"));
+			Assert.assertEquals("Two", row[0]);
 			Assert.assertTrue(row[1] instanceof Number);
 			Assert.assertEquals(2, ((Number)row[1]).intValue());
 			Assert.assertTrue(row[2] instanceof Date);
@@ -85,7 +85,7 @@ public class FixtureDBase8bTest {
 			Assert.assertEquals(2.0, ((Number)row[4]).doubleValue(), 0.0001);
 			
 			row = reader.nextRecord();
-			Assert.assertTrue(row[0].toString().startsWith("Three"));
+			Assert.assertEquals("Three", row[0]);
 			Assert.assertTrue(row[1] instanceof Number);
 			Assert.assertEquals(3, ((Number)row[1]).intValue());
 			Assert.assertTrue(row[2] instanceof Date);
@@ -95,7 +95,7 @@ public class FixtureDBase8bTest {
 			Assert.assertEquals(3.0, ((Number)row[4]).doubleValue(), 0.0001);
 			
 			row = reader.nextRecord();
-			Assert.assertTrue(row[0].toString().startsWith("Four"));
+			Assert.assertEquals("Four", row[0]);
 			Assert.assertTrue(row[1] instanceof Number);
 			Assert.assertEquals(4, ((Number)row[1]).intValue());
 			Assert.assertTrue(row[2] instanceof Date);
@@ -105,7 +105,7 @@ public class FixtureDBase8bTest {
 			Assert.assertEquals(4.0, ((Number)row[4]).doubleValue(), 0.0001);
 			
 			row = reader.nextRecord();
-			Assert.assertTrue(row[0].toString().startsWith("Five"));
+			Assert.assertEquals("Five", row[0]);
 			Assert.assertTrue(row[1] instanceof Number);
 			Assert.assertEquals(5, ((Number)row[1]).intValue());
 			Assert.assertTrue(row[2] instanceof Date);
@@ -115,7 +115,7 @@ public class FixtureDBase8bTest {
 			Assert.assertEquals(5.0, ((Number)row[4]).doubleValue(), 0.0001);
 			
 			row = reader.nextRecord();
-			Assert.assertTrue(row[0].toString().startsWith("Six"));
+			Assert.assertEquals("Six", row[0]);
 			Assert.assertTrue(row[1] instanceof Number);
 			Assert.assertEquals(6, ((Number)row[1]).intValue());
 			Assert.assertTrue(row[2] instanceof Date);
@@ -125,7 +125,7 @@ public class FixtureDBase8bTest {
 			Assert.assertEquals(6.0, ((Number)row[4]).doubleValue(), 0.0001);
 			
 			row = reader.nextRecord();
-			Assert.assertTrue(row[0].toString().startsWith("Seven"));
+			Assert.assertEquals("Seven", row[0]);
 			Assert.assertTrue(row[1] instanceof Number);
 			Assert.assertEquals(7, ((Number)row[1]).intValue());
 			Assert.assertTrue(row[2] instanceof Date);
@@ -135,7 +135,7 @@ public class FixtureDBase8bTest {
 			Assert.assertEquals(7.0, ((Number)row[4]).doubleValue(), 0.0001);
 			
 			row = reader.nextRecord();
-			Assert.assertTrue(row[0].toString().startsWith("Eight"));
+			Assert.assertEquals("Eight", row[0]);
 			Assert.assertTrue(row[1] instanceof Number);
 			Assert.assertEquals(8, ((Number)row[1]).intValue());
 			Assert.assertTrue(row[2] instanceof Date);
@@ -145,7 +145,7 @@ public class FixtureDBase8bTest {
 			Assert.assertEquals(8.0, ((Number)row[4]).doubleValue(), 0.0001);
 			
 			row = reader.nextRecord();
-			Assert.assertTrue(row[0].toString().startsWith("Nine"));
+			Assert.assertEquals("Nine", row[0]);
 			Assert.assertTrue(row[1] instanceof Number);
 			Assert.assertEquals(9, ((Number)row[1]).intValue());
 			Assert.assertNull(row[2]);
@@ -154,7 +154,7 @@ public class FixtureDBase8bTest {
 
 			
 			row = reader.nextRecord();
-			Assert.assertTrue(row[0].toString().startsWith("Ten records stored in this database"));
+			Assert.assertEquals("Ten records stored in this database", row[0]);
 			Assert.assertTrue(row[1] instanceof Number);
 			Assert.assertEquals(10, ((Number)row[1]).intValue());
 			Assert.assertNull(row[2]);

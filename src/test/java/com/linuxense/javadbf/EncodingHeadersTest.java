@@ -92,7 +92,7 @@ public class EncodingHeadersTest {
 		try {
 			inputStream = new FileInputStream("src/test/resources/gbk.dbf");
 			DBFReader reader = new DBFReader(inputStream, charset);
-
+			reader.setTrimRightSpaces(false);
 			int numberOfFields = reader.getFieldCount();
 			Assert.assertEquals(3, numberOfFields);
 			for (int i = 0; i < numberOfFields; i++) {

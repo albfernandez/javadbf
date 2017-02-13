@@ -106,5 +106,17 @@ public class UtilsTest {
 		assertEquals("123", new String(DBFUtils.removeSpaces("123".getBytes())));
 		assertEquals("", new String(DBFUtils.removeSpaces("".getBytes())));
 	}
+	
+	
+	@Test
+	public void testTrimRightSpaces() {
+		assertEquals("123", new String(DBFUtils.trimRightSpaces("123".getBytes())));
+		assertEquals("123", new String(DBFUtils.trimRightSpaces("123  ".getBytes())));
+		assertEquals("  123", new String(DBFUtils.trimRightSpaces("  123  ".getBytes())));
+		assertEquals("  123", new String(DBFUtils.trimRightSpaces("  123".getBytes())));
+		assertEquals("", new String(DBFUtils.trimRightSpaces("    ".getBytes())));
+		assertEquals("", new String(DBFUtils.trimRightSpaces(null)));
+		
+	}
 
 }
