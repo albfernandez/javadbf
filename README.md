@@ -344,5 +344,14 @@ The result file is ``target/javadbf-0.9.0.jar``
 
 https://en.wikipedia.org/wiki/.dbf
 
+http://www.clicketyclick.dk/databases/xbase/format/index.html
+
+http://www.dbase.com/Knowledgebase/INT/db7_file_fmt.htm
+
+http://devzone.advantagedatabase.com/dz/webhelp/advantage9.0/server1/dbf_field_types_and_specifications.htm
+
+http://msdn.microsoft.com/en-us/library/st4a0s68%28VS.80%29.aspx
+
+
 
 
