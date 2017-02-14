@@ -1,6 +1,6 @@
 /*
 
-(C) Copyright 2015-2016 Alberto Fernández <infjaf@gmail.com>
+(C) Copyright 2015-2017 Alberto Fernández <infjaf@gmail.com>
 (C) Copyright 2014 Jan Schlößin
 (C) Copyright 2004 Anil Kumar K <anil@linuxense.com>
 
