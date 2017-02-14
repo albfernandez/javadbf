@@ -93,7 +93,7 @@ import java.util.*;
 public class DBFReader extends DBFBase {
 
 	private static final long MILLISECS_PER_DAY = 24*60*60*1000;
-	private static final long MILLIS_SINCE_4713 = -210866803200000L;
+	private static final long TIME_MILLIS_1_1_4713_BC = -210866803200000L;
 
 	private DataInputStream dataInputStream;
 	private DBFHeader header;
@@ -289,7 +289,7 @@ public class DBFReader extends DBFBase {
 					skip(this.header.fieldArray[i].getFieldLength() - 4);
 					break;
 				case TIMESTAMP:
-
+				case TIMESTAMP_DBASE7:
 					byte t_byte_date[] = new byte[4];
 					this.dataInputStream.read(t_byte_date);
 					byte t_byte_date_reversed[] = {t_byte_date[3],t_byte_date[2],t_byte_date[1],t_byte_date[0]};
@@ -303,7 +303,7 @@ public class DBFReader extends DBFBase {
 					int time = ByteBuffer.wrap(t_byte_time_reversed).getInt();
 
 					Calendar calendar = new GregorianCalendar();
-					calendar.setTimeInMillis(days * MILLISECS_PER_DAY + MILLIS_SINCE_4713 + time);
+					calendar.setTimeInMillis(days * MILLISECS_PER_DAY + TIME_MILLIS_1_1_4713_BC + time);
 					calendar.add(Calendar.MILLISECOND, -TimeZone.getDefault().getOffset(calendar.getTimeInMillis()));
 
 					if(days == 0 && time == 0) {

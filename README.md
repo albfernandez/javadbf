@@ -61,13 +61,14 @@ Following table shows the mapping scheme.
 |Logical      | L            | java.lang.Boolean         |
 |Date         | D            | java.util.Date            |
 
-FoxPro types (Read Only)
+FoxPro and dbase7 types (Read Only)
 
 | FoxPro Type        | Symbol  | Java Type used in JavaDBF |
 | -------------------| ------- | ------------------------- |  
 | Currency           | Y       | java.math.BigDecimal      |
 | Long               | I       | java.lang.Integer         |
 | Date Type (FoxPro) | T       | java.util.Date            |
+| Timestamp (dbase7)    | @    | java.util.Date            | 
 | AutoIncrement(dbase7) | +    | java.lang.Integer         |
 
 Unsupported types
@@ -79,9 +80,8 @@ Unsupported types
 | Binary                | B      |
 | General (OLE Objects) | G      |
 | Picture (FoxPro)      | P      |
-
-| Timestamp (dbase7)    | @      |
 | Double (dbase7)       | O      |
+| Varchar               | V      |
 
 
 

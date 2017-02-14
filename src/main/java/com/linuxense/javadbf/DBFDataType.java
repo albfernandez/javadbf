@@ -66,7 +66,11 @@ public enum DBFDataType {
 	/**
 	 * Timestamp type (FoxPro)
 	 */
-	TIMESTAMP 		((byte)'T', 8, 8, 8, false);
+	TIMESTAMP 		((byte)'T', 8, 8, 8, false),
+	/**
+	 * Timestamp type (dbase level 7)
+	 */
+	TIMESTAMP_DBASE7 ((byte)'@', 8, 8, 8, false);
 
 	
 	private byte code;
