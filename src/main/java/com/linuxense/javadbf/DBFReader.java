@@ -27,7 +27,6 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -290,26 +289,16 @@ public class DBFReader extends DBFBase {
 					break;
 				case TIMESTAMP:
 				case TIMESTAMP_DBASE7:
-					byte t_byte_date[] = new byte[4];
-					this.dataInputStream.read(t_byte_date);
-					byte t_byte_date_reversed[] = {t_byte_date[3],t_byte_date[2],t_byte_date[1],t_byte_date[0]};
-
-					int days = ByteBuffer.wrap(t_byte_date_reversed).getInt();
-
-					byte t_byte_time[] = new byte[4];
-					this.dataInputStream.read(t_byte_time);
-					byte t_byte_time_reversed[] = {t_byte_time[3],t_byte_time[2],t_byte_time[1],t_byte_time[0]};
-
-					int time = ByteBuffer.wrap(t_byte_time_reversed).getInt();
-
-					Calendar calendar = new GregorianCalendar();
-					calendar.setTimeInMillis(days * MILLISECS_PER_DAY + TIME_MILLIS_1_1_4713_BC + time);
-					calendar.add(Calendar.MILLISECOND, -TimeZone.getDefault().getOffset(calendar.getTimeInMillis()));
+					int days = DBFUtils.readLittleEndianInt(this.dataInputStream);
+					int time = DBFUtils.readLittleEndianInt(this.dataInputStream);
 
 					if(days == 0 && time == 0) {
 						recordObjects[i] = null;
 					}
 					else {
+						Calendar calendar = new GregorianCalendar();
+						calendar.setTimeInMillis(days * MILLISECS_PER_DAY + TIME_MILLIS_1_1_4713_BC + time);
+						calendar.add(Calendar.MILLISECOND, -TimeZone.getDefault().getOffset(calendar.getTimeInMillis()));
 						recordObjects[i] = calendar.getTime();
 					}
 					break;
