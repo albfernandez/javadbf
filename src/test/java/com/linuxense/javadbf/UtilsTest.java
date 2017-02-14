@@ -24,7 +24,7 @@ public class UtilsTest {
 		assertFalse(DBFUtils.isPureAscii("á"));
 		assertFalse(DBFUtils.isPureAscii("ñ"));
 		assertTrue(DBFUtils.isPureAscii(""));
-		assertTrue(DBFUtils.isPureAscii(null));
+		assertTrue(DBFUtils.isPureAscii((String) null));
 	}
 	@Test
 	public void testToBoolean() {

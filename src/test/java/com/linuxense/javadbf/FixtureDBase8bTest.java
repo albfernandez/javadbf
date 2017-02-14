@@ -21,6 +21,7 @@ public class FixtureDBase8bTest {
 		try {
 			inputStream = new BufferedInputStream(new FileInputStream(file));
 			DBFReader reader = new DBFReader(inputStream);
+			reader.setMemoFile(new File("src/test/resources/fixtures/dbase_8b.dbt"));
 			
 			DBFHeader header = reader.getHeader();
 			Assert.assertNotNull(header);
@@ -72,6 +73,7 @@ public class FixtureDBase8bTest {
 			Assert.assertTrue((Boolean) row[3]);
 			Assert.assertTrue(row[4] instanceof Number);			
 			Assert.assertEquals(1.23456789012346, ((Number)row[4]).doubleValue(), 0.0001);
+			Assert.assertEquals("First memo\r\n", row[5]);
 			
 			row = reader.nextRecord();
 			Assert.assertEquals("Two", row[0]);
@@ -83,6 +85,7 @@ public class FixtureDBase8bTest {
 			Assert.assertTrue((Boolean) row[3]);
 			Assert.assertTrue(row[4] instanceof Number);			
 			Assert.assertEquals(2.0, ((Number)row[4]).doubleValue(), 0.0001);
+			Assert.assertEquals("Second memo", row[5]);
 			
 			row = reader.nextRecord();
 			Assert.assertEquals("Three", row[0]);
@@ -93,6 +96,7 @@ public class FixtureDBase8bTest {
 			Assert.assertNull(row[3]);
 			Assert.assertTrue(row[4] instanceof Number);			
 			Assert.assertEquals(3.0, ((Number)row[4]).doubleValue(), 0.0001);
+			Assert.assertEquals("Thierd memo", row[5]);
 			
 			row = reader.nextRecord();
 			Assert.assertEquals("Four", row[0]);
@@ -103,6 +107,7 @@ public class FixtureDBase8bTest {
 			Assert.assertNull(row[3]);
 			Assert.assertTrue(row[4] instanceof Number);			
 			Assert.assertEquals(4.0, ((Number)row[4]).doubleValue(), 0.0001);
+			Assert.assertEquals("Fourth memo", row[5]);
 			
 			row = reader.nextRecord();
 			Assert.assertEquals("Five", row[0]);
@@ -113,6 +118,7 @@ public class FixtureDBase8bTest {
 			Assert.assertNull(row[3]);
 			Assert.assertTrue(row[4] instanceof Number);			
 			Assert.assertEquals(5.0, ((Number)row[4]).doubleValue(), 0.0001);
+			Assert.assertEquals("Fifth memo", row[5]);
 			
 			row = reader.nextRecord();
 			Assert.assertEquals("Six", row[0]);
@@ -123,6 +129,7 @@ public class FixtureDBase8bTest {
 			Assert.assertNull(row[3]);
 			Assert.assertTrue(row[4] instanceof Number);			
 			Assert.assertEquals(6.0, ((Number)row[4]).doubleValue(), 0.0001);
+			Assert.assertEquals("Sixth memo", row[5]);
 			
 			row = reader.nextRecord();
 			Assert.assertEquals("Seven", row[0]);
@@ -133,6 +140,7 @@ public class FixtureDBase8bTest {
 			Assert.assertNull(row[3]);
 			Assert.assertTrue(row[4] instanceof Number);			
 			Assert.assertEquals(7.0, ((Number)row[4]).doubleValue(), 0.0001);
+			Assert.assertEquals("Seventh memo", row[5]);
 			
 			row = reader.nextRecord();
 			Assert.assertEquals("Eight", row[0]);
@@ -143,6 +151,7 @@ public class FixtureDBase8bTest {
 			Assert.assertNull(row[3]);
 			Assert.assertTrue(row[4] instanceof Number);			
 			Assert.assertEquals(8.0, ((Number)row[4]).doubleValue(), 0.0001);
+			Assert.assertEquals("Eigth memo", row[5]);
 			
 			row = reader.nextRecord();
 			Assert.assertEquals("Nine", row[0]);
@@ -151,6 +160,7 @@ public class FixtureDBase8bTest {
 			Assert.assertNull(row[2]);
 			Assert.assertNull(row[3]);
 			Assert.assertNull(row[4]);			
+			Assert.assertEquals("Nineth memo", row[5]);	
 
 			
 			row = reader.nextRecord();
@@ -161,6 +171,7 @@ public class FixtureDBase8bTest {
 			Assert.assertNull(row[3]);
 			Assert.assertTrue(row[4] instanceof Number);			
 			Assert.assertEquals(0.1, ((Number)row[4]).doubleValue(), 0.0001);
+			Assert.assertNull(row[5]);
 			
 			row = reader.nextRecord();
 			

@@ -44,7 +44,7 @@ public enum DBFDataType {
 	 */
 	LOGICAL         ((byte) 'L', 1, 1, 1, true),
 	/**
-	 * Memo
+	 * Memo (data is stored in dbt file)
 	 */
 	MEMO            ((byte) 'M'),
 	/**

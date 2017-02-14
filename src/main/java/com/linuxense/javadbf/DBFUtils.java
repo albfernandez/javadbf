@@ -22,10 +22,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 package com.linuxense.javadbf;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.DataInput;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
@@ -43,6 +47,21 @@ public final class DBFUtils {
 		throw new AssertionError("No instances of this class are allowed");
 	}
 	
+	
+	public static Number readNumericStoredAsText(DataInputStream dataInput, int length) throws IOException {
+		try {
+			byte t_float[] = new byte[length];
+			dataInput.read(t_float);
+			t_float = DBFUtils.removeSpaces(t_float);
+			if (t_float.length > 0 && DBFUtils.isPureAscii(t_float) && !DBFUtils.contains(t_float, (byte) '?') && !DBFUtils.contains(t_float, (byte) '*')) {
+				return new BigDecimal(new String(t_float, StandardCharsets.US_ASCII));
+			} else {
+				return null;
+			}
+		} catch (NumberFormatException e) {
+			throw new DBFException("Failed to parse Float: " + e.getMessage(), e);
+		}
+	}
 	/**
 	 * Read a littleEndian integer(32b its) from DataInput
 	 * @param in DataInput to read from
@@ -241,6 +260,18 @@ public final class DBFUtils {
 		}
 		return ASCII_ENCODER.canEncode(stringToCheck);
 	}
+	
+	public static boolean isPureAscii(byte[] data) {
+		if (data == null) {
+			return false;
+		}
+		for (byte b: data) {
+			if (b > (byte) 0x7F || b < 0x20){
+				return false;
+			}
+		}
+		return true;
+	}
 
 	/**
 	 * Convert LOGICAL (L) byte to boolean value
@@ -274,6 +305,17 @@ public final class DBFUtils {
 			pos--;
 		}
 		return pos;
+	}
+	
+	public static void close(Closeable closeable) {
+		if (closeable != null) {
+			try {
+				closeable.close();
+			}
+			catch (Exception e) {
+				//
+			}
+		}
 	}
 
 }

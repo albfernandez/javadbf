@@ -70,13 +70,13 @@ FoxPro and dbase7 types (Read Only)
 | Date Type (FoxPro) | T       | java.util.Date            |
 | Timestamp (dbase7)    | @    | java.util.Date            | 
 | AutoIncrement(dbase7) | +    | java.lang.Integer         |
+| Memo                  | M    | java.lang.String          |
 
 Unsupported types
 
 | Type                  | Symbol |
 | --------------------- | ------ |
 | Flags                 | 0      |
-| Memo                  | M      |
 | Binary                | B      |
 | General (OLE Objects) | G      |
 | Picture (FoxPro)      | P      |

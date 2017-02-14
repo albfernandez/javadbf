@@ -24,6 +24,7 @@ package com.linuxense.javadbf;
 
 import java.io.DataInputStream;
 import java.io.EOFException;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -97,6 +98,8 @@ public class DBFReader extends DBFBase {
 	private DataInputStream dataInputStream;
 	private DBFHeader header;
 	private boolean trimRightSpaces = true;
+	
+	private DBFMemoFile memoFile = null;
 	
 	
 	/**
@@ -254,19 +257,7 @@ public class DBFReader extends DBFBase {
 
 				case FLOATING_POINT:
 				case NUMERIC:
-					try {
-						byte t_float[] = new byte[this.header.fieldArray[i].getFieldLength()];
-						this.dataInputStream.read(t_float);
-						t_float = DBFUtils.removeSpaces(t_float);
-						if (t_float.length > 0 && !DBFUtils.contains(t_float, (byte) '?') && !DBFUtils.contains(t_float, (byte) '*')) {
-							recordObjects[i] = new BigDecimal(new String(t_float, StandardCharsets.US_ASCII));
-						} else {
-							recordObjects[i] = null;
-						}
-					} catch (NumberFormatException e) {
-						throw new DBFException("Failed to parse Float: " + e.getMessage(), e);
-					}
-
+					recordObjects[i] = DBFUtils.readNumericStoredAsText(this.dataInputStream, this.header.fieldArray[i].getFieldLength());
 					break;
 
 				case LOGICAL:
@@ -299,6 +290,12 @@ public class DBFReader extends DBFBase {
 						calendar.setTimeInMillis(days * MILLISECS_PER_DAY + TIME_MILLIS_1_1_4713_BC + time);
 						calendar.add(Calendar.MILLISECOND, -TimeZone.getDefault().getOffset(calendar.getTimeInMillis()));
 						recordObjects[i] = calendar.getTime();
+					}
+					break;
+				case MEMO:
+					Number nBlock =  DBFUtils.readNumericStoredAsText(this.dataInputStream, this.header.fieldArray[i].getFieldLength());
+					if (this.memoFile != null && nBlock != null) {						
+						recordObjects[i] = memoFile.readText(nBlock.intValue());
 					}
 					break;
 				default:
@@ -339,6 +336,15 @@ public class DBFReader extends DBFBase {
 		this.trimRightSpaces = trimRightSpaces;
 	}
 	
+	public void setMemoFile(File memoFile) throws DBFException {
+		if (!memoFile.exists()){
+			throw new DBFException("Memo file " + memoFile.getName() + " not exists");
+		}
+		if (!memoFile.canRead()) {
+			throw new DBFException("Cannot read Memo file " + memoFile.getName());
+		}
+		this.memoFile = new DBFMemoFile(memoFile, this.getCharset());
+	}
 	
 	
 }

@@ -46,6 +46,10 @@ public class DBFException extends IOException {
 	public DBFException(String message, Throwable cause) {
 		super(message, cause);
 	}
+	
+	public DBFException(Throwable cause) {
+		super(cause);
+	}
 
 
 
