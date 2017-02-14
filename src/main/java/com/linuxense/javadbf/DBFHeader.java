@@ -57,20 +57,15 @@ public class DBFHeader {
 	private byte mdxFlag;                /* 28 */
 	private byte languageDriver;         /* 29 */
 	private short reserv4;               /* 30-31 */
-	private int reserv5;
 	DBFField []fieldArray;       /* each 32 bytes */	
 	private byte terminator1;            /* n+1 */
-	private String languageDriverName;
 	
 	private Charset detectedCharset;
 	private Charset usedCharset;
 	
 
-	//byte[] databaseContainer; /* 263 bytes */
-	/* DBF structure ends here */
 
 	private static final int DBASE_LEVEL_7 = 4;
-	private static final int DBASE_LEVEL_5 = 3;
 	
 	protected DBFHeader() {
 		this.signature = SIG_DBASE_III;
@@ -107,8 +102,9 @@ public class DBFHeader {
 		if (isDB7()) {
 			byte[] languageName = new byte[32];
 			dataInput.readFully(languageName);
-			this.languageDriverName =  new String (languageName);
-			this.reserv5 =  dataInput.readInt(); 
+//			this.languageDriverName =  new String (languageName, StandardCharsets.US_ASCII);
+//			this.reserv5 =  dataInput.readInt(); 
+			dataInput.readInt(); 
 		}
 		
 		List<DBFField> v_fields = new ArrayList<>();

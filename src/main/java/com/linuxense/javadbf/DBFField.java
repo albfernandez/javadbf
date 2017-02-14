@@ -198,8 +198,8 @@ public class DBFField {
 		field.reserv2 = DBFUtils.readLittleEndianShort(in); /* 35-36 */
 		field.workAreaId = in.readByte(); /* 37 */
 		field.reserv2 = DBFUtils.readLittleEndianShort(in); /* 38-39 */
-		int nextAuto = in.readInt(); /* 40-43 */
-		int reserv = in.readInt(); /* 44 -47 */
+		in.readInt(); // 40-43 nextAuto
+		in.readInt(); // 44-47 reserv
 		
 		return field;
 	}
