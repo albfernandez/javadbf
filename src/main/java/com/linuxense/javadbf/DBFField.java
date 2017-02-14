@@ -94,6 +94,29 @@ public class DBFField {
 	public DBFField() {
 		super();
 	}
+	
+	public DBFField(String name, DBFDataType type) {
+		super();
+		setName(name);
+		setType(type);
+	}
+	
+	public DBFField(String name, DBFDataType type, int length) {
+		super();
+		setName(name);
+		setType(type);
+		setFieldLength(length);
+	}
+	
+	public DBFField(String name, DBFDataType type, int length, int decimalCount) {
+		super();
+		setName(name);
+		setType(type);
+		setFieldLength(length);
+		if (decimalCount != 0) {
+			setDecimalCount(decimalCount);
+		}
+	}
 
 	/**
 	 * Creates a DBFField object from the data read from the given
