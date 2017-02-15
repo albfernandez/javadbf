@@ -40,18 +40,20 @@ import java.util.Locale;
  *
  */
 public final class DBFUtils {
-	
-	private static final CharsetEncoder ASCII_ENCODER = Charset.forName("US-ASCII").newEncoder(); 
-	
+
+	private static final CharsetEncoder ASCII_ENCODER = Charset.forName("US-ASCII").newEncoder();
+
 	private DBFUtils() {
 		throw new AssertionError("No instances of this class are allowed");
 	}
-	
-	
+
 	public static Number readNumericStoredAsText(DataInputStream dataInput, int length) throws IOException {
 		try {
 			byte t_float[] = new byte[length];
-			dataInput.read(t_float);
+			int readed = dataInput.read(t_float);
+			if (readed != length) {
+				throw new DBFException("failed to read:" + length + " bytes");
+			}
 			t_float = DBFUtils.removeSpaces(t_float);
 			if (t_float.length > 0 && DBFUtils.isPureAscii(t_float) && !DBFUtils.contains(t_float, (byte) '?') && !DBFUtils.contains(t_float, (byte) '*')) {
 				return new BigDecimal(new String(t_float, StandardCharsets.US_ASCII));
@@ -62,6 +64,7 @@ public final class DBFUtils {
 			throw new DBFException("Failed to parse Float: " + e.getMessage(), e);
 		}
 	}
+
 	/**
 	 * Read a littleEndian integer(32b its) from DataInput
 	 * @param in DataInput to read from
@@ -76,7 +79,6 @@ public final class DBFUtils {
 		return bigEndian;
 	}
 
-	
 	/**
 	 * Read a littleEndian short(16 bits) from DataInput
 	 * @param in DataInput to read from
@@ -88,7 +90,7 @@ public final class DBFUtils {
 		int high = in.readUnsignedByte();
 		return (short) (high << 8 | low);
 	}
-	
+
 	/**
 	 * Remove all spaces (32) found in the data.
 	 * @param array the data
@@ -96,14 +98,14 @@ public final class DBFUtils {
 	 */
 	public static byte[] removeSpaces(byte[] array) {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream(array.length);
-		for (byte b: array) {
-			if (b != ' '){
+		for (byte b : array) {
+			if (b != ' ') {
 				baos.write(b);
 			}
 		}
 		return baos.toByteArray();
 	}
-	
+
 	/**
 	 * Convert a short value to littleEndian
 	 * @param value value to be converted
@@ -144,7 +146,7 @@ public final class DBFUtils {
 
 		return num2;
 	}
-	
+
 	/**
 	 * pad a string and convert it to byte[] to write to a dbf file (by default, add whitespaces to the end of the string)
 	 * @param text The text to be padded
@@ -155,7 +157,7 @@ public final class DBFUtils {
 	public static byte[] textPadding(String text, Charset charset, int length) {
 		return textPadding(text, charset, length, DBFAlignment.LEFT, (byte) ' ');
 	}
-	
+
 	/**
 	 * pad a string and convert it to byte[] to write to a dbf file
 	 * @param text The text to be padded
@@ -167,11 +169,11 @@ public final class DBFUtils {
 	 */
 	public static byte[] textPadding(String text, Charset charset, int length, DBFAlignment alignment, byte paddingByte) {
 		byte response[] = new byte[length];
-		Arrays.fill(response, paddingByte);		
+		Arrays.fill(response, paddingByte);
 		byte[] stringBytes = text.getBytes(charset);
-		
-		if (stringBytes.length > length){
-			return textPadding(text.substring(0, text.length() -1), charset, length, alignment, paddingByte);
+
+		if (stringBytes.length > length) {
+			return textPadding(text.substring(0, text.length() - 1), charset, length, alignment, paddingByte);
 		}
 
 		int t_offset = 0;
@@ -184,12 +186,12 @@ public final class DBFUtils {
 			t_offset = 0;
 			break;
 
-		}		
+		}
 		System.arraycopy(stringBytes, 0, response, t_offset, stringBytes.length);
 
 		return response;
 	}
-	
+
 	/**
 	 * Format a number to write to a dbf file
 	 * @param num number to write
@@ -198,11 +200,11 @@ public final class DBFUtils {
 	 * @param sizeDecimalPart
 	 * @return bytes to write to the dbf file
 	 */
-	
+
 	public static byte[] doubleFormating(Number num, Charset charset, int fieldLength, int sizeDecimalPart) {
 		return doubleFormating(num.doubleValue(), charset, fieldLength, sizeDecimalPart);
 	}
-	
+
 	/**
 	 * Format a double number to write to a dbf file
 	 * @param doubleNum 
@@ -228,9 +230,10 @@ public final class DBFUtils {
 
 		DecimalFormat df = (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
 		df.applyPattern(format.toString());
-		return textPadding(df.format(doubleNum.doubleValue()).toString(), charset, fieldLength, DBFAlignment.RIGHT, (byte) ' ');
+		return textPadding(df.format(doubleNum.doubleValue()).toString(), charset, fieldLength, DBFAlignment.RIGHT,
+				(byte) ' ');
 	}
-	
+
 	/**
 	 * Checks that a byte array contains some specific byte
 	 * @param array The array to search in
@@ -239,16 +242,15 @@ public final class DBFUtils {
 	 */
 	public static boolean contains(byte[] array, byte value) {
 		if (array != null) {
-			for (byte data: array) {
+			for (byte data : array) {
 				if (data == value) {
 					return true;
 				}
 			}
 		}
-		return false;		
+		return false;
 	}
-	
-	
+
 	/**
 	 * Checks if a string is pure Ascii
 	 * @param stringToCheck the string
@@ -260,13 +262,13 @@ public final class DBFUtils {
 		}
 		return ASCII_ENCODER.canEncode(stringToCheck);
 	}
-	
+
 	public static boolean isPureAscii(byte[] data) {
 		if (data == null) {
 			return false;
 		}
-		for (byte b: data) {
-			if (b > (byte) 0x7F || b < 0x20){
+		for (byte b : data) {
+			if (b < 0 || b < 0x20) {
 				return false;
 			}
 		}
@@ -281,7 +283,7 @@ public final class DBFUtils {
 	public static Object toBoolean(byte t_logical) {
 		if (t_logical == 'Y' || t_logical == 'y' || t_logical == 'T' || t_logical == 't') {
 			return Boolean.TRUE;
-		} else if (t_logical == 'N' || t_logical == 'n' || t_logical == 'F' || t_logical == 'f'){
+		} else if (t_logical == 'N' || t_logical == 'n' || t_logical == 'F' || t_logical == 'f') {
 			return Boolean.FALSE;
 		}
 		return null;
@@ -292,27 +294,26 @@ public final class DBFUtils {
 			return new byte[0];
 		}
 		int pos = getRightPos(b_array);
-		int length = pos+1;
+		int length = pos + 1;
 		byte[] newBytes = new byte[length];
 		System.arraycopy(b_array, 0, newBytes, 0, length);
-        return newBytes;
+		return newBytes;
 	}
 
 	private static int getRightPos(byte[] b_array) {
-	
+
 		int pos = b_array.length - 1;
-		while (pos >= 0 && b_array[pos] == (byte)' ') {
+		while (pos >= 0 && b_array[pos] == (byte) ' ') {
 			pos--;
 		}
 		return pos;
 	}
-	
+
 	public static void close(Closeable closeable) {
 		if (closeable != null) {
 			try {
 				closeable.close();
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				//
 			}
 		}

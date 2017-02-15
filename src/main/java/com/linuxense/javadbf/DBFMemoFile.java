@@ -21,7 +21,6 @@ package com.linuxense.javadbf;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 
@@ -57,16 +56,13 @@ public class DBFMemoFile {
 	
 	protected String readText(int block) {
 		byte[] result = readBinary(block);
-		if (result == null) {
-			return null;
-		}
 		return new String(result, charset);
 	}
 	protected byte[] readBinary(int block) {
 		RandomAccessFile file = null;
 		try {
 			file = new RandomAccessFile(memoFile, "r");
-			file.seek(this.blockSize*block);
+			file.seek(this.blockSize * (long) block);
 			byte[] blockData = new byte[this.blockSize];			
 			ByteArrayOutputStream baos = new ByteArrayOutputStream(this.blockSize);
 			boolean end = false;
