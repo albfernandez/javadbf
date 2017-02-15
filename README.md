@@ -6,6 +6,7 @@ JavaDBF was initially written for data transfer with such applications.
 #License
 
 JavaDBF is LGPL
+
 https://www.gnu.org/licenses/lgpl.txt
 
 #Introduction
