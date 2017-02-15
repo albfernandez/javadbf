@@ -30,47 +30,59 @@ public enum DBFDataType {
 	/**
 	 * Character data, padded with whitespaces.
 	 */
-	CHARACTER       ((byte) 'C', 1, 254, 0, true), 
+	CHARACTER       ('C', 1, 254, 0, true), 
 	/**
 	 * Date
 	 */
-	DATE            ((byte) 'D', 8, 8, 8, true), 
+	DATE            ('D', 8, 8, 8, true), 
 	/**
 	 * Numeric data
 	 */
-	FLOATING_POINT  ((byte) 'F', 1, 20, 0, true),
+	FLOATING_POINT  ('F', 1, 20, 0, true),
 	/**
 	 * To store boolean values.
 	 */
-	LOGICAL         ((byte) 'L', 1, 1, 1, true),
+	LOGICAL         ('L', 1, 1, 1, true),
 	/**
 	 * Memo (data is stored in dbt file)
 	 */
-	MEMO            ((byte) 'M'),
+	MEMO            ('M'),
+	/**
+	 * Binary (data is stored in dbt file) 
+	 */
+	BINARY         ('B'),
+	/**
+	 * OLE Objects (data is stored in dbt file)
+	 */
+	GENERAL_OLE ('G'),
+	/**
+	 * Picture (FoxPro, data is sotred in dbt file) 
+	 */
+	PICTURE ('P'),
 	/**
 	 * Numeric data
 	 */
-	NUMERIC         ((byte) 'N', 1, 18, 0, true),
+	NUMERIC         ('N', 1, 18, 0, true),
 	/**
 	 * Numeric long (FoxPro)
 	 */
-	LONG            ((byte) 'I', 4, 4, 4, false),
+	LONG            ('I', 4, 4, 4, false),
 	/**
 	 * Autoincrement (same as long, dbase 7)
 	 */
-	AUTOINCREMENT ((byte) '+', 4, 4, 4, false),
+	AUTOINCREMENT ('+', 4, 4, 4, false),
 	/**
 	 * Currency type (FoxPro)
 	 */
-	CURRENCY        ((byte)'Y', 8, 8, 8, false),
+	CURRENCY        ('Y', 8, 8, 8, false),
 	/**
 	 * Timestamp type (FoxPro)
 	 */
-	TIMESTAMP 		((byte)'T', 8, 8, 8, false),
+	TIMESTAMP 		('T', 8, 8, 8, false),
 	/**
 	 * Timestamp type (dbase level 7)
 	 */
-	TIMESTAMP_DBASE7 ((byte)'@', 8, 8, 8, false);
+	TIMESTAMP_DBASE7 ('@', 8, 8, 8, false);
 
 	
 	private byte code;
@@ -80,9 +92,15 @@ public enum DBFDataType {
 	private boolean writeSupported = false;
 
 	
+	private DBFDataType(char code) {
+		this((byte) code);
+	}
 	
 	private DBFDataType(byte code) {
 		this.code = code;
+	}
+	private DBFDataType(char code, int minSize, int maxSize, int defaultSize, boolean writeSupported) {
+		this((byte) code, minSize, maxSize, defaultSize, writeSupported);
 	}
 	private DBFDataType(byte code, int minSize, int maxSize, int defaultSize, boolean writeSupported) {
 		this.code = code;

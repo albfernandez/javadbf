@@ -63,23 +63,23 @@ Following table shows the mapping scheme.
 
 FoxPro and dbase7 types (Read Only)
 
-| FoxPro Type        | Symbol  | Java Type used in JavaDBF |
-| -------------------| ------- | ------------------------- |  
-| Currency           | Y       | java.math.BigDecimal      |
-| Long               | I       | java.lang.Integer         |
-| Date Type (FoxPro) | T       | java.util.Date            |
-| Timestamp (dbase7)    | @    | java.util.Date            | 
-| AutoIncrement(dbase7) | +    | java.lang.Integer         |
-| Memo                  | M    | java.lang.String          |
+| FoxPro Type           | Symbol  | Java Type used in JavaDBF |
+| --------------------- | ------- | ------------------------- |  
+| Currency              | Y       | java.math.BigDecimal      |
+| Long                  | I       | java.lang.Integer         |
+| Date Type (FoxPro)    | T       | java.util.Date            |
+| Timestamp (dbase7)    | @       | java.util.Date            | 
+| AutoIncrement(dbase7) | +       | java.lang.Integer         |
+| Memo                  | M       | java.lang.String          |
+| Binary                | B       | byte[]                    |
+| General (OLE Objects) | G       | byte[]                    |
+| Picture (FoxPro)      | P       | byte[]                    |
 
 Unsupported types
 
 | Type                  | Symbol |
 | --------------------- | ------ |
 | Flags                 | 0      |
-| Binary                | B      |
-| General (OLE Objects) | G      |
-| Picture (FoxPro)      | P      |
 | Double (dbase7)       | O      |
 | Varchar               | V      |
 

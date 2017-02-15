@@ -1,6 +1,7 @@
 package com.linuxense.javadbf;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.nio.charset.Charset;
 
 import org.junit.Assert;
@@ -40,5 +41,16 @@ public class DBFMemoFileTest {
 		Assert.assertEquals("Eigth memo", file.readText(8));
 		Assert.assertEquals("Nineth memo", file.readText(9));
 	}
+	
+	
+	@Test
+	public void testMemoBinary() throws Exception {
+		// Inventory has extra 8 bytes before image...
+		DBFMemoFile file = new DBFMemoFile(new File("src/test/resources/inventory.dbt"), Charset.forName("windows-1252"));
+		byte[] result = file.readBinary(1);
+		Assert.assertEquals(14037, result.length);		
+
+	}
+	
 
 }

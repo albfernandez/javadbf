@@ -220,9 +220,10 @@ public class DBFReader extends DBFBase {
 			} while (isDeleted);
 
 			for (int i = 0; i < this.header.fieldArray.length; i++) {
-				switch (this.header.fieldArray[i].getType()) {
+				DBFField field = this.header.fieldArray[i];
+				switch (field.getType()) {
 				case CHARACTER:
-					byte b_array[] = new byte[this.header.fieldArray[i].getFieldLength()];
+					byte b_array[] = new byte[field.getFieldLength()];
 					this.dataInputStream.read(b_array);
 					if (this.trimRightSpaces) {
 						recordObjects[i] = new String(DBFUtils.trimRightSpaces(b_array), getCharset());
@@ -257,7 +258,7 @@ public class DBFReader extends DBFBase {
 
 				case FLOATING_POINT:
 				case NUMERIC:
-					recordObjects[i] = DBFUtils.readNumericStoredAsText(this.dataInputStream, this.header.fieldArray[i].getFieldLength());
+					recordObjects[i] = DBFUtils.readNumericStoredAsText(this.dataInputStream, field.getFieldLength());
 					break;
 
 				case LOGICAL:
@@ -275,7 +276,7 @@ public class DBFReader extends DBFBase {
 					String x1 = s_data.substring(0, s_data.length() - 4);
 					String x2 = s_data.substring(s_data.length() - 4);
 					recordObjects[i] = new BigDecimal(x1 + "." + x2);
-					skip(this.header.fieldArray[i].getFieldLength() - 4);
+					skip(field.getFieldLength() - 4);
 					break;
 				case TIMESTAMP:
 				case TIMESTAMP_DBASE7:
@@ -293,13 +294,22 @@ public class DBFReader extends DBFBase {
 					}
 					break;
 				case MEMO:
-					Number nBlock =  DBFUtils.readNumericStoredAsText(this.dataInputStream, this.header.fieldArray[i].getFieldLength());
+					Number nBlock =  DBFUtils.readNumericStoredAsText(this.dataInputStream, field.getFieldLength());
 					if (this.memoFile != null && nBlock != null) {						
 						recordObjects[i] = memoFile.readText(nBlock.intValue());
 					}
 					break;
+				case GENERAL_OLE:
+				case BINARY:
+				case PICTURE:
+					Number nBlock1 =  DBFUtils.readNumericStoredAsText(this.dataInputStream, field.getFieldLength());
+					if (this.memoFile != null && nBlock1 != null) {				
+						System.out.println("  --->" + nBlock1);
+						recordObjects[i] = memoFile.readBinary(nBlock1.intValue());
+					}
+					break;
 				default:
-					skip(this.header.fieldArray[i].getFieldLength());
+					skip(field.getFieldLength());
 					recordObjects[i] = "null";
 				}
 			}

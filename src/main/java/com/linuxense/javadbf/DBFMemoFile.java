@@ -29,7 +29,6 @@ public class DBFMemoFile {
 	private File memoFile = null;
 	private Charset charset = null;
 	private int blockSize = 512;
-	private int version = 3;
 	
 	protected DBFMemoFile(File memoFile, Charset charset) {
 		this.memoFile = memoFile;
@@ -60,38 +59,42 @@ public class DBFMemoFile {
 	}
 	protected byte[] readBinary(int block) {
 		RandomAccessFile file = null;
-		try {
+		int version = 3;
+		try {			
 			file = new RandomAccessFile(memoFile, "r");
 			file.seek(this.blockSize * (long) block);
 			byte[] blockData = new byte[this.blockSize];			
 			ByteArrayOutputStream baos = new ByteArrayOutputStream(this.blockSize);
 			boolean end = false;
-			int count = 0;
-			while (!end && count < 10) {
+
+			int itemSize = Integer.MAX_VALUE;
+			while (!end) {
 				int endIndex = file.read(blockData);
+				if (endIndex <= 0) {
+					break;
+				}
 				int initialIndex = 0;
 				
-				if (blockData[0] == (byte) 0xFF && blockData[1] == (byte) 0xFF && blockData[2] == 0x08 && blockData[3] == 0x00) {
+				if (version == 3 && blockData[0] == (byte) 0xFF && blockData[1] == (byte) 0xFF && blockData[2] == 0x08 && blockData[3] == 0x00) {
 					version = 4;
 					initialIndex = 8;
 					long oldpos = file.getFilePointer();
-					file.seek(oldpos - blockSize + 4);					
-					endIndex = Math.min(DBFUtils.readLittleEndianInt(file), endIndex);
+					file.seek(oldpos - blockSize + 4);	
+					itemSize = DBFUtils.readLittleEndianInt(file) - 8;
+					endIndex = Math.min(itemSize + 8, endIndex);
 					file.seek(oldpos);
 				}				
 				
-				for (int i = initialIndex; i < endIndex; i++) {
+				for (int i = initialIndex; i < endIndex && baos.size() < itemSize; i++) {
 					baos.write(blockData[i]);
-					if (i < endIndex -2 && blockData[i+1] == 0x1A && blockData[i+2] == 0x1A){
+					if (version != 4 && i < endIndex -2 && blockData[i+1] == 0x1A && blockData[i+2] == 0x1A){
 						end = true;
 						break;
 					}
 				}
 				if (version == 4) {
-					end = true;
-				}
-				count++;
-				
+					end = baos.size() >= itemSize;
+				}				
 			}
 			return baos.toByteArray();
 		}
