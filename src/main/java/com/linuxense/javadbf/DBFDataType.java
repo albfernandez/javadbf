@@ -140,6 +140,9 @@ public enum DBFDataType {
 		}
 		throw new IllegalArgumentException("Unknown data type:" + cod);
 	}
+	public static DBFDataType fromCode(char c) {
+		return fromCode((byte) c);
+	}
 	
 
 }
