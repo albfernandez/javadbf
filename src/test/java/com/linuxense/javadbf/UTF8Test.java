@@ -25,18 +25,26 @@ public class UTF8Test {
 		fields[0].setType(DBFDataType.CHARACTER);
 		fields[0].setFieldLength(10);
 
-		DBFWriter writer = new DBFWriter(Charset.forName("UTF-8"));
-		writer.setFields(fields);
-		Object rowData[] = new Object[1];
-		
-		rowData[0] = testString;
-
-		writer.addRecord(rowData);
-		ByteArrayOutputStream fos = new ByteArrayOutputStream();
-		writer.write(fos);
-		fos.close();
-		
+		DBFWriter writer = null;
+		ByteArrayOutputStream fos = null;
+		try {
+			writer = new DBFWriter(Charset.forName("UTF-8"));
+			writer.setFields(fields);
+			Object rowData[] = new Object[1];
+			
+			rowData[0] = testString;
+	
+			writer.addRecord(rowData);
+			fos = new ByteArrayOutputStream();
+			writer.write(fos);
+			
+		}
+		finally {
+			DBFUtils.close(fos);
+			DBFUtils.close(writer);
+		}
 		byte[] data = fos.toByteArray();
+		
 		
 		InputStream inputStream = null;
 		try {
@@ -46,9 +54,7 @@ public class UTF8Test {
 			Assert.assertEquals(testString, rowObjects[0]);
 		}
 		finally {
-			if (inputStream != null) {
-				inputStream.close();
-			}
+			DBFUtils.close(inputStream);			
 		}
 	}
 }
