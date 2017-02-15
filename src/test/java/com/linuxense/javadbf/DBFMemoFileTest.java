@@ -1,7 +1,6 @@
 package com.linuxense.javadbf;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.nio.charset.Charset;
 
 import org.junit.Assert;
