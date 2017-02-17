@@ -22,6 +22,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.linuxense.javadbf;
 
+import java.io.Closeable;
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.File;
@@ -30,7 +31,10 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 /**
  * DBFReader class can creates objects to represent DBF data.
@@ -90,7 +94,7 @@ import java.util.*;
  * </tr>
  * </table>
  */
-public class DBFReader extends DBFBase {
+public class DBFReader extends DBFBase implements Closeable {
 
 	private static final long MILLISECS_PER_DAY = 24*60*60*1000;
 	private static final long TIME_MILLIS_1_1_4713_BC = -210866803200000L;
@@ -348,6 +352,11 @@ public class DBFReader extends DBFBase {
 			throw new DBFException("Cannot read Memo file " + memoFile.getName());
 		}
 		this.memoFile = new DBFMemoFile(memoFile, this.getCharset());
+	}
+	
+	@Override
+	public void close() {
+		DBFUtils.close(this.dataInputStream);
 	}
 	
 	
