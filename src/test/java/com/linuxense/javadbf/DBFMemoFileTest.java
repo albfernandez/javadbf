@@ -51,5 +51,17 @@ public class DBFMemoFileTest {
 
 	}
 	
+	@Test
+	public void testMemoFPT () throws Exception {
+		DBFMemoFile file = new DBFMemoFile(new File("src/test/resources/fixtures/dbase_f5.fpt"), Charset.forName("windows-1252"));
+		
+		Assert.assertEquals("torrossolla", file.readData(565, DBFDataType.MEMO));
+			
+		Assert.assertEquals("jos‚ vicente salvador\r\n" + 
+				"capell…: salvador vidal\r\n" + 
+				"en n‚ixer, les castellers li van fer un pilar i el van entregar al seu pare.", file.readData(52, DBFDataType.MEMO));
+		
+	}
+	
 
 }

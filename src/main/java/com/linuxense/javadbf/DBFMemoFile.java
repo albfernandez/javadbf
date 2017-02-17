@@ -21,7 +21,9 @@ package com.linuxense.javadbf;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
 public class DBFMemoFile {
@@ -29,11 +31,13 @@ public class DBFMemoFile {
 	private File memoFile = null;
 	private Charset charset = null;
 	private int blockSize = 512;
+	private boolean fpt = false;
 	
 	protected DBFMemoFile(File memoFile, Charset charset) {
 		this.memoFile = memoFile;
 		this.charset = charset;
-		readBlockSize();
+		this.fpt = memoFile.getName().toLowerCase().endsWith(".fpt");
+		readBlockSize();		
 	}
 	private void readBlockSize() {
 		RandomAccessFile file = null;
@@ -53,7 +57,7 @@ public class DBFMemoFile {
 			}
 			
 		}
-		catch (Exception ex) {
+		catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
 		finally {
@@ -62,59 +66,98 @@ public class DBFMemoFile {
 	}
 	
 	private boolean isFPT() {
-		return memoFile.getName().toLowerCase().endsWith(".fpt");
+		return this.fpt;
 	}
+	/**
+	 * Only for testing purposes
+	 * @param block
+	 * @return
+	 */
 	
 	protected String readText(int block) {
-		byte[] result = readBinary(block);
-		return new String(result, charset);
+		return (String) readData(block, DBFDataType.MEMO);
 	}
+	/**
+	 * Only for testing purposes
+	 * @param block
+	 * @return
+	 */
 	protected byte[] readBinary(int block) {
+		return (byte[]) readData(block, DBFDataType.BINARY);
+	}
+	
+	protected Object readData(int block, DBFDataType type) {
 		RandomAccessFile file = null;
-		int version = 3;
-		try {			
+//		long blockStart = 512 + (this.blockSize * (long) (block -1) );
+		long blockStart = this.blockSize * (long) block;
+		DBFDataType usedType = type;
+		try {
 			file = new RandomAccessFile(memoFile, "r");
-			file.seek(512 + (this.blockSize * (long) (block -1) ));
-			byte[] blockData = new byte[this.blockSize];			
+			file.seek(blockStart);
+			byte[] blockData = new byte[this.blockSize];
 			ByteArrayOutputStream baos = new ByteArrayOutputStream(this.blockSize);
 			boolean end = false;
 
 			int itemSize = Integer.MAX_VALUE;
+			boolean firstBlock = true;
+			boolean checkForEndMark = true;
 			while (!end) {
 				int endIndex = file.read(blockData);
 				if (endIndex <= 0) {
 					break;
 				}
 				int initialIndex = 0;
-				
-				if (version == 3 && blockData[0] == (byte) 0xFF && blockData[1] == (byte) 0xFF && blockData[2] == 0x08 && blockData[3] == 0x00) {
-					version = 4;
+				if (firstBlock && (isFPT() || isMagicDBase4(blockData))) {
 					initialIndex = 8;
-					long oldpos = file.getFilePointer();
-					file.seek(oldpos - blockSize + 4);	
-					itemSize = DBFUtils.readLittleEndianInt(file) - 8;
+					checkForEndMark = false;
+					if (isFPT()) {
+						int intType = blockData[3];
+						// 01 is text, other are binary						
+						if (intType == 1) {
+							usedType = DBFDataType.MEMO;
+						}
+						else if (intType == 2) {
+							usedType = DBFDataType.BINARY;
+						}
+						else if (intType == 0) {
+							usedType = DBFDataType.PICTURE;
+						}
+						
+						itemSize = ByteBuffer.wrap(new byte[]{blockData[4], blockData[5], blockData[6], blockData[7]}).getInt();
+					}
+					else {
+						itemSize = ByteBuffer.wrap(new byte[]{blockData[7], blockData[6], blockData[5], blockData[4]}).getInt() - 8;						
+					}
 					endIndex = Math.min(itemSize + 8, endIndex);
-					file.seek(oldpos);
-				}				
-				
+				}
+				firstBlock = false;
 				for (int i = initialIndex; i < endIndex && baos.size() < itemSize; i++) {
 					baos.write(blockData[i]);
-					if (version != 4 && i < endIndex -2 && blockData[i+1] == 0x1A && blockData[i+2] == 0x1A){
+					if (checkForEndMark && i < endIndex -2 && blockData[i+1] == 0x1A && blockData[i+2] == 0x1A){
 						end = true;
 						break;
 					}
+					if (!checkForEndMark) {
+						end = baos.size() >= itemSize;
+					}
 				}
-				if (version == 4) {
-					end = baos.size() >= itemSize;
-				}				
 			}
-			return baos.toByteArray();
+			byte[] data = baos.toByteArray();
+			if (usedType != DBFDataType.MEMO) {
+				return data;
+			}
+			return new String(data, charset);			
+			
 		}
-		catch (Exception ex) {
+		catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
 		finally {
 			DBFUtils.close(file);
 		}
+		
+	}
+	private boolean isMagicDBase4(byte[] blockData) {
+		return blockData[0] == (byte) 0xFF && blockData[1] == (byte) 0xFF && blockData[2] == 0x08 && blockData[3] == 0x00;
 	}
 }

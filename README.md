@@ -75,7 +75,7 @@ FoxPro and dbase7 types (Read Only)
 | Date Type (FoxPro)    | T       | java.util.Date            |
 | Timestamp (dbase7)    | @       | java.util.Date            | 
 | AutoIncrement(dbase7) | +       | java.lang.Integer         |
-| Memo                  | M       | java.lang.String          |
+| Memo                  | M       | java.lang.String or byte[]|
 | Binary                | B       | byte[]                    |
 | General (OLE Objects) | G       | byte[]                    |
 | Picture (FoxPro)      | P       | byte[]                    |
@@ -139,6 +139,38 @@ public class JavaDBFReaderTest {
       }
 
       // By now, we have itereated through all of the rows
+      
+      inputStream.close();
+    }
+    catch(DBFException e) {
+      e.printStrackTrace();
+    }
+    catch(IOException e) {
+      e.printStrackTrace();
+    }
+  }  
+}  
+```
+
+#Reading a DBF File with memo file
+
+You can specify memo file to read Memo fields from. If you don't specify this file this fields will be filled with null
+
+```java
+import java.io.*;
+import com.linuxense.javadbf.*;
+
+public class JavaDBFReaderTest {
+
+  public static void main(String args[]) {
+
+    try {
+
+      // create a DBFReader object
+      InputStream inputStream  = new FileInputStream(args[0]);
+      DBFReader reader = new DBFReader(inputStream); 
+
+      reader.setMemoFile(new File("memo.dbt"));
       
       inputStream.close();
     }

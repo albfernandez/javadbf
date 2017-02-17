@@ -293,24 +293,18 @@ public class DBFReader extends DBFBase {
 						recordObjects[i] = calendar.getTime();
 					}
 					break;
-				case MEMO:
-					Number nBlock =  DBFUtils.readNumericStoredAsText(this.dataInputStream, field.getFieldLength());
-					if (this.memoFile != null && nBlock != null) {						
-						recordObjects[i] = memoFile.readText(nBlock.intValue());
-					}
-					break;
+				case MEMO:					
 				case GENERAL_OLE:
 				case BINARY:
 				case PICTURE:
-					Number nBlock1 =  DBFUtils.readNumericStoredAsText(this.dataInputStream, field.getFieldLength());
-					if (this.memoFile != null && nBlock1 != null) {				
-						System.out.println("  --->" + nBlock1);
-						recordObjects[i] = memoFile.readBinary(nBlock1.intValue());
+					Number nBlock =  DBFUtils.readNumericStoredAsText(this.dataInputStream, field.getFieldLength());
+					if (this.memoFile != null && nBlock != null) {				
+						recordObjects[i] = memoFile.readData(nBlock.intValue(), field.getType());
 					}
 					break;
 				default:
 					skip(field.getFieldLength());
-					recordObjects[i] = "null";
+					recordObjects[i] = null;
 				}
 			}
 		} catch (EOFException e) {
