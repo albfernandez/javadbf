@@ -84,7 +84,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	 *                if the passed in file does exist but not a valid DBF file,
 	 *                or if an IO error occurs.
 	 */
-	public DBFWriter(File dbfFile) throws DBFException {
+	public DBFWriter(File dbfFile) {
 		this(dbfFile, null);
 	}
 
@@ -98,7 +98,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	 *                if the passed in file does exist but not a valid DBF file,
 	 *                or if an IO error occurs.
 	 */
-	public DBFWriter(File dbfFile, Charset charset) throws DBFException {
+	public DBFWriter(File dbfFile, Charset charset) {
 		super();		
 		try {
 			this.raf = new RandomAccessFile(dbfFile, "rw");
@@ -139,7 +139,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	/**
 	 * Sets fields.
 	 */
-	public void setFields(DBFField[] fields) throws DBFException {
+	public void setFields(DBFField[] fields) {
 
 		if (this.header.fieldArray != null) {
 			throw new DBFException("Fields has already been set");
@@ -166,7 +166,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	/**
 	 * Add a record.
 	 */
-	public void addRecord(Object[] values) throws DBFException {
+	public void addRecord(Object[] values) {
 
 		if (this.header.fieldArray == null) {
 			throw new DBFException("Fields should be set before adding records");
@@ -233,7 +233,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	/**
 	 * Writes the set data to the OutputStream.
 	 */
-	public void write(OutputStream out) throws DBFException {
+	public void write(OutputStream out) {
 		try {
 			if (this.raf == null) {
 				DataOutputStream outStream = new DataOutputStream(out);
@@ -256,7 +256,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	 * In sync mode, write the header and close the file
 	 */
 	@Override
-	public void close() throws DBFException {
+	public void close() {
 		if (this.raf != null) {
 			/*
 			 * everything is written already. just update the header for
@@ -278,17 +278,11 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	
 	/**
 	 * In sync mode, write the header and close the file
-	 * @throws DBFException
 	 * @deprecated use {@link #close()}
 	 */
 	@Deprecated
-	public void write() throws DBFException {
-		try {
-			this.close();
-		}
-		catch (IOException e) {
-			throw new DBFException (e.getMessage(), e);
-		}
+	public void write()  {
+		this.close();
 	}
 
 	private void writeRecord(DataOutput dataOutput, Object[] objectArray) throws IOException {

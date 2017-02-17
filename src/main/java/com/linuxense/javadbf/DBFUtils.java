@@ -313,8 +313,8 @@ public final class DBFUtils {
 		if (closeable != null) {
 			try {
 				closeable.close();
-			} catch (Exception e) {
-				//
+			} catch (Exception e) { //NOPMD
+				// nop
 			}
 		}
 	}

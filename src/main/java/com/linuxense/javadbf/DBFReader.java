@@ -115,9 +115,8 @@ public class DBFReader extends DBFBase implements Closeable {
 	 * will be ready to return the first row.
 	 * 
 	 * @param in  the InputStream where the data is read from.
-	 * @throws DBFException
 	 */
-	public DBFReader(InputStream in) throws DBFException {
+	public DBFReader(InputStream in) {
 		this(in,null);
 	}
 	
@@ -131,7 +130,7 @@ public class DBFReader extends DBFBase implements Closeable {
 	 * @param in the InputStream where the data is read from.
 	 * @param charset charset used to decode field names and field contents. If null, then is autedetected from dbf file
 	 */
-	public DBFReader(InputStream in,Charset charset) throws DBFException {
+	public DBFReader(InputStream in,Charset charset) {
 		try {
 			
 			this.dataInputStream = new DataInputStream(in);
@@ -190,14 +189,14 @@ public class DBFReader extends DBFBase implements Closeable {
 	 * 
 	 * @param index Index of the field. Index of the first field is zero.
 	 */
-	public DBFField getField(int index) throws DBFException {
+	public DBFField getField(int index) {
 		return this.header.fieldArray[index];
 	}
 
 	/**
 	 * Returns the number of field in the DBF.
 	 */
-	public int getFieldCount() throws DBFException {
+	public int getFieldCount() {
 		return this.header.fieldArray.length;
 	}
 
@@ -207,7 +206,7 @@ public class DBFReader extends DBFBase implements Closeable {
 	 * @return The next row as an Object array. Types of the elements these
 	 *          arrays follow the convention mentioned in the class description.
 	 */
-	public Object[] nextRecord() throws DBFException {
+	public Object[] nextRecord() {
 
 		Object recordObjects[] = new Object[this.header.fieldArray.length];
 		try {
@@ -344,7 +343,7 @@ public class DBFReader extends DBFBase implements Closeable {
 		this.trimRightSpaces = trimRightSpaces;
 	}
 	
-	public void setMemoFile(File memoFile) throws DBFException {
+	public void setMemoFile(File memoFile) {
 		if (!memoFile.exists()){
 			throw new DBFException("Memo file " + memoFile.getName() + " not exists");
 		}

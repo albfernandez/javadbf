@@ -20,13 +20,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.linuxense.javadbf;
 
-import java.io.IOException;
 
 /**
  *	Represents exceptions happen in the JavaDBF classes.
  *
  */
-public class DBFException extends IOException {
+public class DBFException extends RuntimeException {
 
 	private static final long serialVersionUID = 1906727217048909819L;
 
