@@ -225,10 +225,11 @@ public class DBFReader extends DBFBase implements Closeable {
 			for (int i = 0; i < this.header.fieldArray.length; i++) {
 				DBFField field = this.header.fieldArray[i];
 				switch (field.getType()) {
+				case VARCHAR:
 				case CHARACTER:
 					byte b_array[] = new byte[field.getFieldLength()];
 					this.dataInputStream.read(b_array);
-					if (this.trimRightSpaces) {
+					if (this.trimRightSpaces || field.getType() == DBFDataType.VARCHAR) {
 						recordObjects[i] = new String(DBFUtils.trimRightSpaces(b_array), getCharset());
 					}
 					else {

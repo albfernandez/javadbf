@@ -32,6 +32,10 @@ public enum DBFDataType {
 	 */
 	CHARACTER       ('C', 1, 254, 0, true), 
 	/**
+	 * Character data, not padded
+	 */
+	VARCHAR         ('V', 1, 254, 0, false),
+	/**
 	 * Date
 	 */
 	DATE            ('D', 8, 8, 8, true), 
