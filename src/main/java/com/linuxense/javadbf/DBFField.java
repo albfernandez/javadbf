@@ -165,6 +165,11 @@ public class DBFField {
 		field.setFieldsFlag = in.readByte(); /* 23 */
 		in.readFully(field.reserv4); /* 24-30 */
 		field.indexFieldFlag = in.readByte(); /* 31 */
+		
+		if ((field.type == DBFDataType.CHARACTER || field.type == DBFDataType.VARCHAR) && field.decimalCount != 0) {
+			field.fieldLength |= field.fieldLength << 8;
+			field.decimalCount = 0;
+		}
 
 		return field;
 	}
@@ -201,6 +206,10 @@ public class DBFField {
 		in.readInt(); // 40-43 nextAuto
 		in.readInt(); // 44-47 reserv
 		
+		if ((field.type == DBFDataType.CHARACTER || field.type == DBFDataType.VARCHAR) && field.decimalCount != 0) {
+			field.fieldLength |= field.fieldLength << 8;
+			field.decimalCount = 0;
+		}
 		return field;
 	}
 	
