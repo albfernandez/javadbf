@@ -38,12 +38,20 @@ public class DBFMemoFile {
 	private void readBlockSize() {
 		RandomAccessFile file = null;
 		try {
-			file = new RandomAccessFile(memoFile, "r");
-			file.seek(4);
-			this.blockSize = DBFUtils.readLittleEndianInt(file);
+			file = new RandomAccessFile(memoFile, "r");			
+					
+			if (isFPT()) {
+				file.seek(6);
+				this.blockSize = file.readShort();				
+			}
+			else {
+				file.seek(20);
+				this.blockSize = DBFUtils.readLittleEndianShort(file);
+			}
 			if (this.blockSize == 0) {
 				this.blockSize = 512;
 			}
+			
 		}
 		catch (Exception ex) {
 			throw new RuntimeException(ex);
@@ -51,6 +59,10 @@ public class DBFMemoFile {
 		finally {
 			DBFUtils.close(file);
 		}
+	}
+	
+	private boolean isFPT() {
+		return memoFile.getName().toLowerCase().endsWith(".fpt");
 	}
 	
 	protected String readText(int block) {
@@ -62,7 +74,7 @@ public class DBFMemoFile {
 		int version = 3;
 		try {			
 			file = new RandomAccessFile(memoFile, "r");
-			file.seek(this.blockSize * (long) block);
+			file.seek(512 + (this.blockSize * (long) (block -1) ));
 			byte[] blockData = new byte[this.blockSize];			
 			ByteArrayOutputStream baos = new ByteArrayOutputStream(this.blockSize);
 			boolean end = false;
