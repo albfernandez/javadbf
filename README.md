@@ -126,54 +126,54 @@ import com.linuxense.javadbf.*;
 
 public class JavaDBFReaderTest {
 
-  public static void main(String args[]) {
+	public static void main(String args[]) {
 
-    try {
+		DBFReader reader = null;
+		try {
 
-      // create a DBFReader object
-      DBFReader reader = new DBFReader(new FileInputStream(args[0])); 
+			// create a DBFReader object
+			reader = new DBFReader(new FileInputStream(args[0]));
 
-      // get the field count if you want for some reasons like the following
+			// get the field count if you want for some reasons like the following
 
-      int numberOfFields = reader.getFieldCount();
+			int numberOfFields = reader.getFieldCount();
 
-      // use this count to fetch all field information
-      // if required
+			// use this count to fetch all field information
+			// if required
 
-      for(int i = 0; i < numberOfFields; i++) {
+			for (int i = 0; i < numberOfFields; i++) {
 
-        DBFField field = reader.getField(i);
+				DBFField field = reader.getField(i);
 
-        // do something with it if you want
-        // refer the JavaDoc API reference for more details
-        //
-        System.out.println(field.getName());
-      }
+				// do something with it if you want
+				// refer the JavaDoc API reference for more details
+				//
+				System.out.println(field.getName());
+			}
 
-      // Now, lets us start reading the rows
+			// Now, lets us start reading the rows
 
-      Object[] rowObjects;
-      
-      while((rowObjects = reader.nextRecord()) != null) {
+			Object[] rowObjects;
 
-        for(int i = 0; i < rowObjects.length; i++) {
-          System.out.println(rowObjects[i]);
-        }
-      }
+			while ((rowObjects = reader.nextRecord()) != null) {
 
-     // By now, we have iterated through all of the rows
-     
-      
-      reader.close();
-    }
-    catch(DBFException e) {
-      e.printStrackTrace();
-    }
-    catch(IOException e) {
-      e.printStrackTrace();
-    }
-  }  
-}  
+				for (int i = 0; i < rowObjects.length; i++) {
+					System.out.println(rowObjects[i]);
+				}
+			}
+
+			// By now, we have iterated through all of the rows
+
+		} catch (DBFException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		finally {
+			DBFUtils.close(reader);
+		}
+	}
+}
 ```
 
 #Reading a DBF File with memo file
@@ -184,29 +184,29 @@ You can specify memo file to read Memo fields from. If you don't specify this fi
 import java.io.*;
 import com.linuxense.javadbf.*;
 
-public class JavaDBFReaderTest {
+public class JavaDBFReaderMemoTest {
 
-  public static void main(String args[]) {
+	public static void main(String args[]) {
+		DBFReader reader = null;
+		try {
 
-    try {
+			// create a DBFReader object
+			reader = new DBFReader(new FileInputStream(args[0]));
 
-      // create a DBFReader object
-      DBFReader reader = new DBFReader(new FileInputStream(args[0])); 
+			reader.setMemoFile(new File("memo.dbt"));
 
-      reader.setMemoFile(new File("memo.dbt"));
-      
-      // do whatever you want with the data
-      
-      reader.close();
-    }
-    catch(DBFException e) {
-      e.printStrackTrace();
-    }
-    catch(IOException e) {
-      e.printStrackTrace();
-    }
-  }  
-}  
+			// do whatever you want with the data
+
+		} catch (DBFException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			DBFUtils.close(reader);
+		}
+	}
+}
+
 ```
 
 #Writing a DBF File
@@ -226,7 +226,7 @@ Create an object of DBFField class:
 	DBFField field = new DBFField();
 	field.setName("emp_name"); // give a name to the field
 	field.setType(DBFDataType.CHARACTER); // and set its type
-	field.setFieldLength(25); // and length of the field
+	field.setLength(25); // and length of the field
 ```
 
 This is, now, a complete DBFField Object ready to use. 
@@ -254,63 +254,62 @@ Following is a complete program explaining all the steps described above:
 import com.linuxense.javadbf.*;
 import java.io.*;
 
-public class DBFWriterTest {
+public class JavaDBFWriterTest {
 
-  public static void main(String args[])
-  throws DBFException, IOException {
+	public static void main(String args[]) throws IOException {
 
-    // let us create field definitions first
-    // we will go for 3 fields
+		// let us create field definitions first
+		// we will go for 3 fields
 
-    DBFField[] fields = new DBFField[3];
+		DBFField[] fields = new DBFField[3];
 
-    fields[0] = new DBFField();
-    fields[0].setName("emp_code");
-    fields[0].setType(DBFDataType.CHARACTER);
-    fields[0].setLength(10);
+		fields[0] = new DBFField();
+		fields[0].setName("emp_code");
+		fields[0].setType(DBFDataType.CHARACTER);
+		fields[0].setLength(10);
 
-    fields[1] = new DBFField();
-    fields[1].setName("emp_name");
-    fields[1].setType(DBFDataType.CHARACTER);
-    fields[1].setLength(20);
+		fields[1] = new DBFField();
+		fields[1].setName("emp_name");
+		fields[1].setType(DBFDataType.CHARACTER);
+		fields[1].setLength(20);
 
-    fields[2] = new DBFField();
-    fields[2].setName("salary");
-    fields[2].setType(DBFDataType.NUMERIC);
-    fields[2].setLength(12);
-    fields[2].setDecimalCount(2);
+		fields[2] = new DBFField();
+		fields[2].setName("salary");
+		fields[2].setType(DBFDataType.NUMERIC);
+		fields[2].setLength(12);
+		fields[2].setDecimalCount(2);
 
-    DBFWriter writer = new DBFWriter();
-    writer.setFields(fields);
+		DBFWriter writer = new DBFWriter();
+		writer.setFields(fields);
 
-    // now populate DBFWriter
+		// now populate DBFWriter
 
-    Object rowData[] = new Object[3];
-    rowData[0] = "1000";
-    rowData[1] = "John";
-    rowData[2] = new Double(5000.00);
+		Object rowData[] = new Object[3];
+		rowData[0] = "1000";
+		rowData[1] = "John";
+		rowData[2] = new Double(5000.00);
 
-    writer.addRecord(rowData);
+		writer.addRecord(rowData);
 
-    rowData = new Object[3];
-    rowData[0] = "1001";
-    rowData[1] = "Lalit";
-    rowData[2] = new Double(3400.00);
+		rowData = new Object[3];
+		rowData[0] = "1001";
+		rowData[1] = "Lalit";
+		rowData[2] = new Double(3400.00);
 
-    writer.addRecord(rowData);
+		writer.addRecord(rowData);
 
-    rowData = new Object[3];
-    rowData[0] = "1002";
-    rowData[1] = "Rohit";
-    rowData[2] = new Double(7350.00);
+		rowData = new Object[3];
+		rowData[0] = "1002";
+		rowData[1] = "Rohit";
+		rowData[2] = new Double(7350.00);
 
-    writer.addRecord(rowData);
+		writer.addRecord(rowData);
 
-	// write to file
-    FileOutputStream fos = new FileOutputStream(args[0]);
-    writer.write(fos);
-    fos.close();
-  }
+		// write to file
+		FileOutputStream fos = new FileOutputStream(args[0]);
+		writer.write(fos);
+		fos.close();
+	}
 }
 ```
 
@@ -335,8 +334,7 @@ import java.io.*;
 
 public class DBFWriterTest {
 
-  public static void main(String args[])
-  throws DBFException, IOException {
+  public static void main(String args[]) throws  IOException {
 
     // ...
 
@@ -372,8 +370,7 @@ import java.io.*;
 
 public class DBFWriterTest {
 
-  public static void main(String args[])
-  throws DBFException, IOException {
+  public static void main(String args[]) throws IOException {
 
     // ...
 
