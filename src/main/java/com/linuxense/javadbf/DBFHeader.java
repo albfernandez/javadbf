@@ -176,8 +176,16 @@ public class DBFHeader {
 		dataOutput.writeInt(DBFUtils.littleEndian(this.reserv2)); /* 20-23 */
 		dataOutput.writeInt(DBFUtils.littleEndian(this.reserv3)); /* 24-27 */
 
-		dataOutput.writeByte(this.mdxFlag); /* 28 */		
-		dataOutput.writeByte(this.languageDriver); /* 29 */
+		dataOutput.writeByte(this.mdxFlag); /* 28 */
+		if (this.languageDriver != 0) {
+			dataOutput.writeByte(this.languageDriver); /* 29 */
+		}
+		else if (getUsedCharset() != null) {
+			dataOutput.writeByte(DBFCharsetHelper.getDBFCodeForCharset(getUsedCharset()));
+		}
+		else {
+			dataOutput.writeByte(0);
+		}
 		dataOutput.writeShort(DBFUtils.littleEndian(this.reserv4)); /* 30-31 */
 		for (DBFField field : this.fieldArray) {
 			field.write(dataOutput,getUsedCharset());
