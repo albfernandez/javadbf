@@ -93,6 +93,38 @@ import java.util.TimeZone;
  * <td>T</td>
  * <td>java.util.Date</td>
  * </tr>
+ * <tr>
+ * <td>@</td>
+ * <td>java.util.Date</td>
+ * </tr>
+ * <tr>
+ * <td>+/td>
+ * <td>Integer</td>
+ * </tr>
+ * <tr>
+ * <td>V</td>
+ * <td>String</td>
+ * </tr>
+ * <tr>
+ * <td>O</td>
+ * <td>Double</td>
+ * </tr>
+ * <tr>
+ * <td>M</td>
+ * <td>java.lang.String or byte[]</td>
+ * </tr>
+ * <tr>
+ * <td>B</td>
+ * <td>byte[] or java.lang.Double</td>
+ * </tr>
+ * <tr>
+ * <td>G</td>
+ * <td>byte[]</td>
+ * </tr>
+ * <tr>
+ * <td>P</td>
+ * <td>byte[]</td>
+ * </tr>
  * </table>
  */
 public class DBFReader extends DBFBase implements Closeable {
@@ -369,15 +401,27 @@ public class DBFReader extends DBFBase implements Closeable {
 	protected DBFHeader getHeader() {
 		return this.header;
 	}
-
+	/**
+	 * Determine if character fields should be right trimmed (default true)
+	 * @return true if data is right trimmed
+	 */
 	public boolean isTrimRightSpaces() {
 		return this.trimRightSpaces;
 	}
 
+	/**
+	 * Determine if character fields should be right trimmed (default true)
+	 * @param trimRightSpaces
+	 */
 	public void setTrimRightSpaces(boolean trimRightSpaces) {
 		this.trimRightSpaces = trimRightSpaces;
 	}
 	
+	/**
+	 * Sets the memo file (DBT or FPT) where memo fields will be readed.
+	 * If no file is provided, then this fields will be null.
+	 * @param memoFile
+	 */
 	public void setMemoFile(File memoFile) {
 		if (!memoFile.exists()){
 			throw new DBFException("Memo file " + memoFile.getName() + " not exists");

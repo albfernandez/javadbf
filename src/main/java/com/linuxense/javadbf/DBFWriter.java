@@ -279,14 +279,6 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 		}
 	}
 	
-	/**
-	 * In sync mode, write the header and close the file
-	 * @deprecated use {@link #close()}
-	 */
-	@Deprecated
-	public void write()  {
-		this.close();
-	}
 
 	private void writeRecord(DataOutput dataOutput, Object[] objectArray) throws IOException {
 		dataOutput.write((byte) ' ');
@@ -348,4 +340,15 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 			}
 		}
 	}
+	
+	
+	/**
+	 * In sync mode, write the header and close the file
+	 * @deprecated use {@link #close()}
+	 */
+	@Deprecated
+	public void write()  {
+		this.close();
+	}
+
 }

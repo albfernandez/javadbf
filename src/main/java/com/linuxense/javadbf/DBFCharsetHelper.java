@@ -21,6 +21,17 @@ package com.linuxense.javadbf;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 
+/**
+ * Utility to map dbf charsets to java charsets.
+ * 
+ * See http://support.microsoft.com/kb/129631/en-us 
+ * 
+ * See also:
+ * https://msdn.microsoft.com/en-us/library/aa975386(v=vs.71).aspx byte 29
+ *	
+ *(0x1D) is code page mark See https://msdn.microsoft.com/en-us/library/aa975345(v=vs.71).aspx
+ */
+
 public final class DBFCharsetHelper {
 
 	private DBFCharsetHelper() {
@@ -28,13 +39,9 @@ public final class DBFCharsetHelper {
 	}
 
 	/**
-	 * See http://support.microsoft.com/kb/129631/en-us See also:
-	 * https://msdn.microsoft.com/en-us/library/aa975386(v=vs.71).aspx byte 29
-	 * (0x1D) is code page mark See
-	 * https://msdn.microsoft.com/en-us/library/aa975345(v=vs.71).aspx
-	 * 
-	 * @param b
-	 * @return
+	 * Gets Java charset from DBF code
+	 * @param b the code stored in DBF file
+	 * @return Java charset, null if unknown.
 	 */
 	public static Charset getCharsetByByte(int b) {
 		switch (b) {
@@ -137,6 +144,11 @@ public final class DBFCharsetHelper {
 		}
 	}
 
+	/**
+	 * gets the DBF code for a given Java charset
+	 * @param charset the Java charset
+	 * @return the DBF code, 0 if unknown
+	 */
 	public static int getDBFCodeForCharset(Charset charset) {
 		if (charset == null) {
 			return 0;

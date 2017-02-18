@@ -26,6 +26,9 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
+/**
+ * Class for read memo files (DBT and FPT)
+ */
 public class DBFMemoFile {
 
 	private File memoFile = null;
@@ -88,7 +91,6 @@ public class DBFMemoFile {
 	
 	protected Object readData(int block, DBFDataType type) {
 		RandomAccessFile file = null;
-//		long blockStart = 512 + (this.blockSize * (long) (block -1) );
 		long blockStart = this.blockSize * (long) block;
 		DBFDataType usedType = type;
 		try {

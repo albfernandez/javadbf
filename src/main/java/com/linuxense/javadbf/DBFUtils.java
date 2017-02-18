@@ -46,7 +46,14 @@ public final class DBFUtils {
 	private DBFUtils() {
 		throw new AssertionError("No instances of this class are allowed");
 	}
-
+	
+	/**
+	 * Reads a number from a stream, 
+	 * @param dataInput the stream data
+	 * @param length the legth of the number
+	 * @return The number as a Number (BigDecimal)
+	 * @throws IOException 
+	 */
 	public static Number readNumericStoredAsText(DataInputStream dataInput, int length) throws IOException {
 		try {
 			byte t_float[] = new byte[length];
@@ -263,6 +270,11 @@ public final class DBFUtils {
 		return ASCII_ENCODER.canEncode(stringToCheck);
 	}
 
+	/**
+	 * Test if the data in the array is pure ASCII
+	 * @param data data to check
+	 * @return true if there are only ASCII characters
+	 */
 	public static boolean isPureAscii(byte[] data) {
 		if (data == null) {
 			return false;
@@ -289,6 +301,11 @@ public final class DBFUtils {
 		return null;
 	}
 
+	/**
+	 * Trims right spaces from string
+	 * @param b_array the string
+	 * @return the string without right spaces
+	 */
 	public static byte[] trimRightSpaces(byte[] b_array) {
 		if (b_array == null || b_array.length == 0) {
 			return new byte[0];
@@ -309,6 +326,11 @@ public final class DBFUtils {
 		return pos;
 	}
 
+	/**
+	 * Closes silently a #{@link java.io.Closeable}.
+	 * it can be null or throws an exception, will be ignored.
+	 * @param closeable The item to close
+	 */
 	public static void close(Closeable closeable) {
 		if (closeable != null) {
 			try {
