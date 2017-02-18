@@ -114,7 +114,7 @@ public class EncodingTest {
 			fields[0] = new DBFField();
 			fields[0].setName("emp_name");
 			fields[0].setType(DBFDataType.CHARACTER);
-			fields[0].setFieldLength(10);
+			fields[0].setLength(10);
 			wr.setFields(fields);
 			wr.addRecord(new Object[] { "Simón" });
 			wr.addRecord(new Object[] { "Julián"});

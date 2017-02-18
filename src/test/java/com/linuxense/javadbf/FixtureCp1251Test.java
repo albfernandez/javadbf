@@ -22,12 +22,12 @@ public class FixtureCp1251Test {
 			Assert.assertEquals("RN", header.fieldArray[0].getName());
 			Assert.assertEquals(DBFDataType.NUMERIC, header.fieldArray[0].getType());
 			Assert.assertEquals(0, header.fieldArray[0].getDecimalCount());
-			Assert.assertEquals(4, header.fieldArray[0].getFieldLength());		
+			Assert.assertEquals(4, header.fieldArray[0].getLength());		
 			
 			Assert.assertEquals("NAME", header.fieldArray[1].getName());
 			Assert.assertEquals(DBFDataType.CHARACTER, header.fieldArray[1].getType());
 			Assert.assertEquals(0, header.fieldArray[1].getDecimalCount());
-			Assert.assertEquals(100, header.fieldArray[1].getFieldLength());	
+			Assert.assertEquals(100, header.fieldArray[1].getLength());	
 			
 			
 			

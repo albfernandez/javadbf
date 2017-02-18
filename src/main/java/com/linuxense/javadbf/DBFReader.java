@@ -230,7 +230,7 @@ public class DBFReader extends DBFBase implements Closeable {
 				switch (field.getType()) {
 				case VARCHAR:
 				case CHARACTER:
-					byte b_array[] = new byte[field.getFieldLength()];
+					byte b_array[] = new byte[field.getLength()];
 					this.dataInputStream.read(b_array);
 					if (this.trimRightSpaces || field.getType() == DBFDataType.VARCHAR) {
 						recordObjects[i] = new String(DBFUtils.trimRightSpaces(b_array), getCharset());
@@ -265,7 +265,7 @@ public class DBFReader extends DBFBase implements Closeable {
 
 				case FLOATING_POINT:
 				case NUMERIC:
-					recordObjects[i] = DBFUtils.readNumericStoredAsText(this.dataInputStream, field.getFieldLength());
+					recordObjects[i] = DBFUtils.readNumericStoredAsText(this.dataInputStream, field.getLength());
 					break;
 
 				case LOGICAL:
@@ -283,7 +283,7 @@ public class DBFReader extends DBFBase implements Closeable {
 					String x1 = s_data.substring(0, s_data.length() - 4);
 					String x2 = s_data.substring(s_data.length() - 4);
 					recordObjects[i] = new BigDecimal(x1 + "." + x2);
-					skip(field.getFieldLength() - 4);
+					skip(field.getLength() - 4);
 					break;
 				case TIMESTAMP:
 				case TIMESTAMP_DBASE7:
@@ -306,7 +306,7 @@ public class DBFReader extends DBFBase implements Closeable {
 					recordObjects[i] = readMemoField(field);
 					break;
 				case BINARY:
-					if (field.getFieldLength() == 8) {
+					if (field.getLength() == 8) {
 						recordObjects[i] = readDoubleField(field);
 					}
 					else {
@@ -317,7 +317,7 @@ public class DBFReader extends DBFBase implements Closeable {
 					recordObjects[i] = readDoubleField(field);
 					break;
 				default:
-					skip(field.getFieldLength());
+					skip(field.getLength());
 					recordObjects[i] = null;
 				}
 			}
@@ -331,7 +331,7 @@ public class DBFReader extends DBFBase implements Closeable {
 	}
 
 	private Object readDoubleField(DBFField field) throws IOException {
-		byte[] data = new byte[field.getFieldLength()];
+		byte[] data = new byte[field.getLength()];
 		this.dataInputStream.read(data);
 		return ByteBuffer.wrap(
 				new byte[]{
@@ -342,8 +342,8 @@ public class DBFReader extends DBFBase implements Closeable {
 
 	private Object readMemoField(DBFField field) throws IOException {
 		Number nBlock =  null;
-		if (field.getFieldLength() == 10) {
-			nBlock = DBFUtils.readNumericStoredAsText(this.dataInputStream, field.getFieldLength());
+		if (field.getLength() == 10) {
+			nBlock = DBFUtils.readNumericStoredAsText(this.dataInputStream, field.getLength());
 		}
 		else {
 			nBlock = DBFUtils.readLittleEndianInt(this.dataInputStream);

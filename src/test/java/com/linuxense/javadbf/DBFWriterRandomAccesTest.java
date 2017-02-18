@@ -70,17 +70,17 @@ public class DBFWriterRandomAccesTest {
 		fields[0] = new DBFField();
 		fields[0].setName("emp_code");
 		fields[0].setType(DBFDataType.CHARACTER);
-		fields[0].setFieldLength(10);
+		fields[0].setLength(10);
 
 		fields[1] = new DBFField();
 		fields[1].setName("emp_name");
 		fields[1].setType(DBFDataType.CHARACTER);
-		fields[1].setFieldLength(20);
+		fields[1].setLength(20);
 
 		fields[2] = new DBFField();
 		fields[2].setName("salary");
 		fields[2].setType(DBFDataType.NUMERIC);
-		fields[2].setFieldLength(12);
+		fields[2].setLength(12);
 		fields[2].setDecimalCount(2);
 		return fields;
 	}

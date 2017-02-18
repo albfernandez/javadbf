@@ -44,26 +44,26 @@ public class DBFFieldTest {
 	}
 	
 	@Test(expected=UnsupportedOperationException.class)
-	public void testSetFieldLengthNotValidInDate() {
+	public void testsetLengthNotValidInDate() {
 		DBFField field = new DBFField();
 		field.setType(DBFDataType.DATE);
-		field.setFieldLength(5);
+		field.setLength(5);
 	}
 	
 	@Test(expected=UnsupportedOperationException.class)
 	public void testInvalidZeroFieldLength() {
 		DBFField field = new DBFField();
 		field.setType(DBFDataType.NUMERIC);
-		field.setFieldLength(0);
+		field.setLength(0);
 	}
 	
 	@Test
 	public void testValidFieldLength() {
 		DBFField field = new DBFField();
 		field.setType(DBFDataType.NUMERIC);
-		field.setFieldLength(10);
+		field.setLength(10);
 		assertEquals(DBFDataType.NUMERIC, field.getType());
-		assertEquals(10, field.getFieldLength());
+		assertEquals(10, field.getLength());
 	}
 	@Test(expected=IllegalArgumentException.class)
 	public void testTypeNotWriteSupport() {
@@ -75,14 +75,14 @@ public class DBFFieldTest {
 	public void testNegativeDecimalCount() {
 		DBFField field = new DBFField();
 		field.setType(DBFDataType.NUMERIC);
-		field.setFieldLength(15);
+		field.setLength(15);
 		field.setDecimalCount(-1);
 	}
 	@Test(expected=IllegalArgumentException.class)
 	public void testExcecsiveDecimalCount() {
 		DBFField field = new DBFField();
 		field.setType(DBFDataType.NUMERIC);
-		field.setFieldLength(15);
+		field.setLength(15);
 		field.setDecimalCount(16);
 	}
 	
@@ -90,7 +90,7 @@ public class DBFFieldTest {
 	public void testInvalidDecimalCountForNoNumeric() {
 		DBFField field = new DBFField();
 		field.setType(DBFDataType.CHARACTER);
-		field.setFieldLength(15);
+		field.setLength(15);
 		field.setDecimalCount(5);
 	}
 }

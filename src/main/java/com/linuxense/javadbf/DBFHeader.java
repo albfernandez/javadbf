@@ -218,7 +218,7 @@ public class DBFHeader {
 	private short sumUpLenghtOfFields() {
 		int sum = 0;
 		for (DBFField field : this.fieldArray) {
-			sum += field.getFieldLength();
+			sum += field.getLength();
 		}
 		return (short) (sum + 1);
 	}

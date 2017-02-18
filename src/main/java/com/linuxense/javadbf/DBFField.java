@@ -80,7 +80,7 @@ public class DBFField {
 	//byte[] fieldName = new byte[ 11]; /* 0-10*/
 	private DBFDataType type; /* 11 */
 	private int reserv1; /* 12-15 */
-	private int fieldLength; /* 16 */
+	private int length; /* 16 */
 	private byte decimalCount; /* 17 */
 	private short reserv2; /* 18-19 */
 	private byte workAreaId; /* 20 */
@@ -157,7 +157,7 @@ public class DBFField {
 			field.type = DBFDataType.UNKNOWN;
 		}
 		field.reserv1 = DBFUtils.readLittleEndianInt(in); /* 12-15 */
-		field.fieldLength = in.readUnsignedByte(); /* 16 */
+		field.length = in.readUnsignedByte(); /* 16 */
 		field.decimalCount = in.readByte(); /* 17 */
 		field.reserv2 = DBFUtils.readLittleEndianShort(in); /* 18-19 */
 		field.workAreaId = in.readByte(); /* 20 */
@@ -167,7 +167,7 @@ public class DBFField {
 		field.indexFieldFlag = in.readByte(); /* 31 */
 		
 		if ((field.type == DBFDataType.CHARACTER || field.type == DBFDataType.VARCHAR) && field.decimalCount != 0) {
-			field.fieldLength |= field.fieldLength << 8;
+			field.length |= field.length << 8;
 			field.decimalCount = 0;
 		}
 
@@ -198,7 +198,7 @@ public class DBFField {
 		} catch (Exception e) {
 			field.type = DBFDataType.UNKNOWN;
 		}
-		field.fieldLength = in.readUnsignedByte(); /* 33 */
+		field.length = in.readUnsignedByte(); /* 33 */
 		field.decimalCount = in.readByte(); /* 34 */
 		field.reserv2 = DBFUtils.readLittleEndianShort(in); /* 35-36 */
 		field.workAreaId = in.readByte(); /* 37 */
@@ -207,7 +207,7 @@ public class DBFField {
 		in.readInt(); // 44-47 reserv
 		
 		if ((field.type == DBFDataType.CHARACTER || field.type == DBFDataType.VARCHAR) && field.decimalCount != 0) {
-			field.fieldLength |= field.fieldLength << 8;
+			field.length |= field.length << 8;
 			field.decimalCount = 0;
 		}
 		return field;
@@ -232,7 +232,7 @@ public class DBFField {
 		// data type
 		out.writeByte(this.type.getCode()); /* 11 */
 		out.writeInt(0x00); /* 12-15 */
-		out.writeByte(this.fieldLength); /* 16 */
+		out.writeByte(this.length); /* 16 */
 		out.writeByte(this.decimalCount); /* 17 */
 		out.writeShort((short) 0x00); /* 18-19 */
 		out.writeByte((byte) 0x00); /* 20 */
@@ -252,14 +252,17 @@ public class DBFField {
 	}
 
 
+	
 	/**
 	 * Returns field length.
 	 * 
 	 * @return field length as int.
 	 */
-	public int getFieldLength() {
-		return this.fieldLength;
+	public int getLength() {
+		return this.length;
 	}
+	
+
 
 	/**
 		Returns the decimal part. This is applicable
@@ -332,19 +335,20 @@ public class DBFField {
 	}
 
 	/**
-		Length of the field.
+		Set Length of the field.
 		This method should be called before calling setDecimalCount().
 
 		@param length of the field as int.
 	*/
-	public void setFieldLength(int length) {
+	public void setLength(int length) {
 		if (length > this.type.getMaxSize() || length < this.type.getMinSize()) {
 			throw new UnsupportedOperationException("Length for " + this.type + " must be between "
 					+ this.type.getMinSize() + " and " + this.type.getMaxSize());
 		}
-		this.fieldLength = length;
+		this.length = length;
 	}
-	
+
+
 	/**
 	 * Gets the type for this field
 	 * @return The type for this field
@@ -365,7 +369,7 @@ public class DBFField {
 		}
 		this.type = type;
 		if (type.getDefaultSize() > 0) {
-			this.fieldLength = type.getDefaultSize();
+			this.length = type.getDefaultSize();
 		}
 		
 	}
@@ -382,7 +386,7 @@ public class DBFField {
 		if (size < 0) {
 			throw new IllegalArgumentException("Decimal length should be a positive number");
 		}
-		if (size > this.fieldLength) {
+		if (size > this.length) {
 			throw new IllegalArgumentException("Decimal length should be less than field length");
 		}
 		if (this.type != DBFDataType.NUMERIC && this.type != DBFDataType.FLOATING_POINT) {
@@ -390,6 +394,32 @@ public class DBFField {
 		}
 		this.decimalCount = (byte) size;
 	}
+	
+	
+	
+	/**
+	 * Returns field length.
+	 * 
+	 * @return field length as int.
+	 * @deprecated use {@link #getLength()}
+	 */
+	@Deprecated
+	public int getFieldLength() {
+		return getLength();
+	}
+	
+	/**
+	Length of the field.
+	This method should be called before calling setDecimalCount().
+
+	@param length of the field as int.
+	@deprecated use {@link #setLength(int)}
+*/
+@Deprecated
+public void setFieldLength(int length) {
+	setLength(length);
+}
+
 
 	/**
 	 * Sets the data type of the field.

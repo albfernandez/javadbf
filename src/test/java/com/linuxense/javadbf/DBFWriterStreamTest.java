@@ -129,18 +129,18 @@ public class DBFWriterStreamTest {
 		fields[0] = new DBFField();
 		fields[0].setName("emp_code");
 		fields[0].setType(DBFDataType.NUMERIC);
-		fields[0].setFieldLength(10);
+		fields[0].setLength(10);
 		fields[0].setDecimalCount(0);
 
 		fields[1] = new DBFField();
 		fields[1].setName("emp_name");
 		fields[1].setType(DBFDataType.CHARACTER);
-		fields[1].setFieldLength(60);
+		fields[1].setLength(60);
 
 		fields[2] = new DBFField();
 		fields[2].setName("salary");
 		fields[2].setType(DBFDataType.FLOATING_POINT);
-		fields[2].setFieldLength(12);
+		fields[2].setLength(12);
 		fields[2].setDecimalCount(2);
 
 		fields[3] = new DBFField();

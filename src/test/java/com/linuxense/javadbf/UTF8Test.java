@@ -22,7 +22,7 @@ public class UTF8Test {
 		fields[0] = new DBFField();
 		fields[0].setName("abc");
 		fields[0].setType(DBFDataType.CHARACTER);
-		fields[0].setFieldLength(10);
+		fields[0].setLength(10);
 
 		DBFWriter writer = null;
 		ByteArrayOutputStream fos = null;

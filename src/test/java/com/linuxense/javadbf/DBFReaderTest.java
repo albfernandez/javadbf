@@ -58,7 +58,7 @@ public class DBFReaderTest {
 			Assert.assertEquals("TITLE", header.fieldArray[1].getName());
 			Assert.assertEquals(DBFDataType.CHARACTER, header.fieldArray[1].getType());
 			Assert.assertEquals(0, header.fieldArray[1].getDecimalCount());
-			Assert.assertEquals(50, header.fieldArray[1].getFieldLength());
+			Assert.assertEquals(50, header.fieldArray[1].getLength());
 			Assert.assertEquals(5, header.fieldArray[1].getReserv1());
 			Assert.assertEquals(0, header.fieldArray[1].getReserv2());
 			Assert.assertEquals(0, header.fieldArray[1].getReserv3());

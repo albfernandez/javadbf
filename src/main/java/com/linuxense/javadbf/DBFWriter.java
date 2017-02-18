@@ -299,7 +299,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 				if (objectArray[j] != null) {
 					strValue = objectArray[j].toString();
 				}
-				dataOutput.write(DBFUtils.textPadding(strValue, getCharset(), this.header.fieldArray[j].getFieldLength(), DBFAlignment.LEFT, (byte) ' '));
+				dataOutput.write(DBFUtils.textPadding(strValue, getCharset(), this.header.fieldArray[j].getLength(), DBFAlignment.LEFT, (byte) ' '));
 
 				break;
 
@@ -322,9 +322,9 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 
 				if (objectArray[j] != null) {
 					dataOutput.write(DBFUtils.doubleFormating((Number) objectArray[j], getCharset(),
-							this.header.fieldArray[j].getFieldLength(), this.header.fieldArray[j].getDecimalCount()));
+							this.header.fieldArray[j].getLength(), this.header.fieldArray[j].getDecimalCount()));
 				} else {
-					dataOutput.write(DBFUtils.textPadding(" ", getCharset(), this.header.fieldArray[j].getFieldLength(), DBFAlignment.RIGHT, (byte) ' '));
+					dataOutput.write(DBFUtils.textPadding(" ", getCharset(), this.header.fieldArray[j].getLength(), DBFAlignment.RIGHT, (byte) ' '));
 				}
 
 				break;

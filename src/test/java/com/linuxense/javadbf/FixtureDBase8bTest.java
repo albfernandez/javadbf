@@ -27,32 +27,32 @@ public class FixtureDBase8bTest {
 			Assert.assertEquals("CHARACTER", header.fieldArray[0].getName());
 			Assert.assertEquals(DBFDataType.CHARACTER, header.fieldArray[0].getType());
 			Assert.assertEquals(0, header.fieldArray[0].getDecimalCount());
-			Assert.assertEquals(100, header.fieldArray[0].getFieldLength());		
+			Assert.assertEquals(100, header.fieldArray[0].getLength());		
 			
 			Assert.assertEquals("NUMERICAL", header.fieldArray[1].getName());
 			Assert.assertEquals(DBFDataType.NUMERIC, header.fieldArray[1].getType());
 			Assert.assertEquals(2, header.fieldArray[1].getDecimalCount());
-			Assert.assertEquals(20, header.fieldArray[1].getFieldLength());	
+			Assert.assertEquals(20, header.fieldArray[1].getLength());	
 			
 			Assert.assertEquals("DATE", header.fieldArray[2].getName());
 			Assert.assertEquals(DBFDataType.DATE, header.fieldArray[2].getType());
 			Assert.assertEquals(0, header.fieldArray[2].getDecimalCount());
-			Assert.assertEquals(8, header.fieldArray[2].getFieldLength());
+			Assert.assertEquals(8, header.fieldArray[2].getLength());
 			
 			Assert.assertEquals("LOGICAL", header.fieldArray[3].getName());
 			Assert.assertEquals(DBFDataType.LOGICAL, header.fieldArray[3].getType());
 			Assert.assertEquals(0, header.fieldArray[3].getDecimalCount());
-			Assert.assertEquals(1, header.fieldArray[3].getFieldLength());	
+			Assert.assertEquals(1, header.fieldArray[3].getLength());	
 			
 			Assert.assertEquals("FLOAT", header.fieldArray[4].getName());
 			Assert.assertEquals(DBFDataType.FLOATING_POINT, header.fieldArray[4].getType());
 			Assert.assertEquals(18, header.fieldArray[4].getDecimalCount());
-			Assert.assertEquals(20, header.fieldArray[4].getFieldLength());
+			Assert.assertEquals(20, header.fieldArray[4].getLength());
 			
 			Assert.assertEquals("MEMO", header.fieldArray[5].getName());
 			Assert.assertEquals(DBFDataType.MEMO, header.fieldArray[5].getType());
 			Assert.assertEquals(0, header.fieldArray[5].getDecimalCount());
-			Assert.assertEquals(10, header.fieldArray[5].getFieldLength());	
+			Assert.assertEquals(10, header.fieldArray[5].getLength());	
 			
 			Assert.assertEquals(10, header.numberOfRecords);
 			
