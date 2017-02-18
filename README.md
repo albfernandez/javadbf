@@ -24,6 +24,28 @@ you need to import a report to your spread sheet program, DBF format is the most
 JavaDBF also comes handy when it is required to transfer data between applications which do not have a common data format.
 Java developers often come across such situations when they are asked to share data with spreadsheet application. 
 
+#News and changes in version 1.0.0
+
+## Possible breaking changes
+
+JavaDBF 1.0.0 is the first release considered stable. It has a lot of improvements and is almost compatible with
+old code. But there are some small changes that may break your code:
+
+* Numeric and Double types (N and F) are now returned as BigDecimal instead of Double.
+* DBFException is now a RuntimeException, not need to explictitly catch or rethrow, but yo can if you wish.
+* Character data is now trimmed tailing white spaces. You can disable it calling reader.setTrimRightSpaces(false)
+
+## News
+* Support for dbase Level 7 databases.
+* Support for new field types.
+  * Support for memo text and binary types (M, B, G, P) via external file (fpt or dbt)
+  * Support for varchar (V) fields
+  * Support for double (O) fields
+  * Support for double (B) fields
+  * Support for long character (up to 65534 bytes) fields
+   
+
+
 #Getting and Installing
 
 Obtain the latest version of JavaDBF from release page at github.
@@ -36,7 +58,7 @@ If you are using Maven, you can add JavaDBF to your project using this dependenc
 	<dependency>
 		<groupId>com.github.albfernandez</groupId>
 		<artifactId>javadbf</artifactId>
-		<version>0.9.0</version>
+		<version>1.0.0</version>
 	</dependency>
 ```
 
@@ -68,25 +90,27 @@ Following table shows the mapping scheme.
 
 FoxPro and dbase7 types (Read Only)
 
-| FoxPro Type           | Symbol  | Java Type used in JavaDBF |
-| --------------------- | ------- | ------------------------- |  
-| Currency              | Y       | java.math.BigDecimal      |
-| Long                  | I       | java.lang.Integer         |
-| Date Type (FoxPro)    | T       | java.util.Date            |
-| Timestamp (dbase7)    | @       | java.util.Date            | 
-| AutoIncrement(dbase7) | +       | java.lang.Integer         |
-| Memo                  | M       | java.lang.String or byte[]|
-| Binary                | B       | byte[]                    |
-| General (OLE Objects) | G       | byte[]                    |
-| Picture (FoxPro)      | P       | byte[]                    |
+| FoxPro Type           | Symbol | Java Type used in JavaDBF |
+| --------------------- | ------ | ------------------------- |  
+| Currency              | Y      | java.math.BigDecimal      |
+| Long                  | I      | java.lang.Integer         |
+| Date Type (FoxPro)    | T      | java.util.Date            |
+| Timestamp (dbase7)    | @      | java.util.Date            | 
+| AutoIncrement(dbase7) | +      | java.lang.Integer         |
+| Memo                  | M      | java.lang.String or byte[]|
+| Binary                | B      | byte[] or java.lang.Double|
+| General (OLE Objects) | G      | byte[]                    |
+| Picture (FoxPro)      | P      | byte[]                    |
+| Varchar               | V      | java.lang.String          |
+| Double (dbase7)       | O      | java.lang.Double          |
 
 Unsupported types
 
 | Type                  | Symbol |
 | --------------------- | ------ |
 | Flags                 | 0      |
-| Double (dbase7)       | O      |
-| Varchar               | V      |
+
+
 
 
 
@@ -107,8 +131,7 @@ public class JavaDBFReaderTest {
     try {
 
       // create a DBFReader object
-      InputStream inputStream  = new FileInputStream(args[0]);
-      DBFReader reader = new DBFReader(inputStream); 
+      DBFReader reader = new DBFReader(new FileInputStream(args[0])); 
 
       // get the field count if you want for some reasons like the following
 
@@ -130,7 +153,7 @@ public class JavaDBFReaderTest {
       // Now, lets us start reading the rows
 
       Object[] rowObjects;
-
+      
       while((rowObjects = reader.nextRecord()) != null) {
 
         for(int i = 0; i < rowObjects.length; i++) {
@@ -138,9 +161,10 @@ public class JavaDBFReaderTest {
         }
       }
 
-      // By now, we have itereated through all of the rows
+     // By now, we have iterated through all of the rows
+     
       
-      inputStream.close();
+      reader.close();
     }
     catch(DBFException e) {
       e.printStrackTrace();
@@ -167,12 +191,13 @@ public class JavaDBFReaderTest {
     try {
 
       // create a DBFReader object
-      InputStream inputStream  = new FileInputStream(args[0]);
-      DBFReader reader = new DBFReader(inputStream); 
+      DBFReader reader = new DBFReader(new FileInputStream(args[0])); 
 
       reader.setMemoFile(new File("memo.dbt"));
       
-      inputStream.close();
+      // do whatever you want with the data
+      
+      reader.close();
     }
     catch(DBFException e) {
       e.printStrackTrace();
@@ -242,17 +267,17 @@ public class DBFWriterTest {
     fields[0] = new DBFField();
     fields[0].setName("emp_code");
     fields[0].setType(DBFDataType.CHARACTER);
-    fields[0].setFieldLength(10);
+    fields[0].setLength(10);
 
     fields[1] = new DBFField();
     fields[1].setName("emp_name");
     fields[1].setType(DBFDataType.CHARACTER);
-    fields[1].setFieldLength(20);
+    fields[1].setLength(20);
 
     fields[2] = new DBFField();
     fields[2].setName("salary");
     fields[2].setType(DBFDataType.NUMERIC);
-    fields[2].setFieldLength(12);
+    fields[2].setLength(12);
     fields[2].setDecimalCount(2);
 
     DBFWriter writer = new DBFWriter();
@@ -374,7 +399,7 @@ Clone the repository or download de tar file from releases page on github, run t
     cd javadbf
     mvn clean package
 
-The result file is ``target/javadbf-0.9.0.jar``
+The result file is ``target/javadbf-1.0.0.jar``
 
 
 
