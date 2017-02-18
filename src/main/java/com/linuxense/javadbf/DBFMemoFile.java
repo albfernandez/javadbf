@@ -73,8 +73,8 @@ public class DBFMemoFile {
 	}
 	/**
 	 * Only for testing purposes
-	 * @param block
-	 * @return
+	 * @param block position of first block of this field
+	 * @return text contained in the block
 	 */
 	
 	protected String readText(int block) {
@@ -82,8 +82,8 @@ public class DBFMemoFile {
 	}
 	/**
 	 * Only for testing purposes
-	 * @param block
-	 * @return
+	 * @param block postition of first block of this field 
+	 * @return data in the block as byte
 	 */
 	protected byte[] readBinary(int block) {
 		return (byte[]) readData(block, DBFDataType.BINARY);
