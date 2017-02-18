@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
@@ -299,12 +300,19 @@ public class DBFReader extends DBFBase implements Closeable {
 					break;
 				case MEMO:					
 				case GENERAL_OLE:
-				case BINARY:
 				case PICTURE:
-					Number nBlock =  DBFUtils.readNumericStoredAsText(this.dataInputStream, field.getFieldLength());
-					if (this.memoFile != null && nBlock != null) {				
-						recordObjects[i] = memoFile.readData(nBlock.intValue(), field.getType());
+					recordObjects[i] = readMemoField(field);
+					break;
+				case BINARY:
+					if (field.getFieldLength() == 8) {
+						recordObjects[i] = readDoubleField(field);
 					}
+					else {
+						recordObjects[i] = readMemoField(field);
+					}
+					break;
+				case DOUBLE:
+					recordObjects[i] = readDoubleField(field);
 					break;
 				default:
 					skip(field.getFieldLength());
@@ -318,6 +326,30 @@ public class DBFReader extends DBFBase implements Closeable {
 		}
 
 		return recordObjects;
+	}
+
+	private Object readDoubleField(DBFField field) throws IOException {
+		byte[] data = new byte[field.getFieldLength()];
+		this.dataInputStream.read(data);
+		return ByteBuffer.wrap(
+				new byte[]{
+						data[7], data[6], data[5], data[4],
+						data[3], data[2], data[1], data[0]
+				}).getDouble();
+	}
+
+	private Object readMemoField(DBFField field) throws IOException {
+		Number nBlock =  null;
+		if (field.getFieldLength() == 10) {
+			nBlock = DBFUtils.readNumericStoredAsText(this.dataInputStream, field.getFieldLength());
+		}
+		else {
+			nBlock = DBFUtils.readLittleEndianInt(this.dataInputStream);
+		}
+		if (this.memoFile != null && nBlock != null) {				
+			return memoFile.readData(nBlock.intValue(), field.getType());
+		}
+		return null;
 	}
 
 	/**

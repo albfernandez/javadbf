@@ -44,6 +44,10 @@ public enum DBFDataType {
 	 */
 	FLOATING_POINT  ('F', 1, 20, 0, true),
 	/**
+	 * Double  value
+	 */
+	DOUBLE ('O', 8, 8, 0, false),
+	/**
 	 * To store boolean values.
 	 */
 	LOGICAL         ('L', 1, 1, 1, true),
