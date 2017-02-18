@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.linuxense.javadbf.testutils.AssertUtils;
+import com.linuxense.javadbf.testutils.DbfToTxtTest;
 
 public class FixtureDBase83Test {
 
@@ -46,14 +47,7 @@ public class FixtureDBase83Test {
 			AssertUtils.assertColumnDefinition(fieldArray[i++], "TAXABLE", DBFDataType.fromCode('L'), 1, 0);
 			AssertUtils.assertColumnDefinition(fieldArray[i++], "ACTIVE", DBFDataType.fromCode('L'), 1, 0);
 
-			Object[] row = null;
-
-			while ((row = reader.nextRecord()) != null) {
-				for (Object o : row) {
-					System.out.print(o + ";");
-				}
-				System.out.println("");
-			}
+			DbfToTxtTest.export(reader, File.createTempFile("javadbf-test", ".txt"));
 
 		} finally {
 			DBFUtils.close(inputStream);

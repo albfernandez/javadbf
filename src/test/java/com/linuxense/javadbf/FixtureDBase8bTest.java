@@ -1,26 +1,23 @@
 package com.linuxense.javadbf;
 
-import java.io.BufferedInputStream;
+import static com.linuxense.javadbf.testutils.DateUtils.createDate;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.Date;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import static com.linuxense.javadbf.testutils.DateUtils.createDate;
 
 public class FixtureDBase8bTest {
 
 	@Test
 	public void test8b() throws Exception {
 		File file = new File("src/test/resources/fixtures/dbase_8b.dbf");
-		InputStream inputStream = null;
+		DBFReader reader  = null;
 		try {
-			inputStream = new BufferedInputStream(new FileInputStream(file));
-			DBFReader reader = new DBFReader(inputStream);
+			reader = new DBFReader( new BufferedInputStream(new FileInputStream(file)));
 			reader.setMemoFile(new File("src/test/resources/fixtures/dbase_8b.dbt"));
 			
 			DBFHeader header = reader.getHeader();
@@ -181,9 +178,7 @@ public class FixtureDBase8bTest {
 
 			
 		} finally {
-			if (inputStream != null) {
-				inputStream.close();
-			}
+			DBFUtils.close(reader);
 		}
 
 	}

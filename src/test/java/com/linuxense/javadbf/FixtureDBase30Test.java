@@ -1,24 +1,22 @@
 package com.linuxense.javadbf;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.linuxense.javadbf.testutils.AssertUtils;
+import com.linuxense.javadbf.testutils.DbfToTxtTest;
 
 public class FixtureDBase30Test {
 
 	@Test
 	public void test30 () throws Exception {
 		File file = new File("src/test/resources/fixtures/dbase_30.dbf");
-		InputStream inputStream = null;
+		DBFReader reader = null;
 		try {
-			inputStream = new BufferedInputStream(new FileInputStream(file));
-			DBFReader reader = new DBFReader(inputStream);
+			reader = new DBFReader(new FileInputStream(file));
 			
 			DBFHeader header = reader.getHeader();
 			Assert.assertNotNull(header);
@@ -175,23 +173,14 @@ public class FixtureDBase30Test {
 			AssertUtils.assertColumnDefinition(fieldArray[i++], "ZSORTERX", DBFDataType.fromCode((byte) 'C'),   44  ,  0);        
 			AssertUtils.assertColumnDefinition(fieldArray[i++], "PPID", DBFDataType.fromCode((byte) 'C'),   36  ,  0);        
 
-			Object[] row = null;
-			
-			while (( row = reader.nextRecord()) != null) {
-				for (Object o : row) {
-					System.out.print(o + ";");
-				}
-				System.out.println("");
-			}
+			DbfToTxtTest.export(reader, File.createTempFile("javadbf-test", ".txt"));
 			
 
 
 
 			
 		} finally {
-			if (inputStream != null) {
-				inputStream.close();
-			}
+			DBFUtils.close(reader);
 		}
 
 	}

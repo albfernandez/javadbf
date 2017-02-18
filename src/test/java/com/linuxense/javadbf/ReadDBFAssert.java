@@ -19,18 +19,21 @@ public class ReadDBFAssert {
 	}
 
 	public static void testReadDBFFile(File file, int expectedColumns, int expectedRows) throws DBFException, IOException {
-		InputStream inputStream = null;
+		DBFReader reader = null;
 		try {
-			inputStream = new BufferedInputStream(new FileInputStream(file));
-			testReadDBFFile(inputStream, expectedColumns, expectedRows);
+			reader = new DBFReader(new BufferedInputStream(new FileInputStream(file)));
+			testReadDBFFile(reader, expectedColumns, expectedRows);
 		} finally {
-			inputStream.close();
+			DBFUtils.close(reader);
 		}
 
 	}
+	public static void testReadDBFFile(InputStream is, int expectedColumns, int expectedRows) throws DBFException {
+		testReadDBFFile(new DBFReader(is), expectedColumns, expectedRows);
+	}
 
-	public static void testReadDBFFile(InputStream inputStream, int expectedColumns, int expectedRows) throws DBFException {
-		DBFReader reader = new DBFReader(inputStream);
+	public static void testReadDBFFile(DBFReader reader, int expectedColumns, int expectedRows) throws DBFException {
+		
 
 		int numberOfFields = reader.getFieldCount();
 		Assert.assertEquals(expectedColumns, numberOfFields);

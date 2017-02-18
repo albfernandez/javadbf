@@ -2,7 +2,6 @@ package com.linuxense.javadbf;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 
 import org.junit.Assert;
@@ -46,15 +45,14 @@ public class UTF8Test {
 		byte[] data = fos.toByteArray();
 		
 		
-		InputStream inputStream = null;
+		DBFReader reader = null;
 		try {
-			inputStream = new ByteArrayInputStream(data);
-			DBFReader reader = new DBFReader(inputStream);
+			reader = new DBFReader(new ByteArrayInputStream(data));
 			Object[] rowObjects = reader.nextRecord();
 			Assert.assertEquals(testString, rowObjects[0]);
 		}
 		finally {
-			DBFUtils.close(inputStream);			
+			DBFUtils.close(reader);			
 		}
 	}
 }

@@ -1,12 +1,12 @@
 package com.linuxense.javadbf;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,10 +76,9 @@ public class EncodingTest {
 			"Ceuta",
 			"Melilla"
 		};
-		InputStream inputStream = null;
+		DBFReader reader = null;
 		try {
-			inputStream = new FileInputStream("src/test/resources/provincias_es.dbf");
-			DBFReader reader = new DBFReader(inputStream);
+			reader = new DBFReader(new FileInputStream("src/test/resources/provincias_es.dbf"));
 
 			int numberOfFields = reader.getFieldCount();
 			Assert.assertEquals(5, numberOfFields);
@@ -98,16 +97,17 @@ public class EncodingTest {
 			Assert.assertEquals(52, countedRows);
 		}
 		finally {
-			if (inputStream != null) {
-				inputStream.close();
-			}
+			DBFUtils.close(reader);
 		}
 	}
 	
 	@Test
 	public void testUtf8 () throws DBFException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		try (DBFWriter wr = new DBFWriter()) {
+		DBFReader reader = null;
+		DBFWriter wr = null; 
+		try  {
+			wr =  new DBFWriter();
 			wr.setCharset(StandardCharsets.UTF_8);
 			DBFField fields[] = new DBFField[1];
 	
@@ -126,7 +126,7 @@ public class EncodingTest {
 			ByteArrayInputStream bais = new ByteArrayInputStream(data);
 			
 			List<String> names = new ArrayList<String>();
-			DBFReader reader = new DBFReader(bais);
+			reader = new DBFReader(bais);
 			reader.setCharset(StandardCharsets.UTF_8);
 			Object[] rowObject;
 			while ((rowObject = reader.nextRecord()) != null) {
@@ -138,6 +138,11 @@ public class EncodingTest {
 			assertNotNull(names.get(1));
 			assertEquals("Julián", names.get(1).trim());
 		}
+		finally {
+			DBFUtils.close(reader);
+			DBFUtils.close(wr);
+		}
+		
 		
 	}
 	

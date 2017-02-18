@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.linuxense.javadbf.testutils.AssertUtils;
+import com.linuxense.javadbf.testutils.DbfToTxtTest;
 
 public class FixtureDBaseF5Test {
 
@@ -89,14 +90,7 @@ public class FixtureDBaseF5Test {
 			AssertUtils.assertColumnDefinition(fieldArray[i++], "GHD", DBFDataType.fromCode((byte) 'C'), 15, 0);
 
 
-			Object[] row = null;
-
-			while ((row = reader.nextRecord()) != null) {
-				for (Object o : row) {
-					System.out.print(o + ";");
-				}
-				System.out.println("");
-			}
+			DbfToTxtTest.export(reader, File.createTempFile("javadbf-test", ".txt"));
 
 		} finally {
 			if (inputStream != null) {

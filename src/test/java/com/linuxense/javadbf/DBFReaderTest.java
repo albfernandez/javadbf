@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNull;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -52,10 +51,9 @@ public class DBFReaderTest {
 	@Test
 	public void testReadReservedFields() throws IOException {
 		File file = new File("src/test/resources/books.dbf");
-		InputStream is = null;
+		DBFReader reader = null;
 		try {
-			is = new FileInputStream(file);
-			DBFReader reader = new DBFReader(is);
+			reader = new DBFReader(new FileInputStream(file));
 			DBFHeader header = reader.getHeader();
 			Assert.assertEquals("TITLE", header.fieldArray[1].getName());
 			Assert.assertEquals(DBFDataType.CHARACTER, header.fieldArray[1].getType());
@@ -74,18 +72,15 @@ public class DBFReaderTest {
 			
 		}
 		finally {
-			if (is != null) {
-				is.close();
-			}
+			DBFUtils.close(reader);
 		}
 	}
 	@Test
 	public void testToString () throws IOException {
 		File file = new File("src/test/resources/books.dbf");
-		InputStream is = null;
+		DBFReader reader = null;
 		try {
-			is = new FileInputStream(file);
-			DBFReader reader = new DBFReader(is);
+			reader = new DBFReader(new FileInputStream(file));
 		
 			String expected = "1996/7/25\n" +
 				"Total records: 10\n" + 
@@ -105,9 +100,7 @@ public class DBFReaderTest {
 			Assert.assertEquals(expected, reader.toString());
 		}
 		finally {
-			if (is != null) {
-				is.close();
-			}
+			DBFUtils.close(reader);
 		}
 	}
 	
@@ -115,14 +108,13 @@ public class DBFReaderTest {
 	
 	@Test(expected=DBFException.class)
 	public void testFailStream() throws DBFException, IOException{
-		InputStream is = null;
+		DBFReader reader = null;
 		try {
-			is = new FailInputStream();
-			DBFReader reader = new DBFReader(is);
+			reader = new DBFReader(new FailInputStream());
 			assertNull(reader);
 		}
 		finally {
-			is.close();
+			DBFUtils.close(reader);
 		}
 	}
 

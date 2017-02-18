@@ -1,23 +1,21 @@
 package com.linuxense.javadbf;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.linuxense.javadbf.testutils.AssertUtils;
+import com.linuxense.javadbf.testutils.DbfToTxtTest;
 
 public class FixtureDBase03Test {
 	@Test
 	public void test8b() throws Exception {
 		File file = new File("src/test/resources/fixtures/dbase_03.dbf");
-		InputStream inputStream = null;
+		DBFReader reader = null;
 		try {
-			inputStream = new BufferedInputStream(new FileInputStream(file));
-			DBFReader reader = new DBFReader(inputStream);
+			reader = new DBFReader(new FileInputStream(file));
 			
 			DBFHeader header = reader.getHeader();
 			Assert.assertNotNull(header);
@@ -58,24 +56,11 @@ public class FixtureDBase03Test {
 			AssertUtils.assertColumnDefinition(fieldArray[i++], "Northing"  , DBFDataType.fromCode((byte) 'N'), 16, 3);      
 			AssertUtils.assertColumnDefinition(fieldArray[i++], "Easting"   , DBFDataType.fromCode((byte) 'N'), 16, 3);      
 			AssertUtils.assertColumnDefinition(fieldArray[i++], "Point_ID"  , DBFDataType.fromCode((byte) 'N'), 9 , 0);      
-			          
-			Object[] row = null;
-		
-			while (( row = reader.nextRecord()) != null) {
-				for (Object o : row) {
-					System.out.print(o + ";");
-				}
-				System.out.println("");
-			}
 			
-
-
-
+			DbfToTxtTest.export(reader, File.createTempFile("javadbf-test", ".txt"));
 			
 		} finally {
-			if (inputStream != null) {
-				inputStream.close();
-			}
+			DBFUtils.close(reader);
 		}
 
 	}

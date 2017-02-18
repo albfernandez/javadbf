@@ -5,7 +5,6 @@ import org.junit.Assert;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -20,10 +19,9 @@ public class TimestampTest {
 
     @Test
     public void testTimestampRead () throws IOException {
-        InputStream inputStream = null;
+    	DBFReader reader = null;
         try {
-            inputStream = new FileInputStream("src/test/resources/bdays.dbf");
-            DBFReader reader = new DBFReader(inputStream);
+            reader = new DBFReader(new FileInputStream("src/test/resources/bdays.dbf"));
 
             int numberOfFields = reader.getFieldCount();
             Assert.assertEquals(3, numberOfFields);
@@ -52,9 +50,7 @@ public class TimestampTest {
             Assert.assertEquals(1, countedRows);
         }
         finally {
-            if (inputStream != null) {
-                inputStream.close();
-            }
+        	DBFUtils.close(reader);
         }
     }
 }

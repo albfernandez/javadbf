@@ -28,12 +28,8 @@ public class DBFWriterRandomAccesTest {
 	        writer.write(fos);
 		}
 		finally {
-			if (writer != null) {
-				writer.close();
-			}
-			if (fos != null) {
-				fos.close();
-			}
+			DBFUtils.close(writer);
+			DBFUtils.close(fos);
 			
 		}
         

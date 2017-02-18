@@ -1,23 +1,21 @@
 package com.linuxense.javadbf;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.linuxense.javadbf.testutils.AssertUtils;
+import com.linuxense.javadbf.testutils.DbfToTxtTest;
 
 public class BinaryImageTest {
 	@Test
 	public void testBinaryImage() throws Exception {
 		File file = new File("src/test/resources/inventory.dbf");
-		InputStream inputStream = null;
+		DBFReader reader = null;
 		try {
-			inputStream = new BufferedInputStream(new FileInputStream(file));
-			DBFReader reader = new DBFReader(inputStream);
+			reader = new DBFReader(new FileInputStream(file));
 			reader.setMemoFile(new File("src/test/resources/inventory.dbt"));
 
 			DBFHeader header = reader.getHeader();
@@ -44,29 +42,11 @@ public class BinaryImageTest {
 			Assert.assertEquals(889192576, ((Number) row[3]).intValue());
 			
 			
-//			16777344;16777344;Dartboard;889192576;null;;
-			while ((row = reader.nextRecord()) != null) {
-				for (Object o : row) {
-					System.out.print(o + ";");
-				}
-				if (row[4] != null) {
-					System.out.print(((byte[])row[4]).length);
-				}
-				System.out.println("");
-				
-			}
-			/*
-			Object[] row = null;
+			DbfToTxtTest.export(reader, File.createTempFile("javadbf-test", ".txt"));
 
-			while ((row = reader.nextRecord()) != null) {
-				for (Object o : row) {
-					System.out.print(o + ";");
-				}
-				System.out.println("");
-			}*/
 
 		} finally {
-			DBFUtils.close(inputStream);
+			DBFUtils.close(reader);
 		}
 	}
 }

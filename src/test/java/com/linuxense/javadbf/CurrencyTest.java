@@ -2,7 +2,6 @@ package com.linuxense.javadbf;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 
 import org.junit.Assert;
@@ -30,10 +29,9 @@ public class CurrencyTest {
 			new BigDecimal("7.5900")
 		};	
 		
-		InputStream inputStream = null;
+		DBFReader reader = null;
 		try {
-			inputStream = new FileInputStream("src/test/resources/books.dbf");
-			DBFReader reader = new DBFReader(inputStream);
+			reader = new DBFReader(new FileInputStream("src/test/resources/books.dbf"));
 
 			int numberOfFields = reader.getFieldCount();
 			Assert.assertEquals(11, numberOfFields);
@@ -52,9 +50,7 @@ public class CurrencyTest {
 			Assert.assertEquals(10, countedRows);
 		}
 		finally {
-			if (inputStream != null) {
-				inputStream.close();
-			}
+			DBFUtils.close(reader);
 		}
 
 	}

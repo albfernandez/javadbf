@@ -2,7 +2,6 @@ package com.linuxense.javadbf;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 
 import org.junit.Assert;
@@ -88,10 +87,9 @@ public class EncodingHeadersTest {
 			"抚育伐、生长伐；林口018K15；     标准：商品林、一般用材林、                                                             "
 		};
 		
-		InputStream inputStream = null;
+		DBFReader reader= null;
 		try {
-			inputStream = new FileInputStream("src/test/resources/gbk.dbf");
-			DBFReader reader = new DBFReader(inputStream, charset);
+			reader = new DBFReader(new FileInputStream("src/test/resources/gbk.dbf"), charset);
 			reader.setTrimRightSpaces(false);
 			int numberOfFields = reader.getFieldCount();
 			Assert.assertEquals(3, numberOfFields);
@@ -115,9 +113,7 @@ public class EncodingHeadersTest {
 			Assert.assertEquals(28, countedRows);
 			
 		} finally {
-			if (inputStream != null) {
-				inputStream.close();
-			}
+			DBFUtils.close(reader);
 		}
 	}
 }
