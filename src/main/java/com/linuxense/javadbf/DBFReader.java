@@ -145,6 +145,8 @@ public class DBFReader extends DBFBase implements Closeable {
 			int t_dataStartIndex = this.header.headerLength - (tableSize + (fieldSize * this.header.fieldArray.length)) - 1;
 			skip(t_dataStartIndex);
 		} catch (IOException e) {
+			DBFUtils.close(dataInputStream);
+			DBFUtils.close(in);
 			throw new DBFException(e.getMessage(), e);
 		}
 	}
