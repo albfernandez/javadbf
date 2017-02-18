@@ -56,7 +56,7 @@ public final class DBFUtils {
 			}
 			t_float = DBFUtils.removeSpaces(t_float);
 			if (t_float.length > 0 && DBFUtils.isPureAscii(t_float) && !DBFUtils.contains(t_float, (byte) '?') && !DBFUtils.contains(t_float, (byte) '*')) {
-				return new BigDecimal(new String(t_float, StandardCharsets.US_ASCII));
+				return new BigDecimal(new String(t_float, StandardCharsets.US_ASCII).replace(',', '.'));
 			} else {
 				return null;
 			}
