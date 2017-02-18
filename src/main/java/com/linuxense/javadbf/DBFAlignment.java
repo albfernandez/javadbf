@@ -28,7 +28,7 @@ public enum DBFAlignment {
 	 */
 	LEFT,
 	/**
-	 * Datga is aligned to the right(so padding data is preppended to the string)
+	 * Data is aligned to the right(so padding data is preppended to the string)
 	 */
 	RIGHT;
 }
