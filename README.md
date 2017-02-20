@@ -58,7 +58,7 @@ If you are using Maven, you can add JavaDBF to your project using this dependenc
 	<dependency>
 		<groupId>com.github.albfernandez</groupId>
 		<artifactId>javadbf</artifactId>
-		<version>1.0.0</version>
+		<version>1.1.0</version>
 	</dependency>
 ```
 
@@ -375,7 +375,7 @@ public class DBFWriterTest {
     // ...
 
     DBFWriter writer = new DBFWriter(new File("/path/to/an/existing/dbfile")); 
-    // this DBFWriter object is now in Syc Mode   
+    // this DBFWriter object is now in Syc Mode
     
     // add the data (no setFields, because it's an existing file)
     writer.addRecord(rowData);
@@ -396,7 +396,7 @@ Clone the repository or download de tar file from releases page on github, run t
     cd javadbf
     mvn clean package
 
-The result file is ``target/javadbf-1.0.0.jar``
+The result file is ``target/javadbf-1.1.0.jar``
 
 
 
