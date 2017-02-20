@@ -200,28 +200,15 @@ public final class DBFUtils {
 	}
 
 	/**
-	 * Format a number to write to a dbf file
-	 * @param num number to write
-	 * @param charset charset to use
-	 * @param fieldLength 
-	 * @param sizeDecimalPart
-	 * @return bytes to write to the dbf file
-	 */
-
-	public static byte[] doubleFormating(Number num, Charset charset, int fieldLength, int sizeDecimalPart) {
-		return doubleFormating(num.doubleValue(), charset, fieldLength, sizeDecimalPart);
-	}
-
-	/**
 	 * Format a double number to write to a dbf file
-	 * @param doubleNum 
+	 * @param num
 	 * @param charset
 	 * @param fieldLength
 	 * @param sizeDecimalPart
 	 * @return bytes to write to the dbf file
 	 */
 
-	public static byte[] doubleFormating(Double doubleNum, Charset charset, int fieldLength, int sizeDecimalPart) {
+	public static byte[] doubleFormating(Number num, Charset charset, int fieldLength, int sizeDecimalPart) {
 		int sizeWholePart = fieldLength - (sizeDecimalPart > 0 ? (sizeDecimalPart + 1) : 0);
 
 		StringBuilder format = new StringBuilder(fieldLength);
@@ -237,7 +224,7 @@ public final class DBFUtils {
 
 		DecimalFormat df = (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
 		df.applyPattern(format.toString());
-		return textPadding(df.format(doubleNum.doubleValue()).toString(), charset, fieldLength, DBFAlignment.RIGHT,
+		return textPadding(df.format(num).toString(), charset, fieldLength, DBFAlignment.RIGHT,
 				(byte) ' ');
 	}
 
