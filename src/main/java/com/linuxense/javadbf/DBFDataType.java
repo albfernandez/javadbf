@@ -26,71 +26,76 @@ public enum DBFDataType {
 	/**
 	 * Default unknown type
 	 */
-	UNKNOWN         ((byte) 0),
+	UNKNOWN          ((byte) 0),
 	/**
 	 * Character data, padded with whitespaces.
 	 */
-	CHARACTER       ('C', 1, 254, 0, true), 
+	CHARACTER        ('C', 1, 254, 0, true), 
 	/**
 	 * Character data, not padded
 	 */
-	VARCHAR         ('V', 1, 254, 0, false),
+	VARCHAR          ('V', 1, 254, 0, false),
 	/**
 	 * Date
 	 */
-	DATE            ('D', 8, 8, 8, true), 
+	DATE             ('D', 8, 8, 8, true), 
 	/**
 	 * Numeric data
 	 */
-	FLOATING_POINT  ('F', 1, 20, 0, true),
+	FLOATING_POINT   ('F', 1, 20, 0, true),
 	/**
 	 * Double  value
 	 */
-	DOUBLE ('O', 8, 8, 0, false),
+	DOUBLE           ('O', 8, 8, 0, false),
 	/**
 	 * To store boolean values.
 	 */
-	LOGICAL         ('L', 1, 1, 1, true),
+	LOGICAL          ('L', 1, 1, 1, true),
 	/**
 	 * Memo (data is stored in dbt file)
 	 */
-	MEMO            ('M'),
+	MEMO             ('M'),
 	/**
 	 * Binary (data is stored in dbt file) 
 	 */
-	BINARY         ('B'),
+	BINARY           ('B'),
 	/**
 	 * OLE Objects (data is stored in dbt file)
 	 */
-	GENERAL_OLE ('G'),
+	GENERAL_OLE      ('G'),
 	/**
 	 * Picture (FoxPro, data is sotred in dbt file) 
 	 */
-	PICTURE ('P'),
+	PICTURE          ('P'),
 	/**
 	 * Numeric data
 	 */
-	NUMERIC         ('N', 1, 18, 0, true),
+	NUMERIC          ('N', 1, 18, 0, true),
 	/**
 	 * Numeric long (FoxPro)
 	 */
-	LONG            ('I', 4, 4, 4, false),
+	LONG             ('I', 4, 4, 4, false),
 	/**
 	 * Autoincrement (same as long, dbase 7)
 	 */
-	AUTOINCREMENT ('+', 4, 4, 4, false),
+	AUTOINCREMENT    ('+', 4, 4, 4, false),
 	/**
 	 * Currency type (FoxPro)
 	 */
-	CURRENCY        ('Y', 8, 8, 8, false),
+	CURRENCY         ('Y', 8, 8, 8, false),
 	/**
 	 * Timestamp type (FoxPro)
 	 */
-	TIMESTAMP 		('T', 8, 8, 8, false),
+	TIMESTAMP 		 ('T', 8, 8, 8, false),
 	/**
 	 * Timestamp type (dbase level 7)
 	 */
-	TIMESTAMP_DBASE7 ('@', 8, 8, 8, false);
+	TIMESTAMP_DBASE7 ('@', 8, 8, 8, false),
+	/**
+	 * Flags
+	 */
+	NULL_FLAGS            ('0')
+	;
 
 	
 	private byte code;

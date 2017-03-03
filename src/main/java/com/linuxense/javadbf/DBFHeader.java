@@ -58,6 +58,7 @@ public class DBFHeader {
 	private byte languageDriver;         /* 29 */
 	private short reserv4;               /* 30-31 */
 	DBFField []fieldArray;       /* each 32 bytes */	
+	DBFField[] userFieldArray; 
 	private byte terminator1;            /* n+1 */
 	
 	private Charset detectedCharset;
@@ -117,19 +118,29 @@ public class DBFHeader {
 			this.usedCharset = StandardCharsets.ISO_8859_1;
 		}
 		
-		DBFField field = null; /* 32 each */ 
-		if (!isDB7()) {
-			while ((field = DBFField.createField(dataInput,this.usedCharset))!= null) {
-				v_fields.add(field);
-			}		
-		}
-		else {
+		DBFField field = null; 
+		if (isDB7()) {
 			/* 48 each */
 			while ((field = DBFField.createFieldDB7(dataInput,this.usedCharset))!= null) {
 				v_fields.add(field);
 			}
 		}
-		this.fieldArray = v_fields.toArray(new DBFField[v_fields.size()]);		
+		else {
+			/* 32 each */ 
+			while ((field = DBFField.createField(dataInput,this.usedCharset))!= null) {
+				v_fields.add(field);
+			}	
+
+		}
+		this.fieldArray = v_fields.toArray(new DBFField[v_fields.size()]);
+		List<DBFField> userFields = new ArrayList<>();
+		for (DBFField field1: this.fieldArray) {
+			if (!field1.isSystem()) {
+				userFields.add(field1);
+			}
+		}
+		this.userFieldArray = userFields.toArray(new DBFField[userFields.size()]);
+		
 	}
 	int getTableHeaderSize() {
 		if (isDB7()) {

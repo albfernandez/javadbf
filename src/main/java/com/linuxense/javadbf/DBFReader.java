@@ -32,9 +32,11 @@ import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -225,14 +227,14 @@ public class DBFReader extends DBFBase implements Closeable {
 	 * @param index Index of the field. Index of the first field is zero.
 	 */
 	public DBFField getField(int index) {
-		return this.header.fieldArray[index];
+		return new DBFField(this.header.fieldArray[index]);
 	}
 
 	/**
 	 * Returns the number of field in the DBF.
 	 */
 	public int getFieldCount() {
-		return this.header.fieldArray.length;
+		return this.header.userFieldArray.length;
 	}
 
 	/**
@@ -243,7 +245,7 @@ public class DBFReader extends DBFBase implements Closeable {
 	 */
 	public Object[] nextRecord() {
 
-		Object recordObjects[] = new Object[this.header.fieldArray.length];
+		List<Object> recordObjects = new ArrayList<>(this.getFieldCount());
 		try {
 			boolean isDeleted = false;
 			do {
@@ -259,107 +261,112 @@ public class DBFReader extends DBFBase implements Closeable {
 
 			for (int i = 0; i < this.header.fieldArray.length; i++) {
 				DBFField field = this.header.fieldArray[i];
-				switch (field.getType()) {
-				case VARCHAR:
-				case CHARACTER:
-					byte b_array[] = new byte[field.getLength()];
-					this.dataInputStream.read(b_array);
-					if (this.trimRightSpaces || field.getType() == DBFDataType.VARCHAR) {
-						recordObjects[i] = new String(DBFUtils.trimRightSpaces(b_array), getCharset());
+				Object o = getFieldValue(field);
+				if (field.isSystem()) {
+					if (field.getType() == DBFDataType.NULL_FLAGS) {
+						// TODO Use nullflags if exists
 					}
-					else {
-						recordObjects[i] = new String(b_array, getCharset());
-					}
-					break;
-
-				case DATE:
-
-					byte t_byte_year[] = new byte[4];
-					this.dataInputStream.read(t_byte_year);
-
-					byte t_byte_month[] = new byte[2];
-					this.dataInputStream.read(t_byte_month);
-
-					byte t_byte_day[] = new byte[2];
-					this.dataInputStream.read(t_byte_day);
-
-					try {
-						GregorianCalendar calendar = new GregorianCalendar(Integer.parseInt(new String(t_byte_year, StandardCharsets.US_ASCII)),
-								Integer.parseInt(new String(t_byte_month, StandardCharsets.US_ASCII)) - 1,
-								Integer.parseInt(new String(t_byte_day, StandardCharsets.US_ASCII)));
-						recordObjects[i] = calendar.getTime();
-					} catch (NumberFormatException e) {
-						// this field may be empty or may have improper value set
-						recordObjects[i] = null;
-					}
-
-					break;
-
-				case FLOATING_POINT:
-				case NUMERIC:
-					recordObjects[i] = DBFUtils.readNumericStoredAsText(this.dataInputStream, field.getLength());
-					break;
-
-				case LOGICAL:
-					byte t_logical = this.dataInputStream.readByte();
-					recordObjects[i] = DBFUtils.toBoolean(t_logical);
-					break;
-				case LONG:
-				case AUTOINCREMENT:
-					int data = DBFUtils.readLittleEndianInt(this.dataInputStream);
-					recordObjects[i] = data;
-					break;
-				case CURRENCY:
-					int c_data = DBFUtils.readLittleEndianInt(this.dataInputStream);
-					String s_data = String.format("%05d", c_data);
-					String x1 = s_data.substring(0, s_data.length() - 4);
-					String x2 = s_data.substring(s_data.length() - 4);
-					recordObjects[i] = new BigDecimal(x1 + "." + x2);
-					skip(field.getLength() - 4);
-					break;
-				case TIMESTAMP:
-				case TIMESTAMP_DBASE7:
-					int days = DBFUtils.readLittleEndianInt(this.dataInputStream);
-					int time = DBFUtils.readLittleEndianInt(this.dataInputStream);
-
-					if(days == 0 && time == 0) {
-						recordObjects[i] = null;
-					}
-					else {
-						Calendar calendar = new GregorianCalendar();
-						calendar.setTimeInMillis(days * MILLISECS_PER_DAY + TIME_MILLIS_1_1_4713_BC + time);
-						calendar.add(Calendar.MILLISECOND, -TimeZone.getDefault().getOffset(calendar.getTimeInMillis()));
-						recordObjects[i] = calendar.getTime();
-					}
-					break;
-				case MEMO:					
-				case GENERAL_OLE:
-				case PICTURE:
-					recordObjects[i] = readMemoField(field);
-					break;
-				case BINARY:
-					if (field.getLength() == 8) {
-						recordObjects[i] = readDoubleField(field);
-					}
-					else {
-						recordObjects[i] = readMemoField(field);
-					}
-					break;
-				case DOUBLE:
-					recordObjects[i] = readDoubleField(field);
-					break;
-				default:
-					skip(field.getLength());
-					recordObjects[i] = null;
 				}
-			}
+				else {
+					recordObjects.add(o);
+				}
+			}			
 		} catch (EOFException e) {
 			return null;
 		} catch (IOException e) {
 			throw new DBFException(e.getMessage(), e);
 		}
 
-		return recordObjects;
+		return recordObjects.toArray();
+	}
+
+	private Object getFieldValue(DBFField field) throws IOException {
+		switch (field.getType()) {
+		case VARCHAR:
+		case CHARACTER:
+			byte b_array[] = new byte[field.getLength()];
+			this.dataInputStream.read(b_array);
+			if (this.trimRightSpaces || field.getType() == DBFDataType.VARCHAR) {
+				return new String(DBFUtils.trimRightSpaces(b_array), getCharset());
+			}
+			else {
+				return new String(b_array, getCharset());
+			}
+
+		case DATE:
+
+			byte t_byte_year[] = new byte[4];
+			this.dataInputStream.read(t_byte_year);
+
+			byte t_byte_month[] = new byte[2];
+			this.dataInputStream.read(t_byte_month);
+
+			byte t_byte_day[] = new byte[2];
+			this.dataInputStream.read(t_byte_day);
+
+			try {
+				GregorianCalendar calendar = new GregorianCalendar(Integer.parseInt(new String(t_byte_year, StandardCharsets.US_ASCII)),
+						Integer.parseInt(new String(t_byte_month, StandardCharsets.US_ASCII)) - 1,
+						Integer.parseInt(new String(t_byte_day, StandardCharsets.US_ASCII)));
+				return calendar.getTime();
+			} catch (NumberFormatException e) {
+				// this field may be empty or may have improper value set
+				return null;
+			}
+
+
+		case FLOATING_POINT:
+		case NUMERIC:
+			return DBFUtils.readNumericStoredAsText(this.dataInputStream, field.getLength());
+
+		case LOGICAL:
+			byte t_logical = this.dataInputStream.readByte();
+			return DBFUtils.toBoolean(t_logical);
+		case LONG:
+		case AUTOINCREMENT:
+			int data = DBFUtils.readLittleEndianInt(this.dataInputStream);
+			return data;
+		case CURRENCY:
+			int c_data = DBFUtils.readLittleEndianInt(this.dataInputStream);
+			String s_data = String.format("%05d", c_data);
+			String x1 = s_data.substring(0, s_data.length() - 4);
+			String x2 = s_data.substring(s_data.length() - 4);
+			
+			skip(field.getLength() - 4);
+			return new BigDecimal(x1 + "." + x2);
+		case TIMESTAMP:
+		case TIMESTAMP_DBASE7:
+			int days = DBFUtils.readLittleEndianInt(this.dataInputStream);
+			int time = DBFUtils.readLittleEndianInt(this.dataInputStream);
+
+			if(days == 0 && time == 0) {
+				return null;
+			}
+			else {
+				Calendar calendar = new GregorianCalendar();
+				calendar.setTimeInMillis(days * MILLISECS_PER_DAY + TIME_MILLIS_1_1_4713_BC + time);
+				calendar.add(Calendar.MILLISECOND, -TimeZone.getDefault().getOffset(calendar.getTimeInMillis()));
+				return calendar.getTime();
+			}
+		case MEMO:					
+		case GENERAL_OLE:
+		case PICTURE:
+			return readMemoField(field);
+		case BINARY:
+			if (field.getLength() == 8) {
+				return  readDoubleField(field);
+			}
+			else {
+				return readMemoField(field);
+			}
+		case DOUBLE:
+			return readDoubleField(field);
+		case NULL_FLAGS:
+			return dataInputStream.readByte();
+		default:
+			skip(field.getLength());
+			return null;
+		}
 	}
 
 	private Object readDoubleField(DBFField field) throws IOException {

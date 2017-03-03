@@ -88,11 +88,27 @@ public class DBFField {
 	private byte setFieldsFlag; /* 23 */
 	private byte[] reserv4 = new byte[7]; /* 24-30 */
 	private byte indexFieldFlag; /* 31 */
-
 	private String name;
 
 	public DBFField() {
 		super();
+	}
+	
+	// For cloning
+	DBFField(DBFField origin) {
+		super();
+		this.type = origin.type;
+		this.reserv1 = origin.reserv1;
+		this.length = origin.length;
+		this.decimalCount = origin.decimalCount;
+		this.reserv2 = origin.reserv2;
+		this.workAreaId = origin.workAreaId;
+		this.reserv3 = origin.reserv3;
+		this.setFieldsFlag = origin.setFieldsFlag;
+		this.reserv4 = new byte[7];
+		System.arraycopy(origin.reserv4, 0, this.reserv4, 0, 7);
+		this.indexFieldFlag = origin.indexFieldFlag;
+		this.name = origin.name;
 	}
 	
 	public DBFField(String name, DBFDataType type) {
@@ -161,7 +177,7 @@ public class DBFField {
 		field.decimalCount = in.readByte(); /* 17 */
 		field.reserv2 = DBFUtils.readLittleEndianShort(in); /* 18-19 */
 		field.workAreaId = in.readByte(); /* 20 */
-		field.reserv2 = DBFUtils.readLittleEndianShort(in); /* 21-22 */
+		field.reserv3 = DBFUtils.readLittleEndianShort(in); /* 21-22 */
 		field.setFieldsFlag = in.readByte(); /* 23 */
 		in.readFully(field.reserv4); /* 24-30 */
 		field.indexFieldFlag = in.readByte(); /* 31 */
@@ -202,7 +218,7 @@ public class DBFField {
 		field.decimalCount = in.readByte(); /* 34 */
 		field.reserv2 = DBFUtils.readLittleEndianShort(in); /* 35-36 */
 		field.workAreaId = in.readByte(); /* 37 */
-		field.reserv2 = DBFUtils.readLittleEndianShort(in); /* 38-39 */
+		field.reserv3 = DBFUtils.readLittleEndianShort(in); /* 38-39 */
 		in.readInt(); // 40-43 nextAuto
 		in.readInt(); // 44-47 reserv
 		
@@ -395,6 +411,16 @@ public class DBFField {
 		this.decimalCount = (byte) size;
 	}
 	
+	public boolean isSystem() {
+		return (this.reserv2 & 1) != 0;
+	}
+	public boolean isNullable() {
+		return (this.reserv2 & 2) != 0;
+	}
+	public boolean isBinary() {
+		return (this.reserv2 & 4) != 0;
+	}
+	
 	
 	
 	/**
@@ -414,11 +440,11 @@ public class DBFField {
 
 	@param length of the field as int.
 	@deprecated use {@link #setLength(int)}
-*/
-@Deprecated
-public void setFieldLength(int length) {
-	setLength(length);
-}
+	 */
+	@Deprecated
+	public void setFieldLength(int length) {
+		setLength(length);
+	}
 
 
 	/**
