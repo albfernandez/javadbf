@@ -45,8 +45,9 @@ public class JavaDBFWriterTest {
 		fields[2].setType(DBFDataType.NUMERIC);
 		fields[2].setLength(12);
 		fields[2].setDecimalCount(2);
-
-		DBFWriter writer = new DBFWriter();
+		
+		// Create writer
+		DBFWriter writer = new DBFWriter(new FileOutputStream(args[0]));
 		writer.setFields(fields);
 
 		// now populate DBFWriter
@@ -73,9 +74,6 @@ public class JavaDBFWriterTest {
 		writer.addRecord(rowData);
 
 		// write to file
-		FileOutputStream fos = new FileOutputStream(args[0]);
-		writer.write(fos);
-		fos.close();
 		writer.close();
 	}
 }

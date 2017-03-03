@@ -58,22 +58,49 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	private int recordCount = 0;
 	//Open and append records to an existing DBF
 	private RandomAccessFile raf = null;
+	private OutputStream outputStream = null;
 
 	/**
 	 * Creates an empty DBFWriter.
+	 * @deprecated use {@link #DBFWriter(OutputStream)}
 	 */
+	@Deprecated
 	public DBFWriter() {
 		this(DEFAULT_CHARSET);
 	}
 	/**
 	 * Creates an empty DBFWriter.
 	 * @param charset Charset used to encode field names and field contents
+	 * @deprecated use {@link #DBFWriter(OutputStream, Charset)}
 	 */
+	@Deprecated
 	public DBFWriter(Charset charset) {
 		super();
 		setCharset(charset);
 		this.header = new DBFHeader();
 		this.header.setUsedCharset(charset);
+	}
+	
+	/**
+	 * Creates a DBFWriter wich write data to the given OutputStream.
+	 * Uses default charset iso-8859-1
+	 * @param out stream to write the data to.
+	 */
+	
+	public DBFWriter(OutputStream out) {
+		this(out, DEFAULT_CHARSET);
+	}
+	/**
+	 * Creates a DBFWriter wich write data to the given OutputStream.
+	 * @param out stream to write the data to.
+	 * @param charset Encoding to use in resulting dbf file
+	 */
+	public DBFWriter(OutputStream out, Charset charset) {
+		super();
+		setCharset(charset);
+		this.header = new DBFHeader();
+		this.header.setUsedCharset(charset);
+		this.outputStream = out;
 	}
 	
 	/**
@@ -155,7 +182,10 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 				throw new DBFException("Field " + i + " is null");
 			}
 		}
-		this.header.fieldArray = fields;
+		this.header.fieldArray = new DBFField[fields.length];
+		for (int i = 0; i < fields.length; i++) {
+			this.header.fieldArray[i] = new DBFField(fields[i]);
+		}
 		try {
 			if (this.raf != null && this.raf.length() == 0) {
 				// this is a new/non-existent file. So write header before proceeding
@@ -233,24 +263,23 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 		}
 	}
 
-	/**
-	 * Writes the set data to the OutputStream.
-	 */
-	public void write(OutputStream out) {
+
+	
+	private void writeToStream(OutputStream out) {
 		try {
-			if (this.raf == null) {
-				DataOutputStream outStream = new DataOutputStream(out);
-				this.header.numberOfRecords = this.v_records.size();
-				this.header.write(outStream);
 
-				/* Now write all the records */
-				for (Object[] record : this.v_records) {
-					writeRecord(outStream, record);
-				}
+			DataOutputStream outStream = new DataOutputStream(out);
+			this.header.numberOfRecords = this.v_records.size();
+			this.header.write(outStream);
 
-				outStream.write(END_OF_DATA);
-				outStream.flush();
+			/* Now write all the records */
+			for (Object[] record : this.v_records) {
+				writeRecord(outStream, record);
 			}
+
+			outStream.write(END_OF_DATA);
+			outStream.flush();
+
 		} catch (IOException e) {
 			throw new DBFException(e.getMessage(), e);
 		}
@@ -271,12 +300,23 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 				this.header.write(this.raf);
 				this.raf.seek(this.raf.length());
 				this.raf.writeByte(END_OF_DATA);
-				this.raf.close();
 			}
 			catch (IOException e) {
 				throw new DBFException(e.getMessage(), e);
 			}
+			finally {
+				DBFUtils.close(this.raf);
+			}
 		}
+		else if (this.outputStream != null) {
+			try {
+				writeToStream(this.outputStream);
+			}
+			finally {				
+				DBFUtils.close(this.outputStream);
+			}
+		}
+		
 	}
 	
 
@@ -341,6 +381,19 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 		}
 	}
 	
+	
+	
+	/**
+	 * Writes the set data to the OutputStream.
+	 * @param out the output stream
+	 * @deprecated use {@link #DBFWriter(OutputStream)} constructor and call close
+	 */
+	@Deprecated
+	public void write(OutputStream out) {
+		if (this.raf == null) {
+			writeToStream(out);
+		}
+	}
 	
 	/**
 	 * In sync mode, write the header and close the file
