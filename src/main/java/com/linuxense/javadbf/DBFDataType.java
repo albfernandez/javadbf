@@ -135,6 +135,14 @@ public enum DBFDataType {
 	}
 	
 	/**
+	 * Gets the code as stored in the dbf file as character for display purposes.
+	 * @return the code for this type
+	 */	
+	public char getCharCode() {
+		return (char) this.code;
+	}
+	
+	/**
 	 * Gets the minimum size for this type
 	 * @return minimum size for this type
 	 */

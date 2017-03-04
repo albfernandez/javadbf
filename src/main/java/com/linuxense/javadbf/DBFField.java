@@ -421,6 +421,18 @@ public class DBFField {
 		return (this.reserv2 & 4) != 0;
 	}
 	
+	public String toString() {
+		return 
+			this.name+"|" + this.type + " (" + this.type.getCharCode() + ")" +
+			"\nLength: " + this.length +
+			"\nDecimalCount:" + this.decimalCount + 
+			"\nSystem:" + isSystem() + 
+			"\nNullable:" + isNullable() + 
+			"\nBinary:" + isBinary() +
+			"\nIndex:" + this.indexFieldFlag;
+		
+	}
+	
 	
 	
 	/**
