@@ -80,6 +80,8 @@ While reading, those types are interpretted as appropriate Java types.
 Following table shows the mapping scheme.
 
 
+##Read and write supported types
+
 | XBase Type  | XBase Symbol | Java Type used in JavaDBF |
 |----------   | ------------ | ---------------------------
 |Character    | C            | java.lang.String          |
@@ -88,7 +90,7 @@ Following table shows the mapping scheme.
 |Logical      | L            | java.lang.Boolean         |
 |Date         | D            | java.util.Date            |
 
-FoxPro and dbase7 types (Read Only)
+##Read supported types
 
 | FoxPro Type           | Symbol | Java Type used in JavaDBF |
 | --------------------- | ------ | ------------------------- |  
@@ -99,12 +101,13 @@ FoxPro and dbase7 types (Read Only)
 | AutoIncrement(dbase7) | +      | java.lang.Integer         |
 | Memo                  | M      | java.lang.String or byte[]|
 | Binary                | B      | byte[] or java.lang.Double|
+| Blob                  | W      | byte[]                    |
 | General (OLE Objects) | G      | byte[]                    |
 | Picture (FoxPro)      | P      | byte[]                    |
 | Varchar               | V      | java.lang.String          |
 | Double (dbase7)       | O      | java.lang.Double          |
 
-Unsupported types
+##Unsupported types
 
 | Type                  | Symbol |
 | --------------------- | ------ |

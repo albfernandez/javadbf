@@ -351,6 +351,7 @@ public class DBFReader extends DBFBase implements Closeable {
 		case MEMO:					
 		case GENERAL_OLE:
 		case PICTURE:
+		case BLOB:
 			return readMemoField(field);
 		case BINARY:
 			if (field.getLength() == 8) {

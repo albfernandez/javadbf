@@ -60,6 +60,10 @@ public enum DBFDataType {
 	 */
 	BINARY           ('B'),
 	/**
+	 * Blob (VFP 9) (data is stored in fpt file)
+	 */
+	BLOB             ('W'),
+	/**
 	 * OLE Objects (data is stored in dbt file)
 	 */
 	GENERAL_OLE      ('G'),
