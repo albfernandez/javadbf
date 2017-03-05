@@ -96,22 +96,19 @@ Following table shows the mapping scheme.
 | --------------------- | ------ | ------------------------- |  
 | Currency              | Y      | java.math.BigDecimal      |
 | Long                  | I      | java.lang.Integer         |
-| Date Type (FoxPro)    | T      | java.util.Date            |
-| Timestamp (dbase7)    | @      | java.util.Date            | 
-| AutoIncrement(dbase7) | +      | java.lang.Integer         |
+| Date Type             | T      | java.util.Date            |
+| Timestamp             | @      | java.util.Date            | 
+| AutoIncrement         | +      | java.lang.Integer         |
 | Memo                  | M      | java.lang.String or byte[]|
 | Binary                | B      | byte[] or java.lang.Double|
 | Blob                  | W      | byte[]                    |
-| General (OLE Objects) | G      | byte[]                    |
-| Picture (FoxPro)      | P      | byte[]                    |
+| General               | G      | byte[]                    |
+| Picture               | P      | byte[]                    |
+| VarBinary             | Q      | byte[]                    |
 | Varchar               | V      | java.lang.String          |
-| Double (dbase7)       | O      | java.lang.Double          |
+| Double                | O      | java.lang.Double          |
 
-##Unsupported types
 
-| Type                  | Symbol |
-| --------------------- | ------ |
-| Flags                 | 0      |
 
 
 

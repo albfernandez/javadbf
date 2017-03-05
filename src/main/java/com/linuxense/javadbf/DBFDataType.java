@@ -36,6 +36,10 @@ public enum DBFDataType {
 	 */
 	VARCHAR          ('V', 1, 254, 0, false),
 	/**
+	 * Binary data
+	 */
+	VARBINARY        ('Q', 1, 254, 0, false),
+	/**
 	 * Date
 	 */
 	DATE             ('D', 8, 8, 8, true), 

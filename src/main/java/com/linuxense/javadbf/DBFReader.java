@@ -128,6 +128,10 @@ import java.util.TimeZone;
  * <td>P</td>
  * <td>byte[]</td>
  * </tr>
+ * <tr>
+ * <td>Q</td>
+ * <td>byte[]</td>
+ * </tr>
  * </table>
  */
 public class DBFReader extends DBFBase implements Closeable {
@@ -266,30 +270,37 @@ public class DBFReader extends DBFBase implements Closeable {
 				if (field.isSystem()) {
 					if (field.getType() == DBFDataType.NULL_FLAGS) {						
 						if (o instanceof BitSet) {
-							BitSet bs = (BitSet) o;
-//							System.out.println("bs:" + bs.toString());
-//							for (int ix = 0; ix < bs.length(); ix++) {
-//								System.out.print(bs.get(ix) ? "1":"0");
-//							}
-													
-							
+							BitSet nullFlags = (BitSet) o;
 							int currentIndex = -1;
 							for (int j = 0; j < this.header.fieldArray.length; j++) {
 								DBFField field1 = this.header.fieldArray[j];
-								
 								if (field1.isNullable()) {
 									currentIndex++;
-									if (bs.get(currentIndex)) {
+									if (nullFlags.get(currentIndex)) {
 										recordObjects.set(j, null);
 									}
-								}
+								}								
+								if (field1.getType() == DBFDataType.VARBINARY || field1.getType() == DBFDataType.VARCHAR){
+									currentIndex++;
+									if (recordObjects.get(i) instanceof byte[]) {										
+										byte[] data = (byte[]) recordObjects.get(j);
+										int size = field1.getLength();
+										if (!nullFlags.get(currentIndex)) {
+											// Data is not full
+											size = data[data.length-1];
+										}
+										byte[] newData = new byte[size];
+										System.arraycopy(data, 0, newData, 0, size);
+										Object o1 = newData;
+										if (field1.getType() == DBFDataType.VARCHAR) {
+											o1 = new String(newData, getCharset());
+										}
+										recordObjects.set(j, o1);
+									}
+								}	
+								
 								
 							}
-//							System.out.println("");
-//							for(Object ox : recordObjects) {
-//								System.out.print(ox + ";");
-//							}
-//							System.out.println("");
 						}
 						
 					}
@@ -309,17 +320,21 @@ public class DBFReader extends DBFBase implements Closeable {
 
 	private Object getFieldValue(DBFField field) throws IOException {
 		switch (field.getType()) {
-		case VARCHAR:
 		case CHARACTER:
 			byte b_array[] = new byte[field.getLength()];
 			this.dataInputStream.read(b_array);
-			if (this.trimRightSpaces || field.getType() == DBFDataType.VARCHAR) {
+			if (this.trimRightSpaces) {
 				return new String(DBFUtils.trimRightSpaces(b_array), getCharset());
 			}
 			else {
 				return new String(b_array, getCharset());
 			}
 
+		case VARCHAR:
+		case VARBINARY:
+			byte b_array_var[] = new byte[field.getLength()];
+			this.dataInputStream.read(b_array_var);
+			return b_array_var;
 		case DATE:
 
 			byte t_byte_year[] = new byte[4];
