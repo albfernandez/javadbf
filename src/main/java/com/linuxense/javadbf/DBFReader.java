@@ -319,10 +319,14 @@ public class DBFReader extends DBFBase implements Closeable {
 	}
 
 	private Object getFieldValue(DBFField field) throws IOException {
+		int bytesReaded = 0;
 		switch (field.getType()) {
 		case CHARACTER:
 			byte b_array[] = new byte[field.getLength()];
-			this.dataInputStream.read(b_array);
+			bytesReaded = this.dataInputStream.read(b_array);
+			if (bytesReaded < field.getLength()) {
+				throw new EOFException("Unexpected end of file");
+			}
 			if (this.trimRightSpaces) {
 				return new String(DBFUtils.trimRightSpaces(b_array), getCharset());
 			}
@@ -333,18 +337,30 @@ public class DBFReader extends DBFBase implements Closeable {
 		case VARCHAR:
 		case VARBINARY:
 			byte b_array_var[] = new byte[field.getLength()];
-			this.dataInputStream.read(b_array_var);
+			bytesReaded = this.dataInputStream.read(b_array_var);
+			if (bytesReaded < field.getLength()) {
+				throw new EOFException("Unexpected end of file");
+			}
 			return b_array_var;
 		case DATE:
 
 			byte t_byte_year[] = new byte[4];
-			this.dataInputStream.read(t_byte_year);
+			bytesReaded = this.dataInputStream.read(t_byte_year);
+			if (bytesReaded < 4) {
+				throw new EOFException("Unexpected end of file");
+			}
 
 			byte t_byte_month[] = new byte[2];
-			this.dataInputStream.read(t_byte_month);
+			bytesReaded = this.dataInputStream.read(t_byte_month);
+			if (bytesReaded < 2) {
+				throw new EOFException("Unexpected end of file");
+			}
 
 			byte t_byte_day[] = new byte[2];
-			this.dataInputStream.read(t_byte_day);
+			bytesReaded = this.dataInputStream.read(t_byte_day);
+			if (bytesReaded < 2) {
+				throw new EOFException("Unexpected end of file");
+			}
 
 			try {
 				GregorianCalendar calendar = new GregorianCalendar(Integer.parseInt(new String(t_byte_year, StandardCharsets.US_ASCII)),
@@ -408,7 +424,7 @@ public class DBFReader extends DBFBase implements Closeable {
 			byte [] data1 = new byte[field.getLength()];
 			int readed = dataInputStream.read(data1);
 			if (readed != field.getLength()){
-				return null;
+				throw new EOFException("Unexpected end of file");
 			}
 			return BitSet.valueOf(data1);
 		default:
@@ -419,7 +435,10 @@ public class DBFReader extends DBFBase implements Closeable {
 
 	private Object readDoubleField(DBFField field) throws IOException {
 		byte[] data = new byte[field.getLength()];
-		this.dataInputStream.read(data);
+		int bytesReaded = this.dataInputStream.read(data);
+		if (bytesReaded < field.getLength()) {
+			throw new EOFException("Unexpected end of file");
+		}
 		return ByteBuffer.wrap(
 				new byte[]{
 						data[7], data[6], data[5], data[4],

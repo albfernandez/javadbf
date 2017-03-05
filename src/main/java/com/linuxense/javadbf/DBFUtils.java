@@ -25,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.DataInput;
 import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
@@ -53,13 +54,14 @@ public final class DBFUtils {
 	 * @param length the legth of the number
 	 * @return The number as a Number (BigDecimal)
 	 * @throws IOException 
+	 * @throws EOFException if reached end of file before length bytes
 	 */
 	public static Number readNumericStoredAsText(DataInputStream dataInput, int length) throws IOException {
 		try {
 			byte t_float[] = new byte[length];
 			int readed = dataInput.read(t_float);
 			if (readed != length) {
-				throw new DBFException("failed to read:" + length + " bytes");
+				throw new EOFException("failed to read:" + length + " bytes");
 			}
 			t_float = DBFUtils.removeSpaces(t_float);
 			if (t_float.length > 0 && DBFUtils.isPureAscii(t_float) && !DBFUtils.contains(t_float, (byte) '?') && !DBFUtils.contains(t_float, (byte) '*')) {
@@ -77,6 +79,7 @@ public final class DBFUtils {
 	 * @param in DataInput to read from
 	 * @return int value of next 32 bits as littleEndian
 	 * @throws IOException
+	 * @throws EOFException if reached end of file before 4 bytes are readed
 	 */
 	public static int readLittleEndianInt(DataInput in) throws IOException {
 		int bigEndian = 0;
