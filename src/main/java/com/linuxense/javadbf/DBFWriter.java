@@ -59,6 +59,8 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	//Open and append records to an existing DBF
 	private RandomAccessFile raf = null;
 	private OutputStream outputStream = null;
+	
+	private boolean closed = false;
 
 	/**
 	 * Creates an empty DBFWriter.
@@ -289,6 +291,10 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	 */
 	@Override
 	public void close() {
+		if (closed) {
+			return;
+		}
+		this.closed = true;
 		if (this.raf != null) {
 			/*
 			 * everything is written already. just update the header for
