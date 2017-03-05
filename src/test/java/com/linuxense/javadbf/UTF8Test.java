@@ -45,20 +45,19 @@ public class UTF8Test {
 		DBFWriter writer = null;
 		ByteArrayOutputStream fos = null;
 		try {
-			writer = new DBFWriter(Charset.forName("UTF-8"));
+			fos = new ByteArrayOutputStream();
+			writer = new DBFWriter(fos, Charset.forName("UTF-8"));
 			writer.setFields(fields);
 			Object rowData[] = new Object[1];
 			
 			rowData[0] = testString;
 	
 			writer.addRecord(rowData);
-			fos = new ByteArrayOutputStream();
-			writer.write(fos);
 			
 		}
 		finally {
-			DBFUtils.close(fos);
 			DBFUtils.close(writer);
+			DBFUtils.close(fos);
 		}
 		byte[] data = fos.toByteArray();
 		

@@ -40,15 +40,13 @@ public class DBFWriterRandomAccesTest {
 		DBFWriter writer = null;
 		OutputStream fos = null;
 		try {
-			writer = new DBFWriter();
-	        writer.setFields(fields);
-	        fos = new FileOutputStream(outputFile);
-	        writer.write(fos);
+			fos = new FileOutputStream(outputFile);
+			writer = new DBFWriter(fos);
+	        writer.setFields(fields);	        
 		}
 		finally {
 			DBFUtils.close(writer);
-			DBFUtils.close(fos);
-			
+			DBFUtils.close(fos);			
 		}
         
         DBFWriter writerRandomAcces = new DBFWriter(outputFile);
@@ -59,7 +57,7 @@ public class DBFWriterRandomAccesTest {
         	rowData[2] = 1000 * (i+1) + 0.25;
         	writerRandomAcces.addRecord(rowData);
         }
-        writerRandomAcces.close();
+        DBFUtils.close(writerRandomAcces);
         Assert.assertEquals(259L, outputFile.length());
 	}
 	

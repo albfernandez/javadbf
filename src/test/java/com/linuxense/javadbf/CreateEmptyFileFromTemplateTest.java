@@ -40,7 +40,9 @@ public class CreateEmptyFileFromTemplateTest {
 	private void emptyFile(File inputFile, File outputFile) throws IOException, DBFException {
 		OutputStream os = null;
 		DBFReader reader = null;
+		DBFWriter writer = null;
 		try {		
+			os = new BufferedOutputStream(new FileOutputStream(outputFile));
 			reader = new DBFReader(new FileInputStream(inputFile));
 			
 			DBFField[] fields = new DBFField[reader.getFieldCount()];
@@ -48,16 +50,14 @@ public class CreateEmptyFileFromTemplateTest {
 				fields[i] = reader.getField(i);
 			}
 			
-			DBFWriter writer = new DBFWriter(reader.getCharset());
+			writer = new DBFWriter(os, reader.getCharset());
 			writer.setFields(fields);
-			os = new BufferedOutputStream(new FileOutputStream(outputFile));
-			writer.write(os);
-			DBFUtils.close(writer);
 			
 			
 		}
 		finally {
 			DBFUtils.close(reader);
+			DBFUtils.close(writer);
 			DBFUtils.close(os);
 		}
 	

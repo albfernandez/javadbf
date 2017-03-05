@@ -52,9 +52,9 @@ public class AnyNumericTypeTest {
 
 		DBFWriter writer = null; 
 
-		ByteArrayOutputStream out = null;
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try {
-			writer = new DBFWriter();
+			writer = new DBFWriter(out);
 			writer.setFields(fields);
 
 			// now populate DBFWriter
@@ -79,16 +79,10 @@ public class AnyNumericTypeTest {
 			rowData[1] = "Rohit";
 			rowData[2] = 7350;
 
-			writer.addRecord(rowData);
-			out = new ByteArrayOutputStream();
-			writer.write(out);
+			writer.addRecord(rowData);			
 		} finally {
-			if (writer != null) {
-				writer.close();
-			}
-			if (out != null) {
-				out.close();
-			}
+			DBFUtils.close(writer);
+			DBFUtils.close(out);			
 		}
 		
 		byte[] data = out.toByteArray();
@@ -122,7 +116,8 @@ public class AnyNumericTypeTest {
 
 		ByteArrayOutputStream out = null;
 		try {
-			writer =  new DBFWriter();
+			out = new ByteArrayOutputStream();
+			writer =  new DBFWriter(out);
 			writer.setFields(fields);
 
 			// now populate DBFWriter
@@ -148,15 +143,12 @@ public class AnyNumericTypeTest {
 			rowData[2] = new BigInteger("7350");
 
 			writer.addRecord(rowData);
-			out = new ByteArrayOutputStream();
-			writer.write(out);
+			
+			
 		} finally {
-			if (writer != null) {
-				writer.close();
-			}
-			if (out != null) {
-				out.close();
-			}
+			DBFUtils.close(writer);
+			DBFUtils.close(out);
+			
 		}
 		
 		byte[] data = out.toByteArray();

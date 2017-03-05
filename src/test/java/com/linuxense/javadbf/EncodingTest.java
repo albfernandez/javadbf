@@ -32,6 +32,8 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.linuxsense.javadbf.mocks.NullOutputStream;
+
 public class EncodingTest {
 
 	public EncodingTest() {
@@ -125,7 +127,7 @@ public class EncodingTest {
 		DBFReader reader = null;
 		DBFWriter wr = null; 
 		try  {
-			wr =  new DBFWriter();
+			wr =  new DBFWriter(baos);
 			wr.setCharset(StandardCharsets.UTF_8);
 			DBFField fields[] = new DBFField[1];
 	
@@ -137,8 +139,7 @@ public class EncodingTest {
 			wr.addRecord(new Object[] { "Simón" });
 			wr.addRecord(new Object[] { "Julián"});
 			
-			wr.write(baos);
-			
+			DBFUtils.close(wr);
 			byte[] data = baos.toByteArray();
 			
 			ByteArrayInputStream bais = new ByteArrayInputStream(data);
@@ -166,13 +167,18 @@ public class EncodingTest {
 	
 	@Test
 	public void testSetEncoding() throws DBFException {
-		try (DBFWriter writer = new DBFWriter()) {
+		DBFWriter writer = null;
+		try {
+			writer = new DBFWriter(new NullOutputStream());
 			writer.setCharset(StandardCharsets.ISO_8859_1);
 			Assert.assertEquals(StandardCharsets.ISO_8859_1, writer.getCharset());
 			Assert.assertEquals(StandardCharsets.ISO_8859_1.displayName(), writer.getCharset().displayName());
 			writer.setCharset(StandardCharsets.ISO_8859_1);
 			Assert.assertEquals(StandardCharsets.ISO_8859_1.displayName(), writer.getCharset().displayName());
 			Assert.assertEquals(StandardCharsets.ISO_8859_1, writer.getCharset());
-		}		
+		}
+		finally {
+			DBFUtils.close(writer);
+		}
 	}
 }

@@ -53,8 +53,10 @@ public class ReadAndWriteTest {
 		fields[2].setDecimalCount(2);
 		DBFWriter writer = null;
 		ByteArrayInputStream bis = null;
+		ByteArrayOutputStream out = null;
 		try {
-			writer = new DBFWriter();
+			out = new ByteArrayOutputStream();
+			writer = new DBFWriter(out);
 			writer.setFields(fields);
 	
 			// now populate DBFWriter
@@ -81,13 +83,8 @@ public class ReadAndWriteTest {
 	
 			writer.addRecord(rowData);
 	
-			ByteArrayOutputStream out = null;
-			try {
-				out = new ByteArrayOutputStream();
-				writer.write(out);
-			} finally {
-				DBFUtils.close(out);
-			}
+			DBFUtils.close(writer);
+
 			
 			byte[] data = out.toByteArray();
 			Assert.assertEquals(259, data.length);
