@@ -172,7 +172,9 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	 * Sets fields.
 	 */
 	public void setFields(DBFField[] fields) {
-
+		if (this.closed) {
+			throw new IllegalStateException("You can not set fields to a closed DBFWriter");
+		}
 		if (this.header.fieldArray != null) {
 			throw new DBFException("Fields has already been set");
 		}
@@ -202,7 +204,9 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	 * Add a record.
 	 */
 	public void addRecord(Object[] values) {
-
+		if (this.closed) {
+			throw new IllegalStateException("You can add records a closed DBFWriter");
+		}
 		if (this.header.fieldArray == null) {
 			throw new DBFException("Fields should be set before adding records");
 		}
@@ -291,7 +295,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	 */
 	@Override
 	public void close() {
-		if (closed) {
+		if (this.closed) {
 			return;
 		}
 		this.closed = true;
