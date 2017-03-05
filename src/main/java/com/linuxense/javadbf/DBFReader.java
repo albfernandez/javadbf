@@ -33,6 +33,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -263,8 +264,34 @@ public class DBFReader extends DBFBase implements Closeable {
 				DBFField field = this.header.fieldArray[i];
 				Object o = getFieldValue(field);
 				if (field.isSystem()) {
-					if (field.getType() == DBFDataType.NULL_FLAGS) {
-						// TODO Use nullflags if exists
+					if (field.getType() == DBFDataType.NULL_FLAGS) {						
+						if (o instanceof BitSet) {
+							BitSet bs = (BitSet) o;
+//							System.out.println("bs:" + bs.toString());
+//							for (int ix = 0; ix < bs.length(); ix++) {
+//								System.out.print(bs.get(ix) ? "1":"0");
+//							}
+													
+							
+							int currentIndex = -1;
+							for (int j = 0; j < this.header.fieldArray.length; j++) {
+								DBFField field1 = this.header.fieldArray[j];
+								
+								if (field1.isNullable()) {
+									currentIndex++;
+									if (bs.get(currentIndex)) {
+										recordObjects.set(j, null);
+									}
+								}
+								
+							}
+//							System.out.println("");
+//							for(Object ox : recordObjects) {
+//								System.out.print(ox + ";");
+//							}
+//							System.out.println("");
+						}
+						
 					}
 				}
 				else {
@@ -363,7 +390,12 @@ public class DBFReader extends DBFBase implements Closeable {
 		case DOUBLE:
 			return readDoubleField(field);
 		case NULL_FLAGS:
-			return dataInputStream.readByte();
+			byte [] data1 = new byte[field.getLength()];
+			int readed = dataInputStream.read(data1);
+			if (readed != field.getLength()){
+				return null;
+			}
+			return BitSet.valueOf(data1);
 		default:
 			skip(field.getLength());
 			return null;
