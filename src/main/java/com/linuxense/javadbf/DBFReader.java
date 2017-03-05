@@ -145,6 +145,8 @@ public class DBFReader extends DBFBase implements Closeable {
 	
 	private DBFMemoFile memoFile = null;
 	
+	private boolean closed = false;
+	
 	
 	/**
 	 * Intializes a DBFReader object.
@@ -249,7 +251,9 @@ public class DBFReader extends DBFBase implements Closeable {
 	 *          arrays follow the convention mentioned in the class description.
 	 */
 	public Object[] nextRecord() {
-
+		if (this.closed) {
+			throw new IllegalArgumentException("this DBFReader is closed");
+		}
 		List<Object> recordObjects = new ArrayList<>(this.getFieldCount());
 		try {
 			boolean isDeleted = false;
@@ -497,6 +501,9 @@ public class DBFReader extends DBFBase implements Closeable {
 	 * @param memoFile
 	 */
 	public void setMemoFile(File memoFile) {
+		if (this.memoFile != null) {
+			throw new IllegalStateException("Memo file is already setted");
+		}
 		if (!memoFile.exists()){
 			throw new DBFException("Memo file " + memoFile.getName() + " not exists");
 		}
@@ -508,6 +515,7 @@ public class DBFReader extends DBFBase implements Closeable {
 	
 	@Override
 	public void close() {
+		this.closed = true;
 		DBFUtils.close(this.dataInputStream);
 	}
 	
