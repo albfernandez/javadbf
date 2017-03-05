@@ -16,13 +16,6 @@ They required low hardware configurations and were cheaper to develop.
 Eventually more capable desktop databases like Microsoft Access came into picture,
 DBF file format still remains one of the simplest way to store and transfer data.
 
-DBF format has some advantages over CSV or XML: it can contain the structure definition including data type information. 
-DBF is more like an open standard so it can be used as a data exchange format.
-If you have a database application with an RDBMS at the back-end and 
-you need to import a report to your spread sheet program, DBF format is the most elegant and sure-shot approach.
-
-JavaDBF also comes handy when it is required to transfer data between applications which do not have a common data format.
-Java developers often come across such situations when they are asked to share data with spreadsheet application. 
 
 #News and changes in version 1.0.0
 
@@ -58,7 +51,7 @@ If you are using Maven, you can add JavaDBF to your project using this dependenc
 	<dependency>
 		<groupId>com.github.albfernandez</groupId>
 		<artifactId>javadbf</artifactId>
-		<version>1.1.1</version>
+		<version>1.2.0</version>
 	</dependency>
 ```
 
@@ -66,18 +59,18 @@ If you are using Maven, you can add JavaDBF to your project using this dependenc
 #Overview of the Library
 
 JavaDBF has a simple API of its own and it does not implement the JDBC API. 
-It is designed this way because JavaDBF is not indedned to support full-blown RDBMS-style database interaction.
+It is designed this way because JavaDBF is not intended to support full-blown RDBMS-style database interaction.
 And you are not supposed to use it like a back-end; it just doesn't work that way. 
-Also, JavaDBF is not designed to be thread-safe; keep that in mind when you design threaded applications.
+Also, JavaDBF is not designed to be thread-safe; keep that in mind when you design multithreaded applications.
 
 JavaDBF comes in the package com.linuxense.javadbf. 
 Import that package in your Java code. Following examples will familiarise you with its APIs. 
 
 #Data Type Mapping
 
-JavaDBF supports almost all XBase data types except Memo field. 
+JavaDBF supports almost all XBase data types. 
 While reading, those types are interpretted as appropriate Java types.
-Following table shows the mapping scheme.
+Following tables shows the mapping scheme.
 
 
 ##Read and write supported types
@@ -117,7 +110,7 @@ Following table shows the mapping scheme.
 #Reading a DBF File
 
 To read a DBF file, JavaDBF provides a DBFReader class. 
-Following is a ready-to-compile, self-explanatory program describing almost all feature of the DBFReader class. 
+Following IOExceptionis a ready-to-compile, self-explanatory program describing almost all feature of the DBFReader class. 
 Copy/paste this listing and compile it. Keep a .dbf file handy to pass to this program as its argument.
 
 ```java
@@ -211,7 +204,7 @@ public class JavaDBFReaderMemoTest {
 
 #Writing a DBF File
 
-The class complementary to DBFReader is the DBFWriter.While creating a .dbf data file you will have to deal with two aspects: 
+The class complementary to DBFReader is the DBFWriter. While creating a .dbf data file you will have to deal with two aspects: 
 
 1. define the fields and 
 2. populate data. 
@@ -240,7 +233,8 @@ A DBFWriter is used for creating a .dbf file. First lets create a DBFWriter obje
 and then set the fields created (as explained above) by calling the setFields method.
 
 ```java
-	DBFWriter writer = new DBFWriter();
+	OutputStream os = // wathever output you want to use
+	DBFWriter writer = new DBFWriter(os);
 	// fields is a non-empty array of DBFField objects
 	writer.setFields(fields); 
 ```
@@ -279,7 +273,7 @@ public class JavaDBFWriterTest {
 		fields[2].setLength(12);
 		fields[2].setDecimalCount(2);
 
-		DBFWriter writer = new DBFWriter();
+		DBFWriter writer = new DBFWriter(new FileOutputStream(args[0]));
 		writer.setFields(fields);
 
 		// now populate DBFWriter
@@ -306,17 +300,15 @@ public class JavaDBFWriterTest {
 		writer.addRecord(rowData);
 
 		// write to file
-		FileOutputStream fos = new FileOutputStream(args[0]);
-		writer.write(fos);
-		fos.close();
+		writer.close();
 	}
 }
 ```
 
-Keep in mind that till the write method is called, all the added data will be kept in memory. 
+Keep in mind that till the close method is called, all the added data will be kept in memory. 
 So, if you are planning to write huge amount of data make sure that it will be safely held in memory 
 till it is written to disk and the DBFWriter object is garbage-collected.
- Read the Sync Mode section to know how JavaDBF to use a special feature of JavaDBF to overcome this.
+Read the Sync Mode section to know how JavaDBF to use a special feature of JavaDBF to overcome this.
 
 ## Sync Mode: Writing Records to File as They are Added
 
@@ -325,7 +317,7 @@ In this mode, instead of keeping records in memory for writing them once for all
 records are written to file as addRecord() is called. Here is how to write in Sync Mode.
 
 Create DBFWriter instance by passing a File object which represents a new/non-existent or empty file.
-And you are done! But, as in the normal mode, remember to call write() when have added all the records.
+And you are done! But, as in the normal mode, remember to call close() when have added all the records.
 This will help JavaDBF to write the meta data with correct values. Here is a sample code:
 
 ```java
@@ -362,7 +354,7 @@ Use the same constructor used in Sync Mode to achieve this.
 But here the File object passed to the construction should represent the DBF file to which records are to be appended. 
 
 It is illegal to call setFields in DBFWriter object created for appending. 
-Here also it is required to call the write() method after adding all the records.
+Here also it is required to call the close() method after adding all the records.
 
 ```java
 import com.linuxense.javadbf.*;
@@ -390,13 +382,14 @@ public class DBFWriterTest {
 
 #Building from sources
 
-Clone the repository or download de tar file from releases page on github, run the Maven command:
+Clone the repository or download de tar file from releases page on github, then run the Maven command:
 
     git clone https://github.com/albfernandez/javadbf.git
+    git checkout tags/v.1.2.0
     cd javadbf
     mvn clean package
 
-The result file is ``target/javadbf-1.1.1.jar``
+The result file is ``target/javadbf-1.2.0.jar``
 
 
 
