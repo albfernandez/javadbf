@@ -3,13 +3,13 @@ JavaDBF is a Java library for reading and writing XBase files.
 There are plenty of legacy applications around with .dbf as their primary storage format.
 JavaDBF was initially written for data transfer with such applications.
 
-#License
+# License
 
 JavaDBF is LGPL
 
 https://www.gnu.org/licenses/lgpl.txt
 
-#Introduction
+# Introduction
 
 Till late 90s dBase and its cousins were the most preferred database platform for small and even medium enterprise applications.
 They required low hardware configurations and were cheaper to develop. 
@@ -17,7 +17,7 @@ Eventually more capable desktop databases like Microsoft Access came into pictur
 DBF file format still remains one of the simplest way to store and transfer data.
 
 
-#News and changes in version 1.0.0
+# News and changes in version 1.0.0
 
 ## Possible breaking changes
 
@@ -39,7 +39,7 @@ old code. But there are some small changes that may break your code:
    
 
 
-#Getting and Installing
+# Getting and Installing
 
 Obtain the latest version of JavaDBF from release page at github.
 Download the jar file and put it in your $CLASSPATH variable. You are ready to go. 
@@ -56,7 +56,7 @@ If you are using Maven, you can add JavaDBF to your project using this dependenc
 ```
 
 
-#Overview of the Library
+# Overview of the Library
 
 JavaDBF has a simple API of its own and it does not implement the JDBC API. 
 It is designed this way because JavaDBF is not intended to support full-blown RDBMS-style database interaction.
@@ -66,14 +66,14 @@ Also, JavaDBF is not designed to be thread-safe; keep that in mind when you desi
 JavaDBF comes in the package com.linuxense.javadbf. 
 Import that package in your Java code. Following examples will familiarise you with its APIs. 
 
-#Data Type Mapping
+# Data Type Mapping
 
 JavaDBF supports almost all XBase data types. 
 While reading, those types are interpretted as appropriate Java types.
 Following tables shows the mapping scheme.
 
 
-##Read and write supported types
+## Read and write supported types
 
 | XBase Type  | XBase Symbol | Java Type used in JavaDBF |
 |----------   | ------------ | ---------------------------
@@ -83,7 +83,7 @@ Following tables shows the mapping scheme.
 |Logical      | L            | java.lang.Boolean         |
 |Date         | D            | java.util.Date            |
 
-##Read supported types
+## Read supported types
 
 | FoxPro Type           | Symbol | Java Type used in JavaDBF |
 | --------------------- | ------ | ------------------------- |  
@@ -107,7 +107,7 @@ Following tables shows the mapping scheme.
 
 
 
-#Reading a DBF File
+# Reading a DBF File
 
 To read a DBF file, JavaDBF provides a DBFReader class. 
 Following IOExceptionis a ready-to-compile, self-explanatory program describing almost all feature of the DBFReader class. 
@@ -169,7 +169,7 @@ public class JavaDBFReaderTest {
 }
 ```
 
-#Reading a DBF File with memo file
+# Reading a DBF File with memo file
 
 You can specify memo file to read Memo fields from. If you don't specify this file this fields will be filled with null
 
@@ -202,7 +202,7 @@ public class JavaDBFReaderMemoTest {
 
 ```
 
-#Writing a DBF File
+# Writing a DBF File
 
 The class complementary to DBFReader is the DBFWriter. While creating a .dbf data file you will have to deal with two aspects: 
 
@@ -211,7 +211,7 @@ The class complementary to DBFReader is the DBFWriter. While creating a .dbf dat
 
 As mentioned above a dbf field is represented by the class DBFField. First, let us familiarise this class.
 
-##Defining Fields
+## Defining Fields
 
 Create an object of DBFField class:
 
@@ -227,7 +227,7 @@ We have to create as many DBFField Objects as we want to be in the .dbf file.
 The DBFWriter class accept DBFField in an array. 
 Now, let's move on to the next step of populating data.
 
-##Preparing DBFWriter Object
+## Preparing DBFWriter Object
 
 A DBFWriter is used for creating a .dbf file. First lets create a DBFWriter object by calling its constructor 
 and then set the fields created (as explained above) by calling the setFields method.
@@ -347,7 +347,7 @@ public class DBFWriterTest {
 }
 ```
 
-#Appending Records
+# Appending Records
 
 From version 0.4.0 onwards JavaDBF supports appending of records to an existing DBF file. 
 Use the same constructor used in Sync Mode to achieve this. 
@@ -380,7 +380,7 @@ public class DBFWriterTest {
 }
 ```
 
-#Building from sources
+# Building from sources
 
 Clone the repository or download de tar file from releases page on github, then run the Maven command:
 
@@ -393,7 +393,7 @@ The result file is ``target/javadbf-1.2.0.jar``
 
 
 
-#Links
+# Links
 
 https://en.wikipedia.org/wiki/.dbf
 
