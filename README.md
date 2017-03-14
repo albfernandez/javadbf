@@ -110,7 +110,7 @@ Following tables shows the mapping scheme.
 # Reading a DBF File
 
 To read a DBF file, JavaDBF provides a DBFReader class. 
-Following IOExceptionis a ready-to-compile, self-explanatory program describing almost all feature of the DBFReader class. 
+Following is a ready-to-compile, self-explanatory program describing almost all feature of the DBFReader class. 
 Copy/paste this listing and compile it. Keep a .dbf file handy to pass to this program as its argument.
 
 ```java
