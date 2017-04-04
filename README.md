@@ -385,8 +385,8 @@ public class DBFWriterTest {
 Clone the repository or download de tar file from releases page on github, then run the Maven command:
 
     git clone https://github.com/albfernandez/javadbf.git
-    git checkout tags/v.1.2.0
     cd javadbf
+    git checkout tags/v.1.2.0
     mvn clean package
 
 The result file is ``target/javadbf-1.2.0.jar``
