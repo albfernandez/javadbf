@@ -123,86 +123,86 @@ public final class DBFCharsetHelper {
 		if (charset == null) {
 			return 0;
 		}
-		String charsetName = charset.toString().toLowerCase();
+		String charsetName = charset.toString();
 
-		if ("ibm437".equals(charsetName)) {
+		if ("ibm437".equalsIgnoreCase(charsetName)) {
 			return 0x01;
 		}
-		if ("ibm850".equals(charsetName)) {
+		if ("ibm850".equalsIgnoreCase(charsetName)) {
 			return 0x02;
 		}
-		if ("windows-1252".equals(charsetName)) {
+		if ("windows-1252".equalsIgnoreCase(charsetName)) {
 			return 0x03;
 		}
-		if ("iso-8859-1".equals(charsetName)) {
+		if ("iso-8859-1".equalsIgnoreCase(charsetName)) {
 			return 0x03;
 		}
-		if ("MacRoman".equals(charsetName)) {
+		if ("MacRoman".equalsIgnoreCase(charsetName)) {
 			return 0x04;
 		}
-		if ("IBM852".equals(charsetName)) {
+		if ("IBM852".equalsIgnoreCase(charsetName)) {
 			return 0x64;
 		}
-		if ("IBM865".equals(charsetName)) {
+		if ("IBM865".equalsIgnoreCase(charsetName)) {
 			return 0x65;
 		}
-		if ("IBM866".equals(charsetName)) {
+		if ("IBM866".equalsIgnoreCase(charsetName)) {
 			return 0x66;
 		}
-		if ("IBM861".equals(charsetName)) {
+		if ("IBM861".equalsIgnoreCase(charsetName)) {
 			return 0x67;
 		}
 		// 0x68
 		// 0x69
-		if ("IBM737".equals(charsetName)) {
+		if ("IBM737".equalsIgnoreCase(charsetName)) {
 			return 0x6a;
 		}
-		if ("IBM857".equals(charsetName)) {
+		if ("IBM857".equalsIgnoreCase(charsetName)) {
 			return 0x6b;
 		}
 
-		if ("windows-950".equals(charsetName)) {
+		if ("windows-950".equalsIgnoreCase(charsetName)) {
 			return 0x78;
 		}
-		if ("windows-949".equals(charsetName)) {
+		if ("windows-949".equalsIgnoreCase(charsetName)) {
 			return 0x79;
 		}
-		if ("gbk".equals(charsetName)) {
+		if ("gbk".equalsIgnoreCase(charsetName)) {
 			return 0x7a;
 		}
-		if ("windows-932".equals(charsetName)) {
+		if ("windows-932".equalsIgnoreCase(charsetName)) {
 			return 0x7b;
 		}
-		if ("windows-874".equals(charsetName)) {
+		if ("windows-874".equalsIgnoreCase(charsetName)) {
 			return 0x7c;
 		}
-		if ("windows-1255".equals(charsetName)) {
+		if ("windows-1255".equalsIgnoreCase(charsetName)) {
 			return 0x7d;
 		}
-		if ("windows-1256".equals(charsetName)) {
+		if ("windows-1256".equalsIgnoreCase(charsetName)) {
 			return 0x7e;
 		}
 
-		if ("x-MacCyrillic".equals(charsetName)) {
+		if ("x-MacCyrillic".equalsIgnoreCase(charsetName)) {
 			return 0x96;
 		}
-		if ("x-MacCentralEurope".equals(charsetName)) {
+		if ("x-MacCentralEurope".equalsIgnoreCase(charsetName)) {
 			return 0x97;
 		}
-		if ("x-MacGreek".equals(charsetName)) {
+		if ("x-MacGreek".equalsIgnoreCase(charsetName)) {
 			return 0x98;
 		}
 
-		if ("windows-1250".equals(charsetName)) {
+		if ("windows-1250".equalsIgnoreCase(charsetName)) {
 			return 0xc8;
 		}
-		if ("windows-1251".equals(charsetName)) {
+		if ("windows-1251".equalsIgnoreCase(charsetName)) {
 			return 0xc9;
 		}
-		if ("windows-1254".equals(charsetName)) {
+		if ("windows-1254".equalsIgnoreCase(charsetName)) {
 			return 0xca;
 		}
-		if ("windows-1253".equals(charsetName)) {
+		if ("windows-1253".equalsIgnoreCase(charsetName)) {
 			return 0xcb;
 		}
 		// Unsupported charsets returns 0
