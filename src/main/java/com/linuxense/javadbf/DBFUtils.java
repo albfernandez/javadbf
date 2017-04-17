@@ -254,10 +254,12 @@ public final class DBFUtils {
 	 * @return true if is ascci
 	 */
 	public static boolean isPureAscii(String stringToCheck) {
-		if (stringToCheck == null) {
+		if (stringToCheck == null || stringToCheck.length() == 0) {
 			return true;
 		}
-		return ASCII_ENCODER.canEncode(stringToCheck);
+		synchronized (ASCII_ENCODER) {			
+			return ASCII_ENCODER.canEncode(stringToCheck);
+		}
 	}
 
 	/**
