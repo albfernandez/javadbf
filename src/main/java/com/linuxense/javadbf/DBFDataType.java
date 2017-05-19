@@ -30,7 +30,7 @@ public enum DBFDataType {
 	/**
 	 * Character data, padded with whitespaces.
 	 */
-	CHARACTER        ('C', 1, 254, 0, true), 
+	CHARACTER        ('C', 1, 254, 0, true),
 	/**
 	 * Character data, not padded
 	 */
@@ -42,7 +42,7 @@ public enum DBFDataType {
 	/**
 	 * Date
 	 */
-	DATE             ('D', 8, 8, 8, true), 
+	DATE             ('D', 8, 8, 8, true),
 	/**
 	 * Numeric data
 	 */
@@ -60,7 +60,7 @@ public enum DBFDataType {
 	 */
 	MEMO             ('M'),
 	/**
-	 * Binary (data is stored in dbt file) 
+	 * Binary (data is stored in dbt file)
 	 */
 	BINARY           ('B'),
 	/**
@@ -72,13 +72,13 @@ public enum DBFDataType {
 	 */
 	GENERAL_OLE      ('G'),
 	/**
-	 * Picture (FoxPro, data is sotred in dbt file) 
+	 * Picture (FoxPro, data is sotred in dbt file)
 	 */
 	PICTURE          ('P'),
 	/**
 	 * Numeric data
 	 */
-	NUMERIC          ('N', 1, 18, 0, true),
+	NUMERIC          ('N', 1, 32, 0, true),
 	/**
 	 * Numeric long (FoxPro)
 	 */
@@ -105,18 +105,18 @@ public enum DBFDataType {
 	NULL_FLAGS            ('0')
 	;
 
-	
+
 	private byte code;
 	private int minSize;
 	private int maxSize;
 	private int defaultSize;
 	private boolean writeSupported = false;
 
-	
+
 	private DBFDataType(char code) {
 		this((byte) code);
 	}
-	
+
 	private DBFDataType(byte code) {
 		this.code = code;
 	}
@@ -133,19 +133,19 @@ public enum DBFDataType {
 	/**
 	 * Gets the code as stored in the dbf file.
 	 * @return the code for this type
-	 */	
+	 */
 	public byte getCode() {
 		return this.code;
 	}
-	
+
 	/**
 	 * Gets the code as stored in the dbf file as character for display purposes.
 	 * @return the code for this type
-	 */	
+	 */
 	public char getCharCode() {
 		return (char) this.code;
 	}
-	
+
 	/**
 	 * Gets the minimum size for this type
 	 * @return minimum size for this type
@@ -190,6 +190,4 @@ public enum DBFDataType {
 	public static DBFDataType fromCode(char c) {
 		return fromCode((byte) c);
 	}
-	
-
 }
