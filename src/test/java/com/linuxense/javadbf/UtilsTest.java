@@ -26,7 +26,10 @@ import static org.junit.Assert.assertTrue;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+import org.junit.Assert;
 import org.junit.Test;
+
+
 
 
 public class UtilsTest {
@@ -69,7 +72,19 @@ public class UtilsTest {
 	}
 	@Test
 	public void doubleFormating() {
-		// TODO
+		Assert.assertEquals(
+			" 0.00", 
+			new String(DBFUtils.doubleFormating(new Double(0.0), Charset.defaultCharset(), 5, 2))
+		);
+		
+		Assert.assertEquals(
+				"10.00", 
+				new String(DBFUtils.doubleFormating(new Double(10.0), Charset.defaultCharset(), 5, 2))
+			);
+		Assert.assertEquals(
+				" 5.05", 
+				new String(DBFUtils.doubleFormating(new Double(5.05), Charset.defaultCharset(), 5, 2))
+			);
 	}
 	@Test
 	public void testLittleEndian() {
