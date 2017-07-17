@@ -21,6 +21,7 @@ package com.linuxense.javadbf;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -96,9 +97,60 @@ public class ReadAndWriteTest {
 		finally {
 			DBFUtils.close(bis);
 			DBFUtils.close(writer);
-		}
+		}		
+	}
+	
+	@Test
+	public void testWriteAndReadAgainBug31() throws DBFException, IOException {
+		 // let us create field definitions first
+		// we will go for 3 fields
+		//
+		DBFField[] fields = new DBFField[1];
 
+		fields[0] = new DBFField();
+		fields[0].setName("VAL");
+		fields[0].setType(DBFDataType.NUMERIC);
+		fields[0].setLength(12);
+		fields[0].setDecimalCount(2);
+
+
+		DBFWriter writer = null;
+		ByteArrayInputStream bis = null;
+		ByteArrayOutputStream out = null;
+		DBFReader reader = null;
+		try {
+			out = new ByteArrayOutputStream();
+			writer = new DBFWriter(out);
+			writer.setFields(fields);
+	
+			// now populate DBFWriter
+			//
+	
+
+			Object[] rowData = new Object[1];
+			rowData[0] = new BigDecimal("123.80");
+	
+			writer.addRecord(rowData);
+	
+			DBFUtils.close(writer);
+
+			
+			byte[] data = out.toByteArray();
+			Assert.assertEquals(79, data.length);
 		
+
+			bis = new ByteArrayInputStream(data);
+			reader = new DBFReader(bis);
+			int numberOfColumns = reader.getFieldCount();
+			Assert.assertEquals(1, numberOfColumns);
+			Object[] rowObject = reader.nextRecord();
+			Assert.assertEquals(new BigDecimal("123.80"), rowObject[0]);
+		}
+		finally {
+			DBFUtils.close(bis);
+			DBFUtils.close(writer);
+			DBFUtils.close(reader);
+		}		
 	}
 
 
