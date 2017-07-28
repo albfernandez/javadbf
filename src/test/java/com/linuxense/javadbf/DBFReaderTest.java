@@ -121,8 +121,16 @@ public class DBFReaderTest {
 			DBFUtils.close(reader);
 		}
 	}
-	
-	
+
+	@Test
+	public void testReadBooksAddedDeleteField() throws  IOException {
+		ReadDBFAssert.testReadDBFFile("books", 12, 10, true);
+	}
+
+	@Test
+	public void testReadDBFFileDeletedRecords() throws  IOException {
+		ReadDBFAssert.testReadDBFFileDeletedRecords("test_delete",3,1);
+	}
 	
 	@Test(expected=DBFException.class)
 	public void testFailStream() throws DBFException, IOException{
