@@ -142,6 +142,7 @@ public class DBFReader extends DBFBase implements Closeable {
 	private DataInputStream dataInputStream;
 	private DBFHeader header;
 	private boolean trimRightSpaces = true;
+	private boolean showDeletedRows = false;
 	
 	private DBFMemoFile memoFile = null;
 	
@@ -159,26 +160,55 @@ public class DBFReader extends DBFBase implements Closeable {
 	 * @param in  the InputStream where the data is read from.
 	 */
 	public DBFReader(InputStream in) {
-		this(in,null);
+		this(in,null,false);
 	}
-	
+
 	/**
-	 * Initializes a DBFReader object.
-	 * 
+	 * Intializes a DBFReader object.
+	 *
+	 * Tries to detect charset from file, if failed uses default charset ISO-8859-1
 	 * When this constructor returns the object will have completed reading the
 	 * header (meta date) and header information can be queried there on. And it
 	 * will be ready to return the first row.
-	 * 
+	 *
+	 * @param in  the InputStream where the data is read from.
+	 * @param showDeletedRows can be used to identify records that have been deleted.
+	 */
+	public DBFReader(InputStream in, Boolean showDeletedRows) {
+		this(in,null, showDeletedRows);
+	}
+
+	/**
+	 * Initializes a DBFReader object.
+	 *
+	 * When this constructor returns the object will have completed reading the
+	 * header (meta date) and header information can be queried there on. And it
+	 * will be ready to return the first row.
+	 *
 	 * @param in the InputStream where the data is read from.
 	 * @param charset charset used to decode field names and field contents. If null, then is autedetected from dbf file
 	 */
-	public DBFReader(InputStream in,Charset charset) {
+	public DBFReader(InputStream in,Charset charset) { this(in, charset, false); }
+
+	/**
+	 * Initializes a DBFReader object.
+	 *
+	 * When this constructor returns the object will have completed reading the
+	 * header (meta date) and header information can be queried there on. And it
+	 * will be ready to return the first row.
+	 *
+	 * @param in the InputStream where the data is read from.
+	 * @param charset charset used to decode field names and field contents. If null, then is autedetected from dbf file
+	 * @param showDeletedRows can be used to identify records that have been deleted.
+	 */
+	public DBFReader(InputStream in,Charset charset,Boolean showDeletedRows) {
 		try {
 			
 			this.dataInputStream = new DataInputStream(in);
 			this.header = new DBFHeader();
 			this.header.read(this.dataInputStream, charset);
 			setCharset(this.header.getUsedCharset());
+			this.showDeletedRows = showDeletedRows;
 			
 			/* it might be required to leap to the start of records at times */
 			int fieldSize = this.header.getFieldDescriptorSize();
@@ -234,6 +264,15 @@ public class DBFReader extends DBFBase implements Closeable {
 	 * @param index Index of the field. Index of the first field is zero.
 	 */
 	public DBFField getField(int index) {
+
+		// if showing deleted rows, ensure first column is the deleted flag field
+		if(showDeletedRows) {
+			if(index == 0)
+				return new DBFField("DELETED", DBFDataType.LOGICAL);
+			else
+				return new DBFField(this.header.fieldArray[index-1]);
+		}
+
 		return new DBFField(this.header.fieldArray[index]);
 	}
 
@@ -241,7 +280,7 @@ public class DBFReader extends DBFBase implements Closeable {
 	 * Returns the number of field in the DBF.
 	 */
 	public int getFieldCount() {
-		return this.header.userFieldArray.length;
+		return this.header.userFieldArray.length + (this.showDeletedRows ? 1 : 0);
 	}
 
 	/**
@@ -257,8 +296,9 @@ public class DBFReader extends DBFBase implements Closeable {
 		List<Object> recordObjects = new ArrayList<>(this.getFieldCount());
 		try {
 			boolean isDeleted = false;
+
 			do {
-				if (isDeleted) {
+				if (isDeleted && !showDeletedRows) {
 					skip(this.header.recordLength - 1);
 				}
 				int t_byte = this.dataInputStream.readByte();
@@ -266,7 +306,10 @@ public class DBFReader extends DBFBase implements Closeable {
 					return null;
 				}
 				isDeleted = t_byte == '*';
-			} while (isDeleted);
+			} while (isDeleted && !showDeletedRows);
+
+			if(showDeletedRows)
+				recordObjects.add(isDeleted);
 
 			for (int i = 0; i < this.header.fieldArray.length; i++) {
 				DBFField field = this.header.fieldArray[i];

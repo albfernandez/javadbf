@@ -33,13 +33,17 @@ public class ReadDBFAssert {
 	}
 	
 	public static void testReadDBFFile(String fileName, int expectedColumns, int expectedRows) throws DBFException, IOException {
-		testReadDBFFile(new File("src/test/resources/" + fileName + ".dbf"), expectedColumns, expectedRows);
+		testReadDBFFile(fileName, expectedColumns, expectedRows, false);
 	}
 
-	public static void testReadDBFFile(File file, int expectedColumns, int expectedRows) throws DBFException, IOException {
+	public static void testReadDBFFile(String fileName, int expectedColumns, int expectedRows, Boolean showDeletedRows) throws DBFException, IOException {
+		testReadDBFFile(new File("src/test/resources/" + fileName + ".dbf"), expectedColumns, expectedRows, showDeletedRows);
+	}
+
+	public static void testReadDBFFile(File file, int expectedColumns, int expectedRows, Boolean showDeletedRows) throws DBFException, IOException {
 		DBFReader reader = null;
 		try {
-			reader = new DBFReader(new BufferedInputStream(new FileInputStream(file)));
+			reader = new DBFReader(new BufferedInputStream(new FileInputStream(file)), showDeletedRows);
 			testReadDBFFile(reader, expectedColumns, expectedRows);
 		} finally {
 			DBFUtils.close(reader);
@@ -67,5 +71,29 @@ public class ReadDBFAssert {
 		}
 		Assert.assertEquals(expectedRows, countedRows);
 		Assert.assertEquals(expectedRows, reader.getRecordCount());
+	}
+
+	public static void testReadDBFFileDeletedRecords(String fileName, int expectedRows, int expectedDeleted) throws DBFException, IOException {
+
+		DBFReader reader = null;
+		try {
+			reader = new DBFReader(new BufferedInputStream(new FileInputStream(new File("src/test/resources/" + fileName + ".dbf"))), true);
+			Object[] rowObject;
+
+			int countedRows = 0;
+			int countedDeletes = 0;
+			while ((rowObject = reader.nextRecord()) != null) {
+				if(rowObject[0] == Boolean.TRUE)
+					countedDeletes++;
+				countedRows++;
+			}
+
+			Assert.assertEquals(countedRows, expectedRows);
+			Assert.assertEquals(countedDeletes, expectedDeleted);
+		} finally {
+			DBFUtils.close(reader);
+		}
+
+
 	}
 }
