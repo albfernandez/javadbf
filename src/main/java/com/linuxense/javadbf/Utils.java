@@ -140,7 +140,7 @@ public final class Utils {
 	}
 
 	/**
-	 * @deprecated Use {@link DBFUtils#doubleFormating(Double, Charset, int, int)}
+	 * @deprecated Use {@link DBFUtils#doubleFormating(Number, Charset, int, int)}
 	 */
 	@Deprecated
 	public static byte[] doubleFormating(Double doubleNum, Charset charset, int fieldLength, int sizeDecimalPart) {
@@ -256,7 +256,7 @@ public final class Utils {
 		return doubleFormating(num.doubleValue(), characterSetName, fieldLength, sizeDecimalPart);
 	}
 	/**
-	 * @deprecated Use {@link DBFUtils#doubleFormating(Double, Charset, int, int)}
+	 * @deprecated Use {@link DBFUtils#doubleFormating(Number, Charset, int, int)}
 	 */
 	@Deprecated
 	public static byte[] doubleFormating(Double doubleNum, String characterSetName, int fieldLength, int sizeDecimalPart)
