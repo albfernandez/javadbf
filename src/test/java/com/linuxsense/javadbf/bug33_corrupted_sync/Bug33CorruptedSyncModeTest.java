@@ -39,7 +39,7 @@ public class Bug33CorruptedSyncModeTest {
 			rowData[0] = 702;
 			rowData[1] = "114";
 			rowData[2] = "57272";
-			rowData[3] = new Date("05/02/2017");
+			rowData[3] = new Date(1493676000000L); // "Tue May 02 00:00:00 CEST 2017"
 			rowData[4] = "11044";
 			rowData[5] = "140-01";
 			rowData[6] = "AD";
