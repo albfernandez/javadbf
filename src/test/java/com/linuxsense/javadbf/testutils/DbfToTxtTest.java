@@ -16,20 +16,53 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.linuxense.javadbf.docexamples;
+package com.linuxsense.javadbf.testutils;
 
-import java.io.*;
-import com.linuxense.javadbf.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 
-public class JavaDBFReaderTest {
+import com.linuxense.javadbf.DBFField;
+import com.linuxense.javadbf.DBFReader;
+import com.linuxense.javadbf.DBFUtils;
 
-	public static void main(String args[]) {
+public final class DbfToTxtTest {
 
+	private DbfToTxtTest() {
+		throw new AssertionError("no instances");
+	}
+	
+	public static void export(DBFReader reader, File file) {
+		
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter(file, "UTF-8");
+			Object[] row = null;
+	
+			while ((row = reader.nextRecord()) != null) {
+				for (Object o : row) {
+					writer.print(o + ";");
+				}
+				writer.println("");
+			}
+		}
+		catch (IOException e) {
+			// nop
+		}
+		finally {
+			DBFUtils.close(writer);
+		}
+	}
+	
+	public static void writeToConsole(File file) throws FileNotFoundException {
 		DBFReader reader = null;
 		try {
 
+			
 			// create a DBFReader object
-			reader = new DBFReader(new FileInputStream(args[0]));
+			reader = new DBFReader(new FileInputStream(file));
 
 			// get the field count if you want for some reasons like the following
 
@@ -45,26 +78,24 @@ public class JavaDBFReaderTest {
 				// do something with it if you want
 				// refer the JavaDoc API reference for more details
 				//
-				System.out.println(field.getName());
+				System.out.println(field.getType() + " " + field.getName());
 			}
 
 			// Now, lets us start reading the rows
 
 			Object[] rowObjects;
 
+			System.out.println("-------------------");
 			while ((rowObjects = reader.nextRecord()) != null) {
-
 				for (int i = 0; i < rowObjects.length; i++) {
 					System.out.println(rowObjects[i]);
 				}
+				System.out.println("-------------------");
 			}
 
 			// By now, we have iterated through all of the rows
 
-		} catch (DBFException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		
 		}
 		finally {
 			DBFUtils.close(reader);

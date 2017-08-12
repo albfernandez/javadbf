@@ -16,22 +16,23 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.linuxense.javadbf.testutils;
 
-import java.util.Calendar;
-import java.util.Date;
+package com.linuxsense.javadbf.testutils;
 
-public class DateUtils {
 
-	public static Date createDate(int year, int month, int day) {
-		Calendar c = Calendar.getInstance();
-		c.set(Calendar.YEAR, year);
-		c.set(Calendar.MONTH, month  - 1);
-		c.set(Calendar.DAY_OF_MONTH, day);
-		c.set(Calendar.HOUR_OF_DAY, 0);
-		c.set(Calendar.MINUTE, 0);
-		c.set(Calendar.SECOND, 0);
-		c.set(Calendar.MILLISECOND, 0);
-		return c.getTime();
+
+import org.junit.Assert;
+
+import com.linuxense.javadbf.DBFDataType;
+import com.linuxense.javadbf.DBFField;
+
+public class AssertUtils {
+
+	public static void assertColumnDefinition(DBFField field, String columnName, DBFDataType type, int length, int decimal) {
+		Assert.assertEquals(columnName, field.getName());
+		Assert.assertEquals(type, field.getType());
+		Assert.assertEquals(length, field.getLength());
+		Assert.assertEquals(decimal, field.getDecimalCount());
 	}
+
 }

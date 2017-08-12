@@ -9,8 +9,8 @@ import org.junit.Test;
 
 import com.linuxense.javadbf.DBFException;
 import com.linuxense.javadbf.DBFWriter;
-import com.linuxense.javadbf.testutils.DbfToTxtTest;
-import com.linuxense.javadbf.testutils.FileUtils;
+import com.linuxsense.javadbf.testutils.DbfToTxtTest;
+import com.linuxsense.javadbf.testutils.FileUtils;
 
 public class Bug33CorruptedSyncModeTest {
 

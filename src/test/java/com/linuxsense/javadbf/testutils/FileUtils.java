@@ -1,4 +1,4 @@
-package com.linuxense.javadbf.testutils;
+package com.linuxsense.javadbf.testutils;
 
 import java.io.File;
 import java.io.FileInputStream;
