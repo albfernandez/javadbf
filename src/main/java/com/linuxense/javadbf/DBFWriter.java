@@ -161,6 +161,9 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 			if (this.raf.length() > header.headerLength) {
 				this.raf.seek(this.raf.length() - 1);
 			}
+			else {
+				this.raf.seek(this.raf.length());
+			}
 		} catch (FileNotFoundException e) {
 			throw new DBFException("Specified file is not found. " + e.getMessage(), e);
 		} catch (IOException e) {
