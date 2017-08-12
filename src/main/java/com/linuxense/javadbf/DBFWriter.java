@@ -397,6 +397,21 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 		}
 	}
 	
+	/**
+	 * Check if the writer is closed
+	 * @return true if already closed
+	 */
+	protected boolean isClosed() {
+		return this.closed;
+	}
+	
+	/**
+	 * Get de underlying RandomAccessFile. It can be null if OutputStream constructor is used.
+	 * @return the underlying RandomAccessFile
+	 */
+	protected RandomAccessFile getRamdonAccessFile() {
+		return this.raf;
+	}
 	
 	
 	/**
