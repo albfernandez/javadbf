@@ -128,9 +128,17 @@ public class DBFHeader {
 		this.numberOfRecords = DBFUtils.littleEndian(this.numberOfRecords);
 		dataOutput.writeInt(this.numberOfRecords); /* 4-7 */
 
-		this.headerLength = findHeaderLength();
+		short oldHeaderLength = this.headerLength;
+		short newHeaderLength = findHeaderLength();
+		if (oldHeaderLength == 0) {
+			this.headerLength = newHeaderLength;
+		}
+		else if (newHeaderLength > oldHeaderLength) {
+			throw new IOException("Invalid header length");
+		}
 		dataOutput.writeShort(DBFUtils.littleEndian(this.headerLength)); /* 8-9 */
 
+		
 		this.recordLength = sumUpLenghtOfFields();
 		dataOutput.writeShort(DBFUtils.littleEndian(this.recordLength)); /* 10-11 */
 
