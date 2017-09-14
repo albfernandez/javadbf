@@ -70,10 +70,10 @@ public final class DBFCharsetHelper {
 			return forName("IBM852");
 		case 0x65:
 			// Russian MS-DOS
-			return forName("IBM865");
+			return forName("IBM866");
 		case 0x66:
 			// Nordic MS-DOS
-			return forName("IBM866");
+			return forName("IBM865");
 		case 0x67:
 			// Icelandic MS-DOS
 			return forName("IBM861");
@@ -174,10 +174,10 @@ public final class DBFCharsetHelper {
 			return 0x64;
 		}
 		if ("IBM865".equalsIgnoreCase(charsetName)) {
-			return 0x65;
+			return 0x66;
 		}
 		if ("IBM866".equalsIgnoreCase(charsetName)) {
-			return 0x66;
+			return 0x65;
 		}
 		if ("IBM861".equalsIgnoreCase(charsetName)) {
 			return 0x67;

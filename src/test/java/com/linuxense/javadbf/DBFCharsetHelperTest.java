@@ -107,6 +107,27 @@ public class DBFCharsetHelperTest {
 		}
 	    
 	}
+	
+	@Test
+	public void testRussianAndNordicEncodingsBug35() {
+		/* Russian IBM866 and Nordic ISO865 has changed values.
+		 * 
+		 * Correct values: https://msdn.microsoft.com/en-us/library/8t45x02s(v=vs.80).aspx
+		 * 
+		 */
+		
+		// Russian IBM866 0x65
+		Charset russian = Charset.forName("IBM866");
+		
+		Assert.assertEquals(0x65, DBFCharsetHelper.getDBFCodeForCharset(russian));
+		Assert.assertEquals(russian, DBFCharsetHelper.getCharsetByByte(0x65));		
+		
+		// Nordic IBM865 0x66
+		
+		Charset nordic = Charset.forName("IBM865");
+		Assert.assertEquals(0x66, DBFCharsetHelper.getDBFCodeForCharset(nordic));
+		Assert.assertEquals(nordic, DBFCharsetHelper.getCharsetByByte(0x66));		
+	}
 
 
 }
