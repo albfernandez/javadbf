@@ -174,7 +174,8 @@ public class DBFReader extends DBFBase implements Closeable {
 	 * @param in  the InputStream where the data is read from.
 	 * @param showDeletedRows can be used to identify records that have been deleted.
 	 */
-	public DBFReader(InputStream in, boolean showDeletedRows) {
+	// TODO Change to boolean in 2.0
+	public DBFReader(InputStream in, Boolean showDeletedRows) {
 		this(in,null, showDeletedRows);
 	}
 
