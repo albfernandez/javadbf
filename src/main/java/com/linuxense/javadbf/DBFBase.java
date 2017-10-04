@@ -20,6 +20,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.linuxense.javadbf;
 
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -37,7 +38,7 @@ public abstract class DBFBase {
 		super();
 	}
 
-	
+
 	/**
 	 * Gets the charset used to read and write files.
 	 */
@@ -46,7 +47,7 @@ public abstract class DBFBase {
 	}
 	/**
 	 * Sets the charset to use to read and write files.
-	 * 
+	 *
 	 * If the library is used in a non-latin environment use this method to set
 	 * corresponding character set. More information:
 	 * http://www.iana.org/assignments/character-sets Also see the documentation
@@ -58,10 +59,10 @@ public abstract class DBFBase {
 	public void setCharset(Charset charset) {
 		this.charset = charset;
 	}
-	
+
 	/**
 	 * Gets the charset used to read and write files.
-	 * 
+	 *
 	 * @return name of the charset
 	 * @deprecated replaced by {@link DBFBase#getCharset()}
 	 */
@@ -72,12 +73,12 @@ public abstract class DBFBase {
 
 	/**
 	 * Sets the charset to use to read and write files.
-	 * 
+	 *
 	 * If the library is used in a non-latin environment use this method to set
 	 * corresponding character set. More information:
 	 * http://www.iana.org/assignments/character-sets Also see the documentation
 	 * of the class java.nio.charset.Charset
-	 * 
+	 *
 	 * @param characterSetName name of the charset
 	 * @deprecated replaced by {@link DBFBase#setCharset(Charset)}
 	 */
@@ -85,5 +86,5 @@ public abstract class DBFBase {
 	public void setCharactersetName(String characterSetName) {
 		this.charset = Charset.forName(characterSetName);
 	}
-	
+
 }

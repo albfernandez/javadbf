@@ -19,8 +19,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.linuxense.javadbf;
 
+
 /**
- * Indicates aligment of data. 
+ * Indicates aligment of data.
  */
 public enum DBFAlignment {
 	/**

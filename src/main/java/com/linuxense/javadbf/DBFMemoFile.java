@@ -19,6 +19,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.linuxense.javadbf;
 
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -35,21 +36,21 @@ public class DBFMemoFile {
 	private Charset charset = null;
 	private int blockSize = 512;
 	private boolean fpt = false;
-	
+
 	protected DBFMemoFile(File memoFile, Charset charset) {
 		this.memoFile = memoFile;
 		this.charset = charset;
 		this.fpt = memoFile.getName().toLowerCase().endsWith(".fpt");
-		readBlockSize();		
+		readBlockSize();
 	}
 	private void readBlockSize() {
 		RandomAccessFile file = null;
 		try {
-			file = new RandomAccessFile(memoFile, "r");			
-					
+			file = new RandomAccessFile(memoFile, "r");
+
 			if (isFPT()) {
 				file.seek(6);
-				this.blockSize = file.readShort();				
+				this.blockSize = file.readShort();
 			}
 			else {
 				file.seek(20);
@@ -58,7 +59,7 @@ public class DBFMemoFile {
 			if (this.blockSize == 0) {
 				this.blockSize = 512;
 			}
-			
+
 		}
 		catch (IOException ex) {
 			throw new RuntimeException(ex);
@@ -67,7 +68,7 @@ public class DBFMemoFile {
 			DBFUtils.close(file);
 		}
 	}
-	
+
 	private boolean isFPT() {
 		return this.fpt;
 	}
@@ -76,19 +77,19 @@ public class DBFMemoFile {
 	 * @param block position of first block of this field
 	 * @return text contained in the block
 	 */
-	
+
 	protected String readText(int block) {
 		return (String) readData(block, DBFDataType.MEMO);
 	}
 	/**
 	 * Only for testing purposes
-	 * @param block postition of first block of this field 
+	 * @param block postition of first block of this field
 	 * @return data in the block as byte
 	 */
 	protected byte[] readBinary(int block) {
 		return (byte[]) readData(block, DBFDataType.BINARY);
 	}
-	
+
 	protected Object readData(int block, DBFDataType type) {
 		RandomAccessFile file = null;
 		long blockStart = this.blockSize * (long) block;
@@ -114,7 +115,7 @@ public class DBFMemoFile {
 					checkForEndMark = false;
 					if (isFPT()) {
 						int intType = blockData[3];
-						// 01 is text, other are binary						
+						// 01 is text, other are binary
 						if (intType == 1) {
 							usedType = DBFDataType.MEMO;
 						}
@@ -124,11 +125,11 @@ public class DBFMemoFile {
 						else if (intType == 0) {
 							usedType = DBFDataType.PICTURE;
 						}
-						
+
 						itemSize = ByteBuffer.wrap(new byte[]{blockData[4], blockData[5], blockData[6], blockData[7]}).getInt();
 					}
 					else {
-						itemSize = ByteBuffer.wrap(new byte[]{blockData[7], blockData[6], blockData[5], blockData[4]}).getInt() - 8;						
+						itemSize = ByteBuffer.wrap(new byte[]{blockData[7], blockData[6], blockData[5], blockData[4]}).getInt() - 8;
 					}
 					endIndex = Math.min(itemSize + 8, endIndex);
 				}
@@ -148,8 +149,8 @@ public class DBFMemoFile {
 			if (usedType != DBFDataType.MEMO) {
 				return data;
 			}
-			return new String(data, charset);			
-			
+			return new String(data, charset);
+
 		}
 		catch (IOException ex) {
 			throw new RuntimeException(ex);
@@ -157,7 +158,7 @@ public class DBFMemoFile {
 		finally {
 			DBFUtils.close(file);
 		}
-		
+
 	}
 	private boolean isMagicDBase4(byte[] blockData) {
 		return blockData[0] == (byte) 0xFF && blockData[1] == (byte) 0xFF && blockData[2] == 0x08 && blockData[3] == 0x00;

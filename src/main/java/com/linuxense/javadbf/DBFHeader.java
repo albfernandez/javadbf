@@ -22,6 +22,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.linuxense.javadbf;
 
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -40,7 +41,7 @@ public class DBFHeader {
 
 	public static final byte SIG_DBASE_III = (byte) 0x03;
 	/* DBF structure start here */
-	
+
 	private byte signature;              /* 0 */
 	private byte year;                   /* 1 */
 	private byte month;                  /* 2 */
@@ -57,17 +58,17 @@ public class DBFHeader {
 	private byte mdxFlag;                /* 28 */
 	private byte languageDriver;         /* 29 */
 	private short reserv4;               /* 30-31 */
-	DBFField []fieldArray;       /* each 32 bytes */	
-	DBFField[] userFieldArray; 
+	DBFField []fieldArray;       /* each 32 bytes */
+	DBFField[] userFieldArray;
 	private byte terminator1;            /* n+1 */
-	
+
 	private Charset detectedCharset;
 	private Charset usedCharset;
-	
+
 
 
 	private static final int DBASE_LEVEL_7 = 4;
-	
+
 	protected DBFHeader() {
 		this.signature = SIG_DBASE_III;
 		this.terminator1 = 0x0D;
@@ -76,8 +77,8 @@ public class DBFHeader {
 	void read( DataInput dataInput, Charset charset) throws IOException {
 
 		this.signature = dataInput.readByte(); /* 0 */
-		
-				
+
+
 
 		this.year = dataInput.readByte();      /* 1 */
 		this.month = dataInput.readByte();     /* 2 */
@@ -96,20 +97,20 @@ public class DBFHeader {
 		this.mdxFlag = dataInput.readByte();                           /* 28 */
 		this.languageDriver = dataInput.readByte();                    /* 29 */
 		this.reserv4 = DBFUtils.readLittleEndianShort( dataInput);        /* 30-31 */
-		
-		
+
+
 		this.detectedCharset = DBFCharsetHelper.getCharsetByByte(this.languageDriver);
-		
+
 		if (isDB7()) {
 			byte[] languageName = new byte[32];
 			dataInput.readFully(languageName);
 //			this.languageDriverName =  new String (languageName, StandardCharsets.US_ASCII);
-//			this.reserv5 =  dataInput.readInt(); 
-			dataInput.readInt(); 
+//			this.reserv5 =  dataInput.readInt();
+			dataInput.readInt();
 		}
-		
+
 		List<DBFField> v_fields = new ArrayList<>();
-		
+
 		this.usedCharset = this.detectedCharset;
 		if (charset != null) {
 			this.usedCharset = charset;
@@ -117,8 +118,8 @@ public class DBFHeader {
 		if (this.usedCharset == null) {
 			this.usedCharset = StandardCharsets.ISO_8859_1;
 		}
-		
-		DBFField field = null; 
+
+		DBFField field = null;
 		if (isDB7()) {
 			/* 48 each */
 			while ((field = DBFField.createFieldDB7(dataInput,this.usedCharset))!= null) {
@@ -126,10 +127,10 @@ public class DBFHeader {
 			}
 		}
 		else {
-			/* 32 each */ 
+			/* 32 each */
 			while ((field = DBFField.createField(dataInput,this.usedCharset))!= null) {
 				v_fields.add(field);
-			}	
+			}
 
 		}
 		this.fieldArray = v_fields.toArray(new DBFField[v_fields.size()]);
@@ -140,7 +141,7 @@ public class DBFHeader {
 			}
 		}
 		this.userFieldArray = userFields.toArray(new DBFField[userFields.size()]);
-		
+
 	}
 	int getTableHeaderSize() {
 		if (isDB7()) {
@@ -158,7 +159,7 @@ public class DBFHeader {
 	private boolean isDB7() {
 		return (this.signature & 0x7) == DBASE_LEVEL_7;
 	}
-	
+
 	void write(DataOutput dataOutput) throws IOException {
 		dataOutput.writeByte(this.signature); /* 0 */
 
@@ -240,29 +241,29 @@ public class DBFHeader {
 		}
 		return (short) (sum + 1);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return The year the file was created
 	 */
 	public int getYear() {
 		return 1900 + this.year;
 	}
 	/**
-	 * 
+	 *
 	 * @return The month the file was created
 	 */
 	public int getMonth() {
 		return this.month;
 	}
 	/**
-	 * 
+	 *
 	 * @return The day of month the file was created
 	 */
 	public int getDay() {
 		return this.day;
 	}
-	
+
 	/**
 	 * Gets the date the file was modified
 	 * @return The date de file was created
@@ -281,18 +282,18 @@ public class DBFHeader {
 			return null;
 		}
 	}
-	
-	
+
+
 	protected Charset getDetectedCharset() {
 		return this.detectedCharset;
 	}
 
-	
+
 	protected Charset getUsedCharset() {
 		return this.usedCharset;
 	}
 	protected void setUsedCharset(Charset charset) {
 		this.usedCharset = charset;
 	}
-	
+
 }

@@ -42,28 +42,28 @@ import java.util.TimeZone;
 
 /**
  * DBFReader class can creates objects to represent DBF data.
- * 
+ *
  * This Class is used to read data from a DBF file. Meta data and records can be
  * queried against this document.
- * 
+ *
  * <p>
  * DBFReader cannot write to a DBF file. For creating DBF files use DBFWriter.
- * 
+ *
  * <p>
  * Fetching records is possible only in the forward direction and cannot be
  * re-wound. In such situations, a suggested approach is to reconstruct the
  * object.
- * 
+ *
  * <p>
  * The nextRecord() method returns an array of Objects and the types of these
  * Object are as follows:
- * 
+ *
  * <table>
  * <tr>
  * <th>xBase Type</th>
  * <th>Java Type</th>
  * </tr>
- * 
+ *
  * <tr>
  * <td>C</td>
  * <td>String</td>
@@ -143,20 +143,20 @@ public class DBFReader extends DBFBase implements Closeable {
 	private DBFHeader header;
 	private boolean trimRightSpaces = true;
 	private boolean showDeletedRows = false;
-	
+
 	private DBFMemoFile memoFile = null;
-	
+
 	private boolean closed = false;
-	
-	
+
+
 	/**
 	 * Intializes a DBFReader object.
-	 * 
+	 *
 	 * Tries to detect charset from file, if failed uses default charset ISO-8859-1
 	 * When this constructor returns the object will have completed reading the
 	 * header (meta date) and header information can be queried there on. And it
 	 * will be ready to return the first row.
-	 * 
+	 *
 	 * @param in  the InputStream where the data is read from.
 	 */
 	public DBFReader(InputStream in) {
@@ -189,8 +189,8 @@ public class DBFReader extends DBFBase implements Closeable {
 	 * @param in the InputStream where the data is read from.
 	 * @param charset charset used to decode field names and field contents. If null, then is autedetected from dbf file
 	 */
-	public DBFReader(InputStream in,Charset charset) { 
-		this(in, charset, false); 
+	public DBFReader(InputStream in,Charset charset) {
+		this(in, charset, false);
 	}
 
 	/**
@@ -206,13 +206,13 @@ public class DBFReader extends DBFBase implements Closeable {
 	 */
 	public DBFReader(InputStream in, Charset charset, boolean showDeletedRows) {
 		try {
-			
+
 			this.dataInputStream = new DataInputStream(in);
 			this.header = new DBFHeader();
 			this.header.read(this.dataInputStream, charset);
 			setCharset(this.header.getUsedCharset());
 			this.showDeletedRows = showDeletedRows;
-			
+
 			/* it might be required to leap to the start of records at times */
 			int fieldSize = this.header.getFieldDescriptorSize();
 			int tableSize = this.header.getTableHeaderSize();
@@ -263,7 +263,7 @@ public class DBFReader extends DBFBase implements Closeable {
 	/**
 	 * Returns the asked Field. In case of an invalid index, it returns a
 	 * ArrayIndexOutofboundsException.
-	 * 
+	 *
 	 * @param index Index of the field. Index of the first field is zero.
 	 */
 	public DBFField getField(int index) {
@@ -290,7 +290,7 @@ public class DBFReader extends DBFBase implements Closeable {
 
 	/**
 	 * Reads the returns the next row in the DBF stream.
-	 * 
+	 *
 	 * @return The next row as an Object array. Types of the elements these
 	 *          arrays follow the convention mentioned in the class description.
 	 */
@@ -321,7 +321,7 @@ public class DBFReader extends DBFBase implements Closeable {
 				DBFField field = this.header.fieldArray[i];
 				Object o = getFieldValue(field);
 				if (field.isSystem()) {
-					if (field.getType() == DBFDataType.NULL_FLAGS && (o instanceof BitSet)) {						
+					if (field.getType() == DBFDataType.NULL_FLAGS && o instanceof BitSet) {
 						BitSet nullFlags = (BitSet) o;
 						int currentIndex = -1;
 						for (int j = 0; j < this.header.fieldArray.length; j++) {
@@ -331,10 +331,10 @@ public class DBFReader extends DBFBase implements Closeable {
 								if (nullFlags.get(currentIndex)) {
 									recordObjects.set(j, null);
 								}
-							}								
+							}
 							if (field1.getType() == DBFDataType.VARBINARY || field1.getType() == DBFDataType.VARCHAR){
 								currentIndex++;
-								if (recordObjects.get(i) instanceof byte[]) {										
+								if (recordObjects.get(i) instanceof byte[]) {
 									byte[] data = (byte[]) recordObjects.get(j);
 									int size = field1.getLength();
 									if (!nullFlags.get(currentIndex)) {
@@ -356,13 +356,12 @@ public class DBFReader extends DBFBase implements Closeable {
 				else {
 					recordObjects.add(o);
 				}
-			}			
+			}
 		} catch (EOFException e) {
 			return null;
 		} catch (IOException e) {
 			throw new DBFException(e.getMessage(), e);
 		}
-
 		return recordObjects.toArray();
 	}
 
@@ -437,7 +436,7 @@ public class DBFReader extends DBFBase implements Closeable {
 			String s_data = String.format("%05d", c_data);
 			String x1 = s_data.substring(0, s_data.length() - 4);
 			String x2 = s_data.substring(s_data.length() - 4);
-			
+
 			skip(field.getLength() - 4);
 			return new BigDecimal(x1 + "." + x2);
 		case TIMESTAMP:
@@ -454,7 +453,7 @@ public class DBFReader extends DBFBase implements Closeable {
 				calendar.add(Calendar.MILLISECOND, -TimeZone.getDefault().getOffset(calendar.getTimeInMillis()));
 				return calendar.getTime();
 			}
-		case MEMO:					
+		case MEMO:
 		case GENERAL_OLE:
 		case PICTURE:
 		case BLOB:
@@ -502,7 +501,7 @@ public class DBFReader extends DBFBase implements Closeable {
 		else {
 			nBlock = DBFUtils.readLittleEndianInt(this.dataInputStream);
 		}
-		if (this.memoFile != null && nBlock != null) {				
+		if (this.memoFile != null && nBlock != null) {
 			return memoFile.readData(nBlock.intValue(), field.getType());
 		}
 		return null;
@@ -519,7 +518,7 @@ public class DBFReader extends DBFBase implements Closeable {
 			this.dataInputStream.readByte();
 		}
 	}
-	
+
 	protected DBFHeader getHeader() {
 		return this.header;
 	}
@@ -538,7 +537,7 @@ public class DBFReader extends DBFBase implements Closeable {
 	public void setTrimRightSpaces(boolean trimRightSpaces) {
 		this.trimRightSpaces = trimRightSpaces;
 	}
-	
+
 	/**
 	 * Sets the memo file (DBT or FPT) where memo fields will be readed.
 	 * If no file is provided, then this fields will be null.
@@ -556,12 +555,12 @@ public class DBFReader extends DBFBase implements Closeable {
 		}
 		this.memoFile = new DBFMemoFile(memoFile, this.getCharset());
 	}
-	
+
 	@Override
 	public void close() {
 		this.closed = true;
 		DBFUtils.close(this.dataInputStream);
 	}
-	
-	
+
+
 }

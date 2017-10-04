@@ -18,17 +18,18 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.linuxense.javadbf;
 
+
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 
 /**
  * Utility to map dbf charsets to java charsets.
- * 
- * See http://support.microsoft.com/kb/129631/en-us 
- * 
+ *
+ * See http://support.microsoft.com/kb/129631/en-us
+ *
  * See also:
  * https://msdn.microsoft.com/en-us/library/aa975386(v=vs.71).aspx byte 29
- *	
+ *
  *(0x1D) is code page mark See https://msdn.microsoft.com/en-us/library/aa975345(v=vs.71).aspx
  */
 

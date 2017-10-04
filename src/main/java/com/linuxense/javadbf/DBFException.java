@@ -21,6 +21,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 package com.linuxense.javadbf;
 
 
+
 /**
  *	Represents exceptions happen in the JavaDBF classes.
  *
@@ -45,7 +46,7 @@ public class DBFException extends RuntimeException {
 	public DBFException(String message, Throwable cause) {
 		super(message, cause);
 	}
-	
+
 	public DBFException(Throwable cause) {
 		super(cause);
 	}

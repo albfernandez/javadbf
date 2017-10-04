@@ -21,6 +21,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.linuxense.javadbf;
 
+
 import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -28,23 +29,23 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.nio.charset.Charset;
 
 /*
  DBFWriter
- Class for defining a DBF structure and addin data to that structure and 
+ Class for defining a DBF structure and addin data to that structure and
  finally writing it to an OutputStream.
 
  */
 /**
  * An object of this class can create a DBF file.
- * 
+ *
  * Create an object, <br>
  * then define fields by creating DBFField objects and<br>
  * add them to the DBFWriter object<br>
@@ -59,7 +60,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	//Open and append records to an existing DBF
 	private RandomAccessFile raf = null;
 	private OutputStream outputStream = null;
-	
+
 	private boolean closed = false;
 
 	/**
@@ -82,13 +83,13 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 		this.header = new DBFHeader();
 		this.header.setUsedCharset(charset);
 	}
-	
+
 	/**
 	 * Creates a DBFWriter wich write data to the given OutputStream.
 	 * Uses default charset iso-8859-1
 	 * @param out stream to write the data to.
 	 */
-	
+
 	public DBFWriter(OutputStream out) {
 		this(out, DEFAULT_CHARSET);
 	}
@@ -104,7 +105,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 		this.header.setUsedCharset(charset);
 		this.outputStream = out;
 	}
-	
+
 	/**
 	 * Creates a DBFWriter which can append to records to an existing DBF file.
 	 *
@@ -128,7 +129,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	 *                or if an IO error occurs.
 	 */
 	public DBFWriter(File dbfFile, Charset charset) {
-		super();		
+		super();
 		try {
 			this.raf = new RandomAccessFile(dbfFile, "rw");
 			this.header = new DBFHeader();
@@ -276,7 +277,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	}
 
 
-	
+
 	private void writeToStream(OutputStream out) {
 		try {
 
@@ -328,13 +329,13 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 			try {
 				writeToStream(this.outputStream);
 			}
-			finally {				
+			finally {
 				DBFUtils.close(this.outputStream);
 			}
 		}
-		
+
 	}
-	
+
 
 	private void writeRecord(DataOutput dataOutput, Object[] objectArray) throws IOException {
 		dataOutput.write((byte) ' ');
@@ -396,7 +397,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 			}
 		}
 	}
-	
+
 	/**
 	 * Check if the writer is closed
 	 * @return true if already closed
@@ -404,7 +405,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	protected boolean isClosed() {
 		return this.closed;
 	}
-	
+
 	/**
 	 * Get de underlying RandomAccessFile. It can be null if OutputStream constructor is used.
 	 * @return the underlying RandomAccessFile
@@ -412,8 +413,8 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	protected RandomAccessFile getRamdonAccessFile() {
 		return this.raf;
 	}
-	
-	
+
+
 	/**
 	 * Writes the set data to the OutputStream.
 	 * @param out the output stream
@@ -425,7 +426,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 			writeToStream(out);
 		}
 	}
-	
+
 	/**
 	 * In sync mode, write the header and close the file
 	 * @deprecated use {@link #close()}

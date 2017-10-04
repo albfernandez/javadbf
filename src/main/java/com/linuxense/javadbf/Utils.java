@@ -21,7 +21,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.linuxense.javadbf;
 
-
 import java.io.DataInput;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -41,10 +40,10 @@ public final class Utils {
 	public static final int ALIGN_LEFT = 10;
 	/**
 	 * @deprecated Use {@link DBFAlignment#RIGHT}
-	 */	
+	 */
 	@Deprecated
 	public static final int ALIGN_RIGHT = 12;
-	
+
 
 	private Utils() {
 		throw new AssertionError("No instances of this class are allowed");
@@ -84,8 +83,8 @@ public final class Utils {
 	public static byte[] removeSpaces(byte[] array) {
 		return DBFUtils.removeSpaces(array);
 	}
-	
-	
+
+
 
 	/**
 	 * @deprecated use {@link DBFUtils#littleEndian(short)}
@@ -130,7 +129,7 @@ public final class Utils {
 	public static byte[] textPadding(String text, Charset charset, int length, DBFAlignment alignment, byte paddingByte) {
 		return DBFUtils.textPadding(text, charset, length, alignment, paddingByte);
 	}
-	
+
 	/**
 	 * @deprecated Use {@link DBFUtils#doubleFormating(Number, Charset, int, int)}
 	 */
@@ -181,20 +180,20 @@ public final class Utils {
 	public static Object toBoolean(byte t_logical) {
 		return DBFUtils.toBoolean(t_logical);
 	}
-	
+
 	/**
 	 * Trim spaces from both sides of the array.
 	 * @param arr
 	 * @return String trimmed both sides
-	 * @deprecated this functions really trim all spaces, instead only left spaces, so for clarity is deprecated and 
+	 * @deprecated this functions really trim all spaces, instead only left spaces, so for clarity is deprecated and
 	 * mantained for backwards compatibility, use {@link DBFUtils#removeSpaces(byte[])}
 	 */
 	@Deprecated
 	public static byte[] trimLeftSpaces(byte[] arr) {
 		return removeSpaces(arr);
 	}
-	
-	/** 
+
+	/**
 	 * @deprecated Use {@link DBFUtils#textPadding(String, Charset, int, DBFAlignment, byte)}
 	 */
 
@@ -204,7 +203,7 @@ public final class Utils {
 
 		return textPadding(text, characterSetName, length, alignment, (byte) ' ');
 	}
-	/** 
+	/**
 	 * @deprecated Use {@link DBFUtils#textPadding(String, Charset, int, DBFAlignment, byte)}
 	 */
 	@Deprecated
@@ -217,18 +216,18 @@ public final class Utils {
 		return textPadding(text, characterSetName, length, align, paddingByte);
 
 	}
-	
-	/** 
+
+	/**
 	 * @deprecated Use {@link DBFUtils#textPadding(String, Charset, int)}
 	 */
-	
+
 	@Deprecated
 	public static byte[] textPadding(String text, String characterSetName, int length)
 			throws UnsupportedEncodingException {
 		return textPadding(text, characterSetName, length, DBFAlignment.LEFT);
 	}
 
-	/** 
+	/**
 	 * @deprecated Use {@link DBFUtils#textPadding(String, Charset, int, DBFAlignment, byte)}
 	 */
 
@@ -239,13 +238,13 @@ public final class Utils {
 		return textPadding(text, characterSetName, length, alignment, (byte) ' ');
 	}
 
-	/** 
+	/**
 	 * @deprecated Use {@link DBFUtils#textPadding(String, Charset, int, DBFAlignment, byte)}
 	 */
 	@Deprecated
 	public static byte[] textPadding(String text, String characterSetName, int length, DBFAlignment alignment, byte paddingByte)
 			throws UnsupportedEncodingException {
-		return textPadding(text, Charset.forName(characterSetName), length, alignment, paddingByte);		
+		return textPadding(text, Charset.forName(characterSetName), length, alignment, paddingByte);
 	}
 	/**
 	 * @deprecated Use {@link DBFUtils#doubleFormating(Number, Charset, int, int)}
@@ -263,6 +262,6 @@ public final class Utils {
 			throws UnsupportedEncodingException {
 		return doubleFormating(doubleNum, Charset.forName(characterSetName), fieldLength, sizeDecimalPart);
 	}
-	
+
 
 }

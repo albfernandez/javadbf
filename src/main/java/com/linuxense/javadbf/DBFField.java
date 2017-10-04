@@ -23,12 +23,13 @@ package com.linuxense.javadbf;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.util.Arrays;
 import java.nio.charset.Charset;
+import java.util.Arrays;
+
 
 /**
  * DBFField represents a field specification in an dbf file.
- * 
+ *
  * DBFField objects are either created and added to a DBFWriter object or
  * obtained from DBFReader object through getField( int) query.
  */
@@ -40,35 +41,35 @@ public class DBFField {
 	 */
 	@Deprecated
 	public static final byte FIELD_TYPE_C = (byte) 'C';
-	
+
 	/**
 	 * Code for logical data
 	 * @deprecated You must use {@link DBFDataType#LOGICAL} instead
 	 */
 	@Deprecated
 	public static final byte FIELD_TYPE_L = (byte) 'L';
-	
+
 	/**
 	 * Code for numeric data
 	 * @deprecated You must use {@link DBFDataType#NUMERIC} instead
 	 */
 	@Deprecated
 	public static final byte FIELD_TYPE_N = (byte) 'N';
-	
+
 	/**
 	 * Code for floating poing data
 	 * @deprecated You must use {@link DBFDataType#FLOATING_POINT} instead
 	 */
 	@Deprecated
 	public static final byte FIELD_TYPE_F = (byte) 'F';
-	
+
 	/**
 	 * Code for dates
 	 * @deprecated You must use {@link DBFDataType#DATE} instead
 	 */
 	@Deprecated
 	public static final byte FIELD_TYPE_D = (byte) 'D';
-	
+
 	/**
 	 * Code for memo data (not supported by JavaDBF)
 	 * @deprecated You must use {@link DBFDataType#MEMO} instead
@@ -93,7 +94,7 @@ public class DBFField {
 	public DBFField() {
 		super();
 	}
-	
+
 	// For cloning
 	DBFField(DBFField origin) {
 		super();
@@ -110,20 +111,20 @@ public class DBFField {
 		this.indexFieldFlag = origin.indexFieldFlag;
 		this.name = origin.name;
 	}
-	
+
 	public DBFField(String name, DBFDataType type) {
 		super();
 		setName(name);
 		setType(type);
 	}
-	
+
 	public DBFField(String name, DBFDataType type, int length) {
 		super();
 		setName(name);
 		setType(type);
 		setFieldLength(length);
 	}
-	
+
 	public DBFField(String name, DBFDataType type, int length, int decimalCount) {
 		super();
 		setName(name);
@@ -137,10 +138,10 @@ public class DBFField {
 	/**
 	 * Creates a DBFField object from the data read from the given
 	 * DataInputStream.
-	 * 
+	 *
 	 * The data in the DataInputStream object is supposed to be organised
 	 * correctly and the stream "pointer" is supposed to be positioned properly.
-	 * 
+	 *
 	 * @param in
 	 *            DataInputStream
 	 *
@@ -181,7 +182,7 @@ public class DBFField {
 		field.setFieldsFlag = in.readByte(); /* 23 */
 		in.readFully(field.reserv4); /* 24-30 */
 		field.indexFieldFlag = in.readByte(); /* 31 */
-		
+
 		if ((field.type == DBFDataType.CHARACTER || field.type == DBFDataType.VARCHAR) && field.decimalCount != 0) {
 			field.length |= field.length << 8;
 			field.decimalCount = 0;
@@ -189,7 +190,7 @@ public class DBFField {
 
 		return field;
 	}
-	
+
 	protected static DBFField createFieldDB7(DataInput in, Charset charset) throws IOException {
 
 		DBFField field = new DBFField();
@@ -221,14 +222,14 @@ public class DBFField {
 		field.reserv3 = DBFUtils.readLittleEndianShort(in); /* 38-39 */
 		in.readInt(); // 40-43 nextAuto
 		in.readInt(); // 44-47 reserv
-		
+
 		if ((field.type == DBFDataType.CHARACTER || field.type == DBFDataType.VARCHAR) && field.decimalCount != 0) {
 			field.length |= field.length << 8;
 			field.decimalCount = 0;
 		}
 		return field;
 	}
-	
+
 
 	/**
 	 * Writes the content of DBFField object into the stream as per DBF format
@@ -260,7 +261,7 @@ public class DBFField {
 
 	/**
 	 * Returns the name of the field.
-	 * 
+	 *
 	 * @return Name of the field as String.
 	 */
 	public String getName() {
@@ -268,16 +269,16 @@ public class DBFField {
 	}
 
 
-	
+
 	/**
 	 * Returns field length.
-	 * 
+	 *
 	 * @return field length as int.
 	 */
 	public int getLength() {
 		return this.length;
 	}
-	
+
 
 
 	/**
@@ -318,9 +319,9 @@ public class DBFField {
 
 
 
-		
 
-	
+
+
 
 	public int getReserv1() {
 		return this.reserv1;
@@ -387,7 +388,7 @@ public class DBFField {
 		if (type.getDefaultSize() > 0) {
 			this.length = type.getDefaultSize();
 		}
-		
+
 	}
 
 	/**
@@ -396,7 +397,7 @@ public class DBFField {
 		should be set by calling setFieldLength().
 
 		@param size of the decimal field.
-		
+
 	*/
 	public void setDecimalCount(int size) {
 		if (size < 0) {
@@ -410,7 +411,7 @@ public class DBFField {
 		}
 		this.decimalCount = (byte) size;
 	}
-	
+
 	public boolean isSystem() {
 		return (this.reserv2 & 1) != 0;
 	}
@@ -420,24 +421,25 @@ public class DBFField {
 	public boolean isBinary() {
 		return (this.reserv2 & 4) != 0;
 	}
-	
+
+	@Override
 	public String toString() {
-		return 
+		return
 			this.name+"|" + this.type + " (" + this.type.getCharCode() + ")" +
 			"\nLength: " + this.length +
-			"\nDecimalCount:" + this.decimalCount + 
-			"\nSystem:" + isSystem() + 
-			"\nNullable:" + isNullable() + 
+			"\nDecimalCount:" + this.decimalCount +
+			"\nSystem:" + isSystem() +
+			"\nNullable:" + isNullable() +
 			"\nBinary:" + isBinary() +
 			"\nIndex:" + this.indexFieldFlag;
-		
+
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Returns field length.
-	 * 
+	 *
 	 * @return field length as int.
 	 * @deprecated use {@link #getLength()}
 	 */
@@ -445,7 +447,7 @@ public class DBFField {
 	public int getFieldLength() {
 		return getLength();
 	}
-	
+
 	/**
 	Length of the field.
 	This method should be called before calling setDecimalCount().
@@ -461,7 +463,7 @@ public class DBFField {
 
 	/**
 	 * Sets the data type of the field.
-	 * 
+	 *
 	 * @param type
 	 *            of the field. One of the following:<br>
 	 *            C, L, N, F, D, M
@@ -482,7 +484,7 @@ public class DBFField {
 
 	/**
 	 * Returns the data type of the field.
-	 * 
+	 *
 	 * @return Data type as byte.
 	 * @deprecated This method is deprecated and is replaced by {@link #getType()}
 	 */

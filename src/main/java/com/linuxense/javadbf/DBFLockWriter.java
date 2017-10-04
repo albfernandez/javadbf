@@ -1,5 +1,6 @@
 package com.linuxense.javadbf;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.channels.FileLock;
@@ -14,13 +15,13 @@ public class DBFLockWriter extends DBFWriter {
 
 
 	public DBFLockWriter(File dbfFile) {
-		super(dbfFile);		
+		super(dbfFile);
 	}
 
 	public DBFLockWriter(File dbfFile, Charset charset) {
 		super(dbfFile, charset);
 	}
-	
+
 	@Override
 	public void addRecord(Object[] values) {
 		if (this.isClosed()) {
@@ -37,7 +38,7 @@ public class DBFLockWriter extends DBFWriter {
 			throw new DBFException(ioe.getMessage(), ioe);
 		}
 	}
-	
+
 	@Override
 	public void close() {
 		if (this.isClosed()) {

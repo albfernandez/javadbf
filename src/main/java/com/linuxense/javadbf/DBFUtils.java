@@ -36,6 +36,7 @@ import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Locale;
 
+
 /**
  * Miscelaneous functions required by the JavaDBF package.
  *
@@ -47,13 +48,13 @@ public final class DBFUtils {
 	private DBFUtils() {
 		throw new AssertionError("No instances of this class are allowed");
 	}
-	
+
 	/**
-	 * Reads a number from a stream, 
+	 * Reads a number from a stream,
 	 * @param dataInput the stream data
 	 * @param length the legth of the number
 	 * @return The number as a Number (BigDecimal)
-	 * @throws IOException 
+	 * @throws IOException
 	 * @throws EOFException if reached end of file before length bytes
 	 */
 	public static Number readNumericStoredAsText(DataInputStream dataInput, int length) throws IOException {
@@ -264,7 +265,7 @@ public final class DBFUtils {
 		if (stringToCheck == null || stringToCheck.length() == 0) {
 			return true;
 		}
-		synchronized (ASCII_ENCODER) {			
+		synchronized (ASCII_ENCODER) {
 			return ASCII_ENCODER.canEncode(stringToCheck);
 		}
 	}
