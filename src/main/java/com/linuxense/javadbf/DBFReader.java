@@ -215,13 +215,14 @@ public class DBFReader extends DBFBase implements Closeable {
 			this.dataInputStream = new DataInputStream(in);
 			this.header = new DBFHeader();
 			this.header.read(this.dataInputStream, charset, showDeletedRows);
-
+			setCharset(this.header.getUsedCharset());
 			/* it might be required to leap to the start of records at times */
 			int fieldSize = this.header.getFieldDescriptorSize();
 			int tableSize = this.header.getTableHeaderSize();
-			int t_dataStartIndex = this.header.headerLength - (tableSize + (fieldSize * this.header.fieldArray.length)) - 1;
-			this.mapFieldNames = createMapFieldNames(this.header.userFieldArray);
+			int t_dataStartIndex = this.header.headerLength - (tableSize + (fieldSize * this.header.fieldArray.length)) - 1;			
 			skip(t_dataStartIndex);
+			
+			this.mapFieldNames = createMapFieldNames(this.header.userFieldArray);
 		} catch (IOException e) {
 			DBFUtils.close(dataInputStream);
 			DBFUtils.close(in);
