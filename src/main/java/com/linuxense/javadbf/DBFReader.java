@@ -240,21 +240,6 @@ public class DBFReader extends DBFBase implements Closeable {
 		return Collections.unmodifiableMap(fieldNames);
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(128);
-		sb.append(this.header.getYear()).append("/");
-		sb.append(this.header.getMonth()).append("/");
-		sb.append(this.header.getDay()).append("\n");
-		sb.append("Total records: ").append(this.header.numberOfRecords).append("\n");
-		sb.append("Header length: ").append(this.header.headerLength).append("\n");
-		sb.append("Columns:\n");
-		for (DBFField field : this.header.fieldArray) {
-			sb.append(field.getName());
-			sb.append("\n");
-		}
-		return sb.toString();
-	}
 
 	/**
 		Returns the number of records in the DBF.
@@ -367,7 +352,11 @@ public class DBFReader extends DBFBase implements Closeable {
 		}
 		return recordObjects.toArray();
 	}
-	
+	/**
+	 * Reads the returns the next row in the DBF stream.
+	 *
+	 * @return The next row as an DBFRow
+	 */
 	public DBFRow nextRow() {
 		Object[] record = nextRecord();
 		if (record == null) {
@@ -571,6 +560,22 @@ public class DBFReader extends DBFBase implements Closeable {
 	public void close() {
 		this.closed = true;
 		DBFUtils.close(this.dataInputStream);
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder(128);
+		sb.append(this.header.getYear()).append("/");
+		sb.append(this.header.getMonth()).append("/");
+		sb.append(this.header.getDay()).append("\n");
+		sb.append("Total records: ").append(this.header.numberOfRecords).append("\n");
+		sb.append("Header length: ").append(this.header.headerLength).append("\n");
+		sb.append("Columns:\n");
+		for (DBFField field : this.header.fieldArray) {
+			sb.append(field.getName());
+			sb.append("\n");
+		}
+		return sb.toString();
 	}
 
 
