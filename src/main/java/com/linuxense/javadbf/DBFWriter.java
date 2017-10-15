@@ -153,7 +153,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 				return;
 			}
 
-			this.header.read(this.raf, charset);
+			this.header.read(this.raf, charset, false);
 			setCharset(this.header.getUsedCharset());
 
 			// position file pointer at the end of the raf

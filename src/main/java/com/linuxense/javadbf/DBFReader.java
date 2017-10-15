@@ -35,9 +35,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -142,12 +145,14 @@ public class DBFReader extends DBFBase implements Closeable {
 	private DataInputStream dataInputStream;
 	private DBFHeader header;
 	private boolean trimRightSpaces = true;
-	private boolean showDeletedRows = false;
 
 	private DBFMemoFile memoFile = null;
 
 	private boolean closed = false;
 
+	private Map<String, Integer> mapFieldNames = new HashMap<String, Integer>();
+	
+	private boolean showDeletedRows = false;
 
 	/**
 	 * Intializes a DBFReader object.
@@ -206,17 +211,16 @@ public class DBFReader extends DBFBase implements Closeable {
 	 */
 	public DBFReader(InputStream in, Charset charset, boolean showDeletedRows) {
 		try {
-
+			this.showDeletedRows = showDeletedRows;
 			this.dataInputStream = new DataInputStream(in);
 			this.header = new DBFHeader();
-			this.header.read(this.dataInputStream, charset);
-			setCharset(this.header.getUsedCharset());
-			this.showDeletedRows = showDeletedRows;
+			this.header.read(this.dataInputStream, charset, showDeletedRows);
 
 			/* it might be required to leap to the start of records at times */
 			int fieldSize = this.header.getFieldDescriptorSize();
 			int tableSize = this.header.getTableHeaderSize();
 			int t_dataStartIndex = this.header.headerLength - (tableSize + (fieldSize * this.header.fieldArray.length)) - 1;
+			this.mapFieldNames = createMapFieldNames(this.header.userFieldArray);
 			skip(t_dataStartIndex);
 		} catch (IOException e) {
 			DBFUtils.close(dataInputStream);
@@ -225,6 +229,15 @@ public class DBFReader extends DBFBase implements Closeable {
 		}
 	}
 
+
+	private Map<String, Integer> createMapFieldNames(DBFField[] fieldArray) {
+		Map<String, Integer> fieldNames = new HashMap<String, Integer>();
+		for (int i = 0; i < fieldArray.length; i++) {
+			String name = fieldArray[i].getName();
+			fieldNames.put(name.toLowerCase(), i);
+		}		
+		return Collections.unmodifiableMap(fieldNames);
+	}
 
 	@Override
 	public String toString() {
@@ -267,25 +280,14 @@ public class DBFReader extends DBFBase implements Closeable {
 	 * @param index Index of the field. Index of the first field is zero.
 	 */
 	public DBFField getField(int index) {
-
-		// if showing deleted rows, ensure first column is the deleted flag field
-		if(showDeletedRows) {
-			if(index == 0) {
-				return new DBFField("DELETED", DBFDataType.LOGICAL);
-			}
-			else {
-				return new DBFField(this.header.fieldArray[index-1]);
-			}
-		}
-
-		return new DBFField(this.header.fieldArray[index]);
+		return new DBFField(this.header.userFieldArray[index]);
 	}
 
 	/**
 	 * Returns the number of field in the DBF.
 	 */
 	public int getFieldCount() {
-		return this.header.userFieldArray.length + (this.showDeletedRows ? 1 : 0);
+		return this.header.userFieldArray.length;
 	}
 
 	/**
@@ -363,6 +365,14 @@ public class DBFReader extends DBFBase implements Closeable {
 			throw new DBFException(e.getMessage(), e);
 		}
 		return recordObjects.toArray();
+	}
+	
+	public DBFRow nextRow() {
+		Object[] record = nextRecord();
+		if (record == null) {
+			return null;
+		}
+		return new DBFRow(record, mapFieldNames, this.header.fieldArray);
 	}
 
 	private Object getFieldValue(DBFField field) throws IOException {

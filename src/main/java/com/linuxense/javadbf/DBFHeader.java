@@ -74,7 +74,8 @@ public class DBFHeader {
 		this.terminator1 = 0x0D;
 	}
 
-	void read( DataInput dataInput, Charset charset) throws IOException {
+	
+	void read( DataInput dataInput, Charset charset, boolean showDeletedRows) throws IOException {
 
 		this.signature = dataInput.readByte(); /* 0 */
 
@@ -135,6 +136,10 @@ public class DBFHeader {
 		}
 		this.fieldArray = v_fields.toArray(new DBFField[v_fields.size()]);
 		List<DBFField> userFields = new ArrayList<>();
+		if (showDeletedRows) {
+			DBFField deletedField = new DBFField("deleted", DBFDataType.LOGICAL);
+			userFields.add(deletedField);
+		}
 		for (DBFField field1: this.fieldArray) {
 			if (!field1.isSystem()) {
 				userFields.add(field1);
