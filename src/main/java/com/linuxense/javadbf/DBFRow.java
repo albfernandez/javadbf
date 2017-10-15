@@ -5,6 +5,12 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Data containdes in a row of the DBF file.
+ * 
+ * It has methods to ease obtain data.
+ *
+ */
 public class DBFRow {
 
 	private Object[] data;
