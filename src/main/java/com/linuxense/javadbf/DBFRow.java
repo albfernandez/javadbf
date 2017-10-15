@@ -21,10 +21,11 @@ public class DBFRow {
 	private int getColumnIndex(String columnName) {
 		Objects.requireNonNull(columnName);
 		String key = columnName.toLowerCase();
-		if (key == null) {
+		Integer index = mapcolumnNames.get(key);
+		if (index == null) {
 			throw new DBFException("Not field name found for:" + columnName);
 		}
-		return mapcolumnNames.get(key);
+		return index.intValue();
 	}
 	
 	public boolean isDeleted () {
