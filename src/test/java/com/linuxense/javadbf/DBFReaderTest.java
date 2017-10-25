@@ -82,7 +82,7 @@ public class DBFReaderTest {
 			Assert.assertEquals(0, header.fieldArray[1].getReserv3());
 			byte[] reserv4 =  header.fieldArray[1].getReserv4();
 			Assert.assertNotNull(reserv4);
-			Assert.assertEquals(7, reserv4.length);
+			// TODO Auto-generated constructor stub			Assert.assertEquals(7, reserv4.length);
 			Assert.assertArrayEquals(new byte[]{0,0,0,0,0,0,0}, reserv4);
 			Assert.assertEquals(0, header.fieldArray[1].getIndexFieldFlag());
 			Assert.assertEquals(0, header.fieldArray[1].getSetFieldsFlag());
