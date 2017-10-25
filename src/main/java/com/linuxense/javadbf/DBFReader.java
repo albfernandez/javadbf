@@ -142,7 +142,8 @@ public class DBFReader extends DBFBase implements Closeable {
 	private static final long MILLISECS_PER_DAY = 24*60*60*1000;
 	private static final long TIME_MILLIS_1_1_4713_BC = -210866803200000L;
 
-	private DataInputStream dataInputStream;
+	protected InputStream inputStream;
+	protected DataInputStream dataInputStream;
 	private DBFHeader header;
 	private boolean trimRightSpaces = true;
 
@@ -212,6 +213,7 @@ public class DBFReader extends DBFBase implements Closeable {
 	public DBFReader(InputStream in, Charset charset, boolean showDeletedRows) {
 		try {
 			this.showDeletedRows = showDeletedRows;
+			this.inputStream = in;
 			this.dataInputStream = new DataInputStream(in);
 			this.header = new DBFHeader();
 			this.header.read(this.dataInputStream, charset, showDeletedRows);
@@ -365,7 +367,7 @@ public class DBFReader extends DBFBase implements Closeable {
 		return new DBFRow(record, mapFieldNames, this.header.fieldArray);
 	}
 
-	private Object getFieldValue(DBFField field) throws IOException {
+	protected Object getFieldValue(DBFField field) throws IOException {
 		int bytesReaded = 0;
 		switch (field.getType()) {
 		case CHARACTER:
@@ -512,7 +514,7 @@ public class DBFReader extends DBFBase implements Closeable {
 	 * @param n
 	 * @throws IOException
 	 */
-	private void skip(int n) throws IOException {
+	protected void skip(int n) throws IOException {
 		int skipped = (int) this.dataInputStream.skip(n);
 		for (int i = skipped; i < n; i++) {
 			this.dataInputStream.readByte();
