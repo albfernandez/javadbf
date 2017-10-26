@@ -214,7 +214,7 @@ public class DBFReader extends DBFBase implements Closeable {
 		try {
 			this.showDeletedRows = showDeletedRows;
 			this.inputStream = in;
-			this.dataInputStream = new DataInputStream(in);
+			this.dataInputStream = new DataInputStream(this.inputStream);
 			this.header = new DBFHeader();
 			this.header.read(this.dataInputStream, charset, showDeletedRows);
 			setCharset(this.header.getUsedCharset());
