@@ -27,7 +27,7 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.linuxsense.javadbf.mocks.FailInputStream;
+import com.linuxense.javadbf.mocks.FailInputStream;
 
 public class DBFReaderTest {
 	

@@ -16,16 +16,30 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package com.linuxsense.javadbf.mocks;
+package com.linuxense.javadbf.docexamples;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import com.linuxense.javadbf.*;
 
-public class FailOutputStream extends OutputStream {
+public class JavaDBFReaderMemoTest {
 
-	@Override
-	public void write(int b) throws IOException {
-		throw new IOException("Fail writting");		
+	public static void main(String args[]) {
+		DBFReader reader = null;
+		try {
+
+			// create a DBFReader object
+			reader = new DBFReader(new FileInputStream(args[0]));
+
+			reader.setMemoFile(new File("memo.dbt"));
+
+			// do whatever you want with the data
+
+		} catch (DBFException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			DBFUtils.close(reader);
+		}
 	}
-
 }

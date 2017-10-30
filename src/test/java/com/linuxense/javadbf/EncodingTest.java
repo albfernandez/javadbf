@@ -32,7 +32,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.linuxsense.javadbf.mocks.NullOutputStream;
+import com.linuxense.javadbf.mocks.NullOutputStream;
 
 public class EncodingTest {
 

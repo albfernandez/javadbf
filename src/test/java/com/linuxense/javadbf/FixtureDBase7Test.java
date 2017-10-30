@@ -18,7 +18,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.linuxense.javadbf;
 
-import static com.linuxsense.javadbf.testutils.DateUtils.createDate;
+import static com.linuxense.javadbf.testutils.DateUtils.createDate;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -27,7 +27,7 @@ import java.io.FileInputStream;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.linuxsense.javadbf.testutils.AssertUtils;
+import com.linuxense.javadbf.testutils.AssertUtils;
 
 public class FixtureDBase7Test {
 

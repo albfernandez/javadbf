@@ -25,8 +25,8 @@ import java.io.FileInputStream;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.linuxsense.javadbf.testutils.AssertUtils;
-import com.linuxsense.javadbf.testutils.DbfToTxtTest;
+import com.linuxense.javadbf.testutils.AssertUtils;
+import com.linuxense.javadbf.testutils.DbfToTxtTest;
 
 public class FixtureDBase31Test {
 

@@ -23,7 +23,7 @@ import java.io.FileInputStream;
 
 import org.junit.Test;
 
-import com.linuxsense.javadbf.testutils.DbfToTxtTest;
+import com.linuxense.javadbf.testutils.DbfToTxtTest;
 
 public class DBFReaderPrintTest {
 	
