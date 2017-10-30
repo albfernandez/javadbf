@@ -150,10 +150,10 @@ class DBFExploder {
     private DBFExploder() {
     	throw new AssertionError("No instances allowed");
     }
-    
-	private static long TRUNCATE_VALUE(long value, int bits) // Truncate value to a specified number of bits
+    // Truncate value to a specified number of bits
+	private static long TRUNCATE_VALUE(long value, int bits) 
 	{
-		return ((value) & ((1 << (bits)) - 1));
+		return (value) & ((1 << (bits)) - 1);
 	}
     
     static int pkexplode(  byte[] pInBuffer, byte[] pOutBuffer)
