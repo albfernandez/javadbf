@@ -172,6 +172,9 @@ public class JavaDBFReaderTest {
 # Reading a DBF File using field names
 
 
+From JavaDBF 1.7.0 you can use field names to access data. 
+You must use nextRow instead nextRecord
+
 ```	
 
 import java.io.*;
