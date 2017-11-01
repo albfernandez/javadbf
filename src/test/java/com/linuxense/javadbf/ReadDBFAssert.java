@@ -82,14 +82,17 @@ public class ReadDBFAssert {
 
 			int countedRows = 0;
 			int countedDeletes = 0;
+			int headerStoredRows = reader.getHeader().numberOfRecords;
 			while ((rowObject = reader.nextRecord()) != null) {
-				if(rowObject[0] == Boolean.TRUE)
+				if(rowObject[0] == Boolean.TRUE) {
 					countedDeletes++;
+				}
 				countedRows++;
 			}
 
-			Assert.assertEquals(countedRows, expectedRows);
-			Assert.assertEquals(countedDeletes, expectedDeleted);
+			Assert.assertEquals(expectedRows, countedRows);
+			Assert.assertEquals(expectedDeleted, countedDeletes);
+			Assert.assertEquals(expectedRows, headerStoredRows);
 		} finally {
 			DBFUtils.close(reader);
 		}
