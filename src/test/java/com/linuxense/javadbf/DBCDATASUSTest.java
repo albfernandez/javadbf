@@ -18,7 +18,7 @@ public class DBCDATASUSTest {
 	}
 	
 	@Test
-	public void testBDF() throws FileNotFoundException {
+	public void testSidsBDF() throws FileNotFoundException {
 		System.out.println("---- DBF ---");;
 		File file = new File("src/test/resources/dbc-files/sids.dbf");
 		DBFReader reader = null;
@@ -44,8 +44,10 @@ public class DBCDATASUSTest {
 		}
 	}
 	
+
+	
 	@Test
-	public void DBCDATASUSReader() throws FileNotFoundException {
+	public void testSidsDBCDATASUSReader() throws FileNotFoundException {
 		File file = new File("src/test/resources/dbc-files/sids.dbc");
 		DBCDATASUSReader reader = null;
 		try {
@@ -71,6 +73,58 @@ public class DBCDATASUSTest {
 		}
 	}
 	
+	@Test
+	public void testsStormDBF() throws FileNotFoundException {
+		System.out.println("---- DBF ---");;
+		File file = new File("src/test/resources/dbc-files/storm.dbf");
+		DBFReader reader = null;
+		try {
+			reader = new DBFReader(new BufferedInputStream(new FileInputStream(file)));
+			DBFHeader header = reader.getHeader();
+			Assert.assertEquals("COUNTYNAME", header.fieldArray[1].getName());
+			Assert.assertEquals(DBFDataType.CHARACTER, header.fieldArray[1].getType());
+			
+			DBFRow row = null;
+			
+			int count = 0;
+			while ( (row = reader.nextRow()) != null) {	
+				System.out.println(row.getString(1));
+				count++;
+			}
+			Assert.assertEquals(100, count);
+
+			
+		}
+		finally {
+			DBFUtils.close(reader);
+		}
+	}
+	@Test
+	public void testStormDBCDATASUSReader() throws FileNotFoundException {
+		File file = new File("src/test/resources/dbc-files/storm.dbc");
+		DBCDATASUSReader reader = null;
+		try {
+			System.out.println("---- DBC ---");;
+			reader = new DBCDATASUSReader(new BufferedInputStream(new FileInputStream(file)));
+			DBFHeader header = reader.getHeader();
+			Assert.assertEquals("COUNTYNAME", header.fieldArray[1].getName());
+			Assert.assertEquals(DBFDataType.CHARACTER, header.fieldArray[1].getType());
+			
+			DBFRow row = null;
+			
+			int count = 0;
+			while ( (row = reader.nextRow()) != null) {	
+				System.out.println(row.getString(1));
+				count++;
+			}
+			Assert.assertEquals(100, count);
+
+			
+		}
+		finally {
+			DBFUtils.close(reader);
+		}
+	}
 
 	
 	@Test

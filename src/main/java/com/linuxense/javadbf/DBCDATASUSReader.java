@@ -31,9 +31,10 @@ public class DBCDATASUSReader extends DBFReader {
 
 	private void initDBC() {
 		try {
+			int uncompressedSize = this.getHeader().numberOfRecords * this.getHeader().recordLength; 
 			// Skip CRC
 			skip(4);
-			this.dataInputStream = new DataInputStream(new DBFExploderInputStream(this.inputStream));
+			this.dataInputStream = new DataInputStream(new DBFExploderInputStream(this.inputStream, uncompressedSize));
 			
 		} catch (IOException e) {
 			throw new DBFException(e);

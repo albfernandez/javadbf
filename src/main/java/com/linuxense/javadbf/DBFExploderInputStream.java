@@ -10,10 +10,15 @@ class DBFExploderInputStream extends InputStream {
 
 	private InputStream in;
 	private Queue<Byte> queue =new LinkedList<Byte>();
+	private int estimatedUncompressedSize = 0;
 	
 	DBFExploderInputStream(InputStream in) {
+		this(in, 0);		
+	}
+	DBFExploderInputStream(InputStream in, int uncompressedSize) {
 		super();
-		this.in = in;		
+		this.in = in;
+		this.estimatedUncompressedSize = uncompressedSize;
 	}
 
 	@Override
@@ -39,7 +44,13 @@ class DBFExploderInputStream extends InputStream {
 		}
 		byte[] compressedData = baos.toByteArray();
 		
-		byte[] decompressedData = new byte[compressedData.length * 4];
+		int outputBufferSize = estimatedUncompressedSize;
+		if (outputBufferSize < compressedData.length) {
+			outputBufferSize = compressedData.length * 6;
+		}
+			
+		
+		byte[] decompressedData = new byte[outputBufferSize];
 		int decompressed = DBFExploder.pkexplode(compressedData, decompressedData);
 		
 		for (int i = 0; i < decompressed; i++) {
