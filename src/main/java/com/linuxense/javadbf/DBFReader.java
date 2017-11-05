@@ -62,11 +62,14 @@ import java.util.TimeZone;
  * Object are as follows:
  * </p>
  * <table>
+ * <summary>types mapping</summary>
+ * <thead>
  * <tr>
  * <th>xBase Type</th>
  * <th>Java Type</th>
  * </tr>
- *
+ * </thead>
+ * <tbody>
  * <tr>
  * <td>C</td>
  * <td>String</td>
@@ -104,7 +107,7 @@ import java.util.TimeZone;
  * <td>java.util.Date</td>
  * </tr>
  * <tr>
- * <td>+/td>
+ * <td></td>
  * <td>Integer</td>
  * </tr>
  * <tr>
@@ -135,6 +138,7 @@ import java.util.TimeZone;
  * <td>Q</td>
  * <td>byte[]</td>
  * </tr>
+ * </tbody>
  * </table>
  */
 public class DBFReader extends DBFBase implements Closeable {
