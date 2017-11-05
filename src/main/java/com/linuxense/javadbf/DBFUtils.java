@@ -39,6 +39,8 @@ import java.util.Locale;
 
 /**
  * Miscelaneous functions required by the JavaDBF package.
+ * 
+ * This class is for internal usage for JavaDBF and you should not use it.
  *
  */
 public final class DBFUtils {
@@ -280,7 +282,7 @@ public final class DBFUtils {
 			return false;
 		}
 		for (byte b : data) {
-			if (b < 0x20 || b > 0x7e) {
+			if (b < 0x20) {
 				return false;
 			}
 		}
