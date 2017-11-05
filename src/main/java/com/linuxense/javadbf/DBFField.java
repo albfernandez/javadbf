@@ -91,6 +91,9 @@ public class DBFField {
 	private byte indexFieldFlag; /* 31 */
 	private String name;
 
+	/**
+	 * Default constructor
+	 */
 	public DBFField() {
 		super();
 	}
@@ -112,11 +115,22 @@ public class DBFField {
 		this.name = origin.name;
 	}
 
+	/**
+	 * Creates a field definition 
+	 * @param name Field name
+	 * @param type field type
+	 */
 	public DBFField(String name, DBFDataType type) {
 		super();
 		setName(name);
 		setType(type);
 	}
+	/**
+	 * Creates a field definition
+	 * @param name Field name
+	 * @param type Field type
+	 * @param length Field length
+	 */
 
 	public DBFField(String name, DBFDataType type, int length) {
 		super();
@@ -125,6 +139,13 @@ public class DBFField {
 		setFieldLength(length);
 	}
 
+	/**
+	 * Creates a field definition
+	 * @param name Field name
+	 * @param type Field type
+	 * @param length Field length
+	 * @param decimalCount number of decimal places to use
+	 */
 	public DBFField(String name, DBFDataType type, int length, int decimalCount) {
 		super();
 		setName(name);
@@ -146,8 +167,7 @@ public class DBFField {
 	 * @param charset charset to use
 	 *
 	 * @return Returns the created DBFField object.
-	 * @throws IOException
-	 *             If any stream reading problems occures.
+	 * @throws IOException  If any stream reading problems occures.
 	 */
 	protected static DBFField createField(DataInput in, Charset charset) throws IOException {
 
@@ -235,11 +255,9 @@ public class DBFField {
 	 * Writes the content of DBFField object into the stream as per DBF format
 	 * specifications.
 	 *
-	 * @param out
-	 *            OutputStream
+	 * @param out OutputStream
 	 * @param charset dbf file's charset
-	 * @throws IOException
-	 *             if any stream related issues occur.
+	 * @throws IOException  if any stream related issues occur.
 	 */
 	protected void write(DataOutput out, Charset charset) throws IOException {
 		// Field Name
@@ -318,23 +336,31 @@ public class DBFField {
 	}
 
 
-
-
-
-
-
+	/**
+	 * Gets reserved field 1 (for internal use only)
+	 * @return reserved field 1
+	 */
 	public int getReserv1() {
 		return this.reserv1;
 	}
-
+	/**
+	 * Gets reserved field 2 (for internal use only)
+	 * @return reserved field 2
+	 */
 	public short getReserv2() {
 		return this.reserv2;
 	}
-
+	/**
+	 * Gets reserved workareaid (for internal use only)
+	 * @return reserved workareaid
+	 */
 	public byte getWorkAreaId() {
 		return this.workAreaId;
 	}
-
+	/**
+	 * Gets reserved field 3 (for internal use only)
+	 * @return reserved field 3
+	 */
 	public short getReserv3() {
 		return this.reserv3;
 	}
@@ -342,11 +368,17 @@ public class DBFField {
 	public byte getSetFieldsFlag() {
 		return this.setFieldsFlag;
 	}
-
+	/**
+	 * Gets reserved field 4 (for internal use only)
+	 * @return reserved field 4
+	 */
 	public byte[] getReserv4() {
 		return Arrays.copyOf(this.reserv4, this.reserv4.length);
 	}
-
+	/**
+	 * Get index field flag
+	 * @return index field flag
+	 */
 	public byte getIndexFieldFlag() {
 		return this.indexFieldFlag;
 	}
@@ -412,12 +444,24 @@ public class DBFField {
 		this.decimalCount = (byte) size;
 	}
 
+	/**
+	 * Checks if is a system field
+	 * @return true if it is a system field
+	 */
 	public boolean isSystem() {
 		return (this.reserv2 & 1) != 0;
 	}
+	/**
+	 * Checks if the field is nullable
+	 * @return true if the field is nullable
+	 */
 	public boolean isNullable() {
 		return (this.reserv2 & 2) != 0;
 	}
+	/**
+	 * Checks if the field is binary
+	 * @return true if the field is binary
+	 */
 	public boolean isBinary() {
 		return (this.reserv2 & 4) != 0;
 	}

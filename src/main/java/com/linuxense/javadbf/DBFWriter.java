@@ -177,7 +177,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 
 	/**
 	 * Sets fields definition
-	 * @param fields fields definitio
+	 * @param fields fields definition
 	 */
 	public void setFields(DBFField[] fields) {
 		if (this.closed) {

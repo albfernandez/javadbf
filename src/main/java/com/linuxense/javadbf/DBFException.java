@@ -46,7 +46,10 @@ public class DBFException extends RuntimeException {
 	public DBFException(String message, Throwable cause) {
 		super(message, cause);
 	}
-
+	/**
+	 * Constructs an DBFException with the specified cause.
+	 * @param cause The cause (which is saved for later retrieval by the Throwable.getCause() method).
+	 */
 	public DBFException(Throwable cause) {
 		super(cause);
 	}
