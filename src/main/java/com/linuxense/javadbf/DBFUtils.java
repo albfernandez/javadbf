@@ -280,7 +280,7 @@ public final class DBFUtils {
 			return false;
 		}
 		for (byte b : data) {
-			if (b < 0 || b < 0x20) {
+			if (b < 0x20 || b > 0x7e) {
 				return false;
 			}
 		}
