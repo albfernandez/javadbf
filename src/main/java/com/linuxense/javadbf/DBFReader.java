@@ -45,22 +45,22 @@ import java.util.TimeZone;
 
 /**
  * DBFReader class can creates objects to represent DBF data.
- *
+ * <p>
  * This Class is used to read data from a DBF file. Meta data and records can be
  * queried against this document.
- *
+ * </p>
  * <p>
  * DBFReader cannot write to a DBF file. For creating DBF files use DBFWriter.
- *
+ * </p>
  * <p>
  * Fetching records is possible only in the forward direction and cannot be
  * re-wound. In such situations, a suggested approach is to reconstruct the
  * object.
- *
+ * </p>
  * <p>
  * The nextRecord() method returns an array of Objects and the types of these
  * Object are as follows:
- *
+ * </p>
  * <table>
  * <tr>
  * <th>xBase Type</th>
@@ -244,7 +244,8 @@ public class DBFReader extends DBFBase implements Closeable {
 
 
 	/**
-		Returns the number of records in the DBF.
+		Returns the number of records in the DBF. This number includes deleted (hidden) records
+		@return number of records in the DBF file.
 	*/
 	public int getRecordCount() {
 		return this.header.numberOfRecords;
@@ -266,6 +267,7 @@ public class DBFReader extends DBFBase implements Closeable {
 	 * ArrayIndexOutofboundsException.
 	 *
 	 * @param index Index of the field. Index of the first field is zero.
+	 * @return Field definition for selected field
 	 */
 	public DBFField getField(int index) {
 		return new DBFField(this.header.userFieldArray[index]);
@@ -273,6 +275,7 @@ public class DBFReader extends DBFBase implements Closeable {
 
 	/**
 	 * Returns the number of field in the DBF.
+	 * @return number of fields in the DBF file 
 	 */
 	public int getFieldCount() {
 		return this.header.userFieldArray.length;
@@ -510,13 +513,13 @@ public class DBFReader extends DBFBase implements Closeable {
 	}
 
 	/**
-	 * function to safely skip n bytes (in some bufferd scenarios skip doesn't really skip all bytes)
-	 * @param n
-	 * @throws IOException
+	 * Safely skip bytesToSkip bytes (in some bufferd scenarios skip doesn't really skip all requested bytes)
+	 * @param bytesToSkip number of bytes to skip
+	 * @throws IOException if some IO error happens
 	 */
-	protected void skip(int n) throws IOException {
-		int skipped = (int) this.dataInputStream.skip(n);
-		for (int i = skipped; i < n; i++) {
+	protected void skip(int bytesToSkip) throws IOException {
+		int skipped = (int) this.dataInputStream.skip(bytesToSkip);
+		for (int i = skipped; i < bytesToSkip; i++) {
 			this.dataInputStream.readByte();
 		}
 	}
@@ -534,7 +537,7 @@ public class DBFReader extends DBFBase implements Closeable {
 
 	/**
 	 * Determine if character fields should be right trimmed (default true)
-	 * @param trimRightSpaces
+	 * @param trimRightSpaces if reading fields should trim right spaces
 	 */
 	public void setTrimRightSpaces(boolean trimRightSpaces) {
 		this.trimRightSpaces = trimRightSpaces;
@@ -543,7 +546,7 @@ public class DBFReader extends DBFBase implements Closeable {
 	/**
 	 * Sets the memo file (DBT or FPT) where memo fields will be readed.
 	 * If no file is provided, then this fields will be null.
-	 * @param memoFile
+	 * @param memoFile the file containing the memo data
 	 */
 	public void setMemoFile(File memoFile) {
 		if (this.memoFile != null) {

@@ -31,8 +31,8 @@ import java.util.Arrays;
  * DBFField represents a field specification in an dbf file.
  *
  * DBFField objects are either created and added to a DBFWriter object or
- * obtained from DBFReader object through getField( int) query.
- */
+ * obtained from DBFReader object through {@link DBFReader#getField(int)} query.
+*/
 public class DBFField {
 
 	/**
@@ -71,7 +71,7 @@ public class DBFField {
 	public static final byte FIELD_TYPE_D = (byte) 'D';
 
 	/**
-	 * Code for memo data (not supported by JavaDBF)
+	 * Code for memo data
 	 * @deprecated You must use {@link DBFDataType#MEMO} instead
 	 */
 	@Deprecated
@@ -142,8 +142,8 @@ public class DBFField {
 	 * The data in the DataInputStream object is supposed to be organised
 	 * correctly and the stream "pointer" is supposed to be positioned properly.
 	 *
-	 * @param in
-	 *            DataInputStream
+	 * @param in DataInputStream
+	 * @param charset charset to use
 	 *
 	 * @return Returns the created DBFField object.
 	 * @throws IOException
@@ -475,6 +475,7 @@ public class DBFField {
 	}
 
 	/**
+	 * @param value the name of the field
 	 * @deprecated This method is deprecated and is replaced by {@link #setName(String)}.
 	 */
 	@Deprecated

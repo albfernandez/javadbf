@@ -53,7 +53,7 @@ public final class Utils {
 	 * Read a littleEndian integer(32b its) from DataInput
 	 * @param in DataInput to read from
 	 * @return int value of next 32 bits as littleEndian
-	 * @throws IOException
+	 * @throws IOException if some IO error occurs
 	 * @deprecated use {@link DBFUtils#readLittleEndianInt(DataInput)}
 	 */
 	@Deprecated
@@ -65,7 +65,7 @@ public final class Utils {
 	 * Read a littleEndian short(16 bits) from DataInput
 	 * @param in DataInput to read from
 	 * @return short value of next 16 bits as littleEndian
-	 * @throws IOException
+	 * @throws IOException if some IO error occurs
 	 * @deprecated use {@link DBFUtils#readLittleEndianShort(DataInput)}
 	 */
 	@Deprecated

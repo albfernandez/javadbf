@@ -56,7 +56,7 @@ public final class DBFUtils {
 	 * @param dataInput the stream data
 	 * @param length the legth of the number
 	 * @return The number as a Number (BigDecimal)
-	 * @throws IOException
+	 * @throws IOException if an IO error happens
 	 * @throws EOFException if reached end of file before length bytes
 	 */
 	public static Number readNumericStoredAsText(DataInputStream dataInput, int length) throws IOException {
@@ -85,7 +85,7 @@ public final class DBFUtils {
 	 * Read a littleEndian integer(32b its) from DataInput
 	 * @param in DataInput to read from
 	 * @return int value of next 32 bits as littleEndian
-	 * @throws IOException
+	 * @throws IOException if an IO error happens
 	 * @throws EOFException if reached end of file before 4 bytes are readed
 	 */
 	public static int readLittleEndianInt(DataInput in) throws IOException {
@@ -100,7 +100,7 @@ public final class DBFUtils {
 	 * Read a littleEndian short(16 bits) from DataInput
 	 * @param in DataInput to read from
 	 * @return short value of next 16 bits as littleEndian
-	 * @throws IOException
+	 * @throws IOException if an IO error happens
 	 */
 	public static short readLittleEndianShort(DataInput in) throws IOException {
 		int low = in.readUnsignedByte() & 0xff;
@@ -211,10 +211,10 @@ public final class DBFUtils {
 
 	/**
 	 * Format a double number to write to a dbf file
-	 * @param num
-	 * @param charset
-	 * @param fieldLength
-	 * @param sizeDecimalPart
+	 * @param num number to format
+	 * @param charset charset to use
+	 * @param fieldLength field length
+	 * @param sizeDecimalPart decimal part size
 	 * @return bytes to write to the dbf file
 	 */
 

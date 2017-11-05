@@ -41,6 +41,7 @@ public abstract class DBFBase {
 
 	/**
 	 * Gets the charset used to read and write files.
+	 * @return charset used to read and write files
 	 */
 	public Charset getCharset() {
 		return this.charset;
@@ -52,6 +53,8 @@ public abstract class DBFBase {
 	 * corresponding character set. More information:
 	 * http://www.iana.org/assignments/character-sets Also see the documentation
 	 * of the class java.nio.charset.Charset
+	 * 
+	 * @param charset charset to use
 	 * @deprecated set the charset in DBFWriter or DBFReader constructors
 	 */
 	// TODO set this metdhod protected in 2.0

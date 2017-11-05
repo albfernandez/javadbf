@@ -176,7 +176,8 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 
 
 	/**
-	 * Sets fields.
+	 * Sets fields definition
+	 * @param fields fields definitio
 	 */
 	public void setFields(DBFField[] fields) {
 		if (this.closed) {
@@ -209,6 +210,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 
 	/**
 	 * Add a record.
+	 * @param values fields of the record
 	 */
 	public void addRecord(Object[] values) {
 		if (this.closed) {
