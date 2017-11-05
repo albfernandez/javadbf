@@ -114,6 +114,7 @@ public final class Utils {
 	 * @param text the text to write
 	 * @param charset The charset to use
 	 * @param length field length 
+	 * @return byte[] to store in the file
 	 * @deprecated Use
 	 *             {@link DBFUtils#textPadding(String, Charset, int, DBFAlignment, byte)}
 	 */
@@ -129,6 +130,7 @@ public final class Utils {
 	 * @param charset The charset to use
 	 * @param length field length 
 	 * @param alignment where to align the data
+	 * @return byte[] to store in the file
 	 * @deprecated Use
 	 *             {@link DBFUtils#textPadding(String, Charset, int, DBFAlignment, byte)}
 	 */
@@ -147,6 +149,7 @@ public final class Utils {
 	 * @param length field length 
 	 * @param alignment where to align the data 
 	 * @param paddingByte byte to use for padding
+	 * @return byte[] to store in the file
 	 * @deprecated Use {@link DBFUtils#textPadding(String, Charset, int, DBFAlignment, byte)}
 	 */
 	@Deprecated
@@ -236,6 +239,8 @@ public final class Utils {
 	 * @param characterSetName The charset to use
 	 * @param length field length 
 	 * @param alignment where to align the data
+	 * @return byte[] to store in the file
+	 * @throws UnsupportedEncodingException if characterSetName doesn't exists
 	 * @deprecated Use {@link DBFUtils#textPadding(String, Charset, int, DBFAlignment, byte)}
 	 */
 
@@ -252,6 +257,7 @@ public final class Utils {
 	 * @param length field length 
 	 * @param alignment where to align the data
 	 * @param paddingByte the byte to use for padding
+	 * @return byte[] to store in the file
 	 * @throws UnsupportedEncodingException if characterSetName doesn't exists
 	 * @deprecated Use {@link DBFUtils#textPadding(String, Charset, int, DBFAlignment, byte)}
 	 */
@@ -272,6 +278,7 @@ public final class Utils {
 	 * @param text the text to write
 	 * @param characterSetName The charset to use
 	 * @param length field length 
+	 * @return byte[] to store in the file
 	 * @throws UnsupportedEncodingException if characterSetName doesn't exists
 	 * @deprecated Use {@link DBFUtils#textPadding(String, Charset, int)}
 	 */
@@ -289,6 +296,7 @@ public final class Utils {
 	 * @param characterSetName The charset to use
 	 * @param length field length 
 	 * @param alignment where to align the data
+	 * @return byte[] to store in the file
 	 * @throws UnsupportedEncodingException if characterSetName doesn't exists
 	 * @deprecated Use {@link DBFUtils#textPadding(String, Charset, int, DBFAlignment, byte)}
 	 */
@@ -308,6 +316,7 @@ public final class Utils {
 	 * @param length field length 
 	 * @param alignment where to align the data
 	 * @param paddingByte the byte to use for padding
+	 * @return byte[] to store in the file
 	 * @throws UnsupportedEncodingException if characterSetName doesn't exists
 	 * @deprecated Use {@link DBFUtils#textPadding(String, Charset, int, DBFAlignment, byte)}
 	 */
@@ -322,6 +331,7 @@ public final class Utils {
 	 * @param characterSetName charset to use (ignored)
 	 * @param fieldLength field size 
 	 * @param sizeDecimalPart sizeDecimalPart
+	 * @return byte[] to store in the file
 	 * @throws UnsupportedEncodingException since no charset is used, no excpetion is thrown
 	 * @deprecated Use {@link DBFUtils#doubleFormating(Number, Charset, int, int)}
 	 */
@@ -333,7 +343,7 @@ public final class Utils {
 	/**
 	 * Obtains the data to store in file for a double number
 	 * @param doubleNum number to convert
-	 * @param charsetName charset to use (ignored)
+	 * @param characterSetName charset to use (ignored)
 	 * @param fieldLength field size
 	 * @param sizeDecimalPart sizeDecimalPart
 	 * @return byte[] to store in the file
