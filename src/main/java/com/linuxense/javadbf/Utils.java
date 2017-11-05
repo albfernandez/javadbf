@@ -87,6 +87,9 @@ public final class Utils {
 
 
 	/**
+	 * read a short value stored littleEndian
+	 * @param value value readed
+	 * @return value
 	 * @deprecated use {@link DBFUtils#littleEndian(short)}
 	 */
 	@Deprecated
@@ -95,6 +98,9 @@ public final class Utils {
 	}
 
 	/**
+	 * read a int value stored littleEndian
+	 * @param value readed
+	 * @return value
 	 * @deprecated use {@link DBFUtils#littleEndian(int)}
 	 */
 	@Deprecated
@@ -103,6 +109,11 @@ public final class Utils {
 	}
 
 	/**
+	 * Obtais the data to store in file for a text field.
+	 * Text is truncated if exceed field capacity. Uses spaces as padding and align data to the left
+	 * @param text the text to write
+	 * @param charset The charset to use
+	 * @param length field length 
 	 * @deprecated Use
 	 *             {@link DBFUtils#textPadding(String, Charset, int, DBFAlignment, byte)}
 	 */
@@ -112,6 +123,12 @@ public final class Utils {
 	}
 
 	/**
+	 * Obtais the data to store in file for a text field.
+	 * Text is truncated if exceed field capacity. Uses spaces as padding
+	 * @param text the text to write
+	 * @param charset The charset to use
+	 * @param length field length 
+	 * @param alignment where to align the data
 	 * @deprecated Use
 	 *             {@link DBFUtils#textPadding(String, Charset, int, DBFAlignment, byte)}
 	 */
@@ -123,6 +140,13 @@ public final class Utils {
 
 
 	/**
+	 * Obtais the data to store in file for a text field.
+	 * Text is truncated if exceed field capacity. 
+	 * @param text the text to write
+	 * @param charset The charset to use
+	 * @param length field length 
+	 * @param alignment where to align the data 
+	 * @param paddingByte byte to use for padding
 	 * @deprecated Use {@link DBFUtils#textPadding(String, Charset, int, DBFAlignment, byte)}
 	 */
 	@Deprecated
@@ -131,6 +155,12 @@ public final class Utils {
 	}
 
 	/**
+	 * Obtains the data to store in file for a double number
+	 * @param num number to convert
+	 * @param charset charset to use (ignored)
+	 * @param fieldLength field size
+	 * @param sizeDecimalPart sizeDecimalPart
+	 * @return byte[] to store in the file
 	 * @deprecated Use {@link DBFUtils#doubleFormating(Number, Charset, int, int)}
 	 */
 	@Deprecated
@@ -139,6 +169,12 @@ public final class Utils {
 	}
 
 	/**
+	 * Obtains the data to store in file for a double number
+	 * @param doubleNum number to convert
+	 * @param charset charset to use (ignored)
+	 * @param fieldLength field size
+	 * @param sizeDecimalPart sizeDecimalPart
+	 * @return byte[] to store in the file
 	 * @deprecated Use {@link DBFUtils#doubleFormating(Number, Charset, int, int)}
 	 */
 	@Deprecated
@@ -183,7 +219,7 @@ public final class Utils {
 
 	/**
 	 * Trim spaces from both sides of the array.
-	 * @param arr
+	 * @param arr data to trim
 	 * @return String trimmed both sides
 	 * @deprecated this functions really trim all spaces, instead only left spaces, so for clarity is deprecated and
 	 * mantained for backwards compatibility, use {@link DBFUtils#removeSpaces(byte[])}
@@ -194,6 +230,12 @@ public final class Utils {
 	}
 
 	/**
+	 * Obtais the data to store in file for a text field.
+	 * Text is truncated if exceed field capacity. Uses spaces as padding
+	 * @param text the text to write
+	 * @param characterSetName The charset to use
+	 * @param length field length 
+	 * @param alignment where to align the data
 	 * @deprecated Use {@link DBFUtils#textPadding(String, Charset, int, DBFAlignment, byte)}
 	 */
 
@@ -204,6 +246,13 @@ public final class Utils {
 		return textPadding(text, characterSetName, length, alignment, (byte) ' ');
 	}
 	/**
+	 * Text is truncated if exceed field capacity. Uses spaces as padding
+	 * @param text the text to write
+	 * @param characterSetName The charset to use
+	 * @param length field length 
+	 * @param alignment where to align the data
+	 * @param paddingByte the byte to use for padding
+	 * @throws UnsupportedEncodingException if characterSetName doesn't exists
 	 * @deprecated Use {@link DBFUtils#textPadding(String, Charset, int, DBFAlignment, byte)}
 	 */
 	@Deprecated
@@ -218,6 +267,12 @@ public final class Utils {
 	}
 
 	/**
+	 * Obtais the data to store in file for a text field.
+	 * Text is truncated if exceed field capacity. Uses spaces as padding and alignment left
+	 * @param text the text to write
+	 * @param characterSetName The charset to use
+	 * @param length field length 
+	 * @throws UnsupportedEncodingException if characterSetName doesn't exists
 	 * @deprecated Use {@link DBFUtils#textPadding(String, Charset, int)}
 	 */
 
@@ -228,6 +283,13 @@ public final class Utils {
 	}
 
 	/**
+	 * Obtais the data to store in file for a text field.
+	 * Text is truncated if exceed field capacity. Uses spaces as padding
+	 * @param text the text to write
+	 * @param characterSetName The charset to use
+	 * @param length field length 
+	 * @param alignment where to align the data
+	 * @throws UnsupportedEncodingException if characterSetName doesn't exists
 	 * @deprecated Use {@link DBFUtils#textPadding(String, Charset, int, DBFAlignment, byte)}
 	 */
 
@@ -239,6 +301,14 @@ public final class Utils {
 	}
 
 	/**
+	 * Obtais the data to store in file for a text field.
+	 * Text is truncated if exceed field capacity
+	 * @param text the text to write
+	 * @param characterSetName The charset to use
+	 * @param length field length 
+	 * @param alignment where to align the data
+	 * @param paddingByte the byte to use for padding
+	 * @throws UnsupportedEncodingException if characterSetName doesn't exists
 	 * @deprecated Use {@link DBFUtils#textPadding(String, Charset, int, DBFAlignment, byte)}
 	 */
 	@Deprecated
@@ -247,6 +317,12 @@ public final class Utils {
 		return textPadding(text, Charset.forName(characterSetName), length, alignment, paddingByte);
 	}
 	/**
+	 * Obtains the data to store in file for a double number
+	 * @param num number to convert
+	 * @param characterSetName charset to use (ignored)
+	 * @param fieldLength field size 
+	 * @param sizeDecimalPart sizeDecimalPart
+	 * @throws UnsupportedEncodingException since no charset is used, no excpetion is thrown
 	 * @deprecated Use {@link DBFUtils#doubleFormating(Number, Charset, int, int)}
 	 */
 	@Deprecated
@@ -255,6 +331,13 @@ public final class Utils {
 		return doubleFormating(num.doubleValue(), characterSetName, fieldLength, sizeDecimalPart);
 	}
 	/**
+	 * Obtains the data to store in file for a double number
+	 * @param doubleNum number to convert
+	 * @param charsetName charset to use (ignored)
+	 * @param fieldLength field size
+	 * @param sizeDecimalPart sizeDecimalPart
+	 * @return byte[] to store in the file
+	 * @throws UnsupportedEncodingException since no charset is used, no excpetion is thrown
 	 * @deprecated Use {@link DBFUtils#doubleFormating(Number, Charset, int, int)}
 	 */
 	@Deprecated
