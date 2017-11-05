@@ -177,18 +177,23 @@ public enum DBFDataType {
 	}
 	/**
 	 * Gets the DBFDataType from the code used in the file
-	 * @param cod the code used by dbase
+	 * @param code the code used by dbase
 	 * @return The DBFDataType from the code used in the file
 	 */
-	public static DBFDataType fromCode(byte cod) {
+	public static DBFDataType fromCode(byte code) {
 		for (DBFDataType type: values()) {
-			if (cod == type.code){
+			if (code == type.code){
 				return type;
 			}
 		}
-		throw new IllegalArgumentException("Unknown data type:" + cod);
+		throw new IllegalArgumentException("Unknown data type:" + code);
 	}
-	public static DBFDataType fromCode(char c) {
-		return fromCode((byte) c);
+	/**
+	 * Gets the DBFDataType from the code used in the file
+	 * @param code the code used by dbase
+	 * @return The DBFDataType from the code used in the file
+	 */
+	public static DBFDataType fromCode(char code) {
+		return fromCode((byte) code);
 	}
 }
