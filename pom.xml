@@ -98,6 +98,9 @@
 				<version>3.0.2</version>
 				<configuration>
 					<archive>
+						<manifestEntries>
+							<Automatic-Module-Name>com.github.albfernandez.itext2</Automatic-Module-Name>
+						</manifestEntries>
 						<manifest>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
