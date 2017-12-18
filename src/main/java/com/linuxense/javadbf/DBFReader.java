@@ -587,4 +587,7 @@ public class DBFReader extends DBFBase implements Closeable {
 	}
 
 
+	protected int getEstimatedOutputSize() {
+		return this.getHeader().numberOfRecords * this.getHeader().recordLength;
+	}
 }

@@ -37,9 +37,14 @@ package com.linuxense.javadbf;
 /* 10/24/03  1.01  Added checks for when the end of a buffer is reached      */
 /*                 Extended error codes added                                */
 /* 06/29/03  1.00  First version                                             */
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 /*****************************************************************************/
 
-class DBFExploder {
+public class DBFExploder {
     private static final int PK_LITERAL_SIZE_FIXED    = 0; // Use fixed size literal bytes, used for binary data
     private static final int PK_LITERAL_SIZE_VARIABLE = 1; // Use variable size literal bytes, used for text
        
@@ -156,8 +161,11 @@ class DBFExploder {
 		return (value) & ((1 << (bits)) - 1);
 	}
     
-    static int pkexplode(  byte[] pInBuffer, byte[] pOutBuffer)
+
+    public static int pkexplode(byte[] pInBuffer, DBFStorage out, int outSize) throws IOException
     {
+        int currentFillSize = 0;
+
         // Compressed data cannot be less than 4 bytes;
         // this is not possible in any case whatsoever
         if (pInBuffer.length < 4)
@@ -200,7 +208,7 @@ class DBFExploder {
         // Decompress until output buffer is full
         int i; // Index into tables
         int nCopyLen;
-        while (pOutPos < pOutBuffer.length)
+        while (pOutPos < outSize)
         {
     
             // Fill bit buffer with at least 16 bits
@@ -304,8 +312,8 @@ class DBFExploder {
                 {
     
                     // If output buffer has become full, stop immediately!
-                    if (pOutPos >= pOutBuffer.length)
-                        throw new IllegalArgumentException("PK_ERR_BUFFER_TOO_SMALL: Output buffer is full: "+pOutPos+" / "+pOutBuffer.length);
+                    if (pOutPos >= outSize)
+                        throw new IllegalArgumentException("PK_ERR_BUFFER_TOO_SMALL: Output buffer is full: "+pOutPos+" / "+outSize);
 
     
                     // Check whether the offset is a valid one into the dictionary
@@ -316,8 +324,9 @@ class DBFExploder {
     
                     // Copy the byte from the dictionary and add it to the end of the dictionary
                     // *pDictPos++ = *pOutPos++ = *pCopyOffs++;
-                    Dict[pDictPos++] = pOutBuffer[pOutPos++] = Dict[pCopyOffs++];
-    
+                    byte b = Dict[pDictPos++] = Dict[pCopyOffs++];
+                    pOutPos = out.addByte(b, pOutPos);
+
                     // If the dictionary is not full yet, increment the current dictionary size
                     if (nCurDictSize < nDictSize)
                         nCurDictSize++;
@@ -339,7 +348,8 @@ class DBFExploder {
     
                     // Copy the byte and add it to the end of the dictionary
                     // *pDictPos++ = *pOutPos++ = (byte)(nBitBuffer >> 1);
-                    Dict[pDictPos++] = pOutBuffer[pOutPos++] = (byte)(nBitBuffer >> 1);
+                    byte b = Dict[pDictPos++] = (byte)(nBitBuffer >> 1);
+                    pOutPos = out.addByte(b, pOutPos);
     
                     // Remove the byte from the bit buffer
                     nBitBuffer >>= 9;
@@ -363,7 +373,9 @@ class DBFExploder {
     
                     // Copy the byte and add it to the end of the dictionary
                     // *pDictPos++ = *pOutPos++ = (byte)i;
-                    Dict[pDictPos++] = pOutBuffer[pOutPos++]  = (byte)i;
+                    byte b = Dict[pDictPos++] =  (byte)i;
+                    pOutPos = out.addByte(b, pOutPos);
+
     
                     // Remove the byte from the bit buffer
                     nBitBuffer >>= ChBits[i]&0xFF;
@@ -380,8 +392,73 @@ class DBFExploder {
                     pDictPos = 0;
             }
         }
+
+        out.flushIfNeeded();
     
         return pOutPos;
+    }
+
+    interface  DBFStorage {
+
+        void flushIfNeeded() throws IOException;
+        int addByte(byte b, int pos) throws IOException;
+    }
+
+    static class FileStorage implements DBFStorage {
+        FileOutputStream out;
+        int bufferLength = 4096;
+        byte[] buffer = new byte[bufferLength];
+        int currentFillSize = 0;
+        FileStorage(FileOutputStream fileStream) {
+            this.out = fileStream;
+        }
+
+        @Override
+        public void flushIfNeeded() throws IOException {
+            if (currentFillSize >0)
+                out.write(buffer, 0, currentFillSize);
+        }
+        @Override
+        public int addByte(byte b, int pos) throws IOException {
+            pos++;
+            currentFillSize = addByteAndWrite(out, buffer, currentFillSize, b);
+            return pos;
+        }
+
+        private int addByteAndWrite(OutputStream out, byte[] buffer, int currentFillSize, byte b) throws IOException {
+            buffer[currentFillSize++] = b;
+            if (currentFillSize >= bufferLength) {
+                out.write(buffer);
+                return 0;
+            } else
+                return currentFillSize;
+        }
+    }
+
+    static class InMemoryStorage implements DBFStorage {
+
+        byte[] pOutBuffer;
+        InMemoryStorage(byte[] buffer) {
+            this.pOutBuffer = buffer;
+        }
+        @Override
+        public void flushIfNeeded() {
+
+        }
+
+        @Override
+        public int addByte(byte b, int pos) {
+            this.pOutBuffer[pos++] =  b;
+            return pos;
+        }
+    }
+
+    public static DBFStorage createFileStorage(FileOutputStream out) {
+        return new DBFExploder.FileStorage(out);
+    }
+
+    public static DBFStorage createInMemoryStorage(byte[] buffer) {
+        return new DBFExploder.InMemoryStorage(buffer);
     }
 
 }

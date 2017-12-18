@@ -22,13 +22,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 package com.linuxense.javadbf;
 
 
-import java.io.DataOutput;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -172,6 +166,11 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 		}
 
 		this.recordCount = this.header.numberOfRecords;
+	}
+
+	public DBFWriter(FileOutputStream out, DBFHeader h) {
+		this(out);
+		this.header = h;
 	}
 
 
