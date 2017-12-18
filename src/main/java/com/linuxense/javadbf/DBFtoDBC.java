@@ -21,6 +21,7 @@ public class DBFtoDBC {
     static void convert(String source, String target) {
         DBFReader reader = null;
         FileOutputStream out = null;
+        DBFExploderInputStream myInputStream = null;
         try {
 
             // create a DBFReader object
@@ -30,7 +31,7 @@ public class DBFtoDBC {
             // Create writer
             out = new FileOutputStream(target);
 
-            DBFExploderInputStream myInputStream = new DBFExploderInputStream(inStream);
+            myInputStream = new DBFExploderInputStream(inStream);
 
             byte[] compressedData = myInputStream.getCompressedByteStream().toByteArray();
             int outputBufferSize = myInputStream.getAdjustedOutputSize(compressedData);
@@ -48,6 +49,7 @@ public class DBFtoDBC {
         finally {
             DBFUtils.close(reader);
             DBFUtils.close(out);
+            DBFUtils.close(myInputStream);
         }
     }
 }
