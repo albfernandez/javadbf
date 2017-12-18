@@ -20,6 +20,7 @@ public class DBFtoDBC {
 
     static void convert(String source, String target) {
         DBFReader reader = null;
+        FileOutputStream out = null;
         try {
 
             // create a DBFReader object
@@ -27,7 +28,7 @@ public class DBFtoDBC {
             reader = new DBCDATASUSReader(inStream);
 
             // Create writer
-            FileOutputStream out = new FileOutputStream(target);
+            out = new FileOutputStream(target);
 
             DBFExploderInputStream myInputStream = new DBFExploderInputStream(inStream);
 
@@ -46,6 +47,7 @@ public class DBFtoDBC {
         }
         finally {
             DBFUtils.close(reader);
+            DBFUtils.close(out);
         }
     }
 }
