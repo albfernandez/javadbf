@@ -132,7 +132,7 @@ public class DBCDATASUSTest {
 		File file = new File("src/test/resources/dbc-files/test-implode.pk");
 		byte[] data = Files.readAllBytes(file.toPath());
 		byte[] outputDatae = new byte[8096];
-		int size = DBFExploder.pkexplode(data, outputDatae);
+		int size = DBFExploder.pkexplode(data, DBFExploder.createInMemoryStorage(outputDatae), outputDatae.length);
 		byte[] result = new byte[size];
 		System.arraycopy(outputDatae, 0, result, 0, size);
 		String s = new String(result);

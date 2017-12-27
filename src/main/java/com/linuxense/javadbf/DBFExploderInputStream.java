@@ -52,25 +52,16 @@ class DBFExploderInputStream extends InputStream {
 	}
 
 	private int fillQueue() throws IOException {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream(4096);
-		byte[] buffer = new byte[4096];
-		int readed = 0;
-		while ( ( readed = this.in.read(buffer)) > 0) {
-			baos.write(buffer, 0, readed);
-		}
+		ByteArrayOutputStream baos = getCompressedByteStream();
 		if (baos.size() <= 0) {
 			return -1;
 		}
 		byte[] compressedData = baos.toByteArray();
-		
-		int outputBufferSize = estimatedUncompressedSize;
-		if (outputBufferSize < compressedData.length) {
-			outputBufferSize = compressedData.length * 6;
-		}
-			
+
+		int outputBufferSize = getAdjustedOutputSize(compressedData);
 		
 		byte[] decompressedData = new byte[outputBufferSize];
-		int decompressed = DBFExploder.pkexplode(compressedData, decompressedData);
+		int decompressed = DBFExploder.pkexplode(compressedData, DBFExploder.createInMemoryStorage(decompressedData), outputBufferSize);
 		
 		for (int i = 0; i < decompressed; i++) {
 			queue.add(decompressedData[i]);
@@ -79,5 +70,23 @@ class DBFExploderInputStream extends InputStream {
 		return decompressed;
 	}
 
-	
+	protected int getAdjustedOutputSize(byte[] compressedData) {
+		int outputBufferSize = estimatedUncompressedSize;
+		if (outputBufferSize < compressedData.length) {
+			outputBufferSize = compressedData.length * 6;
+		}
+		return outputBufferSize;
+	}
+
+	protected ByteArrayOutputStream getCompressedByteStream() throws IOException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream(4096);
+		byte[] buffer = new byte[4096];
+		int readed = 0;
+		while ( ( readed = this.in.read(buffer)) > 0) {
+			baos.write(buffer, 0, readed);
+		}
+		return baos;
+	}
+
+
 }
