@@ -38,7 +38,7 @@ package com.linuxense.javadbf;
 /*                 Extended error codes added                                */
 /* 06/29/03  1.00  First version                                             */
 
-import java.io.FileOutputStream;
+
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -164,7 +164,7 @@ public class DBFExploder {
 
     public static int pkexplode(byte[] pInBuffer, DBFStorage out, int outSize) throws IOException
     {
-        int currentFillSize = 0;
+
 
         // Compressed data cannot be less than 4 bytes;
         // this is not possible in any case whatsoever
@@ -404,12 +404,12 @@ public class DBFExploder {
         int addByte(byte b, int pos) throws IOException;
     }
 
-    static class FileStorage implements DBFStorage {
-        FileOutputStream out;
+    static class OutputStreamStorage implements DBFStorage {
+        OutputStream out;
         int bufferLength = 4096;
         byte[] buffer = new byte[bufferLength];
         int currentFillSize = 0;
-        FileStorage(FileOutputStream fileStream) {
+        OutputStreamStorage(OutputStream fileStream) {
             this.out = fileStream;
         }
 
@@ -453,8 +453,8 @@ public class DBFExploder {
         }
     }
 
-    public static DBFStorage createFileStorage(FileOutputStream out) {
-        return new DBFExploder.FileStorage(out);
+    public static DBFStorage createOutputStreamStorage(OutputStream out) {
+        return new DBFExploder.OutputStreamStorage(out);
     }
 
     public static DBFStorage createInMemoryStorage(byte[] buffer) {

@@ -1,6 +1,7 @@
 package com.linuxense.javadbf;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -128,12 +129,26 @@ public class DBCDATASUSTest {
 
 	
 	@Test
-	public void testExploder() throws IOException {
+	public void testExploderMemory() throws IOException {
 		File file = new File("src/test/resources/dbc-files/test-implode.pk");
 		byte[] data = Files.readAllBytes(file.toPath());
 		byte[] outputDatae = new byte[8096];
 		int size = DBFExploder.pkexplode(data, DBFExploder.createInMemoryStorage(outputDatae), outputDatae.length);
 		byte[] result = new byte[size];
+		System.arraycopy(outputDatae, 0, result, 0, size);
+		String s = new String(result);
+		Assert.assertEquals("AIAIAIAIAIAIA", s);
+
+	}
+	
+	@Test
+	public void testExploderOutputStream() throws IOException {
+		File file = new File("src/test/resources/dbc-files/test-implode.pk");
+		byte[] data = Files.readAllBytes(file.toPath());
+		ByteArrayOutputStream baos = new ByteArrayOutputStream(512);
+		int size = DBFExploder.pkexplode(data, DBFExploder.createOutputStreamStorage(baos), 128);
+		byte[] result = new byte[size];
+		byte[] outputDatae = baos.toByteArray();
 		System.arraycopy(outputDatae, 0, result, 0, size);
 		String s = new String(result);
 		Assert.assertEquals("AIAIAIAIAIAIA", s);

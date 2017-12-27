@@ -1,6 +1,32 @@
+/*
+
+(C) Copyright 2017 Alberto Fernández <infjaf@gmail.com>
+(C) Copyright 2017 ialek36
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 3.0 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
 package com.linuxense.javadbf;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Calendar;
 
 /**
@@ -12,6 +38,10 @@ public class DBFtoDBC {
         System.out.println("Started...");
         System.out.println(Calendar.getInstance().getTime());
 
+        if (args.length != 2) {
+        	System.err.println("You must indicate source and target files");
+        	System.exit(1);
+        }
         convert(args[0], args[1]);
 
         System.out.println(Calendar.getInstance().getTime());
@@ -20,16 +50,16 @@ public class DBFtoDBC {
 
     static void convert(String source, String target) {
         DBFReader reader = null;
-        FileOutputStream out = null;
+        OutputStream out = null;
         DBFExploderInputStream myInputStream = null;
         try {
 
             // create a DBFReader object
-            FileInputStream inStream = new FileInputStream(source);
+            InputStream inStream = new BufferedInputStream(new FileInputStream(source));
             reader = new DBCDATASUSReader(inStream);
 
             // Create writer
-            out = new FileOutputStream(target);
+            out = new BufferedOutputStream(new  FileOutputStream(target));
 
             myInputStream = new DBFExploderInputStream(inStream);
 
@@ -39,9 +69,8 @@ public class DBFtoDBC {
             DataOutputStream outStream = new DataOutputStream(out);
             reader.getHeader().write(outStream);
 
-            DBFExploder.pkexplode(compressedData, DBFExploder.createFileStorage(out), outputBufferSize);
+            DBFExploder.pkexplode(compressedData, DBFExploder.createOutputStreamStorage(out), outputBufferSize);
 
-//            outStream.write(DBFBase.END_OF_DATA);
             outStream.flush();
         } catch (Exception e) {
             e.printStackTrace();
