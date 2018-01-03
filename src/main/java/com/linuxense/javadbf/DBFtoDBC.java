@@ -23,6 +23,7 @@ package com.linuxense.javadbf;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -48,7 +49,12 @@ public class DBFtoDBC {
         System.out.println("finished...");
     }
 
+    
+    
     static void convert(String source, String target) {
+    	convert(new File(source), new File(target));
+    }
+    static void convert(File source, File target) {    
         DBFReader reader = null;
         OutputStream out = null;
         DBFExploderInputStream myInputStream = null;
