@@ -273,6 +273,9 @@ public class DBFReader extends DBFBase implements Closeable {
 	 * @return Field definition for selected field
 	 */
 	public DBFField getField(int index) {
+		if (index < 0 || index >= this.header.userFieldArray.length) {
+			throw new IllegalArgumentException("Invalid index field: (" + index+"). Valid range is 0 to " + (this.header.userFieldArray.length - 1));
+		}
 		return new DBFField(this.header.userFieldArray[index]);
 	}
 

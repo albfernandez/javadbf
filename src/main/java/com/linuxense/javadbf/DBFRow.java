@@ -47,7 +47,7 @@ public class DBFRow {
 		String key = columnName.toLowerCase();
 		Integer index = mapcolumnNames.get(key);
 		if (index == null) {
-			throw new DBFException("Not field name found for:" + columnName);
+			throw new DBFFieldNotFoundException("No field found for:" + columnName);
 		}
 		return index.intValue();
 	}
@@ -104,6 +104,9 @@ public class DBFRow {
 	 * @return the value converted to String
 	 */
 	public String getString(int columnIndex) {
+		if (columnIndex < 0 || columnIndex >= data.length) {
+			throw new IllegalArgumentException("Invalid index field: (" + columnIndex+"). Valid range is 0 to " + (data.length - 1));			
+		}
 		Object fieldValue = data[columnIndex];
 		if (fieldValue == null) {
 			return null;
