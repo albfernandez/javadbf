@@ -165,11 +165,12 @@ public class DBFField {
 	 *
 	 * @param in DataInputStream
 	 * @param charset charset to use
+	 * @param useFieldFlags If the file can store field flags (setting this to false ignore any data in byes 18-19)
 	 *
 	 * @return Returns the created DBFField object.
 	 * @throws IOException  If any stream reading problems occures.
 	 */
-	protected static DBFField createField(DataInput in, Charset charset) throws IOException {
+	protected static DBFField createField(DataInput in, Charset charset, boolean useFieldFlags) throws IOException {
 
 		DBFField field = new DBFField();
 
@@ -206,6 +207,9 @@ public class DBFField {
 		if ((field.type == DBFDataType.CHARACTER || field.type == DBFDataType.VARCHAR) && field.decimalCount != 0) {
 			field.length |= field.length << 8;
 			field.decimalCount = 0;
+		}
+		if (!useFieldFlags) {
+			field.reserv2 = 0;
 		}
 
 		return field;

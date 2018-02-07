@@ -129,7 +129,8 @@ public class DBFHeader {
 		}
 		else {
 			/* 32 each */
-			while ((field = DBFField.createField(dataInput,this.usedCharset))!= null) {
+			boolean useFieldFlags = supportsFieldFlags();
+			while ((field = DBFField.createField(dataInput,this.usedCharset, useFieldFlags))!= null) {				
 				v_fields.add(field);
 			}
 
@@ -146,8 +147,12 @@ public class DBFHeader {
 			}
 		}
 		this.userFieldArray = userFields.toArray(new DBFField[userFields.size()]);
-
 	}
+	
+	private boolean supportsFieldFlags() {
+		return this.signature == 0x2 || this.signature == 0x30 || this.signature == 0x31 || this.signature == 0xF5 || this.signature == 0xFB; 
+	}
+	
 	int getTableHeaderSize() {
 		if (isDB7()) {
 			return 68;
