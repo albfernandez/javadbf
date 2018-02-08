@@ -22,6 +22,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 package com.linuxense.javadbf;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.DataInput;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -256,6 +257,22 @@ public final class DBFUtils {
 			return Boolean.FALSE;
 		}
 		return null;
+	}
+	
+	
+	/**
+	 * Closes silently a #{@link java.io.Closeable}.
+	 * it can be null or throws an exception, will be ignored.
+	 * @param closeable The item to close
+	 */
+	public static void close(Closeable closeable) {
+		if (closeable != null) {
+			try {
+				closeable.close();
+			} catch (Exception e) { //NOPMD
+				// nop
+			}
+		}
 	}
 
 }
