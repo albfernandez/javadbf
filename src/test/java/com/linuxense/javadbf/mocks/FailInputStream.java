@@ -1,4 +1,4 @@
-package com.linuxsense.javadbf.mocks;
+package com.linuxense.javadbf.mocks;
 
 import java.io.IOException;
 import java.io.InputStream;

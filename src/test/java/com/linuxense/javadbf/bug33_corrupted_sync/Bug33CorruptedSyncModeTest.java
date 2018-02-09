@@ -1,4 +1,4 @@
-package com.linuxsense.javadbf.bug33_corrupted_sync;
+package com.linuxense.javadbf.bug33_corrupted_sync;
 
 import java.io.File;
 import java.util.Date;
