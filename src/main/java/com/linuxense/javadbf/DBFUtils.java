@@ -198,8 +198,11 @@ public final class DBFUtils {
 		int sizeWholePart = fieldLength - (sizeDecimalPart > 0 ? (sizeDecimalPart + 1) : 0);
 
 		StringBuilder format = new StringBuilder(fieldLength);
-		for (int i = 0; i < sizeWholePart; i++) {
+		for (int i = 0; i < sizeWholePart-1; i++) {
 			format.append("#");
+		}
+		if (format.length() < sizeWholePart) {
+			format.append("0");
 		}
 		if (sizeDecimalPart > 0) {
 			format.append(".");
