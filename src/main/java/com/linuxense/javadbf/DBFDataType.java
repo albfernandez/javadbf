@@ -50,7 +50,7 @@ public enum DBFDataType {
 	/**
 	 * Numeric data
 	 */
-	NUMERIC         ((byte) 'N', 1, 18, 0, true),
+	NUMERIC         ((byte) 'N', 1, 32, 0, true),
 	/**
 	 * Numeric long (FoxPro)
 	 */
