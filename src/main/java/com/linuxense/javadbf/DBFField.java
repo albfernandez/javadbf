@@ -322,6 +322,15 @@ public class DBFField {
 		}
 		this.decimalCount = (byte) size;
 	}
+	
+	public String toString() {
+		return 
+			this.name+"|" + this.type + " (" + this.type.getCharCode() + ")" +
+			"\nLength: " + this.fieldLength +
+			"\nDecimalCount:" + this.decimalCount +			
+			"\nIndex:" + this.indexFieldFlag;		
+	}
+	
 
 	/**
 	 * Sets the data type of the field.
