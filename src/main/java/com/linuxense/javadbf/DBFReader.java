@@ -241,7 +241,7 @@ public class DBFReader extends DBFBase {
 						this.dataInputStream.read(t_float);
 						t_float = DBFUtils.removeSpaces(t_float);
 						if (t_float.length > 0 && !DBFUtils.contains(t_float, (byte) '?') && !DBFUtils.contains(t_float, (byte) '*')) {
-							recordObjects[i] = new Double(new String(t_float, StandardCharsets.US_ASCII));
+							recordObjects[i] = new Double(new String(t_float, StandardCharsets.US_ASCII).replace(',', '.'));
 						} else {
 							recordObjects[i] = null;
 						}
