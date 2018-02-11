@@ -203,11 +203,8 @@ public class DBFField {
 		field.setFieldsFlag = in.readByte(); /* 23 */
 		in.readFully(field.reserv4); /* 24-30 */
 		field.indexFieldFlag = in.readByte(); /* 31 */
-
-		if ((field.type == DBFDataType.CHARACTER || field.type == DBFDataType.VARCHAR) && field.decimalCount != 0) {
-			field.length |= field.length << 8;
-			field.decimalCount = 0;
-		}
+		adjustLengthForLongCharSupport(field);
+		
 		if (!useFieldFlags) {
 			field.reserv2 = 0;
 		}
@@ -247,11 +244,19 @@ public class DBFField {
 		in.readInt(); // 40-43 nextAuto
 		in.readInt(); // 44-47 reserv
 
-		if ((field.type == DBFDataType.CHARACTER || field.type == DBFDataType.VARCHAR) && field.decimalCount != 0) {
-			field.length |= field.length << 8;
+		adjustLengthForLongCharSupport(field);
+		return field;
+	}
+	
+	private static void adjustLengthForLongCharSupport(DBFField field) {
+		// if field type is char or varchar, then read length and decimalCount as one number to allow char fields to be
+		// longer than 256 bytes. 
+		// This is the way Clipper and FoxPro do it, and there is really no downside
+		// since for char fields decimal count should be zero for other versions that do not support this extended functionality.
+		if (field.type == DBFDataType.CHARACTER || field.type == DBFDataType.VARCHAR) {
+			field.length |= field.decimalCount << 8;
 			field.decimalCount = 0;
 		}
-		return field;
 	}
 
 
