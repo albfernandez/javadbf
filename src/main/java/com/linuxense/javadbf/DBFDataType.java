@@ -140,5 +140,14 @@ public enum DBFDataType {
 		throw new IllegalArgumentException("Unknown data type:" + cod);
 	}
 	
+	/**
+	 * Gets the DBFDataType from the code used in the file
+	 * @param code the code used by dbase
+	 * @return The DBFDataType from the code used in the file
+	 */
+	public static DBFDataType fromCode(char code) {
+		return fromCode((byte) code);
+	}
+	
 
 }
