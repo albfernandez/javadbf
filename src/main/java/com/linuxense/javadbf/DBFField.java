@@ -142,10 +142,19 @@ public class DBFField {
 		field.setFieldsFlag = in.readByte(); /* 23 */
 		in.readFully(field.reserv4); /* 24-30 */
 		field.indexFieldFlag = in.readByte(); /* 31 */
-
+		adjustLengthForBigCharSupport(field);
 		return field;
 	}
-
+	private static void adjustLengthForBigCharSupport(DBFField field) {
+		// if field type is char, then read length and decimalCount as one number to allow char fields to be
+		// longer than 256 bytes. 
+		// This is the way Clipper and FoxPro do it, and there is really no downside
+		// since for char fields decimal count should be zero for other versions that do not support this extended functionality.
+		if (field.type == DBFDataType.CHARACTER) {
+			field.fieldLength |= field.decimalCount << 8;
+			field.decimalCount = 0;
+		}
+	}
 	/**
 	 * Writes the content of DBFField object into the stream as per DBF format
 	 * specifications.
