@@ -191,21 +191,29 @@ public class DBFReader extends DBFBase {
 		try {
 			boolean isDeleted = false;
 			do {
-				if (isDeleted) {
-					skip(this.header.recordLength - 1);
+				try {
+					if (isDeleted) {
+						skip(this.header.recordLength - 1);
+					}
+					int t_byte = this.dataInputStream.readByte();
+					if (t_byte == END_OF_DATA || t_byte == -1) {
+						return null;
+					}
+					isDeleted = t_byte == '*';
 				}
-				int t_byte = this.dataInputStream.readByte();
-				if (t_byte == END_OF_DATA) {
+				catch (EOFException e) {
 					return null;
 				}
-				isDeleted = t_byte == '*';
 			} while (isDeleted);
-
+			int bytesReaded = 0;
 			for (int i = 0; i < this.header.fieldArray.length; i++) {
 				switch (this.header.fieldArray[i].getType()) {
 				case CHARACTER:
 					byte b_array[] = new byte[this.header.fieldArray[i].getFieldLength()];
-					this.dataInputStream.read(b_array);
+					bytesReaded = this.dataInputStream.read(b_array);
+					if (bytesReaded != b_array.length) {
+						throw new EOFException("Unexpected end of file");
+					}
 					if (this.trimRightSpaces) {
 						recordObjects[i] = new String(DBFUtils.trimRightSpaces(b_array), getCharset());
 					}
@@ -217,13 +225,22 @@ public class DBFReader extends DBFBase {
 				case DATE:
 
 					byte t_byte_year[] = new byte[4];
-					this.dataInputStream.read(t_byte_year);
+					bytesReaded = this.dataInputStream.read(t_byte_year);
+					if (bytesReaded != 4) {
+						throw new EOFException("Unexpected end of file");
+					}
 
 					byte t_byte_month[] = new byte[2];
-					this.dataInputStream.read(t_byte_month);
+					bytesReaded = this.dataInputStream.read(t_byte_month);
+					if (bytesReaded != 2) {
+						throw new EOFException("Unexpected end of file");
+					}
 
 					byte t_byte_day[] = new byte[2];
-					this.dataInputStream.read(t_byte_day);
+					bytesReaded = this.dataInputStream.read(t_byte_day);
+					if (bytesReaded != 2) {
+						throw new EOFException("Unexpected end of file");
+					}
 
 					try {
 						GregorianCalendar calendar = new GregorianCalendar(Integer.parseInt(new String(t_byte_year, StandardCharsets.US_ASCII)),
@@ -244,7 +261,10 @@ public class DBFReader extends DBFBase {
 				case NUMERIC:
 					try {
 						byte t_float[] = new byte[this.header.fieldArray[i].getFieldLength()];
-						this.dataInputStream.read(t_float);
+						bytesReaded = this.dataInputStream.read(t_float);
+						if (bytesReaded != t_float.length) {
+							throw new EOFException("Unexpected end of file");
+						}
 						t_float = DBFUtils.removeSpaces(t_float);
 						if (t_float.length > 0 && !DBFUtils.contains(t_float, (byte) '?') && !DBFUtils.contains(t_float, (byte) '*')) {
 							String aux = new String(t_float, StandardCharsets.US_ASCII).replace(',', '.');
@@ -282,13 +302,19 @@ public class DBFReader extends DBFBase {
 				case TIMESTAMP:
 
 					byte t_byte_date[] = new byte[4];
-					this.dataInputStream.read(t_byte_date);
+					bytesReaded = this.dataInputStream.read(t_byte_date);
+					if (bytesReaded != t_byte_date.length) {
+						throw new EOFException("Unexpected end of file");
+					}
 					byte t_byte_date_reversed[] = {t_byte_date[3],t_byte_date[2],t_byte_date[1],t_byte_date[0]};
 
 					int days = ByteBuffer.wrap(t_byte_date_reversed).getInt();
 
 					byte t_byte_time[] = new byte[4];
-					this.dataInputStream.read(t_byte_time);
+					bytesReaded = this.dataInputStream.read(t_byte_time);
+					if (bytesReaded != t_byte_time.length) {
+						throw new EOFException("Unexpected end of file");
+					}
 					byte t_byte_time_reversed[] = {t_byte_time[3],t_byte_time[2],t_byte_time[1],t_byte_time[0]};
 
 					int time = ByteBuffer.wrap(t_byte_time_reversed).getInt();
@@ -307,9 +333,8 @@ public class DBFReader extends DBFBase {
 					recordObjects[i] = "null";
 				}
 			}
-		} catch (EOFException e) {
-			return null;
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			throw new DBFException(e.getMessage(), e);
 		}
 
