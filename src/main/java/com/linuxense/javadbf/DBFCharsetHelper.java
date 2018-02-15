@@ -15,8 +15,8 @@ public final class DBFCharsetHelper {
 	 * (0x1D) is code page mark See
 	 * https://msdn.microsoft.com/en-us/library/aa975345(v=vs.71).aspx
 	 * 
-	 * @param b
-	 * @return
+	 * @param b the codepage to check
+	 * @return Charset for the code page
 	 */
 	public static Charset getCharsetByByte(int b) {
 		switch (b) {
