@@ -302,14 +302,19 @@ public class DBFReader extends DBFBase implements Closeable {
 			boolean isDeleted = false;
 
 			do {
-				if (isDeleted && !showDeletedRows) {
-					skip(this.header.recordLength - 1);
+				try {
+					if (isDeleted && !showDeletedRows) {
+						skip(this.header.recordLength - 1);
+					}
+					int t_byte = this.dataInputStream.readByte();
+					if (t_byte == END_OF_DATA || t_byte == -1) {
+						return null;
+					}
+					isDeleted = t_byte == '*';
 				}
-				int t_byte = this.dataInputStream.readByte();
-				if (t_byte == END_OF_DATA) {
+				catch (EOFException e) {
 					return null;
 				}
-				isDeleted = t_byte == '*';
 			} while (isDeleted && !showDeletedRows);
 
 			if(showDeletedRows) {
@@ -357,7 +362,7 @@ public class DBFReader extends DBFBase implements Closeable {
 				}
 			}
 		} catch (EOFException e) {
-			return null;
+			throw new DBFException(e.getMessage(), e);
 		} catch (IOException e) {
 			throw new DBFException(e.getMessage(), e);
 		}
