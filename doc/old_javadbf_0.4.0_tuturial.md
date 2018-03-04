@@ -1,4 +1,4 @@
-# JavaDBF Library Tutorial {align="center"}
+# JavaDBF Library Tutorial
 
 
 (for JavaDBF ver. 0.4.0 and above)\
@@ -64,7 +64,7 @@ Java types. Following table shows the mapping scheme.
 |Logical      | L            | java.lang.Boolean         |
 |Date         | D            | java.util.Date            |
 
-4. Reading a DBF File
+## 4. Reading a DBF File
 
 To read a DBF file, JavaDBF provides a DBFReader class. Following is a
 ready-to-compile, self-explanatory program describing almost all feature
@@ -243,7 +243,7 @@ Keep in mind that till the `write` method is called, all the added data
 will be kept in memory. So, if you are planning to write huge amount of
 data make sure that it will be safely held in memory till it is written
 to disk and the `DBFWriter` object is garbage-collected. Read the
-[Sync Mode](#sync_mod) section to know how JavaDBF to use a
+Sync Mode section to know how JavaDBF to use a
 special feature of JavaDBF to overcome this.
 
 ### 5.3. Sync Mode --Writing Records to File as They are Added
@@ -279,8 +279,8 @@ sample code:
 
 
 From version 0.4.0 onwards JavaDBF supports appending of records to an
-existing DBF file. Use the same constructor used in [*Sync
-Mode*](#sync_mod) to achieve this. But here the `File` object passed to
+existing DBF file. Use the same constructor used in Sync
+Mode to achieve this. But here the `File` object passed to
 the construction should represent the DBF file to which records are to
 be appended.
 
