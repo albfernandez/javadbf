@@ -25,6 +25,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -180,5 +181,28 @@ public class EncodingTest {
 		finally {
 			DBFUtils.close(writer);
 		}
+	}
+	
+	@Test
+	public void testSetEncodingCP866() throws DBFException {
+		DBFWriter writer = null;
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		try {
+			writer = new DBFWriter(baos, Charset.forName("CP866"));	
+			DBFField fields[] = new DBFField[1];
+			
+			fields[0] = new DBFField();
+			fields[0].setName("emp_name");
+			fields[0].setType(DBFDataType.CHARACTER);
+			fields[0].setLength(10);
+			writer.setFields(fields);
+			writer.addRecord(new Object[] { "Simon" });
+			writer.addRecord(new Object[] { "Julian"});
+		}
+		finally {
+			DBFUtils.close(writer);
+		}
+		byte[] data = baos.toByteArray();
+		Assert.assertEquals(0x65, data[29]);
 	}
 }
