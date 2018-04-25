@@ -178,4 +178,12 @@ public class EncodingTest {
 		byte[] data = baos.toByteArray();
 		Assert.assertEquals(0x65, data[29]);
 	}
+	
+	@Test
+	public void testSetEncodingCP866StringConversion() throws DBFException {
+		Charset charset = Charset.forName("CP866");
+		String charsetString = charset.toString().toLowerCase();
+		
+		Assert.assertEquals("ibm866", charsetString);
+	}
 }
