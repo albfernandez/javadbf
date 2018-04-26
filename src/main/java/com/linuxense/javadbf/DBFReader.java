@@ -330,7 +330,7 @@ public class DBFReader extends DBFBase {
 					break;
 				default:
 					skip(this.header.fieldArray[i].getFieldLength());
-					recordObjects[i] = "null";
+					recordObjects[i] = null;
 				}
 			}
 		} 
