@@ -199,7 +199,7 @@ public class DBFReader extends DBFBase {
 					if (t_byte == END_OF_DATA || t_byte == -1) {
 						return null;
 					}
-					isDeleted = t_byte == '*';
+					isDeleted = t_byte != ' ';
 				}
 				catch (EOFException e) {
 					return null;
