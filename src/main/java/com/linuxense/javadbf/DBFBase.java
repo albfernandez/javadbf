@@ -64,7 +64,10 @@ public abstract class DBFBase {
 	 */
 	@Deprecated
 	public String getCharactersetName() {
-		return this.charset.displayName();
+		if (this.charset != null) {
+			return this.charset.displayName();
+		}
+		return null;
 	}
 
 	/**
@@ -80,7 +83,7 @@ public abstract class DBFBase {
 	 */
 	@Deprecated
 	public void setCharactersetName(String characterSetName) {
-		this.charset = Charset.forName(characterSetName);
+		setCharset(Charset.forName(characterSetName));
 	}
 	
 }

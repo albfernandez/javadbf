@@ -160,7 +160,8 @@ public class EncodingTest {
 		DBFWriter writer = null;
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
-			writer = new DBFWriter(Charset.forName("CP866"));	
+			writer = new DBFWriter();
+			writer.setCharactersetName("CP866");
 			DBFField fields[] = new DBFField[1];
 			
 			fields[0] = new DBFField();

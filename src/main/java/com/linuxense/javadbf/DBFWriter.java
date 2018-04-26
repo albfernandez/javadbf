@@ -360,4 +360,11 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 			}
 		}
 	}
+	@Override
+	public void setCharset(Charset charset) {
+		super.setCharset(charset);
+		if (this.header != null) {
+			this.header.setUsedCharset(charset);
+		}
+	}
 }
