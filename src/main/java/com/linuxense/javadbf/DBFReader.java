@@ -328,6 +328,11 @@ public class DBFReader extends DBFBase {
 					else
 						recordObjects[i] = calendar.getTime();
 					break;
+				case MEMO: 
+			          byte[] x_array = new byte[this.header.fieldArray[i].getFieldLength()];
+			          this.dataInputStream.read(x_array);
+			          recordObjects[i] = new String(x_array, this.getCharset());
+			          break;
 				default:
 					skip(this.header.fieldArray[i].getFieldLength());
 					recordObjects[i] = null;
