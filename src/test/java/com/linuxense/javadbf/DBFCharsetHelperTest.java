@@ -128,6 +128,19 @@ public class DBFCharsetHelperTest {
 		Assert.assertEquals(0x66, DBFCharsetHelper.getDBFCodeForCharset(nordic));
 		Assert.assertEquals(nordic, DBFCharsetHelper.getCharsetByByte(0x66));		
 	}
+	
+	
+	@Test
+	public void testEncodings() throws Exception {
+		
+		Assert.assertEquals(0x65, DBFCharsetHelper.getDBFCodeForCharset(Charset.forName("IBM866")));
+		Assert.assertEquals(0x65, DBFCharsetHelper.getDBFCodeForCharset(Charset.forName("CP866")));
+		
+		Assert.assertEquals(0xc9, DBFCharsetHelper.getDBFCodeForCharset(Charset.forName("windows-1251")));
+		Assert.assertEquals(0xc9, DBFCharsetHelper.getDBFCodeForCharset(Charset.forName("CP1251")));
+		
+		
+	}
 
 
 }
