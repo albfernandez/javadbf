@@ -5,7 +5,7 @@ install: mvn install -DskipTests=true -Dgpg.skip=true -Dmaven.javadoc.skip=true
 jdk:
   - openjdk7
   - openjdk8
-  - oraclejdk8
-  - oraclejdk9
-  - oraclejdk10
-  - oraclejdk11
+  - openjdk9
+  - openjdk10
+  - openjdk11
+
