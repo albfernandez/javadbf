@@ -75,13 +75,14 @@ Following tables shows the mapping scheme.
 
 ## Read and write supported types
 
-| XBase Type  | XBase Symbol | Java Type used in JavaDBF |
-|----------   | ------------ | ---------------------------
-|Character    | C            | java.lang.String          |
-|Numeric      | N            | java.math.BigDecimal      |
-|Double       | F            | java.math.BigDecimal      |
-|Logical      | L            | java.lang.Boolean         |
-|Date         | D            | java.util.Date            |
+| XBase Type    | XBase Symbol | Java Type used in JavaDBF |
+|------------   | ------------ | ---------------------------
+|Character      | C            | java.lang.String          |
+|Numeric        | N            | java.math.BigDecimal      |
+|Floating Point | F            | java.math.BigDecimal      |
+|Logical        | L            | java.lang.Boolean         |
+|Date           | D            | java.util.Date            |
+
 
 ## Read supported types
 
