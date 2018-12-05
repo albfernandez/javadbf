@@ -67,6 +67,7 @@ public final class DBFUtils {
 				throw new EOFException("failed to read:" + length + " bytes");
 			}
 			t_float = DBFUtils.removeSpaces(t_float);
+			t_float = DBFUtils.removeNullBytes(t_float);
 			if (t_float.length > 0 && DBFUtils.isPureAscii(t_float) && !DBFUtils.contains(t_float, (byte) '?') && !DBFUtils.contains(t_float, (byte) '*')) {
 				String aux = new String(t_float, StandardCharsets.US_ASCII).replace(',', '.');
 				if (".".equals(aux)) {
@@ -117,6 +118,21 @@ public final class DBFUtils {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream(array.length);
 		for (byte b : array) {
 			if (b != ' ') {
+				baos.write(b);
+			}
+		}
+		return baos.toByteArray();
+	}
+
+	/**
+	 * Remove all nulls (0) found in the data.
+	 * @param array the data
+	 * @return the data cleared of whitespaces
+	 */
+	public static byte[] removeNullBytes(byte[] array) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream(array.length);
+		for (byte b : array) {
+			if (b != 0x00) {
 				baos.write(b);
 			}
 		}
