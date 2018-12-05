@@ -139,8 +139,14 @@ public class UtilsTest {
 		assertEquals("123", new String(DBFUtils.removeSpaces("123".getBytes())));
 		assertEquals("", new String(DBFUtils.removeSpaces("".getBytes())));
 	}
-	
-	
+
+	@Test
+	public void testRemoveNullBytes() {
+		byte[] byteArray = {0x00, 0x31, 0x00, 0x32, 0x33, 0x00}; // will nulls
+		assertEquals("123", new String(DBFUtils.removeNullBytes(byteArray)));
+	}
+
+
 	@Test
 	public void testTrimRightSpaces() {
 		assertEquals("123", new String(DBFUtils.trimRightSpaces("123".getBytes())));
