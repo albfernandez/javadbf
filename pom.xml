@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.albfernandez</groupId>
 	<artifactId>javadbf</artifactId>
-	<version>1.9.3-SNAPSHOT</version>
+	<version>1.9.3</version>
 	<url>https://github.com/albfernandez/javadbf</url>
 	<packaging>jar</packaging>
 	<name>javadbf</name>
