@@ -142,7 +142,7 @@ public class DBFHeader {
 			userFields.add(deletedField);
 		}
 		for (DBFField field1: this.fieldArray) {
-			if (!field1.isSystem()) {
+			if (!field1.isSystem() && field1.getType() != DBFDataType.NULL_FLAGS) {
 				userFields.add(field1);
 			}
 		}

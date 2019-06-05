@@ -324,7 +324,7 @@ public class DBFReader extends DBFBase implements Closeable {
 			for (int i = 0; i < this.header.fieldArray.length; i++) {
 				DBFField field = this.header.fieldArray[i];
 				Object o = getFieldValue(field);
-				if (field.isSystem()) {
+				if (field.isSystem() || field.getType() == DBFDataType.NULL_FLAGS) {
 					if (field.getType() == DBFDataType.NULL_FLAGS && o instanceof BitSet) {
 						BitSet nullFlags = (BitSet) o;
 						int currentIndex = -1;
@@ -338,11 +338,12 @@ public class DBFReader extends DBFBase implements Closeable {
 							}
 							if (field1.getType() == DBFDataType.VARBINARY || field1.getType() == DBFDataType.VARCHAR){
 								currentIndex++;
-								if (recordObjects.get(i) instanceof byte[]) {
+								if (recordObjects.get(j) instanceof byte[]) {
 									byte[] data = (byte[]) recordObjects.get(j);
 									int size = field1.getLength();
 									if (!nullFlags.get(currentIndex)) {
 										// Data is not full
+										// lenght is stored in the last position
 										size = data[data.length-1];
 									}
 									byte[] newData = new byte[size];
