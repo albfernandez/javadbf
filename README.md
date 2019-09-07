@@ -51,7 +51,7 @@ If you are using Maven, you can add JavaDBF to your project using this dependenc
 	<dependency>
 		<groupId>com.github.albfernandez</groupId>
 		<artifactId>javadbf</artifactId>
-		<version>1.9.4</version>
+		<version>1.10.1</version>
 	</dependency>
 ```
 
