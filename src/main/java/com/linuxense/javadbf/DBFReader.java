@@ -535,6 +535,14 @@ public class DBFReader extends DBFBase implements Closeable {
 			this.dataInputStream.readByte();
 		}
 	}
+	/**
+	 * Skip records from reading. Treat "deleted" records as normal records.
+	 * @param recordsToSkip Number of records to skip.
+	 * @throws IOException if some IO error happens
+	 */
+	public void skipRecords(int recordsToSkip) throws IOException {
+		skip(recordsToSkip * this.header.recordLength);
+	}
 
 	protected DBFHeader getHeader() {
 		return this.header;

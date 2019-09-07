@@ -82,7 +82,6 @@ public class DBFReaderTest {
 			Assert.assertEquals(0, header.fieldArray[1].getReserv3());
 			byte[] reserv4 =  header.fieldArray[1].getReserv4();
 			Assert.assertNotNull(reserv4);
-			// TODO Auto-generated constructor stub			Assert.assertEquals(7, reserv4.length);
 			Assert.assertArrayEquals(new byte[]{0,0,0,0,0,0,0}, reserv4);
 			Assert.assertEquals(0, header.fieldArray[1].getIndexFieldFlag());
 			Assert.assertEquals(0, header.fieldArray[1].getSetFieldsFlag());
@@ -138,6 +137,23 @@ public class DBFReaderTest {
 		try {
 			reader = new DBFReader(new FailInputStream());
 			assertNull(reader);
+		}
+		finally {
+			DBFUtils.close(reader);
+		}
+	}
+	
+	
+	@Test
+	public void testSkipRecords() throws Exception {
+		DBFReader reader = null;
+		try {
+			File file = new File("src/test/resources/books.dbf");
+			reader = new DBFReader(new FileInputStream(file));
+			reader.skipRecords(4);
+			DBFRow row = reader.nextRow();
+			Assert.assertEquals(5, row.getInt("BOOK_ID"));
+			Assert.assertEquals("My Family", row.getString("TITLE"));
 		}
 		finally {
 			DBFUtils.close(reader);
