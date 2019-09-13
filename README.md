@@ -89,7 +89,7 @@ Following tables shows the mapping scheme.
 | FoxPro Type           | Symbol | Java Type used in JavaDBF |
 | --------------------- | ------ | ------------------------- |  
 | Currency              | Y      | java.math.BigDecimal      |
-| Long                  | I      | java.lang.Integer         |
+| Integer               | I      | java.lang.Long	     |
 | Date Type             | T      | java.util.Date            |
 | Timestamp             | @      | java.util.Date            | 
 | AutoIncrement         | +      | java.lang.Integer         |
