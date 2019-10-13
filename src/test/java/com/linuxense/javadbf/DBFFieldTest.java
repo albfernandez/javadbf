@@ -19,8 +19,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.linuxense.javadbf;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class DBFFieldTest {
@@ -45,6 +46,7 @@ public class DBFFieldTest {
 		field.setName("12345678901");
 	}
 	@Test(expected=IllegalArgumentException.class)
+	@Ignore("Now we allow unicode names")
 	public void testInvalidNotAsciiName() {
 		DBFField field = new DBFField();
 		field.setName("aááa");
