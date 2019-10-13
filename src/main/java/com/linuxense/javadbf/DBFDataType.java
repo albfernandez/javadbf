@@ -114,17 +114,17 @@ public enum DBFDataType {
 	private boolean writeSupported = false;
 
 
-	private DBFDataType(char code) {
+	DBFDataType(char code) {
 		this((byte) code);
 	}
 
-	private DBFDataType(byte code) {
+	DBFDataType(byte code) {
 		this.code = code;
 	}
-	private DBFDataType(char code, int minSize, int maxSize, int defaultSize, boolean writeSupported) {
+	DBFDataType(char code, int minSize, int maxSize, int defaultSize, boolean writeSupported) {
 		this((byte) code, minSize, maxSize, defaultSize, writeSupported);
 	}
-	private DBFDataType(byte code, int minSize, int maxSize, int defaultSize, boolean writeSupported) {
+	DBFDataType(byte code, int minSize, int maxSize, int defaultSize, boolean writeSupported) {
 		this.code = code;
 		this.minSize = minSize;
 		this.maxSize = maxSize;

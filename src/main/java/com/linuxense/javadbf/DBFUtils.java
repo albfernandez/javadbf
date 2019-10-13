@@ -235,7 +235,7 @@ public final class DBFUtils {
 	 */
 
 	public static byte[] doubleFormating(Number num, Charset charset, int fieldLength, int sizeDecimalPart) {
-		int sizeWholePart = fieldLength - (sizeDecimalPart > 0 ? (sizeDecimalPart + 1) : 0);
+		int sizeWholePart = fieldLength - (sizeDecimalPart > 0 ? sizeDecimalPart + 1 : 0);
 
 		StringBuilder format = new StringBuilder(fieldLength);
 		for (int i = 0; i < sizeWholePart-1; i++) {
