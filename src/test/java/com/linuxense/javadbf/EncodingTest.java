@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
@@ -213,5 +214,25 @@ public class EncodingTest {
 		String charsetString = charset.toString().toLowerCase();
 		
 		Assert.assertEquals("ibm866", charsetString);
+	}
+	
+	@Test
+	public void testUnicodeAsFieldName() throws IOException {
+		NullOutputStream output = new NullOutputStream();
+		try ( DBFWriter writer = new DBFWriter(output, StandardCharsets.UTF_8)) {
+			DBFField[] fields = new DBFField[1];
+
+			fields[0] = new DBFField();
+			fields[0].setName("Código890");
+			fields[0].setType(DBFDataType.NUMERIC);
+			fields[0].setLength(10);
+			fields[0].setDecimalCount(0);
+
+			writer.setFields(fields);
+			writer.addRecord(new Object[] { 1 });
+			writer.addRecord(new Object[] { 2 });
+			writer.addRecord(new Object[] { 2 });
+		}
+		Assert.assertEquals(99L, output.getCount());
 	}
 }
