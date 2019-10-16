@@ -78,7 +78,7 @@ public final class DbfToTxtTest {
 				// do something with it if you want
 				// refer the JavaDoc API reference for more details
 				//
-				System.out.println(field.getType() + " " + field.getName());
+				System.out.println(field.getType() + " (" + field.getLength() + ") "+ field.getName());
 			}
 
 			// Now, lets us start reading the rows
