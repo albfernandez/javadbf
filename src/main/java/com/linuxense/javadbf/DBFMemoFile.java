@@ -62,7 +62,7 @@ public class DBFMemoFile {
 
 		}
 		catch (IOException ex) {
-			throw new RuntimeException(ex);
+			throw new DBFException(ex.getMessage(), ex);
 		}
 		finally {
 			DBFUtils.close(file);
@@ -153,7 +153,7 @@ public class DBFMemoFile {
 
 		}
 		catch (IOException ex) {
-			throw new RuntimeException(ex);
+			throw new DBFException(ex.getMessage(), ex);
 		}
 		finally {
 			DBFUtils.close(file);
