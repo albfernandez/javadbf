@@ -177,7 +177,9 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 
 
 	/**
-	 * Sets fields definition
+	 * Sets fields definition.
+	 * To keep maximum compatibility a maximum of 255 columns should be used.
+	 * https://docs.microsoft.com/en-us/previous-versions/visualstudio/foxpro/3kfd3hw9(v=vs.80)
 	 * @param fields fields definition
 	 */
 	public void setFields(DBFField[] fields) {
@@ -190,9 +192,21 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 		if (fields == null || fields.length == 0) {
 			throw new DBFException("Should have at least one field");
 		}
+		if (fields.length > 255) {
+			throw new DBFException("Exceded column limit of 255 (" + fields.length + ")");
+		}
+		List<Integer> fieldsWithNull = new ArrayList<Integer>();
 		for (int i = 0; i < fields.length; i++) {
 			if (fields[i] == null) {
-				throw new DBFException("Field " + i + " is null");
+				fieldsWithNull.add(i);
+			}
+		}
+		if (!fieldsWithNull.isEmpty()) {
+			if (fieldsWithNull.size() == 1) {
+				throw new DBFException("Field " + fieldsWithNull.get(0) + " is null");
+			}
+			else {
+				throw new DBFException("Fields " + fieldsWithNull.toString()  + " are null");
 			}
 		}
 		this.header.fieldArray = new DBFField[fields.length];
