@@ -30,9 +30,9 @@ import org.junit.Test;
 public class CreateEmptyFileFromTemplateTest {
 
 	
-	@Test
+	@Test	
 	public void testCreate () throws IOException {
-		File inputFile = new File("src/test/resources/books.dbf");
+		File inputFile = new File("src/test/resources/countries.dbf");
 		File outputFile = File.createTempFile("example", ".dbf");
 		emptyFile(inputFile, outputFile);
 	}
