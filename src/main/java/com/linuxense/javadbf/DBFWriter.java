@@ -209,11 +209,22 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 				throw new DBFException("Fields " + fieldsWithNull.toString()  + " are null");
 			}
 		}
+		for (DBFField field: fields) {
+			if (!field.getType().isWriteSupported()) {
+				throw new DBFException(
+				"Field " + field.getName() + " is of type " + field.getType() + " that is not supported for writting");
+			}
+		}
 		this.header.fieldArray = new DBFField[fields.length];
 		for (int i = 0; i < fields.length; i++) {
 			this.header.fieldArray[i] = new DBFField(fields[i]);
 		}
+		
+		
 		try {
+			if (this.raf != null && this.raf.length() > 0) {
+				throw new DBFException("You can not change fields on an existing file");
+			}
 			if (this.raf != null && this.raf.length() == 0) {
 				// this is a new/non-existent file. So write header before proceeding
 				this.header.write(this.raf);
