@@ -563,12 +563,27 @@ public class DBFReader extends DBFBase implements Closeable {
 		this.trimRightSpaces = trimRightSpaces;
 	}
 
+	
+
 	/**
 	 * Sets the memo file (DBT or FPT) where memo fields will be readed.
 	 * If no file is provided, then this fields will be null.
 	 * @param file the file containing the memo data
 	 */
 	public void setMemoFile(File file) {
+		if (this.memoFile != null) {
+			throw new IllegalStateException("Memo file is already setted");
+		}
+		setMemoFile(file, file.length() < (8*1024*1024));
+	}
+	
+	/**
+	 * Sets the memo file (DBT or FPT) where memo fields will be readed.
+	 * If no file is provided, then this fields will be null.
+	 * @param file the file containing the memo data
+	 * @param inMemory if the memoFile shoud be loaded in memory (caution, it may hang your jvm if memo file is too big)
+	 */
+	public void setMemoFile(File file, boolean inMemory) {
 		if (this.memoFile != null) {
 			throw new IllegalStateException("Memo file is already setted");
 		}

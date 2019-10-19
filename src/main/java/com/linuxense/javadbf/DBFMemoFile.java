@@ -20,46 +20,101 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 package com.linuxense.javadbf;
 
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
+import java.io.DataInput;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 
 /**
  * Class for read memo files (DBT and FPT)
  */
 public class DBFMemoFile implements Closeable {
 
-	private File memoFile = null;
+	private DataInputStream fileInMemory = null;
+	private ByteArrayInputStream baisMemory = null;
 	private Charset charset = null;
 	private int blockSize = 512;
 	private boolean fpt = false;
 	private RandomAccessFile file;
 
-	protected DBFMemoFile(File memoFile, Charset charset) {
-		this.memoFile = memoFile;
+	protected DBFMemoFile(File memoFile, Charset charset, boolean inMemory) {
 		this.charset = charset;
 		this.fpt = memoFile.getName().toLowerCase().endsWith(".fpt");
-		readBlockSize();
+		initReader(memoFile, inMemory);
+		this.blockSize = readBlockSize();
 	}
-	private void readBlockSize() {
-
+	private void initReader(File memoFile, boolean inMemory) {
 		try {
-			this.file = new RandomAccessFile(memoFile, "r");
-			if (isFPT()) {
-				file.seek(6);
-				this.blockSize = file.readShort();
+			if (!inMemory) {
+				this.file = new RandomAccessFile(memoFile, "r");
 			}
 			else {
-				file.seek(20);
-				this.blockSize = DBFUtils.readLittleEndianShort(file);
+				this.baisMemory = new ByteArrayInputStream(Files.readAllBytes(memoFile.toPath()));
+				this.fileInMemory = new DataInputStream(this.baisMemory);
 			}
-			if (this.blockSize == 0) {
-				this.blockSize = 512;
+		}
+		catch (IOException ex) {
+			throw new DBFException(ex.getMessage(), ex);
+		}
+	}
+	
+	protected DBFMemoFile(File memoFile, Charset charset) {
+		this(memoFile, charset, memoFile.length() < (8*1024*1024));
+	}
+	
+	private void seek(long pos) throws IOException {
+		if (fileInMemory != null) {
+			fileInMemory.reset();
+			fileInMemory.skip(pos);
+		}
+		else {
+			file.seek(pos);
+		}
+	}
+	public int read(byte b[]) throws IOException {
+		if (baisMemory != null) {
+			return baisMemory.read(b);
+		}
+		return file.read(b);
+	}
+	
+	private DataInput getDataInput() {
+		if (fileInMemory != null) {
+			return fileInMemory;
+		}
+		return file;
+	}
+	
+	private short readShort() throws IOException {
+		return getDataInput().readShort();
+	}
+	private short readLittleEndianShort() throws IOException {
+		return DBFUtils.readLittleEndianShort(getDataInput());
+	}
+	
+	private int readBlockSize() {
+
+		try {
+			int size = 0;
+			if (isFPT()) {
+				seek(6);
+				size = readShort();
 			}
+			else {
+				seek(20);
+				size = readLittleEndianShort();
+			}
+			if (size == 0) {
+				size = 512;
+			}
+			return size;
 
 		}
 		catch (IOException ex) {
@@ -92,7 +147,7 @@ public class DBFMemoFile implements Closeable {
 		long blockStart = this.blockSize * (long) block;
 		DBFDataType usedType = type;
 		try {
-			file.seek(blockStart);
+			seek(blockStart);
 			byte[] blockData = new byte[this.blockSize];
 			ByteArrayOutputStream baos = new ByteArrayOutputStream(this.blockSize);
 			boolean end = false;
@@ -101,7 +156,7 @@ public class DBFMemoFile implements Closeable {
 			boolean firstBlock = true;
 			boolean checkForEndMark = true;
 			while (!end) {
-				int endIndex = file.read(blockData);
+				int endIndex = read(blockData);
 				if (endIndex <= 0) {
 					break;
 				}
@@ -158,5 +213,7 @@ public class DBFMemoFile implements Closeable {
 	
 	public void close() {
 		DBFUtils.close(this.file);
+		DBFUtils.close(this.fileInMemory);
+		DBFUtils.close(this.baisMemory);
 	}
 }
