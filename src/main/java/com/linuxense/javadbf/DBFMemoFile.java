@@ -72,7 +72,7 @@ public class DBFMemoFile implements Closeable {
 	private void seek(long pos) throws IOException {
 		if (fileInMemory != null) {
 			fileInMemory.reset();
-			fileInMemory.skip(pos);
+			DBFUtils.skip(fileInMemory,pos);
 		}
 		else {
 			file.seek(pos);

@@ -27,6 +27,7 @@ import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
@@ -358,5 +359,18 @@ public final class DBFUtils {
 			}
 		}
 	}
+	
+	/**
+	 * Safely skip bytesToSkip bytes (in some bufferd scenarios skip doesn't really skip all requested bytes)
+	 * @param inputStream the inputstream
+	 * @param bytesToSkip number of bytes to skip
+	 * @throws IOException if some IO error happens
+	 */
+	public static void skip(InputStream inputStream, long bytesToSkip) throws IOException {
+		long skipped = (long) inputStream.skip(bytesToSkip);
+		for (long i = skipped; i < bytesToSkip; i++) {
+			inputStream.read();
+		}
+	} 
 
 }
