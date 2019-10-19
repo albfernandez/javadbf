@@ -8,9 +8,7 @@
 	<packaging>jar</packaging>
 	<name>javadbf</name>
 	<description>JavaDBF is a Java library for reading and writing XBase files.</description>
-	<prerequisites>
-		<maven>3.0.4</maven>
-	</prerequisites>
+
 	<licenses>
 		<license>
 			<name>GNU LESSER GENERAL PUBLIC LICENSE, version 3 (LGPL-3.0)</name>
