@@ -21,6 +21,7 @@ package com.linuxense.javadbf;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -30,12 +31,13 @@ import java.nio.charset.Charset;
 /**
  * Class for read memo files (DBT and FPT)
  */
-public class DBFMemoFile {
+public class DBFMemoFile implements Closeable {
 
 	private File memoFile = null;
 	private Charset charset = null;
 	private int blockSize = 512;
 	private boolean fpt = false;
+	private RandomAccessFile file;
 
 	protected DBFMemoFile(File memoFile, Charset charset) {
 		this.memoFile = memoFile;
@@ -44,10 +46,9 @@ public class DBFMemoFile {
 		readBlockSize();
 	}
 	private void readBlockSize() {
-		RandomAccessFile file = null;
-		try {
-			file = new RandomAccessFile(memoFile, "r");
 
+		try {
+			this.file = new RandomAccessFile(memoFile, "r");
 			if (isFPT()) {
 				file.seek(6);
 				this.blockSize = file.readShort();
@@ -63,10 +64,7 @@ public class DBFMemoFile {
 		}
 		catch (IOException ex) {
 			throw new DBFException(ex.getMessage(), ex);
-		}
-		finally {
-			DBFUtils.close(file);
-		}
+		}		
 	}
 
 	private boolean isFPT() {
@@ -91,11 +89,9 @@ public class DBFMemoFile {
 	}
 
 	protected Object readData(int block, DBFDataType type) {
-		RandomAccessFile file = null;
 		long blockStart = this.blockSize * (long) block;
 		DBFDataType usedType = type;
 		try {
-			file = new RandomAccessFile(memoFile, "r");
 			file.seek(blockStart);
 			byte[] blockData = new byte[this.blockSize];
 			ByteArrayOutputStream baos = new ByteArrayOutputStream(this.blockSize);
@@ -155,12 +151,12 @@ public class DBFMemoFile {
 		catch (IOException ex) {
 			throw new DBFException(ex.getMessage(), ex);
 		}
-		finally {
-			DBFUtils.close(file);
-		}
-
 	}
 	private boolean isMagicDBase4(byte[] blockData) {
 		return blockData[0] == (byte) 0xFF && blockData[1] == (byte) 0xFF && blockData[2] == 0x08 && blockData[3] == 0x00;
+	}
+	
+	public void close() {
+		DBFUtils.close(this.file);
 	}
 }

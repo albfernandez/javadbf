@@ -566,25 +566,26 @@ public class DBFReader extends DBFBase implements Closeable {
 	/**
 	 * Sets the memo file (DBT or FPT) where memo fields will be readed.
 	 * If no file is provided, then this fields will be null.
-	 * @param memoFile the file containing the memo data
+	 * @param file the file containing the memo data
 	 */
-	public void setMemoFile(File memoFile) {
+	public void setMemoFile(File file) {
 		if (this.memoFile != null) {
 			throw new IllegalStateException("Memo file is already setted");
 		}
-		if (!memoFile.exists()){
-			throw new DBFException("Memo file " + memoFile.getName() + " not exists");
+		if (!file.exists()){
+			throw new DBFException("Memo file " + file.getName() + " not exists");
 		}
-		if (!memoFile.canRead()) {
-			throw new DBFException("Cannot read Memo file " + memoFile.getName());
+		if (!file.canRead()) {
+			throw new DBFException("Cannot read Memo file " + file.getName());
 		}
-		this.memoFile = new DBFMemoFile(memoFile, this.getCharset());
+		this.memoFile = new DBFMemoFile(file, this.getCharset());
 	}
 
 	@Override
 	public void close() {
 		this.closed = true;
 		DBFUtils.close(this.dataInputStream);
+		DBFUtils.close(this.memoFile);
 	}
 	
 	@Override
