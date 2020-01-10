@@ -238,25 +238,25 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 			switch (this.header.fieldArray[i].getType()) {
 
 			case CHARACTER:
-				if (!(value instanceof String)) {
+				if (value != null && !(value instanceof String)) {
 					throw new DBFException("Invalid value for field " + i + ":" + value);
 				}
 				break;
 
 			case LOGICAL:
-				if (!(value instanceof Boolean)) {
+				if (value != null && !(value instanceof Boolean)) {
 					throw new DBFException("Invalid value for field " + i + ":" + value);
 				}
 				break;
 
 			case DATE:
-				if (!(value instanceof Date)) {
+				if (value != null && !(value instanceof Date)) {
 					throw new DBFException("Invalid value for field " + i + ":" + value);
 				}
 				break;
 			case NUMERIC:
 			case FLOATING_POINT:
-				if (!(value instanceof Number)) {
+				if (value != null && !(value instanceof Number)) {
 					throw new DBFException("Invalid value for field " + i + ":" + value);
 				}
 				break;
