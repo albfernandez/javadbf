@@ -555,7 +555,14 @@ public class DBFReader extends DBFBase implements Closeable {
 	 * @throws IOException if some IO error happens
 	 */
 	public void skipRecords(int recordsToSkip) throws IOException {
-		skip(recordsToSkip * this.header.recordLength);
+		if (showDeletedRows) {
+			skip(recordsToSkip * this.header.recordLength);
+		}
+		else {
+			for (int i = 0; i < recordsToSkip; i++) {
+				nextRecord();
+			}
+		}
 	}
 
 	protected DBFHeader getHeader() {
