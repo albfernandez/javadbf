@@ -140,7 +140,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 			 */
 			if (dbfFile.length() == 0) {
 				if (charset != null) {
-					if (DBFCharsetHelper.getDBFCodeForCharset(charset) == 0) {
+					if (DBFCharsetHelper.getDBFCodeForCharset(charset) == 0 && charset != StandardCharsets.UTF_8) {
 						throw new DBFException("Unssuported charset " + charset);
 					}
 					setCharset(charset);

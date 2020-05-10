@@ -23,6 +23,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -233,5 +234,67 @@ public class EncodingTest {
 			writer.addRecord(new Object[] { 2 });
 		}
 		Assert.assertEquals(99L, output.getCount());
+	}
+	
+	
+	@Test	
+	public void testUTF8 () throws IOException {
+		File file = File.createTempFile("utf8", ".dbf");
+		try ( DBFWriter writer = new DBFWriter(file, StandardCharsets.UTF_8)) {
+			DBFField[] fields = new DBFField[1];
+
+			fields[0] = new DBFField();
+			fields[0].setName("Código890");
+			fields[0].setType(DBFDataType.NUMERIC);
+			fields[0].setLength(10);
+			fields[0].setDecimalCount(0);
+
+			writer.setFields(fields);
+			writer.addRecord(new Object[] { 1 });
+			writer.addRecord(new Object[] { 2 });
+			writer.addRecord(new Object[] { 2 });
+		}
+		Assert.assertEquals(99L, file.length());
+		file.delete();
+	}
+	@Test	
+	public void testUTF8_1 () throws IOException {
+		File file = File.createTempFile("utf8", ".dbf");
+		try ( DBFWriter writer = new DBFWriter(file, Charset.forName("UTF-8"))) {
+			DBFField[] fields = new DBFField[1];
+
+			fields[0] = new DBFField();
+			fields[0].setName("Código890");
+			fields[0].setType(DBFDataType.NUMERIC);
+			fields[0].setLength(10);
+			fields[0].setDecimalCount(0);
+
+			writer.setFields(fields);
+			writer.addRecord(new Object[] { 1 });
+			writer.addRecord(new Object[] { 2 });
+			writer.addRecord(new Object[] { 2 });
+		}
+		Assert.assertEquals(99L, file.length());
+		file.delete();
+	}
+	@Test	
+	public void testUTF8_2 () throws IOException {
+		File file = File.createTempFile("utf8", ".dbf");
+		try ( DBFWriter writer = new DBFWriter(file, Charset.forName("UTF8"))) {
+			DBFField[] fields = new DBFField[1];
+
+			fields[0] = new DBFField();
+			fields[0].setName("Código890");
+			fields[0].setType(DBFDataType.NUMERIC);
+			fields[0].setLength(10);
+			fields[0].setDecimalCount(0);
+
+			writer.setFields(fields);
+			writer.addRecord(new Object[] { 1 });
+			writer.addRecord(new Object[] { 2 });
+			writer.addRecord(new Object[] { 2 });
+		}
+		Assert.assertEquals(99L, file.length());
+		file.delete();
 	}
 }
