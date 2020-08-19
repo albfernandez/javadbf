@@ -384,7 +384,8 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 				if (objectArray[j] != null) {
 					GregorianCalendar calendar = new GregorianCalendar();
 					calendar.setTime((Date) objectArray[j]);
-					dataOutput.write(String.valueOf(calendar.get(Calendar.YEAR)).getBytes(StandardCharsets.US_ASCII));
+					dataOutput.write(DBFUtils.textPadding(String.valueOf(calendar.get(Calendar.YEAR) + 1),
+							StandardCharsets.US_ASCII, 4, DBFAlignment.RIGHT, (byte) '0'));
 					dataOutput.write(DBFUtils.textPadding(String.valueOf(calendar.get(Calendar.MONTH) + 1),
 							StandardCharsets.US_ASCII, 2, DBFAlignment.RIGHT, (byte) '0'));
 					dataOutput.write(DBFUtils.textPadding(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)),
