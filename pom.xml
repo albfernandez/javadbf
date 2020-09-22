@@ -236,7 +236,7 @@
 		<profile>
 			<id>jdk9on</id>
 			<activation>
-				<jdk>[9,)</jdk>
+				<jdk>[9,11]</jdk>
 			</activation>
 			<build>
 				<plugins>
@@ -271,6 +271,46 @@
 				</plugins>
 			</build>
 		</profile>
+		
+		<profile>
+			<id>jdk12on</id>
+			<activation>
+				<jdk>[12,)</jdk>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<version>3.8.1</version>
+						<executions>
+							<execution>
+								<id>default-compile</id>
+								<configuration>
+									<release>${compiler.module.level}</release>
+								</configuration>
+							</execution>
+							<execution>
+								<id>base-compile</id>
+								<goals>
+									<goal>compile</goal>
+								</goals>
+								<configuration>
+									<excludes>
+										<exclude>module-info.java</exclude>
+									</excludes>
+								</configuration>
+							</execution>
+						</executions>
+						<configuration>
+							<source>8</source>
+							<target>8</target>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
 
 	</profiles>
 </project>
