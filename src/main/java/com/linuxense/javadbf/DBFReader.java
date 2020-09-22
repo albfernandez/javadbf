@@ -31,7 +31,6 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Calendar;
@@ -444,9 +443,9 @@ public class DBFReader extends DBFBase implements Closeable {
 			}
 
 			try {
-				GregorianCalendar calendar = new GregorianCalendar(Integer.parseInt(new String(t_byte_year, StandardCharsets.US_ASCII)),
-						Integer.parseInt(new String(t_byte_month, StandardCharsets.US_ASCII)) - 1,
-						Integer.parseInt(new String(t_byte_day, StandardCharsets.US_ASCII)));
+				GregorianCalendar calendar = new GregorianCalendar(Integer.parseInt(new String(t_byte_year, DBFStandardCharsets.US_ASCII)),
+						Integer.parseInt(new String(t_byte_month, DBFStandardCharsets.US_ASCII)) - 1,
+						Integer.parseInt(new String(t_byte_day, DBFStandardCharsets.US_ASCII)));
 				return calendar.getTime();
 			} catch (NumberFormatException e) {
 				// this field may be empty or may have improper value set
@@ -507,7 +506,7 @@ public class DBFReader extends DBFBase implements Closeable {
 			if (readed != field.getLength()){
 				throw new EOFException("Unexpected end of file");
 			}
-			return BitSet.valueOf(data1);
+			return DBFUtils.getBitSet(data1);
 		default:
 			skip(field.getLength());
 			return null;

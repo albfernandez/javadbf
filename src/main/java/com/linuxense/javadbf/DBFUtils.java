@@ -21,20 +21,23 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.linuxense.javadbf;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
-import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.Locale;
 
 
@@ -45,7 +48,7 @@ import java.util.Locale;
  *
  */
 public final class DBFUtils {
-
+	
 	private static final CharsetEncoder ASCII_ENCODER = Charset.forName("US-ASCII").newEncoder();
 
 	private DBFUtils() {
@@ -70,7 +73,7 @@ public final class DBFUtils {
 			t_float = DBFUtils.removeSpaces(t_float);
 			t_float = DBFUtils.removeNullBytes(t_float);
 			if (t_float.length > 0 && DBFUtils.isPureAscii(t_float) && !DBFUtils.contains(t_float, (byte) '?') && !DBFUtils.contains(t_float, (byte) '*')) {
-				String aux = new String(t_float, StandardCharsets.US_ASCII).replace(',', '.');
+				String aux = new String(t_float, DBFStandardCharsets.US_ASCII).replace(',', '.');
 				if (".".equals(aux)) {
 					return BigDecimal.ZERO;
 				}
@@ -372,5 +375,32 @@ public final class DBFUtils {
 			inputStream.read();
 		}
 	} 
+	
+	protected static byte[] readAllBytes(File file) throws IOException {
+		if (file == null) {
+			throw new IllegalArgumentException("file must not be null");
+		}
+		byte[] data = new byte[(int) file.length()];
+		InputStream is = null;
+		try {
+			is = new BufferedInputStream(new FileInputStream(file));
+			is.read(data);
+		}
+		finally {
+			close(is);
+		}
+		return data;
+	}
+	
+	protected static BitSet getBitSet(byte[] bytes) {
+//		return BitSet.valueOf(bytes);
+		BitSet bits = new BitSet();
+	    for (int i = 0; i < bytes.length * 8; i++) {
+	      if ((bytes[bytes.length - i / 8 - 1] & (1 << (i % 8))) > 0) {
+	        bits.set(i);
+	      }
+	    }
+	    return bits;
+	}
 
 }

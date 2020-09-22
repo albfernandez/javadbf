@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
 
 /**
  * Class for read memo files (DBT and FPT)
@@ -56,7 +55,7 @@ public class DBFMemoFile implements Closeable {
 				this.file = new RandomAccessFile(memoFile, "r");
 			}
 			else {
-				this.baisMemory = new ByteArrayInputStream(Files.readAllBytes(memoFile.toPath()));
+				this.baisMemory = new ByteArrayInputStream(DBFUtils.readAllBytes(memoFile));
 				this.fileInMemory = new DataInputStream(this.baisMemory);
 			}
 		}

@@ -21,7 +21,6 @@ package com.linuxense.javadbf;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Data containdes in a row of the DBF file.
@@ -43,7 +42,9 @@ public class DBFRow {
 	}
 
 	private int getColumnIndex(String columnName) {
-		Objects.requireNonNull(columnName);
+		if (columnName == null) {
+			throw new IllegalArgumentException("You must provide a columnName");
+		}
 		String key = columnName.toLowerCase();
 		Integer index = mapcolumnNames.get(key);
 		if (index == null) {

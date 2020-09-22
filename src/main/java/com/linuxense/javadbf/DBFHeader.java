@@ -27,7 +27,6 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -118,7 +117,7 @@ public class DBFHeader {
 			this.usedCharset = charset;
 		}
 		if (this.usedCharset == null) {
-			this.usedCharset = StandardCharsets.ISO_8859_1;
+			this.usedCharset = DBFStandardCharsets.ISO_8859_1;
 		}
 
 		DBFField field = null;

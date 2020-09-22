@@ -22,7 +22,7 @@ package com.linuxense.javadbf;
 
 
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+
 
 /**
  * Base class for DBFReader and DBFWriter. Support for choosing implemented
@@ -31,7 +31,7 @@ import java.nio.charset.StandardCharsets;
 public abstract class DBFBase {
 
 	protected static final int END_OF_DATA = 0x1A;
-	protected static final Charset DEFAULT_CHARSET= StandardCharsets.ISO_8859_1;
+	protected static final Charset DEFAULT_CHARSET = DBFStandardCharsets.ISO_8859_1;
 	private Charset charset = DEFAULT_CHARSET;
 
 	protected DBFBase() {

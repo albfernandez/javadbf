@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -140,15 +139,15 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 			 */
 			if (dbfFile.length() == 0) {
 				if (charset != null) {
-					if (DBFCharsetHelper.getDBFCodeForCharset(charset) == 0 && charset != StandardCharsets.UTF_8) {
+					if (DBFCharsetHelper.getDBFCodeForCharset(charset) == 0 && !DBFStandardCharsets.UTF_8.equals(charset)) {
 						throw new DBFException("Unssuported charset " + charset);
 					}
 					setCharset(charset);
 					this.header.setUsedCharset(charset);
 				}
 				else {
-					setCharset(StandardCharsets.ISO_8859_1);
-					this.header.setUsedCharset(StandardCharsets.ISO_8859_1);
+					setCharset(DBFStandardCharsets.ISO_8859_1);
+					this.header.setUsedCharset(DBFStandardCharsets.ISO_8859_1);
 				}
 				return;
 			}
@@ -385,13 +384,13 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 					GregorianCalendar calendar = new GregorianCalendar();
 					calendar.setTime((Date) objectArray[j]);
 					dataOutput.write(DBFUtils.textPadding(String.valueOf(calendar.get(Calendar.YEAR)),
-							StandardCharsets.US_ASCII, 4, DBFAlignment.RIGHT, (byte) '0'));
+							DBFStandardCharsets.US_ASCII, 4, DBFAlignment.RIGHT, (byte) '0'));
 					dataOutput.write(DBFUtils.textPadding(String.valueOf(calendar.get(Calendar.MONTH) + 1),
-							StandardCharsets.US_ASCII, 2, DBFAlignment.RIGHT, (byte) '0'));
+							DBFStandardCharsets.US_ASCII, 2, DBFAlignment.RIGHT, (byte) '0'));
 					dataOutput.write(DBFUtils.textPadding(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)),
-							StandardCharsets.US_ASCII, 2, DBFAlignment.RIGHT, (byte) '0'));
+							DBFStandardCharsets.US_ASCII, 2, DBFAlignment.RIGHT, (byte) '0'));
 				} else {
-					dataOutput.write("        ".getBytes(StandardCharsets.US_ASCII));
+					dataOutput.write("        ".getBytes(DBFStandardCharsets.US_ASCII));
 				}
 
 				break;
