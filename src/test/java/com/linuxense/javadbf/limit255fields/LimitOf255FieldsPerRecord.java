@@ -12,6 +12,7 @@ import com.linuxense.javadbf.DBFDataType;
 import com.linuxense.javadbf.DBFField;
 import com.linuxense.javadbf.DBFReader;
 import com.linuxense.javadbf.DBFRow;
+import com.linuxense.javadbf.DBFUtils;
 import com.linuxense.javadbf.DBFWriter;
 
 public class LimitOf255FieldsPerRecord {
@@ -39,7 +40,9 @@ public class LimitOf255FieldsPerRecord {
 		byte[] data = writeFile();
 		Assert.assertNotNull(data);
 		Assert.assertTrue(data.length > 0);
-		try (DBFReader reader = new DBFReader(new ByteArrayInputStream(data))) {
+		DBFReader reader = null;
+		try {
+			reader = new DBFReader(new ByteArrayInputStream(data));
 			Assert.assertEquals(NUMBER_OF_COLUMNS_TO_CREATE, reader.getFieldCount());
 			Assert.assertEquals(NUMBER_OF_ROWS_TO_CREATE, reader.getRecordCount());
 			DBFRow row;
@@ -56,6 +59,9 @@ public class LimitOf255FieldsPerRecord {
 			}
 			Assert.assertEquals(NUMBER_OF_ROWS_TO_CREATE, countRows);
 		}
+		finally {
+			DBFUtils.close(reader);
+		}
 	}
 	
 	
@@ -66,8 +72,10 @@ public class LimitOf255FieldsPerRecord {
 			field.setLength(15);
 			fields[i] = field;
 		}
-		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-			DBFWriter writer = new DBFWriter(baos);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		DBFWriter writer = null;
+		try {
+			 writer = new DBFWriter(baos);
 			writer.setFields(fields);
 			Object[] record = new Object[NUMBER_OF_COLUMNS_TO_CREATE];
 			for (int i = 0; i < record.length; i++) {
@@ -76,9 +84,11 @@ public class LimitOf255FieldsPerRecord {
 			for (int i = 0; i < NUMBER_OF_ROWS_TO_CREATE; i++) {
 				writer.addRecord(record);
 			}
-			writer.close();
-			return baos.toByteArray();
 		}
+		finally {
+			DBFUtils.close(writer);
+		}
+		return baos.toByteArray();
 	}
 	
 

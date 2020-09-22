@@ -219,7 +219,9 @@ public class EncodingTest {
 	@Test
 	public void testUnicodeAsFieldName() throws IOException {
 		NullOutputStream output = new NullOutputStream();
-		try ( DBFWriter writer = new DBFWriter(output, StandardCharsets.UTF_8)) {
+		DBFWriter writer = null;
+		try {
+			writer = new DBFWriter(output, StandardCharsets.UTF_8);
 			DBFField[] fields = new DBFField[1];
 
 			fields[0] = new DBFField();
@@ -232,6 +234,9 @@ public class EncodingTest {
 			writer.addRecord(new Object[] { 1 });
 			writer.addRecord(new Object[] { 2 });
 			writer.addRecord(new Object[] { 2 });
+		}
+		finally {
+			DBFUtils.close(writer);
 		}
 		Assert.assertEquals(99L, output.getCount());
 	}
@@ -240,7 +245,9 @@ public class EncodingTest {
 	@Test	
 	public void testUTF8 () throws IOException {
 		File file = File.createTempFile("utf8", ".dbf");
-		try ( DBFWriter writer = new DBFWriter(file, StandardCharsets.UTF_8)) {
+		DBFWriter writer = null;
+		try {
+			writer = new DBFWriter(file, StandardCharsets.UTF_8);
 			DBFField[] fields = new DBFField[1];
 
 			fields[0] = new DBFField();
@@ -253,6 +260,9 @@ public class EncodingTest {
 			writer.addRecord(new Object[] { 1 });
 			writer.addRecord(new Object[] { 2 });
 			writer.addRecord(new Object[] { 2 });
+		}
+		finally {
+			DBFUtils.close(writer);
 		}
 		Assert.assertEquals(99L, file.length());
 		file.delete();
@@ -260,7 +270,9 @@ public class EncodingTest {
 	@Test	
 	public void testUTF8_1 () throws IOException {
 		File file = File.createTempFile("utf8", ".dbf");
-		try ( DBFWriter writer = new DBFWriter(file, Charset.forName("UTF-8"))) {
+		DBFWriter writer = null;
+		try {
+			writer = new DBFWriter(file, Charset.forName("UTF-8"));
 			DBFField[] fields = new DBFField[1];
 
 			fields[0] = new DBFField();
@@ -274,13 +286,18 @@ public class EncodingTest {
 			writer.addRecord(new Object[] { 2 });
 			writer.addRecord(new Object[] { 2 });
 		}
+		finally {
+			DBFUtils.close(writer);
+		}
 		Assert.assertEquals(99L, file.length());
 		file.delete();
 	}
 	@Test	
 	public void testUTF8_2 () throws IOException {
 		File file = File.createTempFile("utf8", ".dbf");
-		try ( DBFWriter writer = new DBFWriter(file, Charset.forName("UTF8"))) {
+		DBFWriter writer = null;
+		try {
+			writer = new DBFWriter(file, Charset.forName("UTF8"));
 			DBFField[] fields = new DBFField[1];
 
 			fields[0] = new DBFField();
@@ -293,6 +310,9 @@ public class EncodingTest {
 			writer.addRecord(new Object[] { 1 });
 			writer.addRecord(new Object[] { 2 });
 			writer.addRecord(new Object[] { 2 });
+		}
+		finally {
+			DBFUtils.close(writer);
 		}
 		Assert.assertEquals(99L, file.length());
 		file.delete();

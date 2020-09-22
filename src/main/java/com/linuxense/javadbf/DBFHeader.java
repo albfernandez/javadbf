@@ -111,7 +111,7 @@ public class DBFHeader {
 			dataInput.readInt();
 		}
 
-		List<DBFField> v_fields = new ArrayList<>();
+		List<DBFField> v_fields = new ArrayList<DBFField>();
 
 		this.usedCharset = this.detectedCharset;
 		if (charset != null) {
@@ -137,7 +137,7 @@ public class DBFHeader {
 
 		}
 		this.fieldArray = v_fields.toArray(new DBFField[v_fields.size()]);
-		List<DBFField> userFields = new ArrayList<>();
+		List<DBFField> userFields = new ArrayList<DBFField>();
 		if (showDeletedRows) {
 			DBFField deletedField = new DBFField("deleted", DBFDataType.LOGICAL);
 			userFields.add(deletedField);

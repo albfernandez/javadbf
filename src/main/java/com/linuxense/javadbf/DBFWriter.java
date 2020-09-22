@@ -55,7 +55,7 @@ import java.util.List;
 public class DBFWriter extends DBFBase implements java.io.Closeable {
 
 	private DBFHeader header;
-	private List<Object[]> v_records = new ArrayList<>();
+	private List<Object[]> v_records = new ArrayList<Object[]>();
 	private int recordCount = 0;
 	//Open and append records to an existing DBF
 	private RandomAccessFile raf = null;

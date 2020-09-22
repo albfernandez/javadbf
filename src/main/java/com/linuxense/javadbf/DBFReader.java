@@ -314,7 +314,7 @@ public class DBFReader extends DBFBase implements Closeable {
 		if (this.closed) {
 			throw new IllegalArgumentException("this DBFReader is closed");
 		}
-		List<Object> recordObjects = new ArrayList<>(this.getFieldCount());
+		List<Object> recordObjects = new ArrayList<Object>(this.getFieldCount());
 		try {
 			boolean isDeleted = false;
 
