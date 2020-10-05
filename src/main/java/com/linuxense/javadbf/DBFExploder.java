@@ -223,7 +223,7 @@ public class DBFExploder {
                 }
     
                 nBitBuffer += (pInBuffer[pInPos++]&0xFF) << nBits;
-                nBits += 8;
+                nBits += (byte) 8;
             }
     
             // First bit is 1; copy from dictionary
@@ -268,7 +268,7 @@ public class DBFExploder {
                     }
 
                     nBitBuffer += (pInBuffer[pInPos++]&0xFF) << nBits;
-                    nBits += 8;
+                    nBits += (byte)8;
                 }
     
                 // Find most significant 6 bits of offset into the dictionary
