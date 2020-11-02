@@ -43,12 +43,12 @@ import java.util.Locale;
 
 /**
  * Miscelaneous functions required by the JavaDBF package.
- * 
+ *
  * This class is for internal usage for JavaDBF and you should not use it.
  *
  */
 public final class DBFUtils {
-	
+
 	private static final CharsetEncoder ASCII_ENCODER = Charset.forName("US-ASCII").newEncoder();
 
 	private DBFUtils() {
@@ -209,8 +209,9 @@ public final class DBFUtils {
 		Arrays.fill(response, paddingByte);
 		byte[] stringBytes = text.getBytes(charset);
 
-		if (stringBytes.length > length) {
-			return textPadding(text.substring(0, text.length() - 1), charset, length, alignment, paddingByte);
+		while (stringBytes.length > length) {
+			text = text.substring(0, text.length() - 1);
+			stringBytes = text.getBytes(charset);
 		}
 
 		int t_offset = 0;
@@ -362,7 +363,7 @@ public final class DBFUtils {
 			}
 		}
 	}
-	
+
 	/**
 	 * Safely skip bytesToSkip bytes (in some bufferd scenarios skip doesn't really skip all requested bytes)
 	 * @param inputStream the inputstream
@@ -374,8 +375,8 @@ public final class DBFUtils {
 		for (long i = skipped; i < bytesToSkip; i++) {
 			inputStream.read();
 		}
-	} 
-	
+	}
+
 	protected static byte[] readAllBytes(File file) throws IOException {
 		if (file == null) {
 			throw new IllegalArgumentException("file must not be null");
@@ -391,7 +392,7 @@ public final class DBFUtils {
 		}
 		return data;
 	}
-	
+
 	protected static BitSet getBitSet(byte[] bytes) {
 //		return BitSet.valueOf(bytes);
 		BitSet bits = new BitSet();
