@@ -102,12 +102,16 @@ public class DBFHeader {
 
 		this.detectedCharset = DBFCharsetHelper.getCharsetByByte(this.languageDriver);
 
+		int read = 32;
+
 		if (isDB7()) {
 			byte[] languageName = new byte[32];
 			dataInput.readFully(languageName);
 //			this.languageDriverName =  new String (languageName, StandardCharsets.US_ASCII);
 //			this.reserv5 =  dataInput.readInt();
 			dataInput.readInt();
+
+			read += 32 + 4;
 		}
 
 		List<DBFField> v_fields = new ArrayList<DBFField>();
@@ -123,18 +127,27 @@ public class DBFHeader {
 		DBFField field = null;
 		if (isDB7()) {
 			/* 48 each */
-			while ((field = DBFField.createFieldDB7(dataInput,this.usedCharset, supportExtendedCharacterFields))!= null) {
+			while (read < this.headerLength &&
+					(field = DBFField.createFieldDB7(dataInput, this.usedCharset, supportExtendedCharacterFields)) != null) {
 				v_fields.add(field);
+				read += 48;
 			}
-		}
-		else {
+		} else {
 			/* 32 each */
 			boolean useFieldFlags = supportsFieldFlags();
-			while ((field = DBFField.createField(dataInput,this.usedCharset, useFieldFlags, supportExtendedCharacterFields))!= null) {				
+			while (read < this.headerLength &&
+					(field = DBFField.createField(dataInput, this.usedCharset, useFieldFlags, supportExtendedCharacterFields)) != null) {
 				v_fields.add(field);
+				read += 32;
 			}
-
 		}
+
+		/* it might be required to leap to the start of records at times */
+		int skip = this.headerLength - read - 1;
+		if (skip > 0) {
+			dataInput.skipBytes(skip);
+		}
+
 		this.fieldArray = v_fields.toArray(new DBFField[v_fields.size()]);
 		List<DBFField> userFields = new ArrayList<DBFField>();
 		if (showDeletedRows) {
