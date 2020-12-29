@@ -144,8 +144,9 @@ public class DBFHeader {
 
 		/* it might be required to leap to the start of records at times */
 		int skip = this.headerLength - read - 1;
-		if (skip > 0) {
-			dataInput.skipBytes(skip);
+		while (skip > 0) {
+			int skipped = dataInput.skipBytes(skip);
+			skip = skip - skipped;
 		}
 
 		this.fieldArray = v_fields.toArray(new DBFField[v_fields.size()]);
