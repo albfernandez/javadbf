@@ -358,7 +358,7 @@ public final class DBFUtils {
 		if (closeable != null) {
 			try {
 				closeable.close();
-			} catch (Exception e) { //NOPMD
+			} catch (Exception ignore) {
 				// nop
 			}
 		}
@@ -366,14 +366,31 @@ public final class DBFUtils {
 
 	/**
 	 * Safely skip bytesToSkip bytes (in some bufferd scenarios skip doesn't really skip all requested bytes)
-	 * @param inputStream the inputstream
+	 * @param inputStream the Inputstream
 	 * @param bytesToSkip number of bytes to skip
 	 * @throws IOException if some IO error happens
 	 */
 	public static void skip(InputStream inputStream, long bytesToSkip) throws IOException {
-		long skipped = (long) inputStream.skip(bytesToSkip);
-		for (long i = skipped; i < bytesToSkip; i++) {
-			inputStream.read();
+		if (inputStream != null && bytesToSkip > 0) {
+			long skipped = (long) inputStream.skip(bytesToSkip);
+			for (long i = skipped; i < bytesToSkip; i++) {
+				inputStream.read();
+			}
+		}
+	}
+
+	/**
+	 * Safely skip bytesToSkip
+	 * @param dataInput the DataInput
+	 * @param bytesToSkip number of bytes to skip
+	 * @throws IOException if some IO error happens
+	 */
+	protected static void skipDataInput(DataInput dataInput, int bytesToSkip) throws IOException {
+		if (dataInput != null && bytesToSkip > 0) {
+			int skipped = dataInput.skipBytes(bytesToSkip);
+			for (int i = skipped; i < bytesToSkip; i++) {
+				dataInput.readByte();
+			}
 		}
 	}
 
