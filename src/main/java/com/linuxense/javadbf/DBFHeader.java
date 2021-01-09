@@ -124,26 +124,41 @@ public class DBFHeader {
 			this.usedCharset = DBFStandardCharsets.ISO_8859_1;
 		}
 
-		DBFField field = null;
 		if (isDB7()) {
 			/* 48 each */
-			while (read < this.headerLength &&
-					(field = DBFField.createFieldDB7(dataInput, this.usedCharset, supportExtendedCharacterFields)) != null) {
-				v_fields.add(field);
-				read += 48;
+			while (read <= this.headerLength - 48) {
+				DBFField field = DBFField.createFieldDB7(dataInput, this.usedCharset, supportExtendedCharacterFields);
+				if (field != null) {
+					v_fields.add(field);
+					read += 48;
+				}
+				else {
+					// field descriptor array terminator found
+					read += 1;
+					break;
+				}
 			}
 		} else {
 			/* 32 each */
 			boolean useFieldFlags = supportsFieldFlags();
-			while (read < this.headerLength &&
-					(field = DBFField.createField(dataInput, this.usedCharset, useFieldFlags, supportExtendedCharacterFields)) != null) {
-				v_fields.add(field);
-				read += 32;
+			while (read <= this.headerLength - 32) {
+				DBFField field = DBFField.createField(dataInput, this.usedCharset, useFieldFlags, supportExtendedCharacterFields);
+				if (field != null) {
+					v_fields.add(field);
+					read += 32;	
+				}
+				else {
+					// field descriptor array terminator found
+					read += 1;
+					break;
+				}
+					
+				
 			}
 		}
 
 		/* it might be required to leap to the start of records at times */
-		int skip = this.headerLength - read - 1;
+		int skip = this.headerLength - read;
 		DBFUtils.skipDataInput(dataInput, skip);
 
 		this.fieldArray = v_fields.toArray(new DBFField[v_fields.size()]);
