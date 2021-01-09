@@ -60,7 +60,8 @@ import java.util.TimeZone;
  * The nextRecord() method returns an array of Objects and the types of these
  * Object are as follows:
  * </p>
- * <table summary="Types mapping">
+ * <table>
+ * <caption>Types mapping</caption>
  * <thead>
  * <tr>
  * <th>xBase Type</th>
