@@ -64,26 +64,27 @@ public final class DBFUtils {
 	 * @throws EOFException if reached end of file before length bytes
 	 */
 	public static Number readNumericStoredAsText(DataInputStream dataInput, int length) throws IOException {
-		try {
-			byte t_float[] = new byte[length];
-			int readed = dataInput.read(t_float);
-			if (readed != length) {
-				throw new EOFException("failed to read:" + length + " bytes");
-			}
-			t_float = DBFUtils.removeSpaces(t_float);
-			t_float = DBFUtils.removeNullBytes(t_float);
-			if (t_float.length > 0 && DBFUtils.isPureAscii(t_float) && !DBFUtils.contains(t_float, (byte) '?') && !DBFUtils.contains(t_float, (byte) '*')) {
-				String aux = new String(t_float, DBFStandardCharsets.US_ASCII).replace(',', '.');
-				if (".".equals(aux)) {
-					return BigDecimal.ZERO;
-				}
-				return new BigDecimal(aux);
-			} else {
-				return null;
-			}
-		} catch (NumberFormatException e) {
-			throw new DBFException("Failed to parse Float: " + e.getMessage(), e);
+		byte t_float[] = new byte[length];
+		int readed = dataInput.read(t_float);
+		if (readed != length) {
+			throw new EOFException("failed to read:" + length + " bytes");
 		}
+		t_float = DBFUtils.removeSpaces(t_float);
+		t_float = DBFUtils.removeNullBytes(t_float);
+		if (t_float.length > 0 && DBFUtils.isPureAscii(t_float) && !DBFUtils.contains(t_float, (byte) '?') && !DBFUtils.contains(t_float, (byte) '*')) {
+			String aux = new String(t_float, DBFStandardCharsets.US_ASCII).replace(',', '.');
+			if (".".equals(aux)) {
+				return BigDecimal.ZERO;
+			}
+			try {
+				return new BigDecimal(aux);
+			} catch (NumberFormatException e) {
+				throw new DBFException("Failed to parse Float value [" + aux + "] : " + e.getMessage(), e);
+			}
+		} else {
+			return null;
+		}
+		
 	}
 
 	/**

@@ -101,4 +101,9 @@ public final class DbfToTxtTest {
 			DBFUtils.close(reader);
 		}
 	}
+	
+	public static void main(String[] args) throws Exception {
+		File f = new File(args[0]);
+		writeToConsole(f);
+	}
 }

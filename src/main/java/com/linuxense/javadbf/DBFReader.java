@@ -149,6 +149,8 @@ public class DBFReader extends DBFBase implements Closeable {
 	protected DataInputStream dataInputStream;
 	private DBFHeader header;
 	private boolean trimRightSpaces = true;
+	private int internalRecord = 0;
+	private int returnedRecords = 0;
 
 	private DBFMemoFile memoFile = null;
 
@@ -317,6 +319,7 @@ public class DBFReader extends DBFBase implements Closeable {
 				try {
 					if (isDeleted && !showDeletedRows) {
 						skip(this.header.recordLength - 1);
+						this.internalRecord++;
 					}
 					int t_byte = this.dataInputStream.readByte();
 					if (t_byte == END_OF_DATA || t_byte == -1) {
@@ -335,43 +338,49 @@ public class DBFReader extends DBFBase implements Closeable {
 
 			for (int i = 0; i < this.header.fieldArray.length; i++) {
 				DBFField field = this.header.fieldArray[i];
-				Object o = getFieldValue(field);
-				if (field.isSystem() || field.getType() == DBFDataType.NULL_FLAGS) {
-					if (field.getType() == DBFDataType.NULL_FLAGS && o instanceof BitSet) {
-						BitSet nullFlags = (BitSet) o;
-						int currentIndex = -1;
-						for (int j = 0; j < this.header.fieldArray.length; j++) {
-							DBFField field1 = this.header.fieldArray[j];
-							if (field1.isNullable()) {
-								currentIndex++;
-								if (nullFlags.get(currentIndex)) {
-									recordObjects.set(j, null);
+				try {
+					Object o = getFieldValue(field);
+					if (field.isSystem() || field.getType() == DBFDataType.NULL_FLAGS) {
+						if (field.getType() == DBFDataType.NULL_FLAGS && o instanceof BitSet) {
+							BitSet nullFlags = (BitSet) o;
+							int currentIndex = -1;
+							for (int j = 0; j < this.header.fieldArray.length; j++) {
+								DBFField field1 = this.header.fieldArray[j];
+								if (field1.isNullable()) {
+									currentIndex++;
+									if (nullFlags.get(currentIndex)) {
+										recordObjects.set(j, null);
+									}
 								}
-							}
-							if (field1.getType() == DBFDataType.VARBINARY || field1.getType() == DBFDataType.VARCHAR){
-								currentIndex++;
-								if (recordObjects.get(j) instanceof byte[]) {
-									byte[] data = (byte[]) recordObjects.get(j);
-									int size = field1.getLength();
-									if (!nullFlags.get(currentIndex)) {
-										// Data is not full
-										// lenght is stored in the last position
-										size = data[data.length-1];
+								if (field1.getType() == DBFDataType.VARBINARY || field1.getType() == DBFDataType.VARCHAR){
+									currentIndex++;
+									if (recordObjects.get(j) instanceof byte[]) {
+										byte[] data = (byte[]) recordObjects.get(j);
+										int size = field1.getLength();
+										if (!nullFlags.get(currentIndex)) {
+											// Data is not full
+											// length is stored in the last position
+											size = data[data.length-1];
+										}
+										byte[] newData = new byte[size];
+										System.arraycopy(data, 0, newData, 0, size);
+										Object o1 = newData;
+										if (field1.getType() == DBFDataType.VARCHAR) {
+											o1 = new String(newData, getCharset());
+										}
+										recordObjects.set(j, o1);
 									}
-									byte[] newData = new byte[size];
-									System.arraycopy(data, 0, newData, 0, size);
-									Object o1 = newData;
-									if (field1.getType() == DBFDataType.VARCHAR) {
-										o1 = new String(newData, getCharset());
-									}
-									recordObjects.set(j, o1);
 								}
 							}
 						}
 					}
+					else {
+						recordObjects.add(o);
+					}
+					
 				}
-				else {
-					recordObjects.add(o);
+				catch (DBFException dbe) {
+					throw new DBFException("Error reading field " + field.getName() + " of record " + this.internalRecord + " " + dbe.getMessage(), dbe);
 				}
 			}
 		} catch (EOFException e) {
@@ -379,6 +388,7 @@ public class DBFReader extends DBFBase implements Closeable {
 		} catch (IOException e) {
 			throw new DBFException(e.getMessage(), e);
 		}
+		this.returnedRecords++;
 		return recordObjects.toArray();
 	}
 	/**
@@ -552,6 +562,8 @@ public class DBFReader extends DBFBase implements Closeable {
 	public void skipRecords(int recordsToSkip) throws IOException {
 		if (showDeletedRows) {
 			skip(recordsToSkip * this.header.recordLength);
+			this.internalRecord+=recordsToSkip;
+			this.returnedRecords+=recordsToSkip;
 		}
 		else {
 			for (int i = 0; i < recordsToSkip; i++) {
