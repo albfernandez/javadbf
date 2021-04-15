@@ -322,7 +322,10 @@ public class DBFReader extends DBFBase implements Closeable {
 						this.internalRecord++;
 					}
 					int t_byte = this.dataInputStream.readByte();
-					if (t_byte == END_OF_DATA || t_byte == -1) {
+					if (t_byte == -1) {
+						return null;
+					}
+					if (t_byte == END_OF_DATA && this.header.numberOfRecords == this.internalRecord) {
 						return null;
 					}
 					isDeleted = t_byte == '*';
@@ -389,6 +392,7 @@ public class DBFReader extends DBFBase implements Closeable {
 			throw new DBFException(e.getMessage(), e);
 		}
 		this.returnedRecords++;
+		this.internalRecord++;
 		return recordObjects.toArray();
 	}
 	/**
