@@ -18,6 +18,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.linuxense.javadbf.testutils;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -62,7 +63,7 @@ public final class DbfToTxtTest {
 
 			
 			// create a DBFReader object
-			reader = new DBFReader(new FileInputStream(file));
+			reader = new DBFReader(new BufferedInputStream(new FileInputStream(file)));
 
 			// get the field count if you want for some reasons like the following
 
@@ -75,9 +76,9 @@ public final class DbfToTxtTest {
 
 				DBFField field = reader.getField(i);
 
-				// do something with it if you want
-				// refer the JavaDoc API reference for more details
-				//
+//				// do something with it if you want
+//				// refer the JavaDoc API reference for more details
+//				//
 				System.out.println(field.getType() + " (" + field.getLength() + ") "+ field.getName());
 			}
 
@@ -85,21 +86,40 @@ public final class DbfToTxtTest {
 
 			Object[] rowObjects;
 
+			int count = 0;
 			System.out.println("-------------------");
+			
+			
 			while ((rowObjects = reader.nextRecord()) != null) {
+				count++;
 				for (int i = 0; i < rowObjects.length; i++) {
 					System.out.println(rowObjects[i]);
 				}
 				System.out.println("-------------------");
 			}
+			System.out.println(file.getName() + " count=" + count);
 
 			// By now, we have iterated through all of the rows
-
-		
 		}
 		finally {
 			DBFUtils.close(reader);
 		}
+	}
+	
+	public static int parseFileCountRecords(File file) throws FileNotFoundException {
+		DBFReader reader = null;
+		int count=0;
+		try {
+			// create a DBFReader object
+			reader = new DBFReader(new BufferedInputStream(new FileInputStream(file)));
+			while(reader.nextRow() != null) {
+				count++;
+			}
+		}
+		finally {
+			DBFUtils.close(reader);
+		}
+		return count;
 	}
 	
 	public static void main(String[] args) throws Exception {
