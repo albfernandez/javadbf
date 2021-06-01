@@ -259,7 +259,7 @@ public final class DBFUtils {
 
 		DecimalFormat df = (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
 		df.applyPattern(format.toString());
-		return textPadding(df.format(num).toString(), charset, fieldLength, DBFAlignment.RIGHT,
+		return textPadding(df.format(num), charset, fieldLength, DBFAlignment.RIGHT,
 				(byte) ' ');
 	}
 
