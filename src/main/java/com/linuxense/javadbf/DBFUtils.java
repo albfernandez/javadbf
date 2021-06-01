@@ -373,7 +373,7 @@ public final class DBFUtils {
 	 */
 	public static void skip(InputStream inputStream, long bytesToSkip) throws IOException {
 		if (inputStream != null && bytesToSkip > 0) {
-			long skipped = (long) inputStream.skip(bytesToSkip);
+			long skipped = inputStream.skip(bytesToSkip);
 			for (long i = skipped; i < bytesToSkip; i++) {
 				inputStream.read();
 			}
