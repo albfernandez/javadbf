@@ -136,7 +136,7 @@ public class DBFField {
 		super();
 		setName(name);
 		setType(type);
-		setFieldLength(length);
+		setLength(length);
 	}
 
 	/**
@@ -150,7 +150,7 @@ public class DBFField {
 		super();
 		setName(name);
 		setType(type);
-		setFieldLength(length);
+		setLength(length);
 		if (decimalCount != 0) {
 			setDecimalCount(decimalCount);
 		}
