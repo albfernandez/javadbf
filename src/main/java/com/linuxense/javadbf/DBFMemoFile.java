@@ -77,7 +77,7 @@ public class DBFMemoFile implements Closeable {
 			file.seek(pos);
 		}
 	}
-	public int read(byte b[]) throws IOException {
+	public int read(byte[] b) throws IOException {
 		if (baisMemory != null) {
 			return baisMemory.read(b);
 		}
