@@ -64,7 +64,7 @@ public final class DBFUtils {
 	 * @throws EOFException if reached end of file before length bytes
 	 */
 	public static Number readNumericStoredAsText(DataInputStream dataInput, int length) throws IOException {
-		byte t_float[] = new byte[length];
+		byte[] t_float = new byte[length];
 		int readed = dataInput.read(t_float);
 		if (readed != length) {
 			throw new EOFException("failed to read:" + length + " bytes");
@@ -206,7 +206,7 @@ public final class DBFUtils {
 	 * @return bytes to write to the dbf file
 	 */
 	public static byte[] textPadding(String text, Charset charset, int length, DBFAlignment alignment, byte paddingByte) {
-		byte response[] = new byte[length];
+		byte[] response = new byte[length];
 		Arrays.fill(response, paddingByte);
 		byte[] stringBytes = text.getBytes(charset);
 
@@ -259,7 +259,7 @@ public final class DBFUtils {
 
 		DecimalFormat df = (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
 		df.applyPattern(format.toString());
-		return textPadding(df.format(num).toString(), charset, fieldLength, DBFAlignment.RIGHT,
+		return textPadding(df.format(num), charset, fieldLength, DBFAlignment.RIGHT,
 				(byte) ' ');
 	}
 

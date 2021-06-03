@@ -34,7 +34,7 @@ import java.util.Calendar;
  * Created by ialek36 on 11/8/17.
  */
 public class DBFtoDBC {
-    public static void main(String args[]) {
+    public static void main(String[] args) {
 
         System.out.println("Started...");
         System.out.println(Calendar.getInstance().getTime());
