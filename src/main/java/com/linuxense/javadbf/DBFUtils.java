@@ -65,10 +65,8 @@ public final class DBFUtils {
 	 */
 	public static Number readNumericStoredAsText(DataInputStream dataInput, int length) throws IOException {
 		byte[] t_float = new byte[length];
-		int readed = dataInput.read(t_float);
-		if (readed != length) {
-			throw new EOFException("failed to read:" + length + " bytes");
-		}
+		dataInput.readFully(t_float);
+		
 		t_float = DBFUtils.removeSpaces(t_float);
 		t_float = DBFUtils.removeNullBytes(t_float);
 		if (t_float.length > 0 && DBFUtils.isPureAscii(t_float) && !DBFUtils.contains(t_float, (byte) '?') && !DBFUtils.contains(t_float, (byte) '*')) {
