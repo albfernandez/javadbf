@@ -32,6 +32,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.text.DecimalFormat;
@@ -410,14 +412,16 @@ public final class DBFUtils {
 	}
 
 	protected static BitSet getBitSet(byte[] bytes) {
-//		return BitSet.valueOf(bytes);
+//		return  BitSet.valueOf(bytes);
+		
 		BitSet bits = new BitSet();
 	    for (int i = 0; i < bytes.length * 8; i++) {
-	      if ((bytes[bytes.length - i / 8 - 1] & (1 << (i % 8))) > 0) {
+	      byte b = bytes[i/8];
+	      int bit = (b & (1 << (i % 8)));
+	      if (bit > 0) {
 	        bits.set(i);
 	      }
 	    }
 	    return bits;
 	}
-
 }
