@@ -176,7 +176,12 @@ public class DBFHeader {
 	}
 	
 	private boolean supportsFieldFlags() {
-		return this.signature == 0x2 || this.signature == 0x30 || this.signature == 0x31 || this.signature == 0xF5 || this.signature == 0xFB; 
+		return 
+			this.signature == 0x2 || 
+			this.signature == 0x30 || 
+			this.signature == 0x31 || 
+			this.signature == (byte) 0xF5 || 
+			this.signature == (byte) 0xFB; 
 	}
 	
 	int getTableHeaderSize() {
