@@ -405,7 +405,7 @@ public class DBFReader extends DBFBase implements Closeable {
 		if (record == null) {
 			return null;
 		}
-		return new DBFRow(record, mapFieldNames, this.header.fieldArray);
+		return new DBFRow(record, mapFieldNames, this.header.userFieldArray);
 	}
 
 	protected Object getFieldValue(DBFField field) throws IOException {
