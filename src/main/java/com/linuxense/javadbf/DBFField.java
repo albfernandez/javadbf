@@ -282,15 +282,15 @@ public class DBFField {
 
 		// data type
 		out.writeByte(this.type.getCode()); /* 11 */
-		out.writeInt(0x00); /* 12-15 */
+		out.writeInt(DBFUtils.littleEndian(this.reserv1)); /* 12-15 */
 		out.writeByte(this.length); /* 16 */
 		out.writeByte(this.decimalCount); /* 17 */
-		out.writeShort((short) 0x00); /* 18-19 */
-		out.writeByte((byte) 0x00); /* 20 */
-		out.writeShort((short) 0x00); /* 21-22 */
-		out.writeByte((byte) 0x00); /* 23 */
-		out.write(new byte[7]); /* 24-30 */
-		out.writeByte((byte) 0x00); /* 31 */
+		out.writeShort(DBFUtils.littleEndian(this.reserv2)); /* 18-19 */
+		out.writeByte(this.workAreaId); /* 20 */
+		out.writeShort(DBFUtils.littleEndian(this.reserv3)); /* 21-22 */
+		out.writeByte(this.setFieldsFlag); /* 23 */
+		out.write(this.reserv4); /* 24-30 */
+		out.writeByte(this.indexFieldFlag); /* 31 */
 	}
 
 	/**
