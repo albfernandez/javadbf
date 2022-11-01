@@ -47,96 +47,81 @@ public final class DBFCharsetHelper {
 	public static Charset getCharsetByByte(int b) {
 		switch (b) {
 
-		case 0x01:
-			// U.S. MS-DOS
-			return forName("IBM437");
-		case 0x02:
-			// International MS-DOS
-			return forName("IBM850");
-		case 0x03:
-			// Windows ANSI
-			return forName("windows-1252");
-		case 0x04:
-			// Standard Macintosh
-			return forName("MacRoman");
+		case 0x01: return forName("IBM437"); // U.S. MS-DOS
+		case 0x02:return forName("IBM850"); // International MS-DOS
+		case 0x03:return forName("windows-1252");// Windows ANSI
+		case 0x04: return forName("MacRoman"); // Standard Macintosh
+		case 0x08: return forName("IBM865");// # Danish OEM
+		case 0x09: return forName("IBM437");   //   # Dutch OEM
+		case 0x0A: return forName("IBM850");   //   # Dutch OEM*
+		case 0x0B: return forName("IBM437");   //   # Finnish OEM
+		case 0x0D: return forName("IBM437");   //   # French OEM
+		case 0x0E: return forName("IBM850");   //   # French OEM*
+		case 0x0F: return forName("IBM437");   //   # German OEM
+		case 0x10: return forName("IBM850");   //   # German OEM*
+		case 0x11: return forName("IBM437");   //   # Italian OEM
+		case 0x12: return forName("IBM850");   //   # Italian OEM*
+		case 0x13: return forName("IBM932");   //   # Japanese Shift-JIS
+		case 0x14: return forName("IBM850");   //   # Spanish OEM*
+		case 0x15: return forName("IBM437");   //   # Swedish OEM
+		case 0x16: return forName("IBM850");   //   # Swedish OEM*
+		case 0x17: return forName("IBM865");   //   # Norwegian OEM
+		case 0x18: return forName("IBM437");   //   # Spanish OEM
+		case 0x19: return forName("IBM437");   //   # English OEM (Britain)
+		case 0x1A: return forName("IBM850");   //   # English OEM (Britain)*
+		case 0x1B: return forName("IBM437");   //   # English OEM (U.S.)
+		case 0x1C: return forName("IBM863");   //   # French OEM (Canada)
+		case 0x1D: return forName("IBM850");   //   # French OEM*
+		case 0x1F: return forName("IBM852");   //   # Czech OEM
+		case 0x22: return forName("IBM852");   //   # Hungarian OEM
+		case 0x23: return forName("IBM852");   //   # Polish OEM
+		case 0x24: return forName("IBM860");   //   # Portuguese OEM
+		case 0x25: return forName("IBM850");   //   # Portuguese OEM*
+		case 0x26: return forName("IBM866");   //   # Russian OEM
+		case 0x37: return forName("IBM850");   //   # English OEM (U.S.)*
+		case 0x40: return forName("IBM852");   //   # Romanian OEM
+		case 0x4D: return forName("IBM936");   //   # Chinese GBK (PRC)
+		case 0x4E: return forName("IBM949");   //   # Korean (ANSI/OEM)
+		case 0x4F: return forName("IBM950");   //   # Chinese Big5 (Taiwan)
+		case 0x50: return forName("IBM874");   //   # Thai (ANSI/OEM)
 		case 0x57:
 			// ESRI shape files use code 0x57 to indicate that
 			// data is written in ANSI (whatever that means).
 			// http://www.esricanada.com/english/support/faqs/arcview/avfaq21.asp
 			return forName("windows-1252");
-		case 0x59:
-			return forName("windows-1252");
-		case 0x64:
-			// Eastern European MS-DOS
-			return forName("IBM852");
-		case 0x65:
-			// Russian MS-DOS
-			return forName("IBM866");
-		case 0x66:
-			// Nordic MS-DOS
-			return forName("IBM865");
-		case 0x67:
-			// Icelandic MS-DOS
-			return forName("IBM861");
-			// case 0x68:
-			// Kamenicky (Czech) MS-DOS
-			// return Charset.forName("895");
-			// case 0x69:
-			// Mazovia (Polish) MS-DOS
-			// return Charset.forName("620");
-
-		case 0x6A:
-			// Greek MS-DOS (437G)
-			return forName("x-IBM737");
-		case 0x6B:
-			// Turkish MS-DOS
-			return forName("IBM857");
-		case 0x78:
-			// Chinese (Hong Kong SAR, Taiwan) Windows
-			return forName("windows-950");
-		case 0x79:
-			// Korean Windows
-			return Charset.forName("windows-949");
-		case 0x7A:
-			// Chinese (PRC, Singapore) Windows
-			return forName("GBK");
-		case 0x7B:
-			// Japanese Windows
-			return forName("windows-932");
-		case 0x7C:
-			// Thai Windows
-			return forName("windows-874");
-		case 0x7D:
-			// Hebrew Windows
-			return forName("windows-1255");
-		case 0x7E:
-			// Arabic Windows
-			return forName("windows-1256");
-		case 0x96:
-			// Russian Macintosh
-			return forName("x-MacCyrillic");
-		case 0x97:
-			// Macintosh EE
-			return forName("x-MacCentralEurope");
-		case 0x98:
-			// Greek Macintosh
-			return forName("x-MacGreek");
-		case 0xC8:
-			// Eastern European Windows
-			return forName("windows-1250");
-		case 0xC9:
-			// Russian Windows
-			return forName("windows-1251");
-		case 0xCA:
-			// Turkish Windows
-			return forName("windows-1254");
-		case 0xCB:
-			// Greek Windows
-			return forName("windows-1253");
+		case 0x58: return forName("windows-1252");
+		case 0x59: return forName("windows-1252");
+		case 0x64: return forName("IBM852"); // Eastern European MS-DOS
+		case 0x65: return forName("IBM866"); // Russian MS-DOS
+		case 0x66: return forName("IBM865"); // Nordic MS-DOS
+		case 0x67: return forName("IBM861"); // Icelandic MS-DOS
+	    case 0x68: return forName("IBM895"); // Kamenicky (Czech) MS-DOS
+	    case 0x69: return forName("IBM620"); // Mazovia (Polish) MS-DOS
+		case 0x6A: return forName("x-IBM737"); // Greek MS-DOS (437G)
+		case 0x6B: return forName("IBM857"); // Turkish MS-DOS
+		case 0x6C: return forName("IBM863");   //   # French-Canadian MS-DOS
+		case 0x78: return forName("windows-950"); // Chinese (Hong Kong SAR, Taiwan) Windows
+		case 0x79: return Charset.forName("windows-949"); // Korean Windows
+		case 0x7A: return forName("GBK"); // Chinese (PRC, Singapore) Windows
+		case 0x7B: return forName("windows-932"); // Japanese Windows
+		case 0x7C: return forName("windows-874"); // Thai Windows
+		case 0x7D: return forName("windows-1255"); // Hebrew Windows
+		case 0x7E: return forName("windows-1256"); // Arabic Windows
+		case 0x86: return forName("IBM737");   //   # Greek OEM
+		case 0x87: return forName("IBM852");   //   # Slovenian OEM
+		case 0x88: return forName("IBM857");   //   # Turkish OEM
+		case 0x96: return forName("x-MacCyrillic"); // Russian Macintosh
+		case 0x97: return forName("x-MacCentralEurope"); // Macintosh EE
+		case 0x98: return forName("x-MacGreek"); // Greek Macintosh
+		case 0xC8: return forName("windows-1250"); // Eastern European Windows
+		case 0xC9: return forName("windows-1251"); // Russian Windows
+		case 0xCA: return forName("windows-1254"); // Turkish Windows
+		case 0xCB: return forName("windows-1253"); // Greek Windows
+		case 0xCC: return forName("IBM1257");  //   # Baltic Windows
+		default: return null;
 		}
-		return null;
 	}
-
+	
 	private static Charset forName(String name) {
 		try {
 			return Charset.forName(name);
@@ -155,6 +140,7 @@ public final class DBFCharsetHelper {
 			return 0;
 		}
 		String charsetName = charset.toString();
+		
 
 		if ("ibm437".equalsIgnoreCase(charsetName)) {
 			return 0x01;
@@ -171,27 +157,63 @@ public final class DBFCharsetHelper {
 		if ("MacRoman".equalsIgnoreCase(charsetName)) {
 			return 0x04;
 		}
+		if ("IBM437".equalsIgnoreCase(charsetName)) {
+			return 0x09;
+		}		
+		if ("IBM932".equalsIgnoreCase(charsetName)) {
+			return 0x13;
+		}
+		if ("IBM863".equalsIgnoreCase(charsetName)) {
+			return 0x1c;
+		}
+		if ("IBM852".equalsIgnoreCase(charsetName)) {
+			return 0x1f;
+		}
+		if ("IBM860".equalsIgnoreCase(charsetName)) {
+			return 0x24;
+		}
+		if ("IBM936".equalsIgnoreCase(charsetName)) {
+			return 0x4d;
+		}
+		if ("IBM949".equalsIgnoreCase(charsetName)) {
+			return 0x4e;
+		}
+		if ("IBM950".equalsIgnoreCase(charsetName)) {
+			return 0x4f;
+		}
+		if ("IBM874".equalsIgnoreCase(charsetName)) {
+			return 0x50;
+		}
 		if ("IBM852".equalsIgnoreCase(charsetName)) {
 			return 0x64;
-		}
-		if ("IBM865".equalsIgnoreCase(charsetName)) {
-			return 0x66;
 		}
 		if ("IBM866".equalsIgnoreCase(charsetName)) {
 			return 0x65;
 		}
+		if ("IBM865".equalsIgnoreCase(charsetName)) {
+			return 0x66;
+		}
 		if ("IBM861".equalsIgnoreCase(charsetName)) {
 			return 0x67;
 		}
-		// 0x68
-		// 0x69
+		if ("IBM895".equalsIgnoreCase(charsetName)) {
+			return 0x68;
+		}
+		if ("IBM620".equalsIgnoreCase(charsetName)) {
+			return 0x69;
+		}
 		if ("IBM737".equalsIgnoreCase(charsetName)) {
 			return 0x6a;
 		}
 		if ("IBM857".equalsIgnoreCase(charsetName)) {
 			return 0x6b;
 		}
-
+		if ("IBM863".equalsIgnoreCase(charsetName)) {
+			return 0x6c;
+		}
+		if ("IBM737".equalsIgnoreCase(charsetName)) {
+			return 0x86;
+		}
 		if ("windows-950".equalsIgnoreCase(charsetName)) {
 			return 0x78;
 		}
@@ -213,7 +235,12 @@ public final class DBFCharsetHelper {
 		if ("windows-1256".equalsIgnoreCase(charsetName)) {
 			return 0x7e;
 		}
-
+		if ("IBM852".equalsIgnoreCase(charsetName)) {
+			return 0x87;
+		}
+		if ("IBM857".equalsIgnoreCase(charsetName)) {
+			return 0x88;
+		}
 		if ("x-MacCyrillic".equalsIgnoreCase(charsetName)) {
 			return 0x96;
 		}
@@ -235,6 +262,9 @@ public final class DBFCharsetHelper {
 		}
 		if ("windows-1253".equalsIgnoreCase(charsetName)) {
 			return 0xcb;
+		}
+		if ("IBM1257".equalsIgnoreCase(charsetName)) {
+			return 0xcc;
 		}
 		// Unsupported charsets returns 0
 		return 0;
