@@ -32,8 +32,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.text.DecimalFormat;
@@ -359,7 +357,7 @@ public final class DBFUtils {
 		if (closeable != null) {
 			try {
 				closeable.close();
-			} catch (Exception ignore) {
+			} catch (Exception ignored) {
 				// nop
 			}
 		}
@@ -417,7 +415,7 @@ public final class DBFUtils {
 		BitSet bits = new BitSet();
 	    for (int i = 0; i < bytes.length * 8; i++) {
 	      byte b = bytes[i/8];
-	      int bit = (b & (1 << (i % 8)));
+	      int bit = b & (1 << (i % 8));
 	      if (bit > 0) {
 	        bits.set(i);
 	      }
