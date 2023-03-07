@@ -142,7 +142,7 @@ import java.util.TimeZone;
  */
 public class DBFReader extends DBFBase implements Closeable {
 
-	private static final long MILLISECS_PER_DAY = 24*60*60*1000;
+	private static final long MILLISECS_PER_DAY = 24*60*60*1000L;
 	private static final long TIME_MILLIS_1_1_4713_BC = -210866803200000L;
 
 	protected InputStream inputStream;
