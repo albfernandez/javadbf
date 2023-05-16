@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -506,12 +507,9 @@ public class DBFReader extends DBFBase implements Closeable {
 
 	private Object readDoubleField(DBFField field) throws IOException {
 		byte[] data = new byte[field.getLength()];
+//		return this.dataInputStream.readDouble();
 		this.dataInputStream.readFully(data);
-		return ByteBuffer.wrap(
-				new byte[]{
-						data[7], data[6], data[5], data[4],
-						data[3], data[2], data[1], data[0]
-				}).getDouble();
+		return DBFUtils.toDouble(field, data);
 	}
 
 	private Object readMemoField(DBFField field) throws IOException {
