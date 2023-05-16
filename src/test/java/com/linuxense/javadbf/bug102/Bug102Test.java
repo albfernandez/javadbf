@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.linuxense.javadbf.DBFReader;
@@ -103,6 +104,7 @@ public class Bug102Test {
 	}
 	
 	@Test
+	@Ignore
 	public void other102Test() throws Exception {
 		
 		

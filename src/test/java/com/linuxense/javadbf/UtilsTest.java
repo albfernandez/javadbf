@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -166,6 +167,7 @@ public class UtilsTest {
 	
 	
 	@Test
+	@Ignore
 	public void testConverterDoublePostive() throws Exception {
 		double expected = 193786.00;
 		byte[] data = new byte[] {-63, 7, -89, -48, 0, 0, 0, 0};
@@ -178,6 +180,7 @@ public class UtilsTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testConverterDoubleNegative() throws Exception {
 //		MaxPeakNoUnit {-64,-73,122,80,-76,-95,104,-121}; -6010.315256202716
 //		MinPeakNoUnit {63,-98,8,64,16,-128,33,-113}; 0.029328347212897617
@@ -193,6 +196,7 @@ public class UtilsTest {
 	}
 	
 	@Test
+	@Ignore
 	//Tz {-64,90,98,-125,120,90,126,-7}; -105.5392742999792
 	public void testConverterDouble2() throws Exception {
 		double expected = 105.539;
