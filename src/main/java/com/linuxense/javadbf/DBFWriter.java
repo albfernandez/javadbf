@@ -185,6 +185,14 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 		if (this.closed) {
 			throw new IllegalStateException("You can not set fields to a closed DBFWriter");
 		}
+		try {
+			if (this.raf != null && this.raf.length() > 0) {
+				throw new DBFException("You can not change fields on an existing file");
+			}
+		}
+		catch (IOException e) {
+			throw new DBFException("Error accesing file:" + e.getMessage(), e);
+		}
 		if (this.header.fieldArray != null) {
 			throw new DBFException("Fields has already been set");
 		}
@@ -194,6 +202,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 		if (fields.length > 255) {
 			throw new DBFException("Exceded column limit of 255 (" + fields.length + ")");
 		}
+
 		List<Integer> fieldsWithNull = new ArrayList<Integer>();
 		for (int i = 0; i < fields.length; i++) {
 			if (fields[i] == null) {
@@ -221,9 +230,6 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 		
 		
 		try {
-			if (this.raf != null && this.raf.length() > 0) {
-				throw new DBFException("You can not change fields on an existing file");
-			}
 			if (this.raf != null && this.raf.length() == 0) {
 				// this is a new/non-existent file. So write header before proceeding
 				this.header.write(this.raf);
