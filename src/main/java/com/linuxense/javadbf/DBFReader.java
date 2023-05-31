@@ -477,7 +477,6 @@ public class DBFReader extends DBFBase implements Closeable {
 				Calendar calendar = new GregorianCalendar();
 				calendar.setTimeInMillis(days * MILLISECS_PER_DAY + TIME_MILLIS_1_1_4713_BC + time);
 				calendar.add(Calendar.MILLISECOND, -TimeZone.getDefault().getOffset(calendar.getTimeInMillis()));
-				System.out.println(calendar.getTimeInMillis());
 				return calendar.getTime();
 			}
 		case MEMO:
