@@ -143,8 +143,6 @@ import java.util.TimeZone;
  */
 public class DBFReader extends DBFBase implements Closeable {
 
-	private static final long MILLISECS_PER_DAY = 24*60*60*1000L;
-	private static final long TIME_MILLIS_1_1_4713_BC = -210866803200000L;
 
 	protected InputStream inputStream;
 	protected DataInputStream dataInputStream;
@@ -479,6 +477,7 @@ public class DBFReader extends DBFBase implements Closeable {
 				Calendar calendar = new GregorianCalendar();
 				calendar.setTimeInMillis(days * MILLISECS_PER_DAY + TIME_MILLIS_1_1_4713_BC + time);
 				calendar.add(Calendar.MILLISECOND, -TimeZone.getDefault().getOffset(calendar.getTimeInMillis()));
+				System.out.println(calendar.getTimeInMillis());
 				return calendar.getTime();
 			}
 		case MEMO:
@@ -509,7 +508,7 @@ public class DBFReader extends DBFBase implements Closeable {
 		byte[] data = new byte[field.getLength()];
 //		return this.dataInputStream.readDouble();
 		this.dataInputStream.readFully(data);
-		return DBFUtils.toDouble(field, data);
+		return DBFUtils.toDouble(data);
 	}
 
 	private Object readMemoField(DBFField field) throws IOException {

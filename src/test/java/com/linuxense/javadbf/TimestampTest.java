@@ -18,14 +18,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.linuxense.javadbf;
 
-import org.junit.Test;
-import org.junit.Assert;
-
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Created by mauri on 20/08/2016.
@@ -37,9 +39,37 @@ public class TimestampTest {
 
     @Test
     public void testTimestampRead () throws IOException {
+    	File f = new File("src/test/resources/bdays.dbf");
+    	read(f);
+    	
+    }
+    
+    @Test
+    public void testTimeStampWrite() throws Exception {
+    	File tmp = File.createTempFile("test", ".dbf");
+    	DBFWriter writer = null;
+    	try {
+    		writer = new DBFWriter(new FileOutputStream(tmp));
+    		Date d = new Date(-855067500000L);
+    		writer.setFields(new DBFField[] {
+    				new DBFField("NAME", DBFDataType.CHARACTER, 10),
+    				new DBFField("DATE", DBFDataType.TIMESTAMP),
+    				new DBFField("NAME2", DBFDataType.CHARACTER, 10)
+    		});
+    		writer.addRecord(new Object[] { "jimi" , d, "hendrix"});
+    	}
+    	finally {
+    		DBFUtils.close(writer);
+    	}
+    	
+    	read(tmp);
+    	tmp.delete();
+    }
+    
+    private void read(File f) throws IOException {
     	DBFReader reader = null;
         try {
-            reader = new DBFReader(new FileInputStream("src/test/resources/bdays.dbf"));
+            reader = new DBFReader(new FileInputStream(f));
 
             int numberOfFields = reader.getFieldCount();
             Assert.assertEquals(3, numberOfFields);

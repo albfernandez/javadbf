@@ -87,19 +87,19 @@ public enum DBFDataType {
 	/**
 	 * Autoincrement (same as long, dbase 7)
 	 */
-	AUTOINCREMENT    ('+', 4, 4, 4, false),
+	AUTOINCREMENT    ('+', 4, 4, 4, false, DBFFileFormat.ADVANCED),
 	/**
 	 * Currency type (FoxPro)
 	 */
-	CURRENCY         ('Y', 8, 8, 8, false),
+	CURRENCY         ('Y', 8, 8, 8, false, DBFFileFormat.ADVANCED),
 	/**
 	 * Timestamp type (FoxPro)
 	 */
-	TIMESTAMP 		 ('T', 8, 8, 8, false),
+	TIMESTAMP 		 ('T', 8, 8, 8, true),
 	/**
 	 * Timestamp type (dbase level 7)
 	 */
-	TIMESTAMP_DBASE7 ('@', 8, 8, 8, false),
+	TIMESTAMP_DBASE7 ('@', 8, 8, 8, false, DBFFileFormat.ADVANCED),
 	/**
 	 * Flags
 	 */
@@ -112,7 +112,7 @@ public enum DBFDataType {
 	private int maxSize;
 	private int defaultSize;
 	private boolean writeSupported = false;
-
+	private DBFFileFormat fileFormat = DBFFileFormat.COMPATIBLE;
 
 	DBFDataType(char code) {
 		this((byte) code);
@@ -125,12 +125,24 @@ public enum DBFDataType {
 		this((byte) code, minSize, maxSize, defaultSize, writeSupported);
 	}
 	DBFDataType(byte code, int minSize, int maxSize, int defaultSize, boolean writeSupported) {
+		this(code, minSize, maxSize, defaultSize, writeSupported, DBFFileFormat.COMPATIBLE);
+	}
+	DBFDataType(char code, int minSize, int maxSize, int defaultSize, boolean writeSupported, DBFFileFormat fileFormat) {
+		this((byte) code, minSize, maxSize, defaultSize, writeSupported, fileFormat);
+	}
+	DBFDataType(byte code, int minSize, int maxSize, int defaultSize, boolean writeSupported, DBFFileFormat fileFormat) {
 		this.code = code;
 		this.minSize = minSize;
 		this.maxSize = maxSize;
 		this.defaultSize = defaultSize;
 		this.writeSupported = writeSupported;
+		this.fileFormat = fileFormat;
 	}
+	
+	public DBFFileFormat getFileFormat() {
+		return this.fileFormat;
+	}
+	
 	/**
 	 * Gets the code as stored in the dbf file.
 	 * @return the code for this type

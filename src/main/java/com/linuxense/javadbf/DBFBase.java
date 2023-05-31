@@ -30,9 +30,14 @@ import java.nio.charset.Charset;
  */
 public abstract class DBFBase {
 
+	protected static final long MILLISECS_PER_DAY = 24*60*60*1000L;
+	protected static final long TIME_MILLIS_1_1_4713_BC = -210866803200000L;
+	
 	protected static final int END_OF_DATA = 0x1A;
 	protected static final Charset DEFAULT_CHARSET = DBFStandardCharsets.ISO_8859_1;
 	private Charset charset = DEFAULT_CHARSET;
+	
+
 
 	protected DBFBase() {
 		super();

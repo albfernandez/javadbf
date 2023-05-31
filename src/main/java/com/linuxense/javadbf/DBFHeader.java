@@ -69,6 +69,12 @@ public class DBFHeader {
 
 	private static final int DBASE_LEVEL_7 = 4;
 
+	
+	protected DBFHeader(byte signature) {
+		this.signature = signature;
+		this.terminator1 = 0x0D;
+	}
+	
 	protected DBFHeader() {
 		this.signature = SIG_DBASE_III;
 		this.terminator1 = 0x0D;
@@ -197,7 +203,8 @@ public class DBFHeader {
 		}
 		return 32;
 	}
-	private boolean isDB7() {
+	
+	protected boolean isDB7() {
 		return (this.signature & 0x7) == DBASE_LEVEL_7;
 	}
 

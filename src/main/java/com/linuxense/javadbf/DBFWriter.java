@@ -98,9 +98,22 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	 * @param charset Encoding to use in resulting dbf file
 	 */
 	public DBFWriter(OutputStream out, Charset charset) {
+		this(out, charset, DBFFileFormat.COMPATIBLE);
+	}
+	/**
+	 * Creates a DBFWriter wich write data to the given OutputStream.
+	 * @param out stream to write the data to.
+	 * @param charset Encoding to use in resulting dbf file
+	 * @param format COMPATIBLE or ADVANCED
+	 */
+	public DBFWriter(OutputStream out, Charset charset, DBFFileFormat format) {
 		super();
+		// TODO Remove
+		if (format == DBFFileFormat.ADVANCED) {
+			throw new DBFException("Advanced file format not yet supported");
+		}
 		setCharset(charset);
-		this.header = new DBFHeader();
+		this.header = new DBFHeader(format.getSignature());
 		this.header.setUsedCharset(charset);
 		this.outputStream = out;
 	}
@@ -128,10 +141,28 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	 *                or if an IO error occurs.
 	 */
 	public DBFWriter(File dbfFile, Charset charset) {
+		this(dbfFile, charset, DBFFileFormat.COMPATIBLE);
+	}
+	
+	/**
+	 * Creates a DBFWriter which can append to records to an existing DBF file.
+	 *
+	 * @param dbfFile The file passed in shouls be a valid DBF file.
+	 * @param charset The charset used to encode field name and field contents
+	 * @param format COMPATIBLE or ADVANCED
+	 * @exception DBFException
+	 *                if the passed in file does exist but not a valid DBF file,
+	 *                or if an IO error occurs.
+	 */
+	public DBFWriter(File dbfFile, Charset charset,DBFFileFormat format) {
 		super();
+		// TODO Remove
+		if (format == DBFFileFormat.ADVANCED) {
+			throw new DBFException("Advanced file format not yet supported");
+		}
 		try {
 			this.raf = new RandomAccessFile(dbfFile, "rw");
-			this.header = new DBFHeader();
+			this.header = new DBFHeader(format.getSignature());
 
 			/*
 			 * before proceeding check whether the passed in File object is an
@@ -149,20 +180,21 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 					setCharset(DBFStandardCharsets.ISO_8859_1);
 					this.header.setUsedCharset(DBFStandardCharsets.ISO_8859_1);
 				}
-				return;
-			}
-
-			this.header.read(this.raf, charset, false);
-			setCharset(this.header.getUsedCharset());
-
-			// position file pointer at the end of the raf
-			// to ignore the END_OF_DATA byte at EoF
-			// only if there are records,
-			if (this.raf.length() > header.headerLength) {
-				this.raf.seek(this.raf.length() - 1);
 			}
 			else {
-				this.raf.seek(this.raf.length());
+	
+				this.header.read(this.raf, charset, false);
+				setCharset(this.header.getUsedCharset());
+	
+				// position file pointer at the end of the raf
+				// to ignore the END_OF_DATA byte at EoF
+				// only if there are records,
+				if (this.raf.length() > header.headerLength) {
+					this.raf.seek(this.raf.length() - 1);
+				}
+				else {
+					this.raf.seek(this.raf.length());
+				}
 			}
 		} catch (FileNotFoundException e) {
 			throw new DBFException("Specified file is not found. " + e.getMessage(), e);
@@ -222,6 +254,11 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 				throw new DBFException(
 				"Field " + field.getName() + " is of type " + field.getType() + " that is not supported for writting");
 			}
+			if (field.getType().getFileFormat() == DBFFileFormat.ADVANCED && !header.isDB7()) {
+				throw new DBFException(
+						"Field " + field.getName() + " is of type " + field.getType() + " that is only supported for writting in ADVANCED FILE FORMAT");
+			}
+				
 		}
 		this.header.fieldArray = new DBFField[fields.length];
 		for (int i = 0; i < fields.length; i++) {
@@ -287,6 +324,12 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 			case NUMERIC:
 			case FLOATING_POINT:
 				if (!(value instanceof Number)) {
+					throw new DBFException("Invalid value for field " + i + ":" + value);
+				}
+				break;
+			case TIMESTAMP:
+			case TIMESTAMP_DBASE7:
+				if (!(value instanceof Date) && !(value instanceof Calendar)) {
 					throw new DBFException("Invalid value for field " + i + ":" + value);
 				}
 				break;
@@ -424,6 +467,39 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 					dataOutput.write((byte) '?');
 				}
 
+				break;
+			
+			case TIMESTAMP:
+			case TIMESTAMP_DBASE7:
+				int days = 0;
+				int millis = 0;
+				//
+				Calendar c = Calendar.getInstance();
+				if (objectArray[j] instanceof Calendar) {
+					c = (Calendar) objectArray[j];
+				}
+				if (objectArray[j] instanceof Date) {
+					c.setTime((Date) objectArray[j]);
+				}
+				
+				millis = 
+					c.get(Calendar.HOUR_OF_DAY) * 3600000 + 
+					c.get(Calendar.MINUTE) * 60000 + 
+					c.get(Calendar.SECOND) * 1000 + 
+					c.get(Calendar.MILLISECOND);
+					
+				days = (int) (((c.getTimeInMillis() - millis) / MILLISECS_PER_DAY) - (TIME_MILLIS_1_1_4713_BC / MILLISECS_PER_DAY)); 
+				
+						
+				// fecha = days * MILLISECS_PER_DAY + TIME_MILLIS_1_1_4713_BC + time;
+						
+				
+				dataOutput.writeInt(DBFUtils.littleEndian(days));
+				dataOutput.writeInt(DBFUtils.littleEndian(millis));
+				//8 bytes - two longs, 
+				// first for date, second for time.  The date is the number of days since  01/01/4713 BC. 
+				//Time is hours * 3600000L + minutes * 60000L + Seconds * 1000L
+				
 				break;
 
 			default:
