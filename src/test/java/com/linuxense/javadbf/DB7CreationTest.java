@@ -1,21 +1,3 @@
-/*
-
-(C) Copyright 2017 Alberto Fernández <infjaf@gmail.com>
-
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 3.0 of the License, or (at your option) any later version.
-
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public
-License along with this library.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
 package com.linuxense.javadbf;
 
 import java.io.File;
@@ -27,30 +9,20 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
-/**
- * Created by mauri on 20/08/2016.
- */
-public class TimestampTest {
-    public TimestampTest() {
-        super();
-    }
+public class DB7CreationTest {
 
-    @Test
-    public void testTimestampRead () throws IOException {
-    	File f = new File("src/test/resources/bdays.dbf");
-    	read(f);
-    	
-    }
-    
-    @Test
-    public void testTimeStampWrite() throws Exception {
-    	File tmp = File.createTempFile("test", ".dbf");
+	public DB7CreationTest() {
+		super();
+	}
+	
+	@Test
+	public void simpleTest() throws Exception {
+		File tmp = File.createTempFile("test", ".dbf");
     	DBFWriter writer = null;
     	try {
-    		writer = new DBFWriter(new FileOutputStream(tmp), DBFStandardCharsets.ISO_8859_1, DBFFileFormat.COMPATIBLE);
+    		writer = new DBFWriter(new FileOutputStream(tmp), DBFStandardCharsets.ISO_8859_1, DBFFileFormat.ADVANCED);
     		Date d = new Date(-855067500000L);
     		writer.setFields(new DBFField[] {
     				new DBFField("NAME", DBFDataType.CHARACTER, 10),
@@ -62,12 +34,51 @@ public class TimestampTest {
     	finally {
     		DBFUtils.close(writer);
     	}
-    	
     	read(tmp);
-    	tmp.delete();
-    }
-    
-    private void read(File f) throws IOException {
+	}
+	
+	@Test
+	public void testLongNames() throws Exception{
+		
+		File tmp = File.createTempFile("test", ".dbf");
+    	DBFWriter writer = null;
+    	try {
+    		writer = new DBFWriter(new FileOutputStream(tmp), DBFStandardCharsets.ISO_8859_1, DBFFileFormat.ADVANCED);
+    		Date d = new Date(-855067500000L);
+    		writer.setFields(new DBFField[] {
+    				new DBFField("MY_LONG_FIELD_NAME_FOR_TESTING", DBFDataType.CHARACTER, 10),
+    				new DBFField("DATE", DBFDataType.TIMESTAMP),
+    				new DBFField("NAME2", DBFDataType.CHARACTER, 10)
+    		});
+    		writer.addRecord(new Object[] { "jimi" , d, "hendrix"});
+    	}
+    	finally {
+    		DBFUtils.close(writer);
+    	}
+    	read(tmp);
+		
+	}
+	@Test
+	public void testLongChar() throws Exception{
+		File tmp = File.createTempFile("test", ".dbf");
+    	DBFWriter writer = null;
+    	try {
+    		writer = new DBFWriter(new FileOutputStream(tmp), DBFStandardCharsets.ISO_8859_1, DBFFileFormat.ADVANCED);
+    		Date d = new Date(-855067500000L);
+    		writer.setFields(new DBFField[] {
+    				new DBFField("MY_LONG_FIELD_NAME_FOR_TESTING", DBFDataType.CHARACTER, 3000),
+    				new DBFField("DATE", DBFDataType.TIMESTAMP),
+    				new DBFField("NAME2", DBFDataType.CHARACTER, 10)
+    		});
+    		writer.addRecord(new Object[] { "jimi" , d, "hendrix"});
+    	}
+    	finally {
+    		DBFUtils.close(writer);
+    	}
+    	read(tmp);
+	}
+	
+	private void read(File f) throws IOException {
     	DBFReader reader = null;
         try {
             reader = new DBFReader(new FileInputStream(f));
@@ -102,4 +113,5 @@ public class TimestampTest {
         	DBFUtils.close(reader);
         }
     }
+	
 }

@@ -60,12 +60,18 @@ public class DBFHeader {
 	DBFField []fieldArray;       /* each 32 bytes */
 	DBFField[] userFieldArray;
 	private byte terminator1;            /* n+1 */
-
+	
+	
 	private Charset detectedCharset;
 	private Charset usedCharset;
 
         /** Flag indicating if 2-byte (extended) length character fields should be supported (see DBFField.adjustLengthForLongCharSupport(), default: true). */
-        private boolean supportExtendedCharacterFields = true;
+    private boolean supportExtendedCharacterFields = true;
+    
+ // DB7
+ 	private String languageDriverName;
+ 	private int reserv5;
+
 
 	private static final int DBASE_LEVEL_7 = 4;
 
@@ -113,9 +119,9 @@ public class DBFHeader {
 		if (isDB7()) {
 			byte[] languageName = new byte[32];
 			dataInput.readFully(languageName);
-//			this.languageDriverName =  new String (languageName, StandardCharsets.US_ASCII);
-//			this.reserv5 =  dataInput.readInt();
-			dataInput.readInt();
+			
+			this.languageDriverName = new String(languageName, DBFStandardCharsets.US_ASCII);
+			this.reserv5 =  dataInput.readInt();
 
 			read += 32 + 4;
 		}
@@ -158,8 +164,6 @@ public class DBFHeader {
 					read += 1;
 					break;
 				}
-					
-				
 			}
 		}
 
@@ -254,14 +258,53 @@ public class DBFHeader {
 			dataOutput.writeByte(0);
 		}
 		dataOutput.writeShort(DBFUtils.littleEndian(this.reserv4)); /* 30-31 */
+		
+		if (isDB7()) {
+			String d = this.languageDriverName;
+			if (d == null) {
+				d = "DBWINWE0";
+			}
+			byte[] data = DBFUtils.string2byteArray(d, DBFStandardCharsets.US_ASCII, 32);
+			dataOutput.write(data);
+			dataOutput.writeInt(this.reserv5);
+		}
+		
+		
 		for (DBFField field : this.fieldArray) {
-			field.write(dataOutput,getUsedCharset());
+			if (isDB7()) {
+				field.writeDB7(dataOutput, getUsedCharset());
+			}
+			else {
+				field.write(dataOutput, getUsedCharset());
+			}
 		}
 		dataOutput.writeByte(this.terminator1); /* n+1 */
 	}
 
 	private short findHeaderLength() {
 
+		if (isDB7()) {
+			return (short)(
+					1+
+					3+
+					4+
+					2+
+					2+
+					2+
+					1+
+					1+
+					4+
+					4+
+					4+
+					1+
+					1+
+					2+
+					+ 32 + 4+
+					(getFieldDescriptorSize()*this.fieldArray.length)+
+					1
+				);
+		}
+		
 		return (short)(
 		1+
 		3+
@@ -277,7 +320,7 @@ public class DBFHeader {
 		1+
 		1+
 		2+
-		(32*this.fieldArray.length)+
+		(getFieldDescriptorSize()*this.fieldArray.length)+
 		1
 		);
 	}

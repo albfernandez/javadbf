@@ -90,6 +90,8 @@ public class DBFField {
 	private byte[] reserv4 = new byte[7]; /* 24-30 */
 	private byte indexFieldFlag; /* 31 */
 	private String name;
+	private int reserv5;
+	private int nextAuto;
 
 	/**
 	 * Default constructor
@@ -113,6 +115,7 @@ public class DBFField {
 		System.arraycopy(origin.reserv4, 0, this.reserv4, 0, 7);
 		this.indexFieldFlag = origin.indexFieldFlag;
 		this.name = origin.name;
+		
 	}
 
 	/**
@@ -243,8 +246,8 @@ public class DBFField {
 		field.reserv2 = DBFUtils.readLittleEndianShort(in); /* 35-36 */
 		field.workAreaId = in.readByte(); /* 37 */
 		field.reserv3 = DBFUtils.readLittleEndianShort(in); /* 38-39 */
-		in.readInt(); // 40-43 nextAuto
-		in.readInt(); // 44-47 reserv
+		field.nextAuto = in.readInt(); // 40-43 nextAuto
+		field.reserv5 = in.readInt(); // 44-47 reserv
 		if (supportExtendedCharacterFields){
 			adjustLengthForLongCharSupport(field);
 		}
@@ -272,13 +275,16 @@ public class DBFField {
 	 * @throws IOException  if any stream related issues occur.
 	 */
 	protected void write(DataOutput out, Charset charset) throws IOException {
+		
+		int maxFieldNameLength = 10;
+		
+		
 		// Field Name
 		byte[] fieldBytes = this.name.getBytes(charset);
-		if (fieldBytes.length > 10) {
-			throw new IOException("NON-ASCII field name:" + name + " exceds allowed length");
+		if (fieldBytes.length > maxFieldNameLength) {
+			throw new IOException("NON-ASCII field name:" + name + " exceds allowed length of " + maxFieldNameLength + "(" + fieldBytes.length+")");
 		}
-		out.write(fieldBytes); /* 0-10 */
-		out.write(new byte[11 - fieldBytes.length]);
+		out.write(DBFUtils.string2byteArray(this.name, charset, maxFieldNameLength+1));  /* 0-10 */
 
 		// data type
 		out.writeByte(this.type.getCode()); /* 11 */
@@ -291,6 +297,36 @@ public class DBFField {
 		out.writeByte(this.setFieldsFlag); /* 23 */
 		out.write(this.reserv4); /* 24-30 */
 		out.writeByte(this.indexFieldFlag); /* 31 */
+	}
+	
+	protected void writeDB7(DataOutput out, Charset charset) throws IOException {
+		
+		int maxFieldNameLength = 31;
+		
+		// Field Name
+		byte[] fieldBytes = this.name.getBytes(charset);
+		if (fieldBytes.length > maxFieldNameLength) {
+			throw new IOException("NON-ASCII field name:" + name + " exceds allowed length of " + maxFieldNameLength + "(" + fieldBytes.length+")");
+		}
+		out.write(DBFUtils.string2byteArray(this.name, charset, maxFieldNameLength+1)); /* 0-31 */
+
+		// data type
+		out.writeByte(this.type.getCode()); /* 32 */
+		
+		int nuevaLength = this.length;
+		int nuevoDecimal = this.decimalCount;
+		if (nuevaLength > 254 && (type == DBFDataType.CHARACTER || type == DBFDataType.VARCHAR)) {
+			nuevoDecimal = this.length >> 8;
+			nuevaLength &= 0xFF;
+		}
+		
+		out.writeByte(nuevaLength); /* 33 */
+		out.writeByte(nuevoDecimal); /* 34 */
+		out.writeShort(DBFUtils.littleEndian(this.reserv2)); /* 35-36 */
+		out.writeByte(this.workAreaId); /* 37 mdx */
+		out.writeShort(DBFUtils.littleEndian(this.reserv3)); /* 38-39 */
+		out.writeInt(this.nextAuto); /* 40-43 Next autoincrement in autoincrement fields */
+		out.writeInt(this.reserv5); /* 44-47 */
 	}
 
 	/**
@@ -342,8 +378,8 @@ public class DBFField {
 			throw new IllegalArgumentException("Field name cannot be null");
 		}
 
-		if (name.length() == 0 || name.length() > 10) {
-			throw new IllegalArgumentException("Field name should be of length 1-10");
+		if (name.length() == 0 || name.length() > 32) {
+			throw new IllegalArgumentException("Field name should be of length 1-32");
 		}
 
 		this.name = name;

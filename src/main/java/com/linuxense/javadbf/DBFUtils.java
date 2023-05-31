@@ -432,26 +432,14 @@ public final class DBFUtils {
 		}
 		return d;	
 	}
+		
 	
-	// FIXME delete
-	@Deprecated
-	protected static double toDouble(DBFField field, byte[] data) {
-		double d = toDouble(data);
-		StringBuilder sb = new StringBuilder() ;
-		for(byte b: data) {
-			if (sb.length() == 0) {
-				sb.append("{");
-			}
-			else {
-				sb.append(",");
-			}
-			sb.append(b);
+	protected static byte[] string2byteArray(String str, Charset charset, int length) {
+		byte[] data = new byte[length];
+		if (str != null) {
+			byte[] stringData = str.getBytes(charset);
+			System.arraycopy(stringData, 0, data, 0, Math.min(data.length, stringData.length));
 		}
-		sb.append("}");
-		System.out.println(field.getName() + " " + sb + "; " + d);
-		if (d!= 0.0) {
-			d = -d;
-		}
-		return d;	
+		return data;
 	}
 }

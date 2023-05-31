@@ -41,6 +41,7 @@ public class DBFFieldTest {
 		field.setName("");
 	}
 	@Test(expected=IllegalArgumentException.class)
+	@Ignore("now supporting length")
 	public void testInvalidLongName() {
 		DBFField field = new DBFField();
 		field.setName("12345678901");

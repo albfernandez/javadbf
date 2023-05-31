@@ -108,10 +108,6 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	 */
 	public DBFWriter(OutputStream out, Charset charset, DBFFileFormat format) {
 		super();
-		// TODO Remove
-		if (format == DBFFileFormat.ADVANCED) {
-			throw new DBFException("Advanced file format not yet supported");
-		}
 		setCharset(charset);
 		this.header = new DBFHeader(format.getSignature());
 		this.header.setUsedCharset(charset);
@@ -156,10 +152,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 	 */
 	public DBFWriter(File dbfFile, Charset charset,DBFFileFormat format) {
 		super();
-		// TODO Remove
-		if (format == DBFFileFormat.ADVANCED) {
-			throw new DBFException("Advanced file format not yet supported");
-		}
+
 		try {
 			this.raf = new RandomAccessFile(dbfFile, "rw");
 			this.header = new DBFHeader(format.getSignature());
@@ -249,14 +242,22 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 				throw new DBFException("Fields " + fieldsWithNull.toString()  + " are null");
 			}
 		}
+		int maxFieldNameLength = 10;
+		if (header.isDB7()) {
+			maxFieldNameLength = 31;
+		}
 		for (DBFField field: fields) {
 			if (!field.getType().isWriteSupported()) {
 				throw new DBFException(
 				"Field " + field.getName() + " is of type " + field.getType() + " that is not supported for writting");
 			}
-			if (field.getType().getFileFormat() == DBFFileFormat.ADVANCED && !header.isDB7()) {
-				throw new DBFException(
-						"Field " + field.getName() + " is of type " + field.getType() + " that is only supported for writting in ADVANCED FILE FORMAT");
+//			if (field.getType().getFileFormat() == DBFFileFormat.ADVANCED && !header.isDB7()) {
+//				throw new DBFException(
+//						"Field " + field.getName() + " is of type " + field.getType() + " that is only supported for writting in ADVANCED FILE FORMAT");
+//			}
+			int fieldNameLength = field.getName().getBytes(getCharset()).length;
+			if (fieldNameLength > maxFieldNameLength) {				
+				throw new DBFException("NON-ASCII field name:" + field.getName() + " exceds allowed length of " + maxFieldNameLength + "(" + maxFieldNameLength+")");
 			}
 				
 		}
@@ -325,6 +326,12 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 			case FLOATING_POINT:
 				if (!(value instanceof Number)) {
 					throw new DBFException("Invalid value for field " + i + ":" + value);
+				}
+				break;
+			case LONG:
+			case AUTOINCREMENT:
+				if (!(value instanceof Number)) {
+					throw new DBFException("Invalid value for field " + i + ":"+ value);
 				}
 				break;
 			case TIMESTAMP:
@@ -458,7 +465,7 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 			case LOGICAL:
 
 				if (objectArray[j] instanceof Boolean) {
-					if ((Boolean) objectArray[j]) {
+					if (((Boolean) objectArray[j]).booleanValue()) {
 						dataOutput.write((byte) 'T');
 					} else {
 						dataOutput.write((byte) 'F');
@@ -468,12 +475,19 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 				}
 
 				break;
+				
+			case LONG:
+			case AUTOINCREMENT:
+				if (objectArray[j] != null) {
+					dataOutput.write(DBFUtils.littleEndian(((Number) objectArray[j]).intValue()));
+				}
+				else {
+					dataOutput.write(0);
+				}
+				break;
 			
 			case TIMESTAMP:
 			case TIMESTAMP_DBASE7:
-				int days = 0;
-				int millis = 0;
-				//
 				Calendar c = Calendar.getInstance();
 				if (objectArray[j] instanceof Calendar) {
 					c = (Calendar) objectArray[j];
@@ -482,23 +496,23 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 					c.setTime((Date) objectArray[j]);
 				}
 				
-				millis = 
+				int millis = 
 					c.get(Calendar.HOUR_OF_DAY) * 3600000 + 
 					c.get(Calendar.MINUTE) * 60000 + 
 					c.get(Calendar.SECOND) * 1000 + 
 					c.get(Calendar.MILLISECOND);
-					
-				days = (int) (((c.getTimeInMillis() - millis) / MILLISECS_PER_DAY) - (TIME_MILLIS_1_1_4713_BC / MILLISECS_PER_DAY)); 
 				
-						
-				// fecha = days * MILLISECS_PER_DAY + TIME_MILLIS_1_1_4713_BC + time;
-						
+				// 8 bytes - two longs, 
+				// first for date, second for time.  The date is the number of days since  01/01/4713 BC. 
+				// Time is hours * 3600000L + minutes * 60000L + Seconds * 1000L
+					
+				int days = (int) 
+						(((c.getTimeInMillis() - millis) / 
+						MILLISECS_PER_DAY) - (TIME_MILLIS_1_1_4713_BC / MILLISECS_PER_DAY)); 
 				
 				dataOutput.writeInt(DBFUtils.littleEndian(days));
 				dataOutput.writeInt(DBFUtils.littleEndian(millis));
-				//8 bytes - two longs, 
-				// first for date, second for time.  The date is the number of days since  01/01/4713 BC. 
-				//Time is hours * 3600000L + minutes * 60000L + Seconds * 1000L
+
 				
 				break;
 

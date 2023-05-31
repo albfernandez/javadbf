@@ -31,15 +31,15 @@ public enum DBFDataType {
 	/**
 	 * Character data, padded with whitespaces.
 	 */
-	CHARACTER        ('C', 1, 254, 0, true),
+	CHARACTER        ('C', 1, 65536, 0, true),
 	/**
 	 * Character data, not padded
 	 */
-	VARCHAR          ('V', 1, 254, 0, false),
+	VARCHAR          ('V', 1, 65536, 0, false),
 	/**
 	 * Binary data
 	 */
-	VARBINARY        ('Q', 1, 254, 0, false),
+	VARBINARY        ('Q', 1, 65536, 0, false),
 	/**
 	 * Date
 	 */
@@ -83,11 +83,11 @@ public enum DBFDataType {
 	/**
 	 * Numeric long (FoxPro)
 	 */
-	LONG             ('I', 4, 4, 4, false),
+	LONG             ('I', 4, 4, 4, true, DBFFileFormat.ADVANCED),
 	/**
 	 * Autoincrement (same as long, dbase 7)
 	 */
-	AUTOINCREMENT    ('+', 4, 4, 4, false, DBFFileFormat.ADVANCED),
+	AUTOINCREMENT    ('+', 4, 4, 4, true, DBFFileFormat.ADVANCED),
 	/**
 	 * Currency type (FoxPro)
 	 */
@@ -95,7 +95,7 @@ public enum DBFDataType {
 	/**
 	 * Timestamp type (FoxPro)
 	 */
-	TIMESTAMP 		 ('T', 8, 8, 8, true),
+	TIMESTAMP 		 ('T', 8, 8, 8, true, DBFFileFormat.ADVANCED),
 	/**
 	 * Timestamp type (dbase level 7)
 	 */
