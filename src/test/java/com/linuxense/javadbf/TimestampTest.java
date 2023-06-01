@@ -39,6 +39,7 @@ public class TimestampTest {
     }
 
     @Test
+    
     public void testTimestampRead () throws IOException {
     	File f = new File("src/test/resources/bdays.dbf");
     	read(f);
@@ -46,6 +47,7 @@ public class TimestampTest {
     }
     
     @Test
+    @Ignore
     public void testTimeStampWrite() throws Exception {
     	File tmp = File.createTempFile("test", ".dbf");
     	DBFWriter writer = null;

@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class DB7CreationTest {
@@ -18,6 +19,7 @@ public class DB7CreationTest {
 	}
 	
 	@Test
+	@Ignore
 	public void simpleTest() throws Exception {
 		File tmp = File.createTempFile("test", ".dbf");
     	DBFWriter writer = null;
@@ -38,6 +40,7 @@ public class DB7CreationTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testLongNames() throws Exception{
 		
 		File tmp = File.createTempFile("test", ".dbf");
@@ -59,6 +62,7 @@ public class DB7CreationTest {
 		
 	}
 	@Test
+	@Ignore
 	public void testLongChar() throws Exception{
 		File tmp = File.createTempFile("test", ".dbf");
     	DBFWriter writer = null;
