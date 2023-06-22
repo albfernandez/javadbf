@@ -1,4 +1,4 @@
-package com.linuxense.javadbf.bug105;
+package com.linuxense.javadbf.bug115;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -15,17 +15,17 @@ import org.junit.Test;
 import com.linuxense.javadbf.DBFUtils;
 import com.linuxense.javadbf.DBFWriter;
 
-public class Bug105AppendTest {
+public class Bug115AppendTest {
 	
-	public Bug105AppendTest() {
+	public Bug115AppendTest() {
 		super();
 	}
 	
 	@Test
 	public void testAppend() throws Exception {
-		File orig = new File("src/test/resources/bug-105/bug105.dbf");
+		File orig = new File("src/test/resources/bug-115/bug115.dbf");
 		
-		File tmp = File.createTempFile("bug105", ".dbf");
+		File tmp = File.createTempFile("bug115", ".dbf");
 		copyFile(orig, tmp);
 		DBFWriter writer = null;
 		
