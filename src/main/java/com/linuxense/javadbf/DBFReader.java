@@ -545,7 +545,26 @@ public class DBFReader extends DBFBase implements Closeable {
 		}
 		else {
 			for (int i = 0; i < recordsToSkip; i++) {
-				nextRecord();
+				boolean deleted = true;
+				while(deleted) {
+					try {
+						byte theByte = this.dataInputStream.readByte();
+						if (theByte == -1) {
+							return;
+						}
+						if (theByte == END_OF_DATA && this.header.numberOfRecords == this.internalRecord) {
+							return;
+						}
+						deleted = theByte == '*';
+						// skip the rest of the record
+						skip(this.header.recordLength - 1);
+						this.internalRecord++;
+					}
+					catch (EOFException e) {
+						return;
+					}
+				}
+				this.returnedRecords++;
 			}
 		}
 	}
