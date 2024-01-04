@@ -412,17 +412,7 @@ public final class DBFUtils {
 	}
 
 	protected static BitSet getBitSet(byte[] bytes) {
-//		return  BitSet.valueOf(bytes);
-		
-		BitSet bits = new BitSet();
-	    for (int i = 0; i < bytes.length * 8; i++) {
-	      byte b = bytes[i/8];
-	      int bit = b & (1 << (i % 8));
-	      if (bit > 0) {
-	        bits.set(i);
-	      }
-	    }
-	    return bits;
+		return  BitSet.valueOf(bytes);
 	}
 
 	protected static double toDouble(byte[] data) {

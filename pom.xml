@@ -34,7 +34,7 @@
 	</issueManagement>
 
 	<properties>
-		<compiler.level>1.6</compiler.level>
+		<compiler.level>1.8</compiler.level>
 		<compiler.module.level>9</compiler.module.level>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -57,8 +57,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.7.0</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
