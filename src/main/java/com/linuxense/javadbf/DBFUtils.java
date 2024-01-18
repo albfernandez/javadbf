@@ -415,12 +415,35 @@ public final class DBFUtils {
 		return  BitSet.valueOf(bytes);
 	}
 
+	/*
 	protected static double toDouble(byte[] data) {
 		double d = ByteBuffer.wrap(data).order(ByteOrder.BIG_ENDIAN).getDouble();
 		if (d!= 0.0) {
 			d = -d;
 		}
-		return d;	
+		return d;
+	}*/	
+	
+	protected static double toDoubleBinary(byte[] data) {
+		double d = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN).getDouble();
+		if (d == -0.0) {
+			d = 0.0;
+		}
+		return d;
+	}	
+	
+	
+	protected static double toDoubleDouble(byte[] data) {
+		double d = ByteBuffer.wrap(data).order(ByteOrder.BIG_ENDIAN).getDouble();
+		
+		if (d != 0.0) {
+			d = -d;
+		}
+		if (d == -0.0) {
+			d = 0.0;
+		}
+		return d;
+		
 	}
 		
 	
