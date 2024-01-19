@@ -29,8 +29,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -183,8 +181,22 @@ public class DBFReader extends DBFBase implements Closeable {
 	 * @param in  the InputStream where the data is read from.
 	 * @param showDeletedRows can be used to identify records that have been deleted.
 	 */
-	// TODO Change to boolean in 2.0
 	public DBFReader(InputStream in, Boolean showDeletedRows) {
+		this(in,null, showDeletedRows == null ? false : showDeletedRows.booleanValue());
+	}
+	
+	/**
+	 * Intializes a DBFReader object.
+	 *
+	 * Tries to detect charset from file, if failed uses default charset ISO-8859-1
+	 * When this constructor returns the object will have completed reading the
+	 * header (meta date) and header information can be queried there on. And it
+	 * will be ready to return the first row.
+	 *
+	 * @param in  the InputStream where the data is read from.
+	 * @param showDeletedRows can be used to identify records that have been deleted.
+	 */
+	public DBFReader(InputStream in, boolean showDeletedRows) {
 		this(in,null, showDeletedRows);
 	}
 
@@ -227,7 +239,7 @@ public class DBFReader extends DBFBase implements Closeable {
 	 * @param in the InputStream where the data is read from.
 	 * @param charset charset used to decode field names and field contents. If null, then is autedetected from dbf file
 	 * @param showDeletedRows can be used to identify records that have been deleted.
-         * @param supportExtendedCharacterFields Defines whether 2-byte (extended) length character fields should be supported (see DBFField.adjustLengthForLongCharSupport(), default: true).
+	 * @param supportExtendedCharacterFields Defines whether 2-byte (extended) length character fields should be supported (see DBFField.adjustLengthForLongCharSupport(), default: true).
 	 */
 	public DBFReader(InputStream in, Charset charset, boolean showDeletedRows, boolean supportExtendedCharacterFields) {
 		try {
