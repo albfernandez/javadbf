@@ -24,29 +24,23 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.math.BigInteger;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.linuxense.javadbf.testutils.DbfToTxtTest;
 
 
 
-// TODO Rename to DBFUtilsTest
-public class UtilsTest {
+public class DBFUtilsTest {
 
 	private static final Charset ISO_8859_1 = StandardCharsets.ISO_8859_1;
 	private static final Charset UTF8 = StandardCharsets.UTF_8;
-	public UtilsTest () {
+	public DBFUtilsTest () {
 		super();
 	}
 	@Test
@@ -101,7 +95,7 @@ public class UtilsTest {
 		// TODO
 	}
 	@Test
-	public void testreadLittleEndianInt() {
+	public void testReadLittleEndianInt() {
 		// TODO
 	}
 	@Test
