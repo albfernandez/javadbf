@@ -51,6 +51,7 @@ public abstract class DBFBase {
 	public Charset getCharset() {
 		return this.charset;
 	}
+	
 	/**
 	 * Sets the charset to use to read and write files.
 	 *
@@ -62,9 +63,7 @@ public abstract class DBFBase {
 	 * @param charset charset to use
 	 * @deprecated set the charset in DBFWriter or DBFReader constructors
 	 */
-	// TODO set this metdhod protected in 2.0
-	@Deprecated
-	public void setCharset(Charset charset) {
+	protected void setCharset(Charset charset) {
 		this.charset = charset;
 	}
 
