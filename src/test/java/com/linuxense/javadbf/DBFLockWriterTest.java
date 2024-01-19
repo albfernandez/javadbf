@@ -5,8 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class DBFLockWriterTest {
 
@@ -41,7 +41,7 @@ public class DBFLockWriterTest {
         	writerRandomAcces.addRecord(rowData);
         }
         DBFUtils.close(writerRandomAcces);
-        Assert.assertEquals(259L, outputFile.length());
+        Assertions.assertEquals(259L, outputFile.length());
 	}
 	
 	@Test
@@ -60,7 +60,7 @@ public class DBFLockWriterTest {
         	writer.addRecord(rowData);
         }
         writer.close();
-        Assert.assertEquals(259L, outputFile.length());
+        Assertions.assertEquals(259L, outputFile.length());
 	}
 	
 	private DBFField[] createFields() {
@@ -87,15 +87,17 @@ public class DBFLockWriterTest {
 
 	
 
-	@Test(expected=DBFException.class)
+	@Test
 	public void testFailOpenFile() throws DBFException {
-		DBFLockWriter writer = null;
-		try {
-			writer = new DBFLockWriter(new File("/this/file/doesnont/exists"));
-		}
-		finally {
-			DBFUtils.close(writer);
-		}
+		Assertions.assertThrows(DBFException.class, () -> {
+			DBFLockWriter writer = null;
+			try {
+				writer = new DBFLockWriter(new File("/this/file/doesnont/exists"));
+			}
+			finally {
+				DBFUtils.close(writer);
+			}
+		});
 	}
 
 }

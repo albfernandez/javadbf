@@ -22,8 +22,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class CurrencyTest {
 
@@ -52,20 +52,20 @@ public class CurrencyTest {
 			reader = new DBFReader(new FileInputStream("src/test/resources/books.dbf"));
 
 			int numberOfFields = reader.getFieldCount();
-			Assert.assertEquals(11, numberOfFields);
+			Assertions.assertEquals(11, numberOfFields);
 			for (int i = 0; i < numberOfFields; i++) {
 				DBFField field = reader.getField(i);
-				Assert.assertNotNull(field.getName());
+				Assertions.assertNotNull(field.getName());
 			}
 			Object[] rowObject;
 			int countedRows = 0;
 			while ((rowObject = reader.nextRecord()) != null) {
-				Assert.assertEquals(numberOfFields, rowObject.length);
-				Assert.assertTrue(rowObject[6] instanceof BigDecimal);
-				Assert.assertEquals(values[countedRows], rowObject[6]);
+				Assertions.assertEquals(numberOfFields, rowObject.length);
+				Assertions.assertTrue(rowObject[6] instanceof BigDecimal);
+				Assertions.assertEquals(values[countedRows], rowObject[6]);
 				countedRows++;
 			}
-			Assert.assertEquals(10, countedRows);
+			Assertions.assertEquals(10, countedRows);
 		}
 		finally {
 			DBFUtils.close(reader);

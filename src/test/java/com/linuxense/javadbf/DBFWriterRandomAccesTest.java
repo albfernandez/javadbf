@@ -23,8 +23,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 
 public class DBFWriterRandomAccesTest {
@@ -58,7 +58,7 @@ public class DBFWriterRandomAccesTest {
         	writerRandomAcces.addRecord(rowData);
         }
         DBFUtils.close(writerRandomAcces);
-        Assert.assertEquals(259L, outputFile.length());
+        Assertions.assertEquals(259L, outputFile.length());
 	}
 	
 	@Test
@@ -77,7 +77,7 @@ public class DBFWriterRandomAccesTest {
         	writer.addRecord(rowData);
         }
         writer.close();
-        Assert.assertEquals(259L, outputFile.length());
+        Assertions.assertEquals(259L, outputFile.length());
 	}
 	
 	private DBFField[] createFields() {
@@ -104,16 +104,16 @@ public class DBFWriterRandomAccesTest {
 
 	
 
-	@Test(expected=DBFException.class)
+	@Test
 	public void testFailOpenFile() throws DBFException {
-		DBFWriter writer = null;
-		try {
-			writer = new DBFWriter(new File("/this/file/doesnont/exists"));
-		}
-		finally {
-			if (writer != null) {
-				writer.close();
+		Assertions.assertThrows(DBFException.class, () -> {
+			DBFWriter writer = null;
+			try {
+				writer = new DBFWriter(new File("/this/file/doesnont/exists"));
 			}
-		}
+			finally {
+				DBFUtils.close(writer);
+			}
+		});
 	}
 }

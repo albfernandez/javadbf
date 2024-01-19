@@ -18,20 +18,20 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.linuxense.javadbf;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 
 public class DBFAligmentTest {
 	
 	@Test
 	public void testValues() {
-		Assert.assertEquals(2,DBFAlignment.values().length);
+		Assertions.assertEquals(2,DBFAlignment.values().length);
 	}
 	
 	@Test
 	public void testValueOf() {
-		Assert.assertEquals(DBFAlignment.LEFT,DBFAlignment.valueOf("LEFT"));
+		Assertions.assertEquals(DBFAlignment.LEFT,DBFAlignment.valueOf("LEFT"));
 	}
 
 }

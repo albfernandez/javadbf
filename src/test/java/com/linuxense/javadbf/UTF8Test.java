@@ -22,9 +22,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.Charset;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class UTF8Test {
 
@@ -33,7 +33,7 @@ public class UTF8Test {
 	}
 	
 	@Test
-	@Ignore
+	@Disabled
 	public void testUTF8() throws Exception {
 		String testString = "Cộng hòa xã hội";
 		DBFField fields[] = new DBFField[1];
@@ -66,7 +66,7 @@ public class UTF8Test {
 		try {
 			reader = new DBFReader(new ByteArrayInputStream(data));
 			Object[] rowObjects = reader.nextRecord();
-			Assert.assertEquals(testString, rowObjects[0]);
+			Assertions.assertEquals(testString, rowObjects[0]);
 		}
 		finally {
 			DBFUtils.close(reader);			

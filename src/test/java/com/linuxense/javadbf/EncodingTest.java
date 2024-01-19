@@ -18,8 +18,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.linuxense.javadbf;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -31,8 +31,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.mocks.NullOutputStream;
 
@@ -103,20 +103,20 @@ public class EncodingTest {
 			reader = new DBFReader(new FileInputStream("src/test/resources/provincias_es.dbf"));
 
 			int numberOfFields = reader.getFieldCount();
-			Assert.assertEquals(5, numberOfFields);
+			Assertions.assertEquals(5, numberOfFields);
 			for (int i = 0; i < numberOfFields; i++) {
 				DBFField field = reader.getField(i);
-				Assert.assertNotNull(field.getName());
+				Assertions.assertNotNull(field.getName());
 			}
 			Object[] rowObject;
 			int countedRows = 0;
 			while ((rowObject = reader.nextRecord()) != null) {
-				Assert.assertEquals(numberOfFields, rowObject.length);
-				Assert.assertTrue(rowObject[1] instanceof String);
-				Assert.assertEquals(names[countedRows], ((String)rowObject[1]).trim());
+				Assertions.assertEquals(numberOfFields, rowObject.length);
+				Assertions.assertTrue(rowObject[1] instanceof String);
+				Assertions.assertEquals(names[countedRows], ((String)rowObject[1]).trim());
 				countedRows++;
 			}
-			Assert.assertEquals(52, countedRows);
+			Assertions.assertEquals(52, countedRows);
 		}
 		finally {
 			DBFUtils.close(reader);
@@ -173,11 +173,11 @@ public class EncodingTest {
 		try {
 			writer = new DBFWriter(new NullOutputStream());
 			writer.setCharset(StandardCharsets.ISO_8859_1);
-			Assert.assertEquals(StandardCharsets.ISO_8859_1, writer.getCharset());
-			Assert.assertEquals(StandardCharsets.ISO_8859_1.displayName(), writer.getCharset().displayName());
+			Assertions.assertEquals(StandardCharsets.ISO_8859_1, writer.getCharset());
+			Assertions.assertEquals(StandardCharsets.ISO_8859_1.displayName(), writer.getCharset().displayName());
 			writer.setCharset(StandardCharsets.ISO_8859_1);
-			Assert.assertEquals(StandardCharsets.ISO_8859_1.displayName(), writer.getCharset().displayName());
-			Assert.assertEquals(StandardCharsets.ISO_8859_1, writer.getCharset());
+			Assertions.assertEquals(StandardCharsets.ISO_8859_1.displayName(), writer.getCharset().displayName());
+			Assertions.assertEquals(StandardCharsets.ISO_8859_1, writer.getCharset());
 		}
 		finally {
 			DBFUtils.close(writer);
@@ -204,7 +204,7 @@ public class EncodingTest {
 			DBFUtils.close(writer);
 		}
 		byte[] data = baos.toByteArray();
-		Assert.assertEquals(0x65, data[29]);
+		Assertions.assertEquals(0x65, data[29]);
 	}
 	
 	
@@ -213,7 +213,7 @@ public class EncodingTest {
 		Charset charset = Charset.forName("CP866");
 		String charsetString = charset.toString().toLowerCase();
 		
-		Assert.assertEquals("ibm866", charsetString);
+		Assertions.assertEquals("ibm866", charsetString);
 	}
 	
 	@Test
@@ -238,7 +238,7 @@ public class EncodingTest {
 		finally {
 			DBFUtils.close(writer);
 		}
-		Assert.assertEquals(99L, output.getCount());
+		Assertions.assertEquals(99L, output.getCount());
 	}
 	
 	
@@ -264,7 +264,7 @@ public class EncodingTest {
 		finally {
 			DBFUtils.close(writer);
 		}
-		Assert.assertEquals(99L, file.length());
+		Assertions.assertEquals(99L, file.length());
 		file.delete();
 	}
 	@Test	
@@ -289,7 +289,7 @@ public class EncodingTest {
 		finally {
 			DBFUtils.close(writer);
 		}
-		Assert.assertEquals(99L, file.length());
+		Assertions.assertEquals(99L, file.length());
 		file.delete();
 	}
 	@Test	
@@ -314,7 +314,7 @@ public class EncodingTest {
 		finally {
 			DBFUtils.close(writer);
 		}
-		Assert.assertEquals(99L, file.length());
+		Assertions.assertEquals(99L, file.length());
 		file.delete();
 	}
 }

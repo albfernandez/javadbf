@@ -23,8 +23,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class DeprecatedMethodsTest {
 	
@@ -38,13 +38,13 @@ public class DeprecatedMethodsTest {
 
 		fields[0] = new DBFField();
 		
-		Assert.assertEquals((byte) 0,  fields[0].getDataType());
+		Assertions.assertEquals((byte) 0,  fields[0].getDataType());
 		
 		fields[0].setFieldName("emp_code");
 		fields[0].setDataType(DBFField.FIELD_TYPE_C);
 		fields[0].setFieldLength(10);
 		
-		Assert.assertEquals(DBFField.FIELD_TYPE_C,fields[0].getDataType());
+		Assertions.assertEquals(DBFField.FIELD_TYPE_C,fields[0].getDataType());
 
 		fields[1] = new DBFField();
 		fields[1].setFieldName("emp_name");
@@ -92,25 +92,20 @@ public class DeprecatedMethodsTest {
 				out = new ByteArrayOutputStream();
 				writer.write(out);
 			} finally {
-				if (out != null) {
-					out.close();
-				}
+				DBFUtils.close(out);
 			}
 			
 			byte[] data = out.toByteArray();
-			Assert.assertEquals(259, data.length);
+			Assertions.assertEquals(259, data.length);
 		
 
 			bis = new ByteArrayInputStream(data);
 			ReadDBFAssert.testReadDBFFile(bis, 3, 3);
 		}
 		finally {
-			if (bis != null) {
-				bis.close();
-			}
-			if (writer != null) {
-				writer.close();
-			}
+			DBFUtils.close(bis);
+			DBFUtils.close(writer);
+			
 		}
 		
 	}

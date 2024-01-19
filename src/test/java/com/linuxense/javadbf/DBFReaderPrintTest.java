@@ -21,7 +21,7 @@ package com.linuxense.javadbf;
 import java.io.File;
 import java.io.FileInputStream;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.testutils.DbfToTxtTest;
 

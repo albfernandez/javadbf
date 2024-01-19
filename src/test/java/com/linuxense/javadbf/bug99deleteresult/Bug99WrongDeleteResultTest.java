@@ -1,11 +1,11 @@
 package com.linuxense.javadbf.bug99deleteresult;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.io.FileInputStream;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.DBFReader;
 import com.linuxense.javadbf.DBFRow;

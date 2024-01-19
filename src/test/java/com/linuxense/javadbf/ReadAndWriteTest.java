@@ -23,8 +23,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class ReadAndWriteTest {
 
@@ -88,7 +88,7 @@ public class ReadAndWriteTest {
 
 			
 			byte[] data = out.toByteArray();
-			Assert.assertEquals(259, data.length);
+			Assertions.assertEquals(259, data.length);
 		
 
 			bis = new ByteArrayInputStream(data);
@@ -136,15 +136,15 @@ public class ReadAndWriteTest {
 
 			
 			byte[] data = out.toByteArray();
-			Assert.assertEquals(79, data.length);
+			Assertions.assertEquals(79, data.length);
 		
 
 			bis = new ByteArrayInputStream(data);
 			reader = new DBFReader(bis);
 			int numberOfColumns = reader.getFieldCount();
-			Assert.assertEquals(1, numberOfColumns);
+			Assertions.assertEquals(1, numberOfColumns);
 			Object[] rowObject = reader.nextRecord();
-			Assert.assertEquals(new BigDecimal("123.80"), rowObject[0]);
+			Assertions.assertEquals(new BigDecimal("123.80"), rowObject[0]);
 		}
 		finally {
 			DBFUtils.close(bis);

@@ -24,8 +24,8 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.testutils.AssertUtils;
 
@@ -39,9 +39,9 @@ public class FixtureDBase7Test {
 			reader = new DBFReader(new BufferedInputStream(new FileInputStream(file)));
 			
 			DBFHeader header = reader.getHeader();
-			Assert.assertNotNull(header);
-			Assert.assertEquals(4, header.fieldArray.length);
-			Assert.assertEquals(3, header.numberOfRecords);
+			Assertions.assertNotNull(header);
+			Assertions.assertEquals(4, header.fieldArray.length);
+			Assertions.assertEquals(3, header.numberOfRecords);
 			DBFField []fieldArray = header.fieldArray;
 			AssertUtils.assertColumnDefinition(fieldArray[0], "ACTION", DBFDataType.MEMO, 10, 0);
 			AssertUtils.assertColumnDefinition(fieldArray[1], "DATE", DBFDataType.DATE, 8, 0);
@@ -51,19 +51,19 @@ public class FixtureDBase7Test {
 			Object[] row = null;
 			
 			row = reader.nextRecord();
-			Assert.assertEquals(createDate(2015,2,23), row[1]);		
-			Assert.assertEquals("DFG", row[2]);
-			Assert.assertEquals("1", row[3]);
+			Assertions.assertEquals(createDate(2015,2,23), row[1]);		
+			Assertions.assertEquals("DFG", row[2]);
+			Assertions.assertEquals("1", row[3]);
 			
 			row = reader.nextRecord();
-			Assert.assertEquals(createDate(2013,1,31), row[1]);		
-			Assert.assertEquals("GFS", row[2]);
-			Assert.assertEquals("2", row[3]);
+			Assertions.assertEquals(createDate(2013,1,31), row[1]);		
+			Assertions.assertEquals("GFS", row[2]);
+			Assertions.assertEquals("2", row[3]);
 			
 			row = reader.nextRecord();
-			Assert.assertEquals(createDate(2014,10,28), row[1]);		
-			Assert.assertEquals("HSJ", row[2]);
-			Assert.assertEquals("3", row[3]);
+			Assertions.assertEquals(createDate(2014,10,28), row[1]);		
+			Assertions.assertEquals("HSJ", row[2]);
+			Assertions.assertEquals("3", row[3]);
 			
 		}
 		finally {

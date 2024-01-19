@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.DBFReader;
 import com.linuxense.javadbf.DBFUtils;
@@ -27,7 +27,7 @@ public class ZeroFieldCountTest {
 			dbfReader = new DBFReader(in);
 			int count = dbfReader.getFieldCount();
 			System.out.println("" + dbfReader.toString());
-			Assert.assertEquals(17, count);
+			Assertions.assertEquals(17, count);
 		}
 		finally {
 			DBFUtils.close(dbfReader);

@@ -25,8 +25,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Date;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class FixtureDBase8bTest {
 
@@ -39,158 +39,158 @@ public class FixtureDBase8bTest {
 			reader.setMemoFile(new File("src/test/resources/fixtures/dbase_8b.dbt"));
 			
 			DBFHeader header = reader.getHeader();
-			Assert.assertNotNull(header);
-			Assert.assertEquals(6, header.fieldArray.length);
+			Assertions.assertNotNull(header);
+			Assertions.assertEquals(6, header.fieldArray.length);
 			
-			Assert.assertEquals("CHARACTER", header.fieldArray[0].getName());
-			Assert.assertEquals(DBFDataType.CHARACTER, header.fieldArray[0].getType());
-			Assert.assertEquals(0, header.fieldArray[0].getDecimalCount());
-			Assert.assertEquals(100, header.fieldArray[0].getLength());		
+			Assertions.assertEquals("CHARACTER", header.fieldArray[0].getName());
+			Assertions.assertEquals(DBFDataType.CHARACTER, header.fieldArray[0].getType());
+			Assertions.assertEquals(0, header.fieldArray[0].getDecimalCount());
+			Assertions.assertEquals(100, header.fieldArray[0].getLength());		
 			
-			Assert.assertEquals("NUMERICAL", header.fieldArray[1].getName());
-			Assert.assertEquals(DBFDataType.NUMERIC, header.fieldArray[1].getType());
-			Assert.assertEquals(2, header.fieldArray[1].getDecimalCount());
-			Assert.assertEquals(20, header.fieldArray[1].getLength());	
+			Assertions.assertEquals("NUMERICAL", header.fieldArray[1].getName());
+			Assertions.assertEquals(DBFDataType.NUMERIC, header.fieldArray[1].getType());
+			Assertions.assertEquals(2, header.fieldArray[1].getDecimalCount());
+			Assertions.assertEquals(20, header.fieldArray[1].getLength());	
 			
-			Assert.assertEquals("DATE", header.fieldArray[2].getName());
-			Assert.assertEquals(DBFDataType.DATE, header.fieldArray[2].getType());
-			Assert.assertEquals(0, header.fieldArray[2].getDecimalCount());
-			Assert.assertEquals(8, header.fieldArray[2].getLength());
+			Assertions.assertEquals("DATE", header.fieldArray[2].getName());
+			Assertions.assertEquals(DBFDataType.DATE, header.fieldArray[2].getType());
+			Assertions.assertEquals(0, header.fieldArray[2].getDecimalCount());
+			Assertions.assertEquals(8, header.fieldArray[2].getLength());
 			
-			Assert.assertEquals("LOGICAL", header.fieldArray[3].getName());
-			Assert.assertEquals(DBFDataType.LOGICAL, header.fieldArray[3].getType());
-			Assert.assertEquals(0, header.fieldArray[3].getDecimalCount());
-			Assert.assertEquals(1, header.fieldArray[3].getLength());	
+			Assertions.assertEquals("LOGICAL", header.fieldArray[3].getName());
+			Assertions.assertEquals(DBFDataType.LOGICAL, header.fieldArray[3].getType());
+			Assertions.assertEquals(0, header.fieldArray[3].getDecimalCount());
+			Assertions.assertEquals(1, header.fieldArray[3].getLength());	
 			
-			Assert.assertEquals("FLOAT", header.fieldArray[4].getName());
-			Assert.assertEquals(DBFDataType.FLOATING_POINT, header.fieldArray[4].getType());
-			Assert.assertEquals(18, header.fieldArray[4].getDecimalCount());
-			Assert.assertEquals(20, header.fieldArray[4].getLength());
+			Assertions.assertEquals("FLOAT", header.fieldArray[4].getName());
+			Assertions.assertEquals(DBFDataType.FLOATING_POINT, header.fieldArray[4].getType());
+			Assertions.assertEquals(18, header.fieldArray[4].getDecimalCount());
+			Assertions.assertEquals(20, header.fieldArray[4].getLength());
 			
-			Assert.assertEquals("MEMO", header.fieldArray[5].getName());
-			Assert.assertEquals(DBFDataType.MEMO, header.fieldArray[5].getType());
-			Assert.assertEquals(0, header.fieldArray[5].getDecimalCount());
-			Assert.assertEquals(10, header.fieldArray[5].getLength());	
+			Assertions.assertEquals("MEMO", header.fieldArray[5].getName());
+			Assertions.assertEquals(DBFDataType.MEMO, header.fieldArray[5].getType());
+			Assertions.assertEquals(0, header.fieldArray[5].getDecimalCount());
+			Assertions.assertEquals(10, header.fieldArray[5].getLength());	
 			
-			Assert.assertEquals(10, header.numberOfRecords);
+			Assertions.assertEquals(10, header.numberOfRecords);
 			
 			
 			Object[] row = null;
 			
 			
 			row = reader.nextRecord();
-			Assert.assertEquals("One", row[0]);
-			Assert.assertTrue(row[1] instanceof Number);
-			Assert.assertEquals(1, ((Number)row[1]).intValue());
-			Assert.assertTrue(row[2] instanceof Date);
-			Assert.assertEquals(createDate(1970,1,1), row[2]);
-			Assert.assertTrue(row[3] instanceof Boolean);
-			Assert.assertTrue((Boolean) row[3]);
-			Assert.assertTrue(row[4] instanceof Number);			
-			Assert.assertEquals(1.23456789012346, ((Number)row[4]).doubleValue(), 0.0001);
-			Assert.assertEquals("First memo\r\n", row[5]);
+			Assertions.assertEquals("One", row[0]);
+			Assertions.assertTrue(row[1] instanceof Number);
+			Assertions.assertEquals(1, ((Number)row[1]).intValue());
+			Assertions.assertTrue(row[2] instanceof Date);
+			Assertions.assertEquals(createDate(1970,1,1), row[2]);
+			Assertions.assertTrue(row[3] instanceof Boolean);
+			Assertions.assertTrue((Boolean) row[3]);
+			Assertions.assertTrue(row[4] instanceof Number);			
+			Assertions.assertEquals(1.23456789012346, ((Number)row[4]).doubleValue(), 0.0001);
+			Assertions.assertEquals("First memo\r\n", row[5]);
 			
 			row = reader.nextRecord();
-			Assert.assertEquals("Two", row[0]);
-			Assert.assertTrue(row[1] instanceof Number);
-			Assert.assertEquals(2, ((Number)row[1]).intValue());
-			Assert.assertTrue(row[2] instanceof Date);
-			Assert.assertEquals(createDate(1970,12,31), row[2]);
-			Assert.assertTrue(row[3] instanceof Boolean);
-			Assert.assertTrue((Boolean) row[3]);
-			Assert.assertTrue(row[4] instanceof Number);			
-			Assert.assertEquals(2.0, ((Number)row[4]).doubleValue(), 0.0001);
-			Assert.assertEquals("Second memo", row[5]);
+			Assertions.assertEquals("Two", row[0]);
+			Assertions.assertTrue(row[1] instanceof Number);
+			Assertions.assertEquals(2, ((Number)row[1]).intValue());
+			Assertions.assertTrue(row[2] instanceof Date);
+			Assertions.assertEquals(createDate(1970,12,31), row[2]);
+			Assertions.assertTrue(row[3] instanceof Boolean);
+			Assertions.assertTrue((Boolean) row[3]);
+			Assertions.assertTrue(row[4] instanceof Number);			
+			Assertions.assertEquals(2.0, ((Number)row[4]).doubleValue(), 0.0001);
+			Assertions.assertEquals("Second memo", row[5]);
 			
 			row = reader.nextRecord();
-			Assert.assertEquals("Three", row[0]);
-			Assert.assertTrue(row[1] instanceof Number);
-			Assert.assertEquals(3, ((Number)row[1]).intValue());
-			Assert.assertTrue(row[2] instanceof Date);
-			Assert.assertEquals(createDate(1980,1,1), row[2]);
-			Assert.assertNull(row[3]);
-			Assert.assertTrue(row[4] instanceof Number);			
-			Assert.assertEquals(3.0, ((Number)row[4]).doubleValue(), 0.0001);
-			Assert.assertEquals("Thierd memo", row[5]);
+			Assertions.assertEquals("Three", row[0]);
+			Assertions.assertTrue(row[1] instanceof Number);
+			Assertions.assertEquals(3, ((Number)row[1]).intValue());
+			Assertions.assertTrue(row[2] instanceof Date);
+			Assertions.assertEquals(createDate(1980,1,1), row[2]);
+			Assertions.assertNull(row[3]);
+			Assertions.assertTrue(row[4] instanceof Number);			
+			Assertions.assertEquals(3.0, ((Number)row[4]).doubleValue(), 0.0001);
+			Assertions.assertEquals("Thierd memo", row[5]);
 			
 			row = reader.nextRecord();
-			Assert.assertEquals("Four", row[0]);
-			Assert.assertTrue(row[1] instanceof Number);
-			Assert.assertEquals(4, ((Number)row[1]).intValue());
-			Assert.assertTrue(row[2] instanceof Date);
-			Assert.assertEquals(createDate(1900,1,1), row[2]);
-			Assert.assertNull(row[3]);
-			Assert.assertTrue(row[4] instanceof Number);			
-			Assert.assertEquals(4.0, ((Number)row[4]).doubleValue(), 0.0001);
-			Assert.assertEquals("Fourth memo", row[5]);
+			Assertions.assertEquals("Four", row[0]);
+			Assertions.assertTrue(row[1] instanceof Number);
+			Assertions.assertEquals(4, ((Number)row[1]).intValue());
+			Assertions.assertTrue(row[2] instanceof Date);
+			Assertions.assertEquals(createDate(1900,1,1), row[2]);
+			Assertions.assertNull(row[3]);
+			Assertions.assertTrue(row[4] instanceof Number);			
+			Assertions.assertEquals(4.0, ((Number)row[4]).doubleValue(), 0.0001);
+			Assertions.assertEquals("Fourth memo", row[5]);
 			
 			row = reader.nextRecord();
-			Assert.assertEquals("Five", row[0]);
-			Assert.assertTrue(row[1] instanceof Number);
-			Assert.assertEquals(5, ((Number)row[1]).intValue());
-			Assert.assertTrue(row[2] instanceof Date);
-			Assert.assertEquals(createDate(1900,12,31), row[2]);
-			Assert.assertNull(row[3]);
-			Assert.assertTrue(row[4] instanceof Number);			
-			Assert.assertEquals(5.0, ((Number)row[4]).doubleValue(), 0.0001);
-			Assert.assertEquals("Fifth memo", row[5]);
+			Assertions.assertEquals("Five", row[0]);
+			Assertions.assertTrue(row[1] instanceof Number);
+			Assertions.assertEquals(5, ((Number)row[1]).intValue());
+			Assertions.assertTrue(row[2] instanceof Date);
+			Assertions.assertEquals(createDate(1900,12,31), row[2]);
+			Assertions.assertNull(row[3]);
+			Assertions.assertTrue(row[4] instanceof Number);			
+			Assertions.assertEquals(5.0, ((Number)row[4]).doubleValue(), 0.0001);
+			Assertions.assertEquals("Fifth memo", row[5]);
 			
 			row = reader.nextRecord();
-			Assert.assertEquals("Six", row[0]);
-			Assert.assertTrue(row[1] instanceof Number);
-			Assert.assertEquals(6, ((Number)row[1]).intValue());
-			Assert.assertTrue(row[2] instanceof Date);
-			Assert.assertEquals(createDate(1901,1,1), row[2]);
-			Assert.assertNull(row[3]);
-			Assert.assertTrue(row[4] instanceof Number);			
-			Assert.assertEquals(6.0, ((Number)row[4]).doubleValue(), 0.0001);
-			Assert.assertEquals("Sixth memo", row[5]);
+			Assertions.assertEquals("Six", row[0]);
+			Assertions.assertTrue(row[1] instanceof Number);
+			Assertions.assertEquals(6, ((Number)row[1]).intValue());
+			Assertions.assertTrue(row[2] instanceof Date);
+			Assertions.assertEquals(createDate(1901,1,1), row[2]);
+			Assertions.assertNull(row[3]);
+			Assertions.assertTrue(row[4] instanceof Number);			
+			Assertions.assertEquals(6.0, ((Number)row[4]).doubleValue(), 0.0001);
+			Assertions.assertEquals("Sixth memo", row[5]);
 			
 			row = reader.nextRecord();
-			Assert.assertEquals("Seven", row[0]);
-			Assert.assertTrue(row[1] instanceof Number);
-			Assert.assertEquals(7, ((Number)row[1]).intValue());
-			Assert.assertTrue(row[2] instanceof Date);
-			Assert.assertEquals(createDate(1999,12,31), row[2]);
-			Assert.assertNull(row[3]);
-			Assert.assertTrue(row[4] instanceof Number);			
-			Assert.assertEquals(7.0, ((Number)row[4]).doubleValue(), 0.0001);
-			Assert.assertEquals("Seventh memo", row[5]);
+			Assertions.assertEquals("Seven", row[0]);
+			Assertions.assertTrue(row[1] instanceof Number);
+			Assertions.assertEquals(7, ((Number)row[1]).intValue());
+			Assertions.assertTrue(row[2] instanceof Date);
+			Assertions.assertEquals(createDate(1999,12,31), row[2]);
+			Assertions.assertNull(row[3]);
+			Assertions.assertTrue(row[4] instanceof Number);			
+			Assertions.assertEquals(7.0, ((Number)row[4]).doubleValue(), 0.0001);
+			Assertions.assertEquals("Seventh memo", row[5]);
 			
 			row = reader.nextRecord();
-			Assert.assertEquals("Eight", row[0]);
-			Assert.assertTrue(row[1] instanceof Number);
-			Assert.assertEquals(8, ((Number)row[1]).intValue());
-			Assert.assertTrue(row[2] instanceof Date);
-			Assert.assertEquals(createDate(1919,12,31), row[2]);
-			Assert.assertNull(row[3]);
-			Assert.assertTrue(row[4] instanceof Number);			
-			Assert.assertEquals(8.0, ((Number)row[4]).doubleValue(), 0.0001);
-			Assert.assertEquals("Eigth memo", row[5]);
+			Assertions.assertEquals("Eight", row[0]);
+			Assertions.assertTrue(row[1] instanceof Number);
+			Assertions.assertEquals(8, ((Number)row[1]).intValue());
+			Assertions.assertTrue(row[2] instanceof Date);
+			Assertions.assertEquals(createDate(1919,12,31), row[2]);
+			Assertions.assertNull(row[3]);
+			Assertions.assertTrue(row[4] instanceof Number);			
+			Assertions.assertEquals(8.0, ((Number)row[4]).doubleValue(), 0.0001);
+			Assertions.assertEquals("Eigth memo", row[5]);
 			
 			row = reader.nextRecord();
-			Assert.assertEquals("Nine", row[0]);
-			Assert.assertTrue(row[1] instanceof Number);
-			Assert.assertEquals(9, ((Number)row[1]).intValue());
-			Assert.assertNull(row[2]);
-			Assert.assertNull(row[3]);
-			Assert.assertNull(row[4]);			
-			Assert.assertEquals("Nineth memo", row[5]);	
+			Assertions.assertEquals("Nine", row[0]);
+			Assertions.assertTrue(row[1] instanceof Number);
+			Assertions.assertEquals(9, ((Number)row[1]).intValue());
+			Assertions.assertNull(row[2]);
+			Assertions.assertNull(row[3]);
+			Assertions.assertNull(row[4]);			
+			Assertions.assertEquals("Nineth memo", row[5]);	
 
 			
 			row = reader.nextRecord();
-			Assert.assertEquals("Ten records stored in this database", row[0]);
-			Assert.assertTrue(row[1] instanceof Number);
-			Assert.assertEquals(10, ((Number)row[1]).intValue());
-			Assert.assertNull(row[2]);
-			Assert.assertNull(row[3]);
-			Assert.assertTrue(row[4] instanceof Number);			
-			Assert.assertEquals(0.1, ((Number)row[4]).doubleValue(), 0.0001);
-			Assert.assertNull(row[5]);
+			Assertions.assertEquals("Ten records stored in this database", row[0]);
+			Assertions.assertTrue(row[1] instanceof Number);
+			Assertions.assertEquals(10, ((Number)row[1]).intValue());
+			Assertions.assertNull(row[2]);
+			Assertions.assertNull(row[3]);
+			Assertions.assertTrue(row[4] instanceof Number);			
+			Assertions.assertEquals(0.1, ((Number)row[4]).doubleValue(), 0.0001);
+			Assertions.assertNull(row[5]);
 			
 			row = reader.nextRecord();
 			
-			Assert.assertNull(row);
+			Assertions.assertNull(row);
 			
 
 

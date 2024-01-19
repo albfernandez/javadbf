@@ -18,10 +18,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.linuxense.javadbf;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class DBFDataTypeTest {
 
@@ -31,9 +31,9 @@ public class DBFDataTypeTest {
 		assertEquals(DBFDataType.CHARACTER,DBFDataType.valueOf("CHARACTER"));
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testInvalidCode() {
-		assertNull(DBFDataType.fromCode((byte)1));
+		Assertions.assertThrows(IllegalArgumentException.class, () -> DBFDataType.fromCode((byte)1));
 	}
 
 }

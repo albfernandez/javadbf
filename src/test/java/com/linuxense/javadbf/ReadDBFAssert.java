@@ -24,7 +24,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 public class ReadDBFAssert {
 
@@ -58,19 +58,19 @@ public class ReadDBFAssert {
 		
 
 		int numberOfFields = reader.getFieldCount();
-		Assert.assertEquals(expectedColumns, numberOfFields);
+		Assertions.assertEquals(expectedColumns, numberOfFields);
 		for (int i = 0; i < numberOfFields; i++) {
 			DBFField field = reader.getField(i);
-			Assert.assertNotNull(field.getName());
+			Assertions.assertNotNull(field.getName());
 		}
 		Object[] rowObject;
 		int countedRows = 0;
 		while ((rowObject = reader.nextRecord()) != null) {
-			Assert.assertEquals(numberOfFields, rowObject.length);
+			Assertions.assertEquals(numberOfFields, rowObject.length);
 			countedRows++;
 		}
-		Assert.assertEquals(expectedRows, countedRows);
-		Assert.assertEquals(expectedRows, reader.getRecordCount());
+		Assertions.assertEquals(expectedRows, countedRows);
+		Assertions.assertEquals(expectedRows, reader.getRecordCount());
 	}
 
 	public static void testReadDBFFileDeletedRecords(String fileName, int expectedRows, int expectedDeleted) throws DBFException, IOException {
@@ -90,9 +90,9 @@ public class ReadDBFAssert {
 				countedRows++;
 			}
 
-			Assert.assertEquals(expectedRows, countedRows);
-			Assert.assertEquals(expectedDeleted, countedDeletes);
-			Assert.assertEquals(expectedRows, headerStoredRows);
+			Assertions.assertEquals(expectedRows, countedRows);
+			Assertions.assertEquals(expectedDeleted, countedDeletes);
+			Assertions.assertEquals(expectedRows, headerStoredRows);
 		} finally {
 			DBFUtils.close(reader);
 		}

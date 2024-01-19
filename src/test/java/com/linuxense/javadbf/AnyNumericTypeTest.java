@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class AnyNumericTypeTest {
 	@Test
@@ -86,7 +86,7 @@ public class AnyNumericTypeTest {
 		}
 		
 		byte[] data = out.toByteArray();
-		Assert.assertEquals(259, data.length);
+		Assertions.assertEquals(259, data.length);
 	}
 	
 	@Test
@@ -152,6 +152,6 @@ public class AnyNumericTypeTest {
 		}
 		
 		byte[] data = out.toByteArray();
-		Assert.assertEquals(259, data.length);
+		Assertions.assertEquals(259, data.length);
 	}
 }

@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Created by ialek36 on 11/16/17.
@@ -29,7 +29,7 @@ public class DBFtoDBCTest {
         converted = skipFirst(converted, 40);
         expected = skipFirst(expected, 40);
 
-        Assert.assertArrayEquals(expected, converted);
+        Assertions.assertArrayEquals(expected, converted);
     }
 
     private byte[] skipFirst(byte[] converted, int from) {

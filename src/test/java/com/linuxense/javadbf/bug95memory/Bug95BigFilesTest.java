@@ -7,8 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.DBFDataType;
 import com.linuxense.javadbf.DBFField;
@@ -23,7 +23,7 @@ public class Bug95BigFilesTest {
 	}
 	
 	@Test
-	@Ignore
+	@Disabled
 	public void testBigFile() throws IOException {
 		File f = Files.createTempFile("bigfile", ".dbf").toFile();
 		System.out.println("creating file: " + f.getAbsolutePath());

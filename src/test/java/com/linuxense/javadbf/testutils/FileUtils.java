@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.linuxense.javadbf.DBFUtils;
+
 public final class FileUtils {
 	
 	private FileUtils() {
@@ -24,8 +26,8 @@ public final class FileUtils {
 	            os.write(buffer, 0, length);
 	        }
 	    } finally {
-	        is.close();
-	        os.close();
+	    	DBFUtils.close(is);
+	        DBFUtils.close(os);
 	    }
 	}
 }

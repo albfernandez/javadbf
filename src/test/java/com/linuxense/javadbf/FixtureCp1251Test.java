@@ -21,8 +21,8 @@ package com.linuxense.javadbf;
 import java.io.File;
 import java.io.FileInputStream;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class FixtureCp1251Test {
 	@Test
@@ -34,44 +34,44 @@ public class FixtureCp1251Test {
 			
 			DBFHeader header = reader.getHeader();
 			
-			Assert.assertNotNull(header);
-			Assert.assertEquals(2, header.fieldArray.length);
+			Assertions.assertNotNull(header);
+			Assertions.assertEquals(2, header.fieldArray.length);
 			
-			Assert.assertEquals("RN", header.fieldArray[0].getName());
-			Assert.assertEquals(DBFDataType.NUMERIC, header.fieldArray[0].getType());
-			Assert.assertEquals(0, header.fieldArray[0].getDecimalCount());
-			Assert.assertEquals(4, header.fieldArray[0].getLength());		
+			Assertions.assertEquals("RN", header.fieldArray[0].getName());
+			Assertions.assertEquals(DBFDataType.NUMERIC, header.fieldArray[0].getType());
+			Assertions.assertEquals(0, header.fieldArray[0].getDecimalCount());
+			Assertions.assertEquals(4, header.fieldArray[0].getLength());		
 			
-			Assert.assertEquals("NAME", header.fieldArray[1].getName());
-			Assert.assertEquals(DBFDataType.CHARACTER, header.fieldArray[1].getType());
-			Assert.assertEquals(0, header.fieldArray[1].getDecimalCount());
-			Assert.assertEquals(100, header.fieldArray[1].getLength());	
+			Assertions.assertEquals("NAME", header.fieldArray[1].getName());
+			Assertions.assertEquals(DBFDataType.CHARACTER, header.fieldArray[1].getType());
+			Assertions.assertEquals(0, header.fieldArray[1].getDecimalCount());
+			Assertions.assertEquals(100, header.fieldArray[1].getLength());	
 			
 			
 			
-			Assert.assertEquals(4, header.numberOfRecords);
+			Assertions.assertEquals(4, header.numberOfRecords);
 			
 			
 			Object[] row = null;
 			
 			row = reader.nextRecord();			
-			Assert.assertEquals(1, ((Number) row[0]).intValue());
-			Assert.assertEquals("àìáóëàòîðíî-ïîëèêëèíè÷åñêîå", ((String)row[1]).trim());
+			Assertions.assertEquals(1, ((Number) row[0]).intValue());
+			Assertions.assertEquals("àìáóëàòîðíî-ïîëèêëèíè÷åñêîå", ((String)row[1]).trim());
 			
 			row = reader.nextRecord();			
-			Assert.assertEquals(2, ((Number) row[0]).intValue());
-			Assert.assertEquals("áîëüíè÷íîå", ((String)row[1]).trim());
+			Assertions.assertEquals(2, ((Number) row[0]).intValue());
+			Assertions.assertEquals("áîëüíè÷íîå", ((String)row[1]).trim());
 			
 			row = reader.nextRecord();			
-			Assert.assertEquals(3, ((Number) row[0]).intValue());
-			Assert.assertEquals("ÍÈÈ", ((String)row[1]).trim());
+			Assertions.assertEquals(3, ((Number) row[0]).intValue());
+			Assertions.assertEquals("ÍÈÈ", ((String)row[1]).trim());
 			
 			row = reader.nextRecord();			
-			Assert.assertEquals(4, ((Number) row[0]).intValue());
-			Assert.assertEquals("îáðàçîâàòåëüíîå ìåäèöèíñêîå ó÷ðåæäåíèå", ((String)row[1]).trim());
+			Assertions.assertEquals(4, ((Number) row[0]).intValue());
+			Assertions.assertEquals("îáðàçîâàòåëüíîå ìåäèöèíñêîå ó÷ðåæäåíèå", ((String)row[1]).trim());
 			
 			row = reader.nextRecord();		
-			Assert.assertNull(row);
+			Assertions.assertNull(row);
 			
 
 			

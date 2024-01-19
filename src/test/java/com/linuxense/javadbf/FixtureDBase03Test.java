@@ -21,8 +21,8 @@ package com.linuxense.javadbf;
 import java.io.File;
 import java.io.FileInputStream;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.testutils.AssertUtils;
 import com.linuxense.javadbf.testutils.DbfToTxtTest;
@@ -36,9 +36,9 @@ public class FixtureDBase03Test {
 			reader = new DBFReader(new FileInputStream(file));
 			
 			DBFHeader header = reader.getHeader();
-			Assert.assertNotNull(header);
-			Assert.assertEquals(31, header.fieldArray.length);
-			Assert.assertEquals(14, header.numberOfRecords);
+			Assertions.assertNotNull(header);
+			Assertions.assertEquals(31, header.fieldArray.length);
+			Assertions.assertEquals(14, header.numberOfRecords);
 			DBFField []fieldArray = header.fieldArray;
 			
 			int i = 0;

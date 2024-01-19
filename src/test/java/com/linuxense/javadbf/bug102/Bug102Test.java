@@ -5,12 +5,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.DBFReader;
 import com.linuxense.javadbf.DBFRow;
@@ -104,7 +102,7 @@ public class Bug102Test {
 	}
 	
 	@Test
-	@Ignore
+	@Disabled
 	public void other102Test() throws Exception {
 		
 		
@@ -144,8 +142,8 @@ public class Bug102Test {
 			System.out.println(minpeak + "(-143.74)");
 			System.out.println(maxpeak + "(6010.315)");
 			
-			Assert.assertEquals(6010.31, maxpeak, 0.1);
-			Assert.assertEquals(-143.74, minpeak, 0.1);
+			Assertions.assertEquals(6010.31, maxpeak, 0.1);
+			Assertions.assertEquals(-143.74, minpeak, 0.1);
 
 		} finally {
 			DBFUtils.close(dbfReader);

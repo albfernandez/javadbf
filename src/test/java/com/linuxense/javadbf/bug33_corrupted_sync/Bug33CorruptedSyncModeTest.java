@@ -5,7 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.DBFException;
 import com.linuxense.javadbf.DBFWriter;
@@ -18,13 +19,13 @@ public class Bug33CorruptedSyncModeTest {
 		super();
 	}
 	
-	@Test(expected=DBFException.class)
+	@Test
 	public void testCorruptedFile() throws FileNotFoundException {
-		String fileName = "src/test/resources/bug-33-corrupted-file-sync-mode/myfileafter-corrupted.dbf";
-		DbfToTxtTest.writeToConsole(new File(fileName));
+		Assertions.assertThrows(DBFException.class, () -> {
+			String fileName = "src/test/resources/bug-33-corrupted-file-sync-mode/myfileafter-corrupted.dbf";
+			DbfToTxtTest.writeToConsole(new File(fileName));
+		});
 	}
-	
-
 	
 	@Test
 	public void testBug() throws IOException {

@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.DBFReader;
 import com.linuxense.javadbf.DBFRow;
@@ -29,7 +29,7 @@ public class Bug60FieldLengthTest {
 			reader.setTrimRightSpaces(false);
 			DBFRow row = reader.nextRow();
 			String result = row.getString("DESCRIPTIO");
-			Assert.assertEquals(100, result.length());
+			Assertions.assertEquals(100, result.length());
 		}
 		finally {
 			DBFUtils.close(reader);

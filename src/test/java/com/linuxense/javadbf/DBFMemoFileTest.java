@@ -21,8 +21,8 @@ package com.linuxense.javadbf;
 import java.io.File;
 import java.nio.charset.Charset;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class DBFMemoFileTest {
 	
@@ -46,7 +46,7 @@ public class DBFMemoFileTest {
 					"Grand Orange, Plum Squares, Milk chocolate squares, and Raspberry Blanc.";
 	
 			String content = file.readText(1);
-			Assert.assertEquals(text, content);
+			Assertions.assertEquals(text, content);
 		}
 		finally {
 			DBFUtils.close(file);
@@ -65,15 +65,15 @@ public class DBFMemoFileTest {
 		try {
 			file = new DBFMemoFile(new File("src/test/resources/fixtures/dbase_8b.dbt"), Charset.forName("windows-1252"), inMemory);
 			
-			Assert.assertEquals("First memo\r\n", file.readText(1));
-			Assert.assertEquals("Second memo", file.readText(2));
-			Assert.assertEquals("Thierd memo", file.readText(3));
-			Assert.assertEquals("Fourth memo", file.readText(4));
-			Assert.assertEquals("Fifth memo", file.readText(5));
-			Assert.assertEquals("Sixth memo", file.readText(6));
-			Assert.assertEquals("Seventh memo", file.readText(7));
-			Assert.assertEquals("Eigth memo", file.readText(8));
-			Assert.assertEquals("Nineth memo", file.readText(9));
+			Assertions.assertEquals("First memo\r\n", file.readText(1));
+			Assertions.assertEquals("Second memo", file.readText(2));
+			Assertions.assertEquals("Thierd memo", file.readText(3));
+			Assertions.assertEquals("Fourth memo", file.readText(4));
+			Assertions.assertEquals("Fifth memo", file.readText(5));
+			Assertions.assertEquals("Sixth memo", file.readText(6));
+			Assertions.assertEquals("Seventh memo", file.readText(7));
+			Assertions.assertEquals("Eigth memo", file.readText(8));
+			Assertions.assertEquals("Nineth memo", file.readText(9));
 		}
 		finally {
 			DBFUtils.close(file);
@@ -93,7 +93,7 @@ public class DBFMemoFileTest {
 		// Inventory has extra 8 bytes before image...
 			file = new DBFMemoFile(new File("src/test/resources/inventory.dbt"), Charset.forName("windows-1252"), inMemory);
 			byte[] result = file.readBinary(1);
-			Assert.assertEquals(14037, result.length);
+			Assertions.assertEquals(14037, result.length);
 		}
 		finally {
 			DBFUtils.close(file);
@@ -111,9 +111,9 @@ public class DBFMemoFileTest {
 		try {
 			file = new DBFMemoFile(new File("src/test/resources/fixtures/dbase_f5.fpt"), Charset.forName("windows-1252"), inMemory);
 			
-			Assert.assertEquals("torrossolla", file.readData(565, DBFDataType.MEMO));
+			Assertions.assertEquals("torrossolla", file.readData(565, DBFDataType.MEMO));
 				
-			Assert.assertEquals("jos‚ vicente salvador\r\n" + 
+			Assertions.assertEquals("jos‚ vicente salvador\r\n" + 
 					"capell…: salvador vidal\r\n" + 
 					"en n‚ixer, les castellers li van fer un pilar i el van entregar al seu pare.", file.readData(52, DBFDataType.MEMO));
 		}

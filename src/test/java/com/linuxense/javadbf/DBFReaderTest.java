@@ -18,14 +18,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.linuxense.javadbf;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.mocks.FailInputStream;
 
@@ -73,19 +73,19 @@ public class DBFReaderTest {
 		try {
 			reader = new DBFReader(new FileInputStream(file));
 			DBFHeader header = reader.getHeader();
-			Assert.assertEquals("TITLE", header.fieldArray[1].getName());
-			Assert.assertEquals(DBFDataType.CHARACTER, header.fieldArray[1].getType());
-			Assert.assertEquals(0, header.fieldArray[1].getDecimalCount());
-			Assert.assertEquals(50, header.fieldArray[1].getLength());
-			Assert.assertEquals(5, header.fieldArray[1].getReserv1());
-			Assert.assertEquals(0, header.fieldArray[1].getReserv2());
-			Assert.assertEquals(0, header.fieldArray[1].getReserv3());
+			Assertions.assertEquals("TITLE", header.fieldArray[1].getName());
+			Assertions.assertEquals(DBFDataType.CHARACTER, header.fieldArray[1].getType());
+			Assertions.assertEquals(0, header.fieldArray[1].getDecimalCount());
+			Assertions.assertEquals(50, header.fieldArray[1].getLength());
+			Assertions.assertEquals(5, header.fieldArray[1].getReserv1());
+			Assertions.assertEquals(0, header.fieldArray[1].getReserv2());
+			Assertions.assertEquals(0, header.fieldArray[1].getReserv3());
 			byte[] reserv4 =  header.fieldArray[1].getReserv4();
-			Assert.assertNotNull(reserv4);
-			Assert.assertArrayEquals(new byte[]{0,0,0,0,0,0,0}, reserv4);
-			Assert.assertEquals(0, header.fieldArray[1].getIndexFieldFlag());
-			Assert.assertEquals(0, header.fieldArray[1].getSetFieldsFlag());
-			Assert.assertEquals(0, header.fieldArray[1].getWorkAreaId());
+			Assertions.assertNotNull(reserv4);
+			Assertions.assertArrayEquals(new byte[]{0,0,0,0,0,0,0}, reserv4);
+			Assertions.assertEquals(0, header.fieldArray[1].getIndexFieldFlag());
+			Assertions.assertEquals(0, header.fieldArray[1].getSetFieldsFlag());
+			Assertions.assertEquals(0, header.fieldArray[1].getWorkAreaId());
 			
 		}
 		finally {
@@ -114,7 +114,7 @@ public class DBFReaderTest {
 				"DATE_PURCH\n" + 
 				"PAGES\n" + 
 				"NOTES\n";
-			Assert.assertEquals(expected, reader.toString());
+			Assertions.assertEquals(expected, reader.toString());
 		}
 		finally {
 			DBFUtils.close(reader);
@@ -131,16 +131,18 @@ public class DBFReaderTest {
 		ReadDBFAssert.testReadDBFFileDeletedRecords("test_delete",3,1);
 	}
 	
-	@Test(expected=DBFException.class)
+	@Test
 	public void testFailStream() throws DBFException, IOException{
-		DBFReader reader = null;
-		try {
-			reader = new DBFReader(new FailInputStream());
-			assertNull(reader);
-		}
-		finally {
-			DBFUtils.close(reader);
-		}
+		Assertions.assertThrows(DBFException.class, () -> {
+			DBFReader reader = null;
+			try {
+				reader = new DBFReader(new FailInputStream());
+				assertNull(reader);
+			}
+			finally {
+				DBFUtils.close(reader);
+			}
+		});
 	}
 	
 	
@@ -152,8 +154,8 @@ public class DBFReaderTest {
 			reader = new DBFReader(new FileInputStream(file));
 			reader.skipRecords(4);
 			DBFRow row = reader.nextRow();
-			Assert.assertEquals(5, row.getInt("BOOK_ID"));
-			Assert.assertEquals("My Family", row.getString("TITLE"));
+			Assertions.assertEquals(5, row.getInt("BOOK_ID"));
+			Assertions.assertEquals("My Family", row.getString("TITLE"));
 		}
 		finally {
 			DBFUtils.close(reader);

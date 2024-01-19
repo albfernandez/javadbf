@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class DBCDATASUSTest {
 
@@ -26,8 +26,8 @@ public class DBCDATASUSTest {
 		try {
 			reader = new DBFReader(new BufferedInputStream(new FileInputStream(file)));
 			DBFHeader header = reader.getHeader();
-			Assert.assertEquals("PERIMETER", header.fieldArray[1].getName());
-			Assert.assertEquals(DBFDataType.NUMERIC, header.fieldArray[1].getType());
+			Assertions.assertEquals("PERIMETER", header.fieldArray[1].getName());
+			Assertions.assertEquals(DBFDataType.NUMERIC, header.fieldArray[1].getType());
 			
 			DBFRow row = null;
 			
@@ -36,7 +36,7 @@ public class DBCDATASUSTest {
 				System.out.println(row.getString(0));
 				count++;
 			}
-			Assert.assertEquals(100, count);
+			Assertions.assertEquals(100, count);
 
 			
 		}
@@ -55,8 +55,8 @@ public class DBCDATASUSTest {
 			System.out.println("---- DBC ---");;
 			reader = new DBCDATASUSReader(new BufferedInputStream(new FileInputStream(file)));
 			DBFHeader header = reader.getHeader();
-			Assert.assertEquals("PERIMETER", header.fieldArray[1].getName());
-			Assert.assertEquals(DBFDataType.NUMERIC, header.fieldArray[1].getType());
+			Assertions.assertEquals("PERIMETER", header.fieldArray[1].getName());
+			Assertions.assertEquals(DBFDataType.NUMERIC, header.fieldArray[1].getType());
 			
 			DBFRow row = null;
 			
@@ -65,7 +65,7 @@ public class DBCDATASUSTest {
 				System.out.println(row.getString(0));
 				count++;
 			}
-			Assert.assertEquals(100, count);
+			Assertions.assertEquals(100, count);
 
 			
 		}
@@ -82,8 +82,8 @@ public class DBCDATASUSTest {
 		try {
 			reader = new DBFReader(new BufferedInputStream(new FileInputStream(file)));
 			DBFHeader header = reader.getHeader();
-			Assert.assertEquals("COUNTYNAME", header.fieldArray[1].getName());
-			Assert.assertEquals(DBFDataType.CHARACTER, header.fieldArray[1].getType());
+			Assertions.assertEquals("COUNTYNAME", header.fieldArray[1].getName());
+			Assertions.assertEquals(DBFDataType.CHARACTER, header.fieldArray[1].getType());
 			
 			DBFRow row = null;
 			
@@ -92,7 +92,7 @@ public class DBCDATASUSTest {
 				System.out.println(row.getString(1));
 				count++;
 			}
-			Assert.assertEquals(100, count);
+			Assertions.assertEquals(100, count);
 
 			
 		}
@@ -108,8 +108,8 @@ public class DBCDATASUSTest {
 			System.out.println("---- DBC ---");;
 			reader = new DBCDATASUSReader(new BufferedInputStream(new FileInputStream(file)));
 			DBFHeader header = reader.getHeader();
-			Assert.assertEquals("COUNTYNAME", header.fieldArray[1].getName());
-			Assert.assertEquals(DBFDataType.CHARACTER, header.fieldArray[1].getType());
+			Assertions.assertEquals("COUNTYNAME", header.fieldArray[1].getName());
+			Assertions.assertEquals(DBFDataType.CHARACTER, header.fieldArray[1].getType());
 			
 			DBFRow row = null;
 			
@@ -118,7 +118,7 @@ public class DBCDATASUSTest {
 				System.out.println(row.getString(1));
 				count++;
 			}
-			Assert.assertEquals(100, count);
+			Assertions.assertEquals(100, count);
 
 			
 		}
@@ -137,7 +137,7 @@ public class DBCDATASUSTest {
 		byte[] result = new byte[size];
 		System.arraycopy(outputDatae, 0, result, 0, size);
 		String s = new String(result);
-		Assert.assertEquals("AIAIAIAIAIAIA", s);
+		Assertions.assertEquals("AIAIAIAIAIAIA", s);
 
 	}
 	
@@ -151,7 +151,7 @@ public class DBCDATASUSTest {
 		byte[] outputDatae = baos.toByteArray();
 		System.arraycopy(outputDatae, 0, result, 0, size);
 		String s = new String(result);
-		Assert.assertEquals("AIAIAIAIAIAIA", s);
+		Assertions.assertEquals("AIAIAIAIAIAIA", s);
 
 	}
 	
@@ -165,7 +165,7 @@ public class DBCDATASUSTest {
 			in = new DBFExploderInputStream(new FileInputStream(file));
 			int readed = in.read(data);
 			String s = new String(data,0, readed);
-			Assert.assertEquals("AIAIAIAIAIAIA", s);
+			Assertions.assertEquals("AIAIAIAIAIAIA", s);
 		}
 		finally {
 			DBFUtils.close(in);;

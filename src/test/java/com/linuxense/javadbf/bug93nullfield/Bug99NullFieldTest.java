@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.DBFReader;
 import com.linuxense.javadbf.DBFRow;
@@ -27,7 +27,7 @@ public class Bug99NullFieldTest {
 			reader.setTrimRightSpaces(false);
 			DBFRow row = reader.nextRow();
 			String value = row.getString("REQNAME");
-			Assert.assertNotNull(value);
+			Assertions.assertNotNull(value);
 		}
 		finally {
 			DBFUtils.close(reader);

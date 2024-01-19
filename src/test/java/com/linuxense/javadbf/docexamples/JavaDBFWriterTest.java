@@ -18,8 +18,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.linuxense.javadbf.docexamples;
 
-import com.linuxense.javadbf.*;
-import java.io.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import com.linuxense.javadbf.DBFDataType;
+import com.linuxense.javadbf.DBFField;
+import com.linuxense.javadbf.DBFWriter;
 
 public class JavaDBFWriterTest {
 

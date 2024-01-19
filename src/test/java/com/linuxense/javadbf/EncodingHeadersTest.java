@@ -22,8 +22,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class EncodingHeadersTest {
 	
@@ -110,25 +110,25 @@ public class EncodingHeadersTest {
 			reader = new DBFReader(new FileInputStream("src/test/resources/gbk.dbf"), charset);
 			reader.setTrimRightSpaces(false);
 			int numberOfFields = reader.getFieldCount();
-			Assert.assertEquals(3, numberOfFields);
+			Assertions.assertEquals(3, numberOfFields);
 			for (int i = 0; i < numberOfFields; i++) {
 				DBFField field = reader.getField(i);
-				Assert.assertNotNull(field.getName());
-				Assert.assertEquals(fieldNames[i], field.getName());
+				Assertions.assertNotNull(field.getName());
+				Assertions.assertEquals(fieldNames[i], field.getName());
 			}
 			Object[] rowObject;
 			int countedRows = 0;
 			while ((rowObject = reader.nextRecord()) != null) {
-				Assert.assertEquals(numberOfFields, rowObject.length);
-				Assert.assertTrue(rowObject[0] instanceof String);
-				Assert.assertTrue(rowObject[1] instanceof String);
+				Assertions.assertEquals(numberOfFields, rowObject.length);
+				Assertions.assertTrue(rowObject[0] instanceof String);
+				Assertions.assertTrue(rowObject[1] instanceof String);
 
-				Assert.assertEquals(firstColumn[countedRows], rowObject[0]);
-				Assert.assertEquals(secondColumn[countedRows], rowObject[1]);
+				Assertions.assertEquals(firstColumn[countedRows], rowObject[0]);
+				Assertions.assertEquals(secondColumn[countedRows], rowObject[1]);
 				
 				countedRows++;
 			}
-			Assert.assertEquals(28, countedRows);
+			Assertions.assertEquals(28, countedRows);
 			
 		} finally {
 			DBFUtils.close(reader);

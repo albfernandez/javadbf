@@ -22,9 +22,9 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.SortedMap;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class DBFCharsetHelperTest {
 
@@ -41,7 +41,7 @@ public class DBFCharsetHelperTest {
 	}
 	@Test
 	public void zeroCodeReturnsNull(){
-		Assert.assertNull(null, DBFCharsetHelper.getCharsetByByte(0));
+		Assertions.assertNull(DBFCharsetHelper.getCharsetByByte(0));
 	}
 	
 	@Test
@@ -79,7 +79,7 @@ public class DBFCharsetHelperTest {
 				
 		};
 		for (int validCode : validCodes) {
-			Assert.assertNotNull(DBFCharsetHelper.getCharsetByByte(validCode));
+			Assertions.assertNotNull(DBFCharsetHelper.getCharsetByByte(validCode));
 		}		
 		
 	}
@@ -88,13 +88,13 @@ public class DBFCharsetHelperTest {
 	
 	@Test
 	public void t1 () {
-		Assert.assertEquals(0x03, DBFCharsetHelper.getDBFCodeForCharset(StandardCharsets.ISO_8859_1));
-		Assert.assertEquals(0x03, DBFCharsetHelper.getDBFCodeForCharset(Charset.forName("windows-1252")));
+		Assertions.assertEquals(0x03, DBFCharsetHelper.getDBFCodeForCharset(StandardCharsets.ISO_8859_1));
+		Assertions.assertEquals(0x03, DBFCharsetHelper.getDBFCodeForCharset(Charset.forName("windows-1252")));
 	}
 	
 	
 	@Test
-	@Ignore
+	@Disabled
 	public void listEncodings() {
 		SortedMap<String, Charset> charsets = Charset.availableCharsets();
 		
@@ -119,25 +119,25 @@ public class DBFCharsetHelperTest {
 		// Russian IBM866 0x65
 		Charset russian = Charset.forName("IBM866");
 		
-		Assert.assertEquals(0x65, DBFCharsetHelper.getDBFCodeForCharset(russian));
-		Assert.assertEquals(russian, DBFCharsetHelper.getCharsetByByte(0x65));		
+		Assertions.assertEquals(0x65, DBFCharsetHelper.getDBFCodeForCharset(russian));
+		Assertions.assertEquals(russian, DBFCharsetHelper.getCharsetByByte(0x65));		
 		
 		// Nordic IBM865 0x66
 		
 		Charset nordic = Charset.forName("IBM865");
-		Assert.assertEquals(0x66, DBFCharsetHelper.getDBFCodeForCharset(nordic));
-		Assert.assertEquals(nordic, DBFCharsetHelper.getCharsetByByte(0x66));		
+		Assertions.assertEquals(0x66, DBFCharsetHelper.getDBFCodeForCharset(nordic));
+		Assertions.assertEquals(nordic, DBFCharsetHelper.getCharsetByByte(0x66));		
 	}
 	
 	
 	@Test
 	public void testEncodings() throws Exception {
 		
-		Assert.assertEquals(0x65, DBFCharsetHelper.getDBFCodeForCharset(Charset.forName("IBM866")));
-		Assert.assertEquals(0x65, DBFCharsetHelper.getDBFCodeForCharset(Charset.forName("CP866")));
+		Assertions.assertEquals(0x65, DBFCharsetHelper.getDBFCodeForCharset(Charset.forName("IBM866")));
+		Assertions.assertEquals(0x65, DBFCharsetHelper.getDBFCodeForCharset(Charset.forName("CP866")));
 		
-		Assert.assertEquals(0xc9, DBFCharsetHelper.getDBFCodeForCharset(Charset.forName("windows-1251")));
-		Assert.assertEquals(0xc9, DBFCharsetHelper.getDBFCodeForCharset(Charset.forName("CP1251")));
+		Assertions.assertEquals(0xc9, DBFCharsetHelper.getDBFCodeForCharset(Charset.forName("windows-1251")));
+		Assertions.assertEquals(0xc9, DBFCharsetHelper.getDBFCodeForCharset(Charset.forName("CP1251")));
 		
 		
 	}

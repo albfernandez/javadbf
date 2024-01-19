@@ -21,8 +21,8 @@ package com.linuxense.javadbf;
 import java.io.File;
 import java.io.FileInputStream;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.testutils.AssertUtils;
 import com.linuxense.javadbf.testutils.DbfToTxtTest;
@@ -37,9 +37,9 @@ public class BinaryImageTest {
 			reader.setMemoFile(new File("src/test/resources/inventory.dbt"));
 
 			DBFHeader header = reader.getHeader();
-			Assert.assertNotNull(header);
-			Assert.assertEquals(6, header.fieldArray.length);
-			Assert.assertEquals(12, header.numberOfRecords);
+			Assertions.assertNotNull(header);
+			Assertions.assertEquals(6, header.fieldArray.length);
+			Assertions.assertEquals(12, header.numberOfRecords);
 
 			DBFField[] fieldArray = header.fieldArray;
 			int i = 0;
@@ -54,10 +54,10 @@ public class BinaryImageTest {
 			Object[] row = null;
 			
 			row = reader.nextRecord();
-			Assert.assertEquals(16777344, ((Number) row[0]).intValue());
-			Assert.assertEquals(16777344, ((Number) row[1]).intValue());
-			Assert.assertEquals("Dartboard", row[2]);
-			Assert.assertEquals(889192576, ((Number) row[3]).intValue());
+			Assertions.assertEquals(16777344, ((Number) row[0]).intValue());
+			Assertions.assertEquals(16777344, ((Number) row[1]).intValue());
+			Assertions.assertEquals("Dartboard", row[2]);
+			Assertions.assertEquals(889192576, ((Number) row[3]).intValue());
 			
 			
 			DbfToTxtTest.export(reader, File.createTempFile("javadbf-test", ".txt"));

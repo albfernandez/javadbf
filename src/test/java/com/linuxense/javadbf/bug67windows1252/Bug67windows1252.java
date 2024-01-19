@@ -5,8 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.charset.Charset;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.DBFDataType;
 import com.linuxense.javadbf.DBFField;
@@ -37,7 +37,7 @@ public class Bug67windows1252 {
 		String value = (String) o[0]; 
 		reader.close();		
 		System.out.println(value);
-		Assert.assertEquals(CITY_NAME, value);
+		Assertions.assertEquals(CITY_NAME, value);
 	}
 
 }

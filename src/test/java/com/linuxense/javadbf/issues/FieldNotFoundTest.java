@@ -4,7 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.DBFFieldNotFoundException;
 import com.linuxense.javadbf.DBFReader;
@@ -22,44 +23,52 @@ public class FieldNotFoundTest {
 		super();
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testFieldDefinitionNotFound() throws IOException {
-		File file = new File("src/test/resources/books.dbf");
-		DBFReader reader = null;
-		try {
-			reader = new DBFReader(new FileInputStream(file));
-			reader.getField(0);
-			reader.getField(255);
-		}
-		finally {
-			DBFUtils.close(reader);
-		}		
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			File file = new File("src/test/resources/books.dbf");
+			DBFReader reader = null;
+			try {
+				reader = new DBFReader(new FileInputStream(file));
+				reader.getField(0);
+				reader.getField(255);
+			}
+			finally {
+				DBFUtils.close(reader);
+			}
+		});
 	}
-	@Test(expected=IllegalArgumentException.class)
+	
+	@Test
 	public void testFielInRowByIndexdNotFound() throws IOException {
-		File file = new File("src/test/resources/books.dbf");
-		DBFReader reader = null;
-		try {
-			reader = new DBFReader(new FileInputStream(file));
-			DBFRow row = reader.nextRow();
-			row.getString(155);
-		}
-		finally {
-			DBFUtils.close(reader);
-		}		
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			File file = new File("src/test/resources/books.dbf");
+			DBFReader reader = null;
+			try {
+				reader = new DBFReader(new FileInputStream(file));
+				DBFRow row = reader.nextRow();
+				row.getString(155);
+			}
+			finally {
+				DBFUtils.close(reader);
+			}
+		});
 	}
-	@Test(expected=DBFFieldNotFoundException.class)
-	public void testFielInRowByNamedNotFound() throws IOException {
-		File file = new File("src/test/resources/books.dbf");
-		DBFReader reader = null;
-		try {
-			reader = new DBFReader(new FileInputStream(file));
-			DBFRow row = reader.nextRow();
-			row.getString("NOT_EXIST");
-		}
-		finally {
-			DBFUtils.close(reader);
-		}		
+	
+	@Test
+	public void testFielInRowByNamedNotFound() throws IOException {		
+		Assertions.assertThrows(DBFFieldNotFoundException.class, () -> {
+			File file = new File("src/test/resources/books.dbf");
+			DBFReader reader = null;
+			try {
+				reader = new DBFReader(new FileInputStream(file));
+				DBFRow row = reader.nextRow();
+				row.getString("NOT_EXIST");
+			}
+			finally {
+				DBFUtils.close(reader);
+			}
+		});
 	}
 
 }

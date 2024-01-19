@@ -18,10 +18,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.linuxense.javadbf;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -29,8 +29,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.testutils.DbfToTxtTest;
 
@@ -76,16 +76,16 @@ public class DBFUtilsTest {
 	}
 	@Test
 	public void doubleFormating() {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			" 0.00", 
 			new String(DBFUtils.doubleFormating(new Double(0.0), Charset.defaultCharset(), 5, 2))
 		);
 		
-		Assert.assertEquals(
+		Assertions.assertEquals(
 				"10.00", 
 				new String(DBFUtils.doubleFormating(new Double(10.0), Charset.defaultCharset(), 5, 2))
 			);
-		Assert.assertEquals(
+		Assertions.assertEquals(
 				" 5.05", 
 				new String(DBFUtils.doubleFormating(new Double(5.05), Charset.defaultCharset(), 5, 2))
 			);
@@ -173,7 +173,7 @@ public class DBFUtilsTest {
 		System.out.println(toHexString(data));
 		System.out.println(toBinaryString(data));
 		double calculated = DBFUtils.toDoubleLittleEndian(data);
-		Assert.assertEquals(expected, calculated, 0.01);
+		Assertions.assertEquals(expected, calculated, 0.01);
 	}
 	
 	@Test
@@ -183,7 +183,7 @@ public class DBFUtilsTest {
 		System.out.println(toHexString(data));
 		System.out.println(toBinaryString(data));
 		double calculated = DBFUtils.toDoubleBigEndian(data);
-		Assert.assertEquals(expected, calculated, 0.01);
+		Assertions.assertEquals(expected, calculated, 0.01);
 	}
 	
 	
@@ -221,7 +221,7 @@ public class DBFUtilsTest {
 		list.add(new Pair(new byte[] {-64,42,-90,-117,42,-118,-51,29}, 13.325280503695973));
 		
 		for (Pair p : list) {
-			Assert.assertEquals(p.expected, DBFUtils.toDoubleBigEndian(p.data), 0.01);
+			Assertions.assertEquals(p.expected, DBFUtils.toDoubleBigEndian(p.data), 0.01);
 		}
 	}
 	

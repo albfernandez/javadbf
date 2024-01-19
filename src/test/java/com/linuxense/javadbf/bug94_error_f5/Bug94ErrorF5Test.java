@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.DBFException;
 import com.linuxense.javadbf.DBFUtils;
@@ -36,6 +36,7 @@ public class Bug94ErrorF5Test {
 		dbfWriter.close();
 		ReadDBFAssert.testReadDBFFile(tmpFile, 60, 975, true);
 	}
+	
 	@Test
 	public void providedExample() throws IOException {
 		 DataInputStream dataInputStream = null;
@@ -43,9 +44,9 @@ public class Bug94ErrorF5Test {
 		 	dataInputStream = new DataInputStream(this.getClass().getResourceAsStream("/fixtures/dbase_f5.dbf"));
 		    byte b = dataInputStream.readByte();
 		    // Bad: byte vs int
-//		    Assert.assertTrue(b == 0xF5);
+//		    Assertions.assertTrue(b == 0xF5);
 		    // Correct: byte vs byte
-		    Assert.assertTrue(b == ((byte) 0xF5));
+		    Assertions.assertTrue(b == ((byte) 0xF5));
 		    dataInputStream.close();
 		 }
 		 finally {

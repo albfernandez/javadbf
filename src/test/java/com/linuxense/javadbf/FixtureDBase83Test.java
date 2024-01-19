@@ -23,8 +23,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.testutils.AssertUtils;
 import com.linuxense.javadbf.testutils.DbfToTxtTest;
@@ -41,9 +41,9 @@ public class FixtureDBase83Test {
 			reader.setMemoFile(new File("src/test/resources/fixtures/dbase_83.dbt"));
 
 			DBFHeader header = reader.getHeader();
-			Assert.assertNotNull(header);
-			Assert.assertEquals(15, header.fieldArray.length);
-			Assert.assertEquals(67, header.numberOfRecords);
+			Assertions.assertNotNull(header);
+			Assertions.assertEquals(15, header.fieldArray.length);
+			Assertions.assertEquals(67, header.numberOfRecords);
 
 			DBFField[] fieldArray = header.fieldArray;
 

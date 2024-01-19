@@ -24,7 +24,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class BufferedInputStreamTest {
 
@@ -40,9 +40,7 @@ public class BufferedInputStreamTest {
 			ReadDBFAssert.testReadDBFFile(is, 11, 10);
 		}
 		finally {
-			if (is != null) {
-				is.close();
-			}
+			DBFUtils.close(is);
 		}
 	}
 

@@ -4,9 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.DBFDataType;
 import com.linuxense.javadbf.DBFField;
@@ -35,29 +35,29 @@ public class LimitOf255FieldsPerRecord {
 	 */
 	
 	@Test
-	@Ignore("Now this is disable to generate compatible DBF files")
+	@Disabled("Now this is disable to generate compatible DBF files")
 	public void testLimit() throws IOException {
 		byte[] data = writeFile();
-		Assert.assertNotNull(data);
-		Assert.assertTrue(data.length > 0);
+		Assertions.assertNotNull(data);
+		Assertions.assertTrue(data.length > 0);
 		DBFReader reader = null;
 		try {
 			reader = new DBFReader(new ByteArrayInputStream(data));
-			Assert.assertEquals(NUMBER_OF_COLUMNS_TO_CREATE, reader.getFieldCount());
-			Assert.assertEquals(NUMBER_OF_ROWS_TO_CREATE, reader.getRecordCount());
+			Assertions.assertEquals(NUMBER_OF_COLUMNS_TO_CREATE, reader.getFieldCount());
+			Assertions.assertEquals(NUMBER_OF_ROWS_TO_CREATE, reader.getRecordCount());
 			DBFRow row;
 			int countRows = 0;
 			while ((row = reader.nextRow()) != null) {
 				int columns = 0; 
 				for (int i = 0; i < reader.getFieldCount(); i++) {
-					Assert.assertEquals("data_" + i , row.getString(i));
+					Assertions.assertEquals("data_" + i , row.getString(i));
 					columns++;
 				}
-				Assert.assertEquals(NUMBER_OF_COLUMNS_TO_CREATE, columns);
+				Assertions.assertEquals(NUMBER_OF_COLUMNS_TO_CREATE, columns);
 				
 				countRows++;
 			}
-			Assert.assertEquals(NUMBER_OF_ROWS_TO_CREATE, countRows);
+			Assertions.assertEquals(NUMBER_OF_ROWS_TO_CREATE, countRows);
 		}
 		finally {
 			DBFUtils.close(reader);

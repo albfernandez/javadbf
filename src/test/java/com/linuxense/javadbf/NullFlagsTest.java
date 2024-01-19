@@ -4,8 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.testutils.AssertUtils;
 import com.linuxense.javadbf.testutils.DbfToTxtTest;
@@ -21,9 +21,9 @@ public class NullFlagsTest {
 			reader = new DBFReader(new BufferedInputStream(new FileInputStream(file)));
 			
 			DBFHeader header = reader.getHeader();
-			Assert.assertNotNull(header);
-			Assert.assertEquals(11, header.fieldArray.length);
-			Assert.assertEquals(77, header.numberOfRecords);
+			Assertions.assertNotNull(header);
+			Assertions.assertEquals(11, header.fieldArray.length);
+			Assertions.assertEquals(77, header.numberOfRecords);
 			DBFField []fieldArray = header.fieldArray;
 			
 			int i = 0;
@@ -43,9 +43,9 @@ public class NullFlagsTest {
 			
 			DBFField nullFlagsField = fieldArray[fieldArray.length -1];
 			
-			Assert.assertTrue(nullFlagsField.isSystem());
+			Assertions.assertTrue(nullFlagsField.isSystem());
 			
-			Assert.assertEquals(10, reader.getFieldCount());
+			Assertions.assertEquals(10, reader.getFieldCount());
 //			for (DBFField field: fieldArray) {
 //				System.out.println(field.getName() + ":" + field.isNullable()+ ":" + field.isSystem() + ":" + field.isBinary());
 //			}
@@ -54,7 +54,7 @@ public class NullFlagsTest {
 			Object[] row = null;
 			
 			while ((row = reader.nextRecord()) != null) {
-				Assert.assertEquals(10, row.length);
+				Assertions.assertEquals(10, row.length);
 //				Object o = row[row.length-1];
 //				System.out.println(o);
 			}
@@ -76,9 +76,9 @@ public class NullFlagsTest {
 			reader = new DBFReader(new BufferedInputStream(new FileInputStream(file)));
 			reader.setMemoFile(new File("src/test/resources/fixtures/foxpro-xsource/employees.fpt"));
 			DBFHeader header = reader.getHeader();
-			Assert.assertNotNull(header);
-			Assert.assertEquals(16, header.fieldArray.length);
-			Assert.assertEquals(5, header.numberOfRecords);
+			Assertions.assertNotNull(header);
+			Assertions.assertEquals(16, header.fieldArray.length);
+			Assertions.assertEquals(5, header.numberOfRecords);
 			DBFField []fieldArray = header.fieldArray;
 			
 			
@@ -110,9 +110,9 @@ public class NullFlagsTest {
 			
 			DBFField nullFlagsField = fieldArray[fieldArray.length -1];
 			
-			Assert.assertTrue(nullFlagsField.isSystem());
+			Assertions.assertTrue(nullFlagsField.isSystem());
 			
-			Assert.assertEquals(15, reader.getFieldCount());
+			Assertions.assertEquals(15, reader.getFieldCount());
 //			for (DBFField field: fieldArray) {
 //				System.out.println(field.getName() + ":" + field.isNullable()+ ":" + field.isSystem() + ":" + field.isBinary());
 //			}
@@ -121,7 +121,7 @@ public class NullFlagsTest {
 //			Object[] row = null;
 //			
 //			while ((row = reader.nextRecord()) != null) {
-//				Assert.assertEquals(10, row.length);
+//				Assertions.assertEquals(10, row.length);
 //				Object o = row[row.length-1];
 //				System.out.println(o);
 //			}
@@ -141,9 +141,9 @@ public class NullFlagsTest {
 		try {
 			reader = new DBFReader(new BufferedInputStream(new FileInputStream(file)));
 			DBFHeader header = reader.getHeader();
-			Assert.assertNotNull(header);
-			Assert.assertEquals(10, header.fieldArray.length);
-			Assert.assertEquals(5, header.numberOfRecords);
+			Assertions.assertNotNull(header);
+			Assertions.assertEquals(10, header.fieldArray.length);
+			Assertions.assertEquals(5, header.numberOfRecords);
 			DBFField []fieldArray = header.fieldArray;
 			
 			
@@ -170,9 +170,9 @@ public class NullFlagsTest {
 			
 			DBFField nullFlagsField = fieldArray[fieldArray.length -1];
 			
-			Assert.assertTrue(nullFlagsField.isSystem());
+			Assertions.assertTrue(nullFlagsField.isSystem());
 			
-			Assert.assertEquals(9, reader.getFieldCount());
+			Assertions.assertEquals(9, reader.getFieldCount());
 //			for (DBFField field: fieldArray) {
 //				System.out.println(field.getName() + ":" + field.isNullable()+ ":" + field.isSystem() + ":" + field.isBinary());
 //			}
@@ -181,7 +181,7 @@ public class NullFlagsTest {
 //			Object[] row = null;
 //			
 //			while ((row = reader.nextRecord()) != null) {
-//				Assert.assertEquals(10, row.length);
+//				Assertions.assertEquals(10, row.length);
 //				Object o = row[row.length-1];
 //				System.out.println(o);
 //			}

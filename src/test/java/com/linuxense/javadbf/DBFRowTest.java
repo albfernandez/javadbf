@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 
 
@@ -34,7 +34,7 @@ public class DBFRowTest {
 				rows++;
 				System.out.println(row.getString("codigo") + row.getString("Texto"));
 			}
-			Assert.assertEquals(52, rows);
+			Assertions.assertEquals(52, rows);
 		}
 		finally {
 			DBFUtils.close(dbfReader);

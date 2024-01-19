@@ -6,8 +6,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 
 
@@ -58,7 +58,7 @@ public class CopyExampleTest {
 		finally {
 			DBFUtils.close(check);
 		}
-		Assert.assertEquals(recordCount, recordCountResultFile);
+		Assertions.assertEquals(recordCount, recordCountResultFile);
 		
 	}
 }

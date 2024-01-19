@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.DBFUtils;
 import com.linuxense.javadbf.DBFWriter;
