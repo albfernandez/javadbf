@@ -149,7 +149,6 @@ public class DBFReader extends DBFBase implements Closeable {
 	private DBFHeader header;
 	private boolean trimRightSpaces = true;
 	private int internalRecord = 0;
-	private int returnedRecords = 0;
 
 	private DBFMemoFile memoFile = null;
 
@@ -390,7 +389,6 @@ public class DBFReader extends DBFBase implements Closeable {
 		} catch (IOException e) {
 			throw new DBFException(e.getMessage(), e);
 		}
-		this.returnedRecords++;
 		this.internalRecord++;
 		return recordObjects.toArray();
 	}
@@ -546,7 +544,6 @@ public class DBFReader extends DBFBase implements Closeable {
 		if (showDeletedRows) {
 			skip(recordsToSkip * this.header.recordLength);
 			this.internalRecord+=recordsToSkip;
-			this.returnedRecords+=recordsToSkip;
 		}
 		else {
 			for (int i = 0; i < recordsToSkip; i++) {
@@ -569,7 +566,6 @@ public class DBFReader extends DBFBase implements Closeable {
 						return;
 					}
 				}
-				this.returnedRecords++;
 			}
 		}
 	}
