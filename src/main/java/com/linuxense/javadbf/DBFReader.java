@@ -507,14 +507,14 @@ public class DBFReader extends DBFBase implements Closeable {
 		byte[] data = new byte[field.getLength()];
 //		return this.dataInputStream.readDouble();
 		this.dataInputStream.readFully(data);
-		return DBFUtils.toDoubleBinary(data);
+		return DBFUtils.toDoubleLittleEndian(data);
 	}
 	
 	private Object readDoubleField_O(DBFField field) throws IOException {
 		byte[] data = new byte[field.getLength()];
 //		return this.dataInputStream.readDouble();
 		this.dataInputStream.readFully(data);
-		return DBFUtils.toDoubleDouble(data);
+		return DBFUtils.toDoubleBigEndian(data);
 	}
 
 	private Object readMemoField(DBFField field) throws IOException {

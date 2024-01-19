@@ -415,16 +415,7 @@ public final class DBFUtils {
 		return  BitSet.valueOf(bytes);
 	}
 
-	/*
-	protected static double toDouble(byte[] data) {
-		double d = ByteBuffer.wrap(data).order(ByteOrder.BIG_ENDIAN).getDouble();
-		if (d!= 0.0) {
-			d = -d;
-		}
-		return d;
-	}*/	
-	
-	protected static double toDoubleBinary(byte[] data) {
+	protected static double toDoubleLittleEndian(byte[] data) {
 		double d = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN).getDouble();
 		if (d == -0.0) {
 			d = 0.0;
@@ -433,17 +424,17 @@ public final class DBFUtils {
 	}	
 	
 	
-	protected static double toDoubleDouble(byte[] data) {
+	protected static double toDoubleBigEndian(byte[] data) {
 		double d = ByteBuffer.wrap(data).order(ByteOrder.BIG_ENDIAN).getDouble();
 		
 		if (d != 0.0) {
+			// For some reason sign is swapped
 			d = -d;
-		}
+		}		
 		if (d == -0.0) {
 			d = 0.0;
 		}
 		return d;
-		
 	}
 		
 	

@@ -178,7 +178,7 @@ public class UtilsTest {
 		byte[] data =  {0,0,0,0,0,0, (byte) 0xF0, 0x3F};
 		System.out.println(toHexString(data));
 		System.out.println(toBinaryString(data));
-		double calculated = DBFUtils.toDoubleBinary(data);
+		double calculated = DBFUtils.toDoubleLittleEndian(data);
 		Assert.assertEquals(expected, calculated, 0.01);
 	}
 	
@@ -188,7 +188,7 @@ public class UtilsTest {
 		byte[] data =  {(byte) 0xBF,(byte) 0xF0,0,0,0,0, 0, 0};
 		System.out.println(toHexString(data));
 		System.out.println(toBinaryString(data));
-		double calculated = DBFUtils.toDoubleDouble(data);
+		double calculated = DBFUtils.toDoubleBigEndian(data);
 		Assert.assertEquals(expected, calculated, 0.01);
 	}
 	
@@ -227,7 +227,7 @@ public class UtilsTest {
 		list.add(new Pair(new byte[] {-64,42,-90,-117,42,-118,-51,29}, 13.325280503695973));
 		
 		for (Pair p : list) {
-			Assert.assertEquals(p.expected, DBFUtils.toDoubleDouble(p.data), 0.01);
+			Assert.assertEquals(p.expected, DBFUtils.toDoubleBigEndian(p.data), 0.01);
 		}
 	}
 	
