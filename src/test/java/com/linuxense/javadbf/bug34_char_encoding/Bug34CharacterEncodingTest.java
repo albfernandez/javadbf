@@ -52,8 +52,7 @@ public class Bug34CharacterEncodingTest {
 				ByteArrayInputStream bais = new ByteArrayInputStream(data);
 				
 				List<String> names = new ArrayList<String>();
-				reader = new DBFReader(bais);
-				reader.setCharset(StandardCharsets.UTF_8);
+				reader = new DBFReader(bais, StandardCharsets.UTF_8);
 				Object[] rowObject;
 				while ((rowObject = reader.nextRecord()) != null) {
 					names.add((String) rowObject[0]);
