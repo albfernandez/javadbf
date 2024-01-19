@@ -425,33 +425,26 @@ public final class DBFUtils {
 	    return bits;
 	}
 
-	protected static double toDouble(byte[] data) {
-		double d = ByteBuffer.wrap(data).order(ByteOrder.BIG_ENDIAN).getDouble();
-		if (d!= 0.0) {
-			d = -d;
+	protected static double toDoubleLittleEndian(byte[] data) {
+		double d = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN).getDouble();
+		if (d == -0.0) {
+			d = 0.0;
 		}
-		return d;	
-	}
+		return d;
+	}	
 	
-	// FIXME delete
-	@Deprecated
-	protected static double toDouble(DBFField field, byte[] data) {
-		double d = toDouble(data);
-		StringBuilder sb = new StringBuilder() ;
-		for(byte b: data) {
-			if (sb.length() == 0) {
-				sb.append("{");
-			}
-			else {
-				sb.append(",");
-			}
-			sb.append(b);
-		}
-		sb.append("}");
-		System.out.println(field.getName() + " " + sb + "; " + d);
-		if (d!= 0.0) {
+	
+	protected static double toDoubleBigEndian(byte[] data) {
+		double d = ByteBuffer.wrap(data).order(ByteOrder.BIG_ENDIAN).getDouble();
+		
+		if (d != 0.0) {
+			// For some reason sign is swapped
 			d = -d;
+		}		
+		if (d == -0.0) {
+			d = 0.0;
 		}
-		return d;	
+		return d;
 	}
+
 }

@@ -488,13 +488,13 @@ public class DBFReader extends DBFBase implements Closeable {
 			return readMemoField(field);
 		case BINARY:
 			if (field.getLength() == 8) {
-				return  readDoubleField(field);
+				return  readDoubleFieldLittleEndian(field);
 			}
 			else {
 				return readMemoField(field);
 			}
 		case DOUBLE:
-			return readDoubleField(field);
+			return readDoubleFieldBigEndian(field);
 		case NULL_FLAGS:
 			byte [] data1 = new byte[field.getLength()];
 			this.dataInputStream.readFully(data1);
@@ -505,12 +505,18 @@ public class DBFReader extends DBFBase implements Closeable {
 		}
 	}
 
-	private Object readDoubleField(DBFField field) throws IOException {
+	private Object readDoubleFieldLittleEndian(DBFField field) throws IOException {
 		byte[] data = new byte[field.getLength()];
-//		return this.dataInputStream.readDouble();
 		this.dataInputStream.readFully(data);
-		return DBFUtils.toDouble(field, data);
+		return DBFUtils.toDoubleLittleEndian(data);
 	}
+	
+	private Object readDoubleFieldBigEndian(DBFField field) throws IOException {
+		byte[] data = new byte[field.getLength()];
+		this.dataInputStream.readFully(data);
+		return DBFUtils.toDoubleBigEndian(data);
+	}
+
 
 	private Object readMemoField(DBFField field) throws IOException {
 		Number nBlock =  null;
