@@ -61,7 +61,6 @@ public abstract class DBFBase {
 	 * of the class java.nio.charset.Charset
 	 * 
 	 * @param charset charset to use
-	 * @deprecated set the charset in DBFWriter or DBFReader constructors
 	 */
 	protected void setCharset(Charset charset) {
 		this.charset = charset;
