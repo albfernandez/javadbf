@@ -37,8 +37,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 
 /**
@@ -155,6 +157,8 @@ public class DBFReader extends DBFBase implements Closeable {
 	private Map<String, Integer> mapFieldNames = new HashMap<String, Integer>();
 	
 	private boolean showDeletedRows = false;
+	
+	private Set<String> fieldsAsBinary = new HashSet<>();
 
 	/**
 	 * Intializes a DBFReader object.
@@ -268,7 +272,26 @@ public class DBFReader extends DBFBase implements Closeable {
 		}		
 		return Collections.unmodifiableMap(fieldNames);
 	}
+	
+	/**
+	 * Set the list of memo fields to be readed as binary.
+	 * By default memo fields are retrieved as Strings, but if you know they store binary data
+	 * you can set the names of the memo fields to be recovered unproceesded as byte[]
+	 * @param names name of the memol fields to be treated as binary data.
+	 */
 
+	public void setReadMemoFieldsAsBinary(String... names) {
+		Set<String> newSet = new HashSet<>();
+		for (String name: names) {
+			if (name != null) {
+				String name1 = name.toUpperCase().trim();
+				if (name1.length() > 0) {
+					newSet.add(name1);
+				}
+			}
+		}
+		this.fieldsAsBinary = newSet;
+	}
 
 	/**
 		Returns the number of records in the DBF. This number includes deleted (hidden) records
@@ -534,7 +557,11 @@ public class DBFReader extends DBFBase implements Closeable {
 			nBlock = DBFUtils.readLittleEndianInt(this.dataInputStream);
 		}
 		if (this.memoFile != null && nBlock != null) {
-			return memoFile.readData(nBlock.intValue(), field.getType());
+			DBFDataType type = field.getType();
+			if (type == DBFDataType.MEMO && fieldsAsBinary.contains(field.getName().toUpperCase())) {
+				type = DBFDataType.BINARY;
+			}
+			return memoFile.readData(nBlock.intValue(), type);
 		}
 		return null;
 	}

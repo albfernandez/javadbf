@@ -144,7 +144,7 @@ public class DBFMemoFile implements Closeable {
 
 	protected Object readData(int block, DBFDataType type) {
 		long blockStart = this.blockSize * (long) block;
-		DBFDataType usedType = type;
+		DBFDataType usedType = null;
 		try {
 			seek(blockStart);
 			byte[] blockData = new byte[this.blockSize];
@@ -196,10 +196,14 @@ public class DBFMemoFile implements Closeable {
 				}
 			}
 			byte[] data = baos.toByteArray();
-			if (usedType != DBFDataType.MEMO) {
-				return data;
+			
+			if (usedType == null) {
+				usedType = type;
 			}
-			return new String(data, charset);
+			if (usedType == DBFDataType.MEMO && type == DBFDataType.MEMO){
+				return new String(data, charset);
+			}
+			return data;
 
 		}
 		catch (IOException ex) {
