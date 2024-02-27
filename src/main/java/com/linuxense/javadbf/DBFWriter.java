@@ -479,10 +479,10 @@ public class DBFWriter extends DBFBase implements java.io.Closeable {
 			case LONG:
 			case AUTOINCREMENT:
 				if (objectArray[j] != null) {
-					dataOutput.write(DBFUtils.littleEndian(((Number) objectArray[j]).intValue()));
+					dataOutput.writeInt(DBFUtils.littleEndian(((Number) objectArray[j]).intValue()));
 				}
 				else {
-					dataOutput.write(0);
+					dataOutput.writeInt(0);
 				}
 				break;
 			
