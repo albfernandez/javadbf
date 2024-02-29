@@ -556,7 +556,7 @@ public class DBFReader extends DBFBase implements Closeable {
 		else {
 			nBlock = DBFUtils.readLittleEndianInt(this.dataInputStream);
 		}
-		if (this.memoFile != null && nBlock != null) {
+		if (this.memoFile != null && nBlock != null && nBlock.intValue() > 0) {
 			DBFDataType type = field.getType();
 			if (type == DBFDataType.MEMO && fieldsAsBinary.contains(field.getName().toUpperCase())) {
 				type = DBFDataType.BINARY;

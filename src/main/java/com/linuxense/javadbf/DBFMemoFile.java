@@ -143,6 +143,9 @@ public class DBFMemoFile implements Closeable {
 	}
 
 	protected Object readData(int block, DBFDataType type) {
+		if (block <= 0) {
+			return null;
+		}
 		long blockStart = this.blockSize * (long) block;
 		DBFDataType usedType = null;
 		try {
