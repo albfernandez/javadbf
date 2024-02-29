@@ -29,8 +29,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -526,7 +524,7 @@ public class DBFReader extends DBFBase implements Closeable {
 		else {
 			nBlock = DBFUtils.readLittleEndianInt(this.dataInputStream);
 		}
-		if (this.memoFile != null && nBlock != null) {
+		if (this.memoFile != null && nBlock != null && nBlock.intValue() > 0) {
 			return memoFile.readData(nBlock.intValue(), field.getType());
 		}
 		return null;
