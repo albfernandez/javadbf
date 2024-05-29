@@ -41,6 +41,7 @@
 		<version.spotbugs>4.8.5.0</version.spotbugs>
 		<version.findsecbugs>1.13.0</version.findsecbugs>
 		<version.pmd>3.22.0</version.pmd>
+		<version.junit>4.13.2</version.junit>
 	</properties>
 
 
@@ -49,7 +50,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.13.1</version>
+			<version>${version.junit}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
