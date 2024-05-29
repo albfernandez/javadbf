@@ -38,6 +38,9 @@
 		<compiler.module.level>9</compiler.module.level>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<version.spotbugs>4.8.5.0</version.spotbugs>
+		<version.findsecbugs>1.13.0</version.findsecbugs>
+		<version.pmd>3.22.0</version.pmd>
 	</properties>
 
 
@@ -64,13 +67,13 @@
 			<plugin>
 			    <groupId>com.github.spotbugs</groupId>
 	            <artifactId>spotbugs-maven-plugin</artifactId>
-	            <version>4.7.2.1</version>
+	            <version>${version.spotbugs}</version>
 	            <configuration>
 	                <plugins>
 	                    <plugin>
 	                        <groupId>com.h3xstream.findsecbugs</groupId>
 	                        <artifactId>findsecbugs-plugin</artifactId>
-	                        <version>1.12.0</version>
+	                        <version>${version.findsecbugs}</version>
 	                    </plugin>
 	                </plugins>
 	            </configuration>
@@ -90,7 +93,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
-				<version>3.19.0</version>
+				<version>${version.pmd}</version>
 				<configuration>
 					<verbose>true</verbose>
 					<failOnViolation>false</failOnViolation>
