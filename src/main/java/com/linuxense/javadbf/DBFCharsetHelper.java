@@ -118,7 +118,7 @@ public final class DBFCharsetHelper {
 		case 0xCA: return forName("windows-1254"); // Turkish Windows
 		case 0xCB: return forName("windows-1253"); // Greek Windows
 		case 0xCC: return forName("IBM1257");  //   # Baltic Windows
-		default: return null;
+		default: return "";
 		}
 	}
 	
@@ -126,7 +126,7 @@ public final class DBFCharsetHelper {
 		try {
 			return Charset.forName(name);
 		} catch (UnsupportedCharsetException e) {
-			return null;
+			return "";
 		}
 	}
 
@@ -142,128 +142,128 @@ public final class DBFCharsetHelper {
 		String charsetName = charset.toString();
 		
 
-		if ("ibm437".equalsIgnoreCase(charsetName)) {
+		if (forName("ibm437").equalsIgnoreCase(charsetName)) {
 			return 0x01;
 		}
-		if ("ibm850".equalsIgnoreCase(charsetName)) {
+		if (forName("ibm850").equalsIgnoreCase(charsetName)) {
 			return 0x02;
 		}
-		if ("windows-1252".equalsIgnoreCase(charsetName)) {
+		if (forName("windows-1252").equalsIgnoreCase(charsetName)) {
 			return 0x03;
 		}
-		if ("iso-8859-1".equalsIgnoreCase(charsetName)) {
+		if (forName("iso-8859-1").equalsIgnoreCase(charsetName)) {
 			return 0x03;
 		}
-		if ("MacRoman".equalsIgnoreCase(charsetName)) {
+		if (forName("MacRoman").equalsIgnoreCase(charsetName)) {
 			return 0x04;
 		}
-		if ("IBM437".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM437").equalsIgnoreCase(charsetName)) {
 			return 0x09;
 		}		
-		if ("IBM932".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM932").equalsIgnoreCase(charsetName)) {
 			return 0x13;
 		}
-		if ("IBM863".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM863").equalsIgnoreCase(charsetName)) {
 			return 0x1c;
 		}
-		if ("IBM852".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM852").equalsIgnoreCase(charsetName)) {
 			return 0x1f;
 		}
-		if ("IBM860".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM860").equalsIgnoreCase(charsetName)) {
 			return 0x24;
 		}
-		if ("IBM936".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM936").equalsIgnoreCase(charsetName)) {
 			return 0x4d;
 		}
-		if ("IBM949".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM949").equalsIgnoreCase(charsetName)) {
 			return 0x4e;
 		}
-		if ("IBM950".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM950").equalsIgnoreCase(charsetName)) {
 			return 0x4f;
 		}
-		if ("IBM874".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM874").equalsIgnoreCase(charsetName)) {
 			return 0x50;
 		}
-		if ("IBM852".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM852").equalsIgnoreCase(charsetName)) {
 			return 0x64;
 		}
-		if ("IBM866".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM866").equalsIgnoreCase(charsetName)) {
 			return 0x65;
 		}
-		if ("IBM865".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM865").equalsIgnoreCase(charsetName)) {
 			return 0x66;
 		}
-		if ("IBM861".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM861").equalsIgnoreCase(charsetName)) {
 			return 0x67;
 		}
-		if ("IBM895".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM895").equalsIgnoreCase(charsetName)) {
 			return 0x68;
 		}
-		if ("IBM620".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM620").equalsIgnoreCase(charsetName)) {
 			return 0x69;
 		}
-		if ("IBM737".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM737").equalsIgnoreCase(charsetName)) {
 			return 0x6a;
 		}
-		if ("IBM857".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM857").equalsIgnoreCase(charsetName)) {
 			return 0x6b;
 		}
-		if ("IBM863".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM863").equalsIgnoreCase(charsetName)) {
 			return 0x6c;
 		}
-		if ("IBM737".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM737").equalsIgnoreCase(charsetName)) {
 			return 0x86;
 		}
-		if ("windows-950".equalsIgnoreCase(charsetName)) {
+		if (forName("windows-950").equalsIgnoreCase(charsetName)) {
 			return 0x78;
 		}
-		if ("windows-949".equalsIgnoreCase(charsetName)) {
+		if (forName("windows-949").equalsIgnoreCase(charsetName)) {
 			return 0x79;
 		}
-		if ("gbk".equalsIgnoreCase(charsetName)) {
+		if (forName("gbk").equalsIgnoreCase(charsetName)) {
 			return 0x7a;
 		}
-		if ("windows-932".equalsIgnoreCase(charsetName)) {
+		if (forName("windows-932").equalsIgnoreCase(charsetName)) {
 			return 0x7b;
 		}
-		if ("windows-874".equalsIgnoreCase(charsetName)) {
+		if (forName("windows-874").equalsIgnoreCase(charsetName)) {
 			return 0x7c;
 		}
-		if ("windows-1255".equalsIgnoreCase(charsetName)) {
+		if (forName("windows-1255").equalsIgnoreCase(charsetName)) {
 			return 0x7d;
 		}
-		if ("windows-1256".equalsIgnoreCase(charsetName)) {
+		if (forName("windows-1256").equalsIgnoreCase(charsetName)) {
 			return 0x7e;
 		}
-		if ("IBM852".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM852").equalsIgnoreCase(charsetName)) {
 			return 0x87;
 		}
-		if ("IBM857".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM857").equalsIgnoreCase(charsetName)) {
 			return 0x88;
 		}
-		if ("x-MacCyrillic".equalsIgnoreCase(charsetName)) {
+		if (forName("MacCyrillic").equalsIgnoreCase(charsetName)) {
 			return 0x96;
 		}
-		if ("x-MacCentralEurope".equalsIgnoreCase(charsetName)) {
+		if (forName("MacCentralEurope").equalsIgnoreCase(charsetName)) {
 			return 0x97;
 		}
-		if ("x-MacGreek".equalsIgnoreCase(charsetName)) {
+		if (forName("MacGreek").equalsIgnoreCase(charsetName)) {
 			return 0x98;
 		}
 
-		if ("windows-1250".equalsIgnoreCase(charsetName)) {
+		if (forName("windows-1250").equalsIgnoreCase(charsetName)) {
 			return 0xc8;
 		}
-		if ("windows-1251".equalsIgnoreCase(charsetName)) {
+		if (forName("windows-1251").equalsIgnoreCase(charsetName)) {
 			return 0xc9;
 		}
-		if ("windows-1254".equalsIgnoreCase(charsetName)) {
+		if (forName("windows-1254").equalsIgnoreCase(charsetName)) {
 			return 0xca;
 		}
-		if ("windows-1253".equalsIgnoreCase(charsetName)) {
+		if (forName("windows-1253").equalsIgnoreCase(charsetName)) {
 			return 0xcb;
 		}
-		if ("IBM1257".equalsIgnoreCase(charsetName)) {
+		if (forName("IBM1257").equalsIgnoreCase(charsetName)) {
 			return 0xcc;
 		}
 		// Unsupported charsets returns 0
