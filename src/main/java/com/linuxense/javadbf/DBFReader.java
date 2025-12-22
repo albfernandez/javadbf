@@ -488,6 +488,7 @@ public class DBFReader extends DBFBase implements Closeable {
 					long millis = (value - 2440588L) * 86400000L;
                     return new Date(millis);
 				default:
+					skip(field.getLength());
 					return null;
 			}
 
