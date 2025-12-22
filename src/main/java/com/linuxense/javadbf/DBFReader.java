@@ -29,6 +29,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -459,25 +461,35 @@ public class DBFReader extends DBFBase implements Closeable {
 			return b_array_var;
 		case DATE:
 
-			byte[] t_byte_year = new byte[4];
-			this.dataInputStream.readFully(t_byte_year);
-			
-			byte[] t_byte_month = new byte[2];
-			this.dataInputStream.readFully(t_byte_month);
+			switch (field.getLength()) {
+				case 8:
+					byte[] t_byte_year = new byte[4];
+					this.dataInputStream.readFully(t_byte_year);
 
-			byte[] t_byte_day = new byte[2];
-			this.dataInputStream.readFully(t_byte_day);
+					byte[] t_byte_month = new byte[2];
+					this.dataInputStream.readFully(t_byte_month);
 
-			try {
-				GregorianCalendar calendar = new GregorianCalendar(Integer.parseInt(new String(t_byte_year, DBFStandardCharsets.US_ASCII)),
-						Integer.parseInt(new String(t_byte_month, DBFStandardCharsets.US_ASCII)) - 1,
-						Integer.parseInt(new String(t_byte_day, DBFStandardCharsets.US_ASCII)));
-				return calendar.getTime();
-			} catch (NumberFormatException e) {
-				// this field may be empty or may have improper value set
-				return null;
+					byte[] t_byte_day = new byte[2];
+					this.dataInputStream.readFully(t_byte_day);
+
+					try {
+						GregorianCalendar calendar = new GregorianCalendar(Integer.parseInt(new String(t_byte_year, DBFStandardCharsets.US_ASCII)),
+								Integer.parseInt(new String(t_byte_month, DBFStandardCharsets.US_ASCII)) - 1,
+								Integer.parseInt(new String(t_byte_day, DBFStandardCharsets.US_ASCII)));
+						return calendar.getTime();
+					} catch (NumberFormatException e) {
+						// this field may be empty or may have improper value set
+						return null;
+					}
+				case 4:
+					byte[] t_byte_array = new byte[4];
+					this.dataInputStream.readFully(t_byte_array);
+					int value = ByteBuffer.wrap(t_byte_array).order(ByteOrder.LITTLE_ENDIAN).getInt();
+					long millis = (value - 2440588L) * 86400000L;
+                    return new Date(millis);
+				default:
+					return null;
 			}
-
 
 		case FLOATING_POINT:
 		case NUMERIC:
