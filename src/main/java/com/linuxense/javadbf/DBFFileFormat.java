@@ -5,9 +5,11 @@ public enum DBFFileFormat {
 	ADVANCED((byte) 0x4);
 	
 	private byte signature;
-	private DBFFileFormat(byte signature) {
+	
+	DBFFileFormat(byte signature) {
 		this.signature = signature;
 	}
+	
 	public byte getSignature() {
 		return this.signature;
 	}
