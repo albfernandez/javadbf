@@ -20,10 +20,8 @@ package com.linuxense.javadbf;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.SortedMap;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.utils.DBFCharsetHelper;
