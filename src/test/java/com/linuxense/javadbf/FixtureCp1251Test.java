@@ -24,6 +24,8 @@ import java.io.FileInputStream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.linuxense.javadbf.utils.DBFUtils;
+
 public class FixtureCp1251Test {
 	@Test
 	public void test8b() throws Exception {

@@ -30,6 +30,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Calendar;
 
+import com.linuxense.javadbf.utils.DBFExploder;
+import com.linuxense.javadbf.utils.DBFExploderInputStream;
+import com.linuxense.javadbf.utils.DBFUtils;
+
 /**
  * Created by ialek36 on 11/8/17.
  */

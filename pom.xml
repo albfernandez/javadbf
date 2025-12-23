@@ -34,8 +34,7 @@
 	</issueManagement>
 
 	<properties>
-		<compiler.level>1.8</compiler.level>
-		<compiler.module.level>9</compiler.module.level>
+		<compiler.level>11</compiler.level>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
@@ -52,12 +51,36 @@
 	<build>
 		<plugins>
 			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-enforcer-plugin</artifactId>
+			    <version>3.4.1</version>
+			    <executions>
+			        <execution>
+			            <id>enforce-rules</id>
+			            <goals>
+			                <goal>enforce</goal>
+			            </goals>
+			            <configuration>
+			                <rules>
+			                    <requireMavenVersion>
+			                        <version>3.8.0</version>
+			                    </requireMavenVersion>
+			                    <requireJavaVersion>
+			                        <version>${compiler.level}</version>
+			                    </requireJavaVersion>
+			                </rules>
+			                <fail>true</fail>
+			            </configuration>
+			        </execution>
+			    </executions>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.7.0</version>
+				<version>3.8.1</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>${compiler.level}</source>
+					<target>${compiler.level}</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -75,7 +98,7 @@
 			<plugin>
 			    <groupId>com.github.spotbugs</groupId>
 	            <artifactId>spotbugs-maven-plugin</artifactId>
-	            <version>4.8.3.0</version>
+	            <version>4.9.8.2</version>
 	            <configuration>
 	                <plugins>
 	                    <plugin>
@@ -236,122 +259,7 @@
 				</plugins>				
 			</build>			
 		</profile>
-		<profile>
-			<id>jdk6on</id>
-			<activation>
-				<jdk>(,1.8]</jdk>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<version>3.7.0</version>
-						<configuration>
-							<excludes>
-								<exclude>module-info.java</exclude>
-							</excludes>
-							<source>${compiler.level}</source>
-							<target>${compiler.level}</target>
-						</configuration>
-					</plugin>				
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>jdk9on</id>
-			<activation>
-				<jdk>[9,11]</jdk>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<version>3.8.1</version>
-						<executions>
-							<execution>
-								<id>default-compile</id>
-								<configuration>
-									<release>${compiler.module.level}</release>
-								</configuration>
-							</execution>
-							<execution>
-								<id>base-compile</id>
-								<goals>
-									<goal>compile</goal>
-								</goals>
-								<configuration>
-									<excludes>
-										<exclude>module-info.java</exclude>
-									</excludes>
-								</configuration>
-							</execution>
-						</executions>
-						<configuration>
-							<source>${compiler.level}</source>
-							<target>${compiler.level}</target>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		
-		<profile>
-			<id>jdk12on</id>
-			<activation>
-				<jdk>[12,)</jdk>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<version>3.8.1</version>
-						<executions>
-							<execution>
-								<id>default-compile</id>
-								<configuration>
-									<release>${compiler.module.level}</release>
-								</configuration>
-							</execution>
-							<execution>
-								<id>base-compile</id>
-								<goals>
-									<goal>compile</goal>
-								</goals>
-								<configuration>
-									<excludes>
-										<exclude>module-info.java</exclude>
-									</excludes>
-								</configuration>
-							</execution>
-						</executions>
-						<configuration>
-							<source>8</source>
-							<target>8</target>
-						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.2.0</version>
-						<executions>
-							<execution>
-								<id>attach-javadocs</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-								<configuration>
-									<source>8</source>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		
+				
 
 	</profiles>
 </project>

@@ -26,6 +26,8 @@ import java.io.InputStream;
 
 import org.junit.jupiter.api.Assertions;
 
+import com.linuxense.javadbf.utils.DBFUtils;
+
 public class ReadDBFAssert {
 
 	private ReadDBFAssert() {

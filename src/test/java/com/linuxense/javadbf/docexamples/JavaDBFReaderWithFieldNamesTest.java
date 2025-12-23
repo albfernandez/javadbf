@@ -7,7 +7,7 @@ import com.linuxense.javadbf.DBFException;
 import com.linuxense.javadbf.DBFField;
 import com.linuxense.javadbf.DBFReader;
 import com.linuxense.javadbf.DBFRow;
-import com.linuxense.javadbf.DBFUtils;
+import com.linuxense.javadbf.utils.DBFUtils;
 
 public class JavaDBFReaderWithFieldNamesTest {
 

@@ -12,6 +12,10 @@ import java.nio.file.Files;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.linuxense.javadbf.utils.DBFExploder;
+import com.linuxense.javadbf.utils.DBFExploderInputStream;
+import com.linuxense.javadbf.utils.DBFUtils;
+
 public class DBCDATASUSTest {
 
 	public DBCDATASUSTest() {

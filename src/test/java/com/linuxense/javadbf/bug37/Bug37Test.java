@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.DBFReader;
 import com.linuxense.javadbf.DBFRow;
-import com.linuxense.javadbf.DBFUtils;
+import com.linuxense.javadbf.utils.DBFUtils;
 
 public class Bug37Test {
 

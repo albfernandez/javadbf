@@ -35,6 +35,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.mocks.NullOutputStream;
+import com.linuxense.javadbf.utils.DBFUtils;
 
 public class EncodingTest {
 

@@ -33,6 +33,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.testutils.DbfToTxtTest;
+import com.linuxense.javadbf.utils.DBFUtils;
 
 
 

@@ -26,6 +26,8 @@ import java.io.OutputStream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.linuxense.javadbf.utils.DBFUtils;
+
 
 public class DBFWriterRandomAccesTest {
 	

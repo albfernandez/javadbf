@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.DBFException;
-import com.linuxense.javadbf.DBFUtils;
 import com.linuxense.javadbf.DBFWriter;
 import com.linuxense.javadbf.ReadDBFAssert;
 import com.linuxense.javadbf.testutils.FileUtils;
+import com.linuxense.javadbf.utils.DBFUtils;
 
 public class Bug94ErrorF5Test {
 	

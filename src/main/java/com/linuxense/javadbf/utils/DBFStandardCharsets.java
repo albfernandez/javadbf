@@ -1,8 +1,8 @@
-package com.linuxense.javadbf;
+package com.linuxense.javadbf.utils;
 
 import java.nio.charset.Charset;
 
-final class DBFStandardCharsets {
+public final class DBFStandardCharsets {
 
     private DBFStandardCharsets() {
         throw new AssertionError("No DBFStandardCharsets instances for you!");

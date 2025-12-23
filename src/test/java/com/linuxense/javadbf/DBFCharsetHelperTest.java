@@ -26,6 +26,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import com.linuxense.javadbf.utils.DBFCharsetHelper;
+
 public class DBFCharsetHelperTest {
 
 	public DBFCharsetHelperTest() {

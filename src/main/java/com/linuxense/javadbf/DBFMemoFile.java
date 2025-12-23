@@ -31,6 +31,8 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
+import com.linuxense.javadbf.utils.DBFUtils;
+
 /**
  * Class for read memo files (DBT and FPT)
  */

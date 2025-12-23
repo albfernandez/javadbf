@@ -36,6 +36,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import com.linuxense.javadbf.utils.DBFCharsetHelper;
+import com.linuxense.javadbf.utils.DBFStandardCharsets;
+import com.linuxense.javadbf.utils.DBFUtils;
+
 /*
  DBFWriter
  Class for defining a DBF structure and addin data to that structure and

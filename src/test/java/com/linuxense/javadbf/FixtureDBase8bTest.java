@@ -28,6 +28,8 @@ import java.util.Date;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.linuxense.javadbf.utils.DBFUtils;
+
 public class FixtureDBase8bTest {
 
 	@Test

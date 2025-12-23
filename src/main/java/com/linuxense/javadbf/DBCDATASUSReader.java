@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
+import com.linuxense.javadbf.utils.DBFExploderInputStream;
+
 /**
  *  Importing data from DBC (compressed DBF) files into data frames.
  *  

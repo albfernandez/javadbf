@@ -1,4 +1,4 @@
-package com.linuxense.javadbf;
+package com.linuxense.javadbf.utils;
 
 
 

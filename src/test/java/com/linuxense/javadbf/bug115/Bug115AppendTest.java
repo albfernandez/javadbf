@@ -12,8 +12,8 @@ import java.util.Date;
 
 import org.junit.jupiter.api.Test;
 
-import com.linuxense.javadbf.DBFUtils;
 import com.linuxense.javadbf.DBFWriter;
+import com.linuxense.javadbf.utils.DBFUtils;
 
 public class Bug115AppendTest {
 	

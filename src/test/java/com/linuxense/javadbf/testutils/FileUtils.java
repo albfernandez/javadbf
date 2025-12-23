@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.linuxense.javadbf.DBFUtils;
+import com.linuxense.javadbf.utils.DBFUtils;
 
 public final class FileUtils {
 	

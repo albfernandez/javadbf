@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.DBFReader;
 import com.linuxense.javadbf.DBFRow;
-import com.linuxense.javadbf.DBFUtils;
 import com.linuxense.javadbf.testutils.DbfToTxtTest;
+import com.linuxense.javadbf.utils.DBFUtils;
 
 
 

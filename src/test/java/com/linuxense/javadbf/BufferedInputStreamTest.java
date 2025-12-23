@@ -26,6 +26,8 @@ import java.io.InputStream;
 
 import org.junit.jupiter.api.Test;
 
+import com.linuxense.javadbf.utils.DBFUtils;
+
 public class BufferedInputStreamTest {
 
 	public BufferedInputStreamTest() {

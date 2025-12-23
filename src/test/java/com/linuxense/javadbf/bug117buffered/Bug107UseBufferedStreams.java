@@ -14,9 +14,9 @@ import com.linuxense.javadbf.DBFField;
 import com.linuxense.javadbf.DBFHeader;
 import com.linuxense.javadbf.DBFReader;
 import com.linuxense.javadbf.DBFRow;
-import com.linuxense.javadbf.DBFUtils;
 import com.linuxense.javadbf.DBFWriter;
 import com.linuxense.javadbf.mocks.NullOutputStream;
+import com.linuxense.javadbf.utils.DBFUtils;
 
 public class Bug107UseBufferedStreams {
 	

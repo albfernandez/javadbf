@@ -19,7 +19,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-package com.linuxense.javadbf;
+package com.linuxense.javadbf.utils;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -41,6 +41,9 @@ import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Locale;
+
+import com.linuxense.javadbf.DBFAlignment;
+import com.linuxense.javadbf.DBFException;
 
 
 /**
@@ -386,7 +389,7 @@ public final class DBFUtils {
 	 * @param bytesToSkip number of bytes to skip
 	 * @throws IOException if some IO error happens
 	 */
-	protected static void skipDataInput(DataInput dataInput, int bytesToSkip) throws IOException {
+	public static void skipDataInput(DataInput dataInput, int bytesToSkip) throws IOException {
 		if (dataInput != null && bytesToSkip > 0) {
 			int skipped = dataInput.skipBytes(bytesToSkip);
 			for (int i = skipped; i < bytesToSkip; i++) {
@@ -395,7 +398,7 @@ public final class DBFUtils {
 		}
 	}
 
-	protected static byte[] readAllBytes(File file) throws IOException {
+	public static byte[] readAllBytes(File file) throws IOException {
 		if (file == null) {
 			throw new IllegalArgumentException("file must not be null");
 		}
@@ -411,11 +414,11 @@ public final class DBFUtils {
 		return data;
 	}
 
-	protected static BitSet getBitSet(byte[] bytes) {
+	public static BitSet getBitSet(byte[] bytes) {
 		return  BitSet.valueOf(bytes);
 	}
 
-	protected static double toDoubleLittleEndian(byte[] data) {
+	public static double toDoubleLittleEndian(byte[] data) {
 		double d = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN).getDouble();
 		if (d == -0.0) {
 			d = 0.0;
@@ -424,7 +427,7 @@ public final class DBFUtils {
 	}	
 	
 	
-	protected static double toDoubleBigEndian(byte[] data) {
+	public static double toDoubleBigEndian(byte[] data) {
 		double d = ByteBuffer.wrap(data).order(ByteOrder.BIG_ENDIAN).getDouble();
 		
 		if (d != 0.0) {
@@ -438,7 +441,7 @@ public final class DBFUtils {
 	}
 		
 	
-	protected static byte[] string2byteArray(String str, Charset charset, int length) {
+	public static byte[] string2byteArray(String str, Charset charset, int length) {
 		byte[] data = new byte[length];
 		if (str != null) {
 			byte[] stringData = str.getBytes(charset);

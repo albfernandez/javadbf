@@ -45,6 +45,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
+import com.linuxense.javadbf.utils.DBFStandardCharsets;
+import com.linuxense.javadbf.utils.DBFUtils;
+
 /**
  * DBFReader class can creates objects to represent DBF data.
  * <p>

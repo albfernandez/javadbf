@@ -23,6 +23,8 @@ package com.linuxense.javadbf;
 
 import java.nio.charset.Charset;
 
+import com.linuxense.javadbf.utils.DBFStandardCharsets;
+
 
 /**
  * Base class for DBFReader and DBFWriter. Support for choosing implemented

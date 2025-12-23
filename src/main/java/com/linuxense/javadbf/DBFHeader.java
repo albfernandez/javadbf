@@ -32,6 +32,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.linuxense.javadbf.utils.DBFCharsetHelper;
+import com.linuxense.javadbf.utils.DBFStandardCharsets;
+import com.linuxense.javadbf.utils.DBFUtils;
+
 /**
  * Class for reading the metadata assuming that the given InputStream carries
  * DBF data.

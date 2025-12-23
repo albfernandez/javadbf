@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
+import com.linuxense.javadbf.utils.DBFUtils;
+
 
 /**
  * DBFField represents a field specification in an dbf file.

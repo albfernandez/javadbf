@@ -17,7 +17,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-package com.linuxense.javadbf;
+package com.linuxense.javadbf.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -25,16 +25,17 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.Queue;
 
-class DBFExploderInputStream extends InputStream {
+public class DBFExploderInputStream extends InputStream {
 
 	private InputStream in;
 	private Queue<Byte> queue =new LinkedList<Byte>();
 	private int estimatedUncompressedSize = 0;
 	
-	DBFExploderInputStream(InputStream in) {
+	public DBFExploderInputStream(InputStream in) {
 		this(in, 0);		
 	}
-	DBFExploderInputStream(InputStream in, int uncompressedSize) {
+	
+	public DBFExploderInputStream(InputStream in, int uncompressedSize) {
 		super();
 		this.in = in;
 		this.estimatedUncompressedSize = uncompressedSize;
@@ -70,7 +71,7 @@ class DBFExploderInputStream extends InputStream {
 		return decompressed;
 	}
 
-	protected int getAdjustedOutputSize(byte[] compressedData) {
+	public int getAdjustedOutputSize(byte[] compressedData) {
 		int outputBufferSize = estimatedUncompressedSize;
 		if (outputBufferSize < compressedData.length) {
 			outputBufferSize = compressedData.length * 6;
@@ -78,7 +79,7 @@ class DBFExploderInputStream extends InputStream {
 		return outputBufferSize;
 	}
 
-	protected ByteArrayOutputStream getCompressedByteStream() throws IOException {
+	public ByteArrayOutputStream getCompressedByteStream() throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream(4096);
 		byte[] buffer = new byte[4096];
 		int readed = 0;
