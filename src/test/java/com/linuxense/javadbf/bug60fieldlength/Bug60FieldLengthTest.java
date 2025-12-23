@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.DBFReader;
@@ -15,7 +16,8 @@ import com.linuxense.javadbf.utils.DBFUtils;
 
 
 public class Bug60FieldLengthTest {
-	File testFile = new File("src/test/resources/bug-60-fieldlength/060.dbf");
+	
+	
 	public Bug60FieldLengthTest() {
 		super();
 	}
@@ -39,6 +41,7 @@ public class Bug60FieldLengthTest {
 	
 	
 	@Test
+	@Disabled
 	public void testPrint() throws FileNotFoundException {
 		File testFile = new File("src/test/resources/bug-60-fieldlength/060.dbf");
 		DbfToTxtTest.writeToConsole(testFile);

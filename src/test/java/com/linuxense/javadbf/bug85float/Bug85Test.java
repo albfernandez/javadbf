@@ -19,7 +19,6 @@ public class Bug85Test {
 		File home = new File(System.getProperty("user.home"));
 		File f = new File(home, "javadbf/PRODUTOS.DBF");
 		Assumptions.assumeTrue(f.exists());
-		int records = DbfToTxtTest.parseFileCountRecords(f);
-		System.out.println(f.getName() + " " + records);
+		DbfToTxtTest.parseFileCountRecords(f);
 	}
 }

@@ -47,7 +47,8 @@ public class Bug34CharacterEncodingTest {
 			byte[] data = baos.toByteArray();
 			
 			Assertions.assertNotEquals(3, data[29]);
-			System.out.println("" + data[29]);
+			
+			Assertions.assertEquals("0", "" + data[29]);
 			
 			ByteArrayInputStream bais = new ByteArrayInputStream(data);
 			
@@ -71,7 +72,7 @@ public class Bug34CharacterEncodingTest {
 	
 	@Test
 	public void testBug34EncodingFile() throws DBFException {
-		System.out.println(StandardCharsets.UTF_8.toString());
+		Assertions.assertEquals("UTF-8", StandardCharsets.UTF_8.toString());
 	}
 
 }

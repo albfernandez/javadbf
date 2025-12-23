@@ -36,7 +36,6 @@ public class Bug67windows1252 {
 		Object[] o = reader.nextRecord();
 		String value = (String) o[0]; 
 		reader.close();		
-		System.out.println(value);
 		Assertions.assertEquals(CITY_NAME, value);
 	}
 

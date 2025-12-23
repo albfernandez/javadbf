@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.DBFReader;
@@ -23,6 +24,7 @@ public class Bug64ExcelDBFTest {
 		DBFReader dbfReader = null;
 		InputStream in = null;
 		File input = new File ("src/test/resources/bug_64_excel_dbf/wrong-exented-character-field.dbf");
+		
 		try {
 			in = new BufferedInputStream(new FileInputStream(input));
 			dbfReader = new DBFReader(in, null, false, false);
@@ -31,20 +33,16 @@ public class Bug64ExcelDBFTest {
 			int count=0;
 			while ( ( row = dbfReader.nextRow() )  != null) {
 				count++;
-				System.out.println("record:" + count);
 				for (int i = 0; i < fieldCount; i++) {
-					System.out.print(dbfReader.getField(i).getName() + " = " );
-					System.out.println(row.getObject(i));
+					row.getObject(i);
 				}
-				System.out.println("");
-			}			
+			}
+			Assertions.assertEquals(16, count);
 		}
 		finally {
 			DBFUtils.close(dbfReader);
 			DBFUtils.close(in);
 		}
-		
 	}
-
 
 }

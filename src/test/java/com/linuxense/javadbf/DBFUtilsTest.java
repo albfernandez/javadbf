@@ -171,8 +171,6 @@ public class DBFUtilsTest {
 	public void testConvertDoubleBinary_valueOne() {
 		double expected = 1.0;
 		byte[] data =  {0,0,0,0,0,0, (byte) 0xF0, 0x3F};
-		System.out.println(toHexString(data));
-		System.out.println(toBinaryString(data));
 		double calculated = DBFUtils.toDoubleLittleEndian(data);
 		Assertions.assertEquals(expected, calculated, 0.01);
 	}
@@ -181,8 +179,6 @@ public class DBFUtilsTest {
 	public void testConvertDoubleDouble_valueOne() {
 		double expected = 1.0;
 		byte[] data =  {(byte) 0xBF,(byte) 0xF0,0,0,0,0, 0, 0};
-		System.out.println(toHexString(data));
-		System.out.println(toBinaryString(data));
 		double calculated = DBFUtils.toDoubleBigEndian(data);
 		Assertions.assertEquals(expected, calculated, 0.01);
 	}
@@ -228,14 +224,14 @@ public class DBFUtilsTest {
 	
 
 	
-	private String toBinaryString(byte[] bytes) {
+	public String toBinaryString(byte[] bytes) {
 		StringBuilder sb = new StringBuilder(bytes.length * Byte.SIZE);
 		for (int i = 0; i < Byte.SIZE * bytes.length; i++) {
 			sb.append((bytes[i / Byte.SIZE] << i % Byte.SIZE & 0x80) == 0 ? '0' : '1');
 		}
 		return sb.toString();
 	}
-	private String toHexString(byte[] byteArray) {
+	public String toHexString(byte[] byteArray) {
 	    StringBuffer hexStringBuffer = new StringBuffer();
 	    for (int i = 0; i < byteArray.length; i++) {
 	        hexStringBuffer.append(byteToHex(byteArray[i]));
@@ -251,7 +247,7 @@ public class DBFUtilsTest {
 
 	@Test
 	public void testPrintNumbers() throws Exception {
-		DbfToTxtTest.writeToConsole(new File("src/test/resources/numbers2.dbf") );
+		DbfToTxtTest.readFullFile(new File("src/test/resources/numbers2.dbf") );
 	}
 	
 }

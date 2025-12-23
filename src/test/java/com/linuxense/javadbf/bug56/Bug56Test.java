@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.DBFField;
@@ -30,16 +31,16 @@ public class Bug56Test {
 			DBFRow row = null;
 			int columns = dbfReader.getFieldCount();
 			int rows = dbfReader.getRecordCount();
-			System.out.println("" + rows + " rows and " + columns + " columns");
+			Assertions.assertEquals(1, rows);
+			Assertions.assertEquals(13, columns);
 			for (int i = 0; i < columns; i++) {
 				DBFField field = dbfReader.getField(i);
-				System.out.println("" + i + " " + field.getName() + " " + field.getType() + " system:" + field.isSystem());
+				Assertions.assertFalse(field.isSystem());
 			}
 			while ( ( row = dbfReader.nextRow() )  != null) {
-				System.out.println("row=" + row);
 				
 				for (int i = 0; i < columns; i++) {
-					System.out.println(row.getObject(i));
+					row.getObject(i);
 				}
 			}
 			

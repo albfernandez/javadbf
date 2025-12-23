@@ -4,7 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.math.BigDecimal;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -34,8 +33,9 @@ public class Bug102Test {
 			Object[] rowObjects = null;
 			while ((rowObjects = reader.nextRecord()) != null) {
 				for (int i = 0; i < rowObjects.length; i++) {
+					@SuppressWarnings("unused")
 					Double dataNumber = (Double.parseDouble((String.valueOf(rowObjects[0]).trim())));
-					System.out.println(new BigDecimal(dataNumber).toPlainString());
+//					System.out.println(new BigDecimal(dataNumber).toPlainString());
 				}
 			}
 
@@ -47,6 +47,7 @@ public class Bug102Test {
 	
 	
 	@Test
+	@Disabled
 	public void print102toConsole() throws Exception {
 		File input = new File("src/test/resources/bug-102/bug102.dbf");
 		DbfToTxtTest.writeToConsole(input);
@@ -88,10 +89,8 @@ public class Bug102Test {
 					"SpareF3"
 			};
 			while ((row = dbfReader.nextRow()) != null) {
-				System.out.println("row=" + row);
-				
 				for(String column: columns) {
-					System.out.println(column + ":" + row.getDouble(column));
+					row.getDouble(column);
 				}
 			}
 
@@ -165,7 +164,7 @@ public class Bug102Test {
 			sb.append(b);
 		}
 		sb.append("}");
-		System.out.println(sb);
+		Assertions.assertEquals("{-63,7,-89,-48,0,0,0,0}", sb.toString());
 			
 		
 	}

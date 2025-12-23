@@ -95,20 +95,6 @@ public class DBFCharsetHelperTest {
 	}
 	
 	
-	@Test
-	@Disabled
-	public void listEncodings() {
-		SortedMap<String, Charset> charsets = Charset.availableCharsets();
-		
-		for (String name: charsets.keySet()) {
-			 Charset charset = (Charset) charsets.get(name);
-			 System.out.println(charset);
-			 for (String alias: charset.aliases()){
-				 System.out.println("    " + alias);
-			 }			 			 
-		}
-	    
-	}
 	
 	@Test
 	public void testRussianAndNordicEncodingsBug35() {

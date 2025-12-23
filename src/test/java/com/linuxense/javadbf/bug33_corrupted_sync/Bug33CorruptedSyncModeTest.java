@@ -23,7 +23,7 @@ public class Bug33CorruptedSyncModeTest {
 	public void testCorruptedFile() throws FileNotFoundException {
 		Assertions.assertThrows(DBFException.class, () -> {
 			String fileName = "src/test/resources/bug-33-corrupted-file-sync-mode/myfileafter-corrupted.dbf";
-			DbfToTxtTest.writeToConsole(new File(fileName));
+			DbfToTxtTest.readFullFile(new File(fileName));
 		});
 	}
 	
@@ -63,7 +63,7 @@ public class Bug33CorruptedSyncModeTest {
 			
 			writer.close();
 			
-			DbfToTxtTest.writeToConsole(tmp);
+			DbfToTxtTest.readFullFile(tmp);
 	}
 	
 

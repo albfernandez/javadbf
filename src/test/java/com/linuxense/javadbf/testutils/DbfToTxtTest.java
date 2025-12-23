@@ -57,6 +57,44 @@ public final class DbfToTxtTest {
 		}
 	}
 	
+	public static int readFullFile(File file) throws FileNotFoundException {
+		DBFReader reader = null;
+		try {
+
+			
+			// create a DBFReader object
+			reader = new DBFReader(new BufferedInputStream(new FileInputStream(file)));
+
+			// get the field count if you want for some reasons like the following
+
+			int numberOfFields = reader.getFieldCount();
+
+			// use this count to fetch all field information
+			// if required
+
+			for (int i = 0; i < numberOfFields; i++) {
+				reader.getField(i);
+			}
+
+			// Now, lets us start reading the rows
+
+
+
+			int count = 0;
+			
+			
+			while (reader.nextRecord() != null) {
+				count++;				
+			}
+
+			return count;
+			// By now, we have iterated through all of the rows
+		}
+		finally {
+			DBFUtils.close(reader);
+		}
+	}
+	
 	public static void writeToConsole(File file) throws FileNotFoundException {
 		DBFReader reader = null;
 		try {

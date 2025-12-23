@@ -26,7 +26,6 @@ public class ZeroFieldCountTest {
 			in = new BufferedInputStream(new FileInputStream(input));
 			dbfReader = new DBFReader(in);
 			int count = dbfReader.getFieldCount();
-			System.out.println("" + dbfReader.toString());
 			Assertions.assertEquals(17, count);
 		}
 		finally {

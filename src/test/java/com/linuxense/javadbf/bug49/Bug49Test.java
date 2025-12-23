@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.linuxense.javadbf.DBFReader;
@@ -30,13 +31,11 @@ public class Bug49Test {
 			int count=0;
 			while ( ( row = dbfReader.nextRow() )  != null) {
 				count++;
-				System.out.println("record:" + count);
 				for (int i = 0; i < fieldCount; i++) {
-					System.out.print(dbfReader.getField(i).getName() + " = " );
-					System.out.println(row.getObject(i));
+					row.getObject(i);
 				}
-				System.out.println("");
-			}			
+			}
+			Assertions.assertEquals(3, count);
 		}
 		finally {
 			DBFUtils.close(dbfReader);

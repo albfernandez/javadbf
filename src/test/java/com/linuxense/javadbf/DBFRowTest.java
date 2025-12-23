@@ -27,14 +27,10 @@ public class DBFRowTest {
 		try {
 			in = new BufferedInputStream(new FileInputStream(dbfFile));
 			dbfReader = new DBFReader(in);
-			DBFRow row = null;
 			int rows = 0;
-			for (int i = 0; i < dbfReader.getFieldCount(); i++) {
-				System.out.println(dbfReader.getField(i));
-			}
-			while ((row = dbfReader.nextRow()) != null) {				
+			
+			while (dbfReader.nextRow() != null) {				
 				rows++;
-				System.out.println(row.getString("codigo") + row.getString("Texto"));
 			}
 			Assertions.assertEquals(52, rows);
 		}

@@ -47,17 +47,12 @@ public class NullFlagsTest {
 			Assertions.assertTrue(nullFlagsField.isSystem());
 			
 			Assertions.assertEquals(10, reader.getFieldCount());
-//			for (DBFField field: fieldArray) {
-//				System.out.println(field.getName() + ":" + field.isNullable()+ ":" + field.isSystem() + ":" + field.isBinary());
-//			}
 
 			
 			Object[] row = null;
 			
 			while ((row = reader.nextRecord()) != null) {
 				Assertions.assertEquals(10, row.length);
-//				Object o = row[row.length-1];
-//				System.out.println(o);
 			}
 			                                                                                                          
 			DbfToTxtTest.export(reader, File.createTempFile("javadbf-test", ".txt"));
@@ -81,12 +76,6 @@ public class NullFlagsTest {
 			Assertions.assertEquals(16, header.fieldArray.length);
 			Assertions.assertEquals(5, header.numberOfRecords);
 			DBFField []fieldArray = header.fieldArray;
-			
-			
-//			for(DBFField field: fieldArray) {
-//				System.out.println(field.toString());
-//			}
-			
 			
 			
 			int i = 0;
@@ -114,18 +103,6 @@ public class NullFlagsTest {
 			Assertions.assertTrue(nullFlagsField.isSystem());
 			
 			Assertions.assertEquals(15, reader.getFieldCount());
-//			for (DBFField field: fieldArray) {
-//				System.out.println(field.getName() + ":" + field.isNullable()+ ":" + field.isSystem() + ":" + field.isBinary());
-//			}
-
-//			
-//			Object[] row = null;
-//			
-//			while ((row = reader.nextRecord()) != null) {
-//				Assertions.assertEquals(10, row.length);
-//				Object o = row[row.length-1];
-//				System.out.println(o);
-//			}
 			                                                                                                          
 			DbfToTxtTest.export(reader, File.createTempFile("javadbf-test", ".txt"));
 			
@@ -148,12 +125,6 @@ public class NullFlagsTest {
 			DBFField []fieldArray = header.fieldArray;
 			
 			
-//			for(DBFField field: fieldArray) {
-//				System.out.println(field.toString());
-//			}
-			
-			
-			
 			int i = 0;
 			
 			AssertUtils.assertColumnDefinition(fieldArray[i++], "PAYMENTID",  DBFDataType.fromCode((byte) 'I'), 4  ,0);         
@@ -174,18 +145,7 @@ public class NullFlagsTest {
 			Assertions.assertTrue(nullFlagsField.isSystem());
 			
 			Assertions.assertEquals(9, reader.getFieldCount());
-//			for (DBFField field: fieldArray) {
-//				System.out.println(field.getName() + ":" + field.isNullable()+ ":" + field.isSystem() + ":" + field.isBinary());
-//			}
 
-//			
-//			Object[] row = null;
-//			
-//			while ((row = reader.nextRecord()) != null) {
-//				Assertions.assertEquals(10, row.length);
-//				Object o = row[row.length-1];
-//				System.out.println(o);
-//			}
 			                                                                                                          
 			DbfToTxtTest.export(reader, File.createTempFile("javadbf-test", ".txt"));
 			

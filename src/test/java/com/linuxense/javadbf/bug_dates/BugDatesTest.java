@@ -37,7 +37,6 @@ public class BugDatesTest {
 		Object[] o = reader.nextRecord();
 		Object value = o[0]; 
 		reader.close();		
-		System.out.println(value);
 		Assertions.assertEquals(calendar.getTime(), value);
 	}
 

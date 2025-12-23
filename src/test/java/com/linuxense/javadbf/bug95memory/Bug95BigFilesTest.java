@@ -26,13 +26,9 @@ public class Bug95BigFilesTest {
 	@Disabled
 	public void testBigFile() throws IOException {
 		File f = Files.createTempFile("bigfile", ".dbf").toFile();
-		System.out.println("creating file: " + f.getAbsolutePath());
 		createBigFile(f);
-		System.out.println("total size: " + (f.length() / (1024*1024)) + " MB");
-		System.out.println("reading file");
 		readBigFile(f);
 		f.delete();
-		System.out.println("finished");
 	}
 
 	private void readBigFile(File f) throws FileNotFoundException {

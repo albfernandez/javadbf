@@ -24,7 +24,6 @@ public class DBCDATASUSTest {
 	
 	@Test
 	public void testSidsBDF() throws FileNotFoundException {
-		System.out.println("---- DBF ---");;
 		File file = new File("src/test/resources/dbc-files/sids.dbf");
 		DBFReader reader = null;
 		try {
@@ -33,11 +32,9 @@ public class DBCDATASUSTest {
 			Assertions.assertEquals("PERIMETER", header.fieldArray[1].getName());
 			Assertions.assertEquals(DBFDataType.NUMERIC, header.fieldArray[1].getType());
 			
-			DBFRow row = null;
 			
 			int count = 0;
-			while ( (row = reader.nextRow()) != null) {	
-				System.out.println(row.getString(0));
+			while (reader.nextRow() != null) {	
 				count++;
 			}
 			Assertions.assertEquals(100, count);
@@ -56,17 +53,14 @@ public class DBCDATASUSTest {
 		File file = new File("src/test/resources/dbc-files/sids.dbc");
 		DBCDATASUSReader reader = null;
 		try {
-			System.out.println("---- DBC ---");;
 			reader = new DBCDATASUSReader(new BufferedInputStream(new FileInputStream(file)));
 			DBFHeader header = reader.getHeader();
 			Assertions.assertEquals("PERIMETER", header.fieldArray[1].getName());
 			Assertions.assertEquals(DBFDataType.NUMERIC, header.fieldArray[1].getType());
 			
-			DBFRow row = null;
 			
 			int count = 0;
-			while ( (row = reader.nextRow()) != null) {	
-				System.out.println(row.getString(0));
+			while (reader.nextRow() != null) {	
 				count++;
 			}
 			Assertions.assertEquals(100, count);
@@ -80,7 +74,6 @@ public class DBCDATASUSTest {
 	
 	@Test
 	public void testsStormDBF() throws FileNotFoundException {
-		System.out.println("---- DBF ---");;
 		File file = new File("src/test/resources/dbc-files/storm.dbf");
 		DBFReader reader = null;
 		try {
@@ -89,11 +82,8 @@ public class DBCDATASUSTest {
 			Assertions.assertEquals("COUNTYNAME", header.fieldArray[1].getName());
 			Assertions.assertEquals(DBFDataType.CHARACTER, header.fieldArray[1].getType());
 			
-			DBFRow row = null;
-			
 			int count = 0;
-			while ( (row = reader.nextRow()) != null) {	
-				System.out.println(row.getString(1));
+			while (reader.nextRow() != null) {	
 				count++;
 			}
 			Assertions.assertEquals(100, count);
@@ -109,17 +99,14 @@ public class DBCDATASUSTest {
 		File file = new File("src/test/resources/dbc-files/storm.dbc");
 		DBCDATASUSReader reader = null;
 		try {
-			System.out.println("---- DBC ---");;
 			reader = new DBCDATASUSReader(new BufferedInputStream(new FileInputStream(file)));
 			DBFHeader header = reader.getHeader();
 			Assertions.assertEquals("COUNTYNAME", header.fieldArray[1].getName());
 			Assertions.assertEquals(DBFDataType.CHARACTER, header.fieldArray[1].getType());
 			
-			DBFRow row = null;
 			
 			int count = 0;
-			while ( (row = reader.nextRow()) != null) {	
-				System.out.println(row.getString(1));
+			while (reader.nextRow() != null) {	
 				count++;
 			}
 			Assertions.assertEquals(100, count);
