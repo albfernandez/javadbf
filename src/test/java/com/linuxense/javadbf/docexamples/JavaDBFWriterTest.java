@@ -59,21 +59,21 @@ public class JavaDBFWriterTest {
 		Object rowData[] = new Object[3];
 		rowData[0] = "1000";
 		rowData[1] = "John";
-		rowData[2] = new Double(5000.00);
+		rowData[2] = Double.valueOf(5000.00);
 
 		writer.addRecord(rowData);
 
 		rowData = new Object[3];
 		rowData[0] = "1001";
 		rowData[1] = "Lalit";
-		rowData[2] = new Double(3400.00);
+		rowData[2] = Double.valueOf(3400.00);
 
 		writer.addRecord(rowData);
 
 		rowData = new Object[3];
 		rowData[0] = "1002";
 		rowData[1] = "Rohit";
-		rowData[2] = new Double(7350.00);
+		rowData[2] = Double.valueOf(7350.00);
 
 		writer.addRecord(rowData);
 

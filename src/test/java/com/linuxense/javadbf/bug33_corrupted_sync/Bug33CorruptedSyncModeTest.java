@@ -49,14 +49,14 @@ public class Bug33CorruptedSyncModeTest {
 			rowData[9] = 80;
 			rowData[10] = "09";
 			rowData[11] = "LPG";
-			rowData[12] = new Double(0);
-			rowData[13] = new Double(0);
-			rowData[14] = new Double(3);
-			rowData[15] = new Double(0);
-			rowData[16] = new Double(0);
-			rowData[17] = new Double(0);
-			rowData[18] = new Double(0);
-			rowData[19] = new Double(0);
+			rowData[12] = Double.valueOf(0);
+			rowData[13] = Double.valueOf(0);
+			rowData[14] = Double.valueOf(3);
+			rowData[15] = Double.valueOf(0);
+			rowData[16] = Double.valueOf(0);
+			rowData[17] = Double.valueOf(0);
+			rowData[18] = Double.valueOf(0);
+			rowData[19] = Double.valueOf(0);
 			rowData[20] = "";
 			
 			writer.addRecord(rowData);

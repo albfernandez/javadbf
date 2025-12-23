@@ -79,16 +79,16 @@ public class DBFUtilsTest {
 	public void doubleFormating() {
 		Assertions.assertEquals(
 			" 0.00", 
-			new String(DBFUtils.doubleFormating(new Double(0.0), Charset.defaultCharset(), 5, 2))
+			new String(DBFUtils.doubleFormating(Double.valueOf(0.0), Charset.defaultCharset(), 5, 2))
 		);
 		
 		Assertions.assertEquals(
 				"10.00", 
-				new String(DBFUtils.doubleFormating(new Double(10.0), Charset.defaultCharset(), 5, 2))
+				new String(DBFUtils.doubleFormating(Double.valueOf(10.0), Charset.defaultCharset(), 5, 2))
 			);
 		Assertions.assertEquals(
 				" 5.05", 
-				new String(DBFUtils.doubleFormating(new Double(5.05), Charset.defaultCharset(), 5, 2))
+				new String(DBFUtils.doubleFormating(Double.valueOf(5.05), Charset.defaultCharset(), 5, 2))
 			);
 	}
 	@Test

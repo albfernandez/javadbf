@@ -40,7 +40,7 @@ public class Bug115AppendTest {
 			rowData[3] = new Date();
 			rowData[4] = "";
 			rowData[5] = "";
-			rowData[6] = new Integer(1);
+			rowData[6] = Integer.valueOf(1);
 			rowData[7] = "";
 			
 			writer.addRecord(rowData);

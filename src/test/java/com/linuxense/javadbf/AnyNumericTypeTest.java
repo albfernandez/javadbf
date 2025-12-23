@@ -65,14 +65,14 @@ public class AnyNumericTypeTest {
 			Object rowData[] = new Object[3];
 			rowData[0] = "1000";
 			rowData[1] = "John";
-			rowData[2] = new Integer(5000);
+			rowData[2] = Integer.valueOf(5000);
 
 			writer.addRecord(rowData);
 
 			rowData = new Object[3];
 			rowData[0] = "1001";
 			rowData[1] = "Lalit";
-			rowData[2] = new Long(3400);
+			rowData[2] = Long.valueOf(3400);
 
 			writer.addRecord(rowData);
 
@@ -135,7 +135,7 @@ public class AnyNumericTypeTest {
 			rowData = new Object[3];
 			rowData[0] = "1001";
 			rowData[1] = "Lalit";
-			rowData[2] = new Float(3400);
+			rowData[2] = Float.valueOf(3400);
 
 			writer.addRecord(rowData);
 

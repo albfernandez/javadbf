@@ -45,11 +45,5 @@ public class Bug49Test {
 		
 	}
 
-	private void print(DBFRow row, int fieldCount) {
-		for (int i = 0; i < fieldCount; i++) {
-			System.out.println(row.getObject(i));
-		}
-		
-	}
 
 }
