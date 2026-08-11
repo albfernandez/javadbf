@@ -20,6 +20,8 @@ package com.linuxense.javadbf;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -145,6 +147,16 @@ public class DBFReaderTest {
 			}
 		});
 	}
+
+	@Test
+	public void testRejectsTruncatedFieldDescriptor() throws IOException {
+		byte[] dbfData = createSingleFieldDbf();
+		int headerLength = readLittleEndianShort(dbfData, 8);
+		writeLittleEndianShort(dbfData, 8, headerLength + 32);
+		dbfData[headerLength - 1] = 0x20;
+
+		Assertions.assertThrows(DBFException.class, () -> new DBFReader(new ByteArrayInputStream(dbfData)));
+	}
 	
 	
 	@Test
@@ -161,6 +173,24 @@ public class DBFReaderTest {
 		finally {
 			DBFUtils.close(reader);
 		}
+	}
+
+	private byte[] createSingleFieldDbf() throws IOException {
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		DBFWriter writer = new DBFWriter(output);
+		writer.setFields(new DBFField[] { new DBFField("header1", DBFDataType.CHARACTER, 200) });
+		writer.addRecord(new Object[] { "value1" });
+		writer.close();
+		return output.toByteArray();
+	}
+
+	private int readLittleEndianShort(byte[] data, int offset) {
+		return (data[offset] & 0xff) | ((data[offset + 1] & 0xff) << 8);
+	}
+
+	private void writeLittleEndianShort(byte[] data, int offset, int value) {
+		data[offset] = (byte) (value & 0xff);
+		data[offset + 1] = (byte) ((value >>> 8) & 0xff);
 	}
 
 }

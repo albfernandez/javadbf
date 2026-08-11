@@ -198,7 +198,7 @@ public class DBFField {
 		try {
 			field.type = DBFDataType.fromCode(in.readByte()); /* 11 */
 		} catch (Exception e) {
-			field.type = DBFDataType.UNKNOWN;
+			throw new DBFException("Unknown DBF field type", e);
 		}
 		field.reserv1 = DBFUtils.readLittleEndianInt(in); /* 12-15 */
 		field.length = in.readUnsignedByte(); /* 16 */
@@ -241,7 +241,7 @@ public class DBFField {
 		try {
 			field.type = DBFDataType.fromCode(in.readByte()); /* 32 */
 		} catch (Exception e) {
-			field.type = DBFDataType.UNKNOWN;
+			throw new DBFException("Unknown DBF field type", e);
 		}
 		field.length = in.readUnsignedByte(); /* 33 */
 		field.decimalCount = in.readByte(); /* 34 */
