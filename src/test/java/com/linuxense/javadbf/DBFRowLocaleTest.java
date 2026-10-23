@@ -4,20 +4,30 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Locale;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class DBFRowLocaleTest {
+	
+	public DBFRowLocaleTest() {
+		super();
+	}
+	
 	@Test
 	public void testFieldNamesIgnoreDefaultLocale() throws Exception {
 		Locale original = Locale.getDefault();
 		try {
 			Locale.setDefault(Locale.forLanguageTag("tr-TR"));
 			byte[] dbf = createDBF();
-			try (DBFReader reader = new DBFReader(new ByteArrayInputStream(dbf))) {
+			DBFReader reader = null;
+			try {
+				reader = new DBFReader(new ByteArrayInputStream(dbf));
 				DBFRow row = reader.nextRow();
-				Assertions.assertEquals("value", row.getString("id"));
-				Assertions.assertEquals("value", row.getString("ID"));
+				Assert.assertEquals("value", row.getString("id"));
+				Assert.assertEquals("value", row.getString("ID"));
+			}
+			finally {
+				reader.close();
 			}
 		} finally {
 			Locale.setDefault(original);
@@ -29,10 +39,15 @@ public class DBFRowLocaleTest {
 		Locale original = Locale.getDefault();
 		try {
 			Locale.setDefault(Locale.ENGLISH);
-			try (DBFReader reader = new DBFReader(new ByteArrayInputStream(createDBF()))) {
+			DBFReader reader = null;
+			try {
+				reader = new DBFReader(new ByteArrayInputStream(createDBF()));
 				DBFRow row = reader.nextRow();
 				Locale.setDefault(Locale.forLanguageTag("tr-TR"));
-				Assertions.assertEquals("value", row.getString("ID"));
+				Assert.assertEquals("value", row.getString("ID"));
+			}
+			finally {
+				reader.close();
 			}
 		} finally {
 			Locale.setDefault(original);
@@ -45,9 +60,14 @@ public class DBFRowLocaleTest {
 		field.setName("ID");
 		field.setType(DBFDataType.CHARACTER);
 		field.setLength(10);
-		try (DBFWriter writer = new DBFWriter(output)) {
+		DBFWriter writer = null;	 
+		try {
+			writer = new DBFWriter(output);
 			writer.setFields(new DBFField[] { field });
 			writer.addRecord(new Object[] { "value" });
+		}
+		finally {
+			writer.close();
 		}
 		return output.toByteArray();
 	}
