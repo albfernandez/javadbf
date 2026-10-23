@@ -20,6 +20,7 @@ package com.linuxense.javadbf;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -45,7 +46,7 @@ public class DBFRow {
 		if (columnName == null) {
 			throw new IllegalArgumentException("You must provide a columnName");
 		}
-		String key = columnName.toLowerCase();
+		String key = columnName.toLowerCase(Locale.ROOT);
 		Integer index = mapcolumnNames.get(key);
 		if (index == null) {
 			throw new DBFFieldNotFoundException("No field found for:" + columnName);
