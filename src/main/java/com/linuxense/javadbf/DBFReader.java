@@ -38,6 +38,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -253,7 +254,7 @@ public class DBFReader extends DBFBase implements Closeable {
 		Map<String, Integer> fieldNames = new HashMap<String, Integer>();
 		for (int i = 0; i < fieldArray.length; i++) {
 			String name = fieldArray[i].getName();
-			fieldNames.put(name.toLowerCase(), i);
+			fieldNames.put(name.toLowerCase(Locale.ROOT), i);
 		}		
 		return Collections.unmodifiableMap(fieldNames);
 	}
